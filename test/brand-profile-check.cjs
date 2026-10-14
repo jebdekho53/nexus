@@ -21,6 +21,6 @@ async function run(electron,root,log) {
     report.font=await controller.webContents.executeJavaScript('getComputedStyle(document.body).fontFamily');
   } catch(error){report.passed=false;report.error=String(error.message);}
   fs.writeFileSync(path.join(root,'diagnostics/brand-profile-check.json'),JSON.stringify(report,null,2));
-  log('nexus-brand-profile-check',report);
+  log('matrix-brand-profile-check',report);
 }
 module.exports={run};

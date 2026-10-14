@@ -7,7 +7,7 @@ const electron = require('electron');
 const {createEngine} = require('./runtime/engine.cjs');
 
 const projectRoot = path.resolve(__dirname, '../..');
-require('./runtime/nexus-brand.cjs').install(electron,projectRoot);
+require('./runtime/matrix-brand.cjs').install(electron,projectRoot);
 const vendorRequire = createRequire(path.join(projectRoot, 'vendor', 'package.json'));
 const isSmoke = process.argv.includes('--smoke-test');
 const managedRelease=!isSmoke&&(process.argv.includes('--release')||!process.argv.includes('--development'));
@@ -25,9 +25,9 @@ const log = (event, details = {}) => {
   fs.appendFileSync(path.join(diagnostics,'startup.jsonl'),text+'\n');
   activity?.record(event,details);
 };
-process.on('uncaughtExceptionMonitor',error=>log('nexus-uncaught-error',{error:String(error?.stack||error)}));
+process.on('uncaughtExceptionMonitor',error=>log('matrix-uncaught-error',{error:String(error?.stack||error)}));
 if (isDevelopment && !isSmoke) {
-  const profile=path.join(diagnostics,process.argv.includes('--release-activation-test')?'release-qa-profile':process.argv.includes('--isolated-live-test')?'live-e2e-profile':managedRelease?'release-profile':'development-profile');
+  const profile=process.argv.includes('--release-activation-test')?path.join(diagnostics,'release-qa-profile'):process.argv.includes('--isolated-live-test')?path.join(diagnostics,'live-e2e-profile'):managedRelease?require('./runtime/profile.cjs').releaseProfile(electron.app,projectRoot):path.join(diagnostics,'development-profile');
   fs.mkdirSync(profile,{recursive:true});
   const setPath=electron.app.setPath.bind(electron.app);
   setPath('userData',profile);
@@ -37,7 +37,7 @@ if (isDevelopment && !isSmoke) {
     win.webContents.on('did-fail-load',(_event,code,description)=>log('renderer-load-error',{code,description}));
     win.webContents.on('render-process-gone',(_event,details)=>log('renderer-process-gone',details));
     win.webContents.on('console-message',(_event,level,message)=>{if(level>=2)log('renderer-console',{level,message});});
-    win.on('show',()=>log('nexus-window-visible',{page:path.basename(win.webContents.getURL().split('?')[0])}));
+    win.on('show',()=>log('matrix-window-visible',{page:path.basename(win.webContents.getURL().split('?')[0])}));
     // E2E stages are recorded at f3720 below. Keep native send untouched:
     // the recovered progress broadcaster also wraps it during initialization.
     win.webContents.on('did-finish-load',()=>log('development-window-loaded',{
@@ -46,7 +46,7 @@ if (isDevelopment && !isSmoke) {
     }));
     if(process.argv.includes('--isolated-live-test'))win.webContents.on('did-finish-load',()=>{
       if(!win.webContents.getURL().includes('/booking-box.html'))return;
-      win.webContents.executeJavaScript(`window.__nexusQrProbe=null;window.api.onQr(payload=>{if(payload.closed||!payload.dataUrl)return;const image=new Image();image.onload=()=>{window.__nexusQrProbe={at:Date.now(),formId:payload.formId,ready:true,width:image.naturalWidth,height:image.naturalHeight};};image.src=payload.dataUrl;});true;`).catch(error=>log('e2e-qr-probe-error',{error:String(error.message)}));
+      win.webContents.executeJavaScript(`window.__matrixQrProbe=null;window.api.onQr(payload=>{if(payload.closed||!payload.dataUrl)return;const image=new Image();image.onload=()=>{window.__matrixQrProbe={at:Date.now(),formId:payload.formId,ready:true,width:image.naturalWidth,height:image.naturalHeight};};image.src=payload.dataUrl;});true;`).catch(error=>log('e2e-qr-probe-error',{error:String(error.message)}));
     });
   });
 }
@@ -90,17 +90,17 @@ function bootRecovered(){try {
       activity.recovered(args);
     }
     if(id==='f3720'&&process.argv.includes('--live-booking-test')) {
-      (globalThis.__nexusE2eStages??=[]).push({at:new Date().toISOString(),stage:String(args[0]||'')});
-      if(String(args[0])==='booking:qr'&&/Scan.*QR/i.test(String(args[1]||'')))globalThis.__nexusActualQrAt=performance.now();
-      log('nexus-live-raw-stage',{stage:String(args[0]||''),message:String(args[1]||'').slice(0,600)});
+      (globalThis.__matrixE2eStages??=[]).push({at:new Date().toISOString(),stage:String(args[0]||'')});
+      if(String(args[0])==='booking:qr'&&/Scan.*QR/i.test(String(args[1]||'')))globalThis.__matrixActualQrAt=performance.now();
+      log('matrix-live-raw-stage',{stage:String(args[0]||''),message:String(args[1]||'').slice(0,600)});
       if(/Browser Check-Up reached the QR page/.test(String(args[1]||''))) {
-        globalThis.__nexusWarmupQrReady=true;
-        globalThis.__nexusWarmupQrAt=performance.now();
+        globalThis.__matrixWarmupQrReady=true;
+        globalThis.__matrixWarmupQrAt=performance.now();
       }
     }
     if(process.argv.includes('--live-booking-test')) {
       const page=args.find(value=>value&&typeof value.url==='function'&&typeof value.screenshot==='function'&&typeof value.evaluate==='function');
-      if(page)globalThis.__nexusDiagnosticPage=page;
+      if(page)globalThis.__matrixDiagnosticPage=page;
     }
   }});
   const wrapper = engine.makeFunction('f0')();
@@ -113,8 +113,8 @@ function bootRecovered(){try {
   console.error(error.stack || error);
   if(isSmoke&&developmentPolicy)developmentPolicy.finishSmoke(1);else electron.app.exit(1);
 }}
-if(managedRelease)require('./runtime/activation.cjs').requireActivation(appElectron,projectRoot,{shutdown:()=>developmentPolicy.finishSmoke(0)}).then(bootRecovered).catch(error=>log('nexus-activation-start-error',{error:String(error.message)}));else bootRecovered();
-if(managedRelease&&process.argv.includes('--release-activation-test'))setTimeout(()=>require(path.join(projectRoot,'test/release-activation-runner.cjs')).run(electron,projectRoot,code=>developmentPolicy.finishSmoke(code)),1000);
+if(managedRelease)require('./runtime/activation.cjs').requireActivation(appElectron,projectRoot,{shutdown:()=>developmentPolicy.finishSmoke(0)}).then(bootRecovered).catch(error=>log('matrix-activation-start-error',{error:String(error.message)}));else bootRecovered();
+if(managedRelease&&process.argv.includes('--release-activation-test'))setTimeout(()=>require(path.join(projectRoot,'test/release-activation-runner.cjs')).run(electron,projectRoot,code=>{if(code||!process.argv.includes('--live-booking-test'))developmentPolicy.finishSmoke(code);}),1000);
 
 if (isSmoke) {
   if(process.argv.includes('--smoke-activity')) {
@@ -138,6 +138,7 @@ if (isSmoke) {
     try {
       let windows = electron.BrowserWindow.getAllWindows();
       const report = {windows:[],nativeBytecodeLoaded:false,developmentMode:isDevelopment,durationMs:duration,policy:developmentPolicy?.stats};
+      if(process.argv.includes('--smoke-panel'))report.panel=await require(path.join(projectRoot,'test/packaged-panel.cjs')).run(electron,projectRoot);
       if(process.argv.includes('--smoke-login')) {
         const diagnosticWindow=windows.find(win=>win.webContents.getURL().endsWith('/controller.html'));
         const diagnostic=require(path.join(projectRoot,'test/offline-login.cjs'));
@@ -163,10 +164,10 @@ if (isSmoke) {
       for(const win of windows) {
         const info={url:win.webContents.getURL(),title:win.getTitle(),destroyed:win.isDestroyed()};
         const deadline=promise=>Promise.race([promise,new Promise((_,reject)=>setTimeout(()=>reject(new Error('Renderer diagnostic timed out')),4000))]);
-        try {info.dom=await deadline(win.webContents.executeJavaScript('({ready:document.readyState,text:document.body?.innerText?.slice(0,1200),elements:document.querySelectorAll("*").length,apiAvailable:typeof window.api,font:getComputedStyle(document.body).fontFamily,background:getComputedStyle(document.body).backgroundColor,brandTheme:!!document.querySelector("link[href*=nexus-theme]"),licensePromptVisible:!!document.getElementById("licOverlay")&&!document.getElementById("licOverlay").classList.contains("hidden")})'));}
+        try {info.dom=await deadline(win.webContents.executeJavaScript('({ready:document.readyState,text:document.body?.innerText?.slice(0,1200),elements:document.querySelectorAll("*").length,apiAvailable:typeof window.api,font:getComputedStyle(document.body).fontFamily,background:getComputedStyle(document.body).backgroundColor,brandTheme:!!document.querySelector("link[href*=matrix-theme]"),licensePromptVisible:!!document.getElementById("licOverlay")&&!document.getElementById("licOverlay").classList.contains("hidden")})'));}
         catch(error){info.domError=String(error.message);}
         if(process.argv.includes('--smoke-activity')&&info.url.split('?')[0].endsWith('/logs.html')) {
-          info.activity=await win.webContents.executeJavaScript('window.nexusLogs.snapshot().then(rows=>({rows:rows.length,heartbeats:rows.filter(row=>row.kind==="heartbeat"&&row.runId==="diagnostic").length,redacted:!rows.some(row=>row.message.includes("synthetic-secret"))}))');
+          info.activity=await win.webContents.executeJavaScript('window.matrixLogs.snapshot().then(rows=>({rows:rows.length,heartbeats:rows.filter(row=>row.kind==="heartbeat"&&row.runId==="diagnostic").length,redacted:!rows.some(row=>row.message.includes("synthetic-secret"))}))');
         }
         try {
           const image=await deadline(win.webContents.capturePage());

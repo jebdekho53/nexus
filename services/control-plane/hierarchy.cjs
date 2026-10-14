@@ -23,7 +23,7 @@ function createHierarchy({registry,persist,issue,publicKey,authenticated,session
   const json=(status,data)=>{res.writeHead(status,{'Content-Type':'application/json','Cache-Control':'no-store'});res.end(JSON.stringify(data));};
   try{
    if(prefix==='seller'&&!['login','logout','session','keys','overview','ledger','audit','ips','export','issue','manage','ip-assign','usdt','usdt-quote','usdt-submit','usdt-check'].includes(route)){json(403,{error:'Seller access denied'});return true;}
-   const c=cookie(req);let actor=prefix==='admin'&&authenticated(c.nexus_admin)?{role:'admin'}:prefix==='seller'?sellerAuth(c.nexus_seller):prefix==='portal'?{role:'public'}:null;
+   const c=cookie(req);let actor=prefix==='admin'&&authenticated(c.matrix_admin)?{role:'admin'}:prefix==='seller'?sellerAuth(c.matrix_seller):prefix==='portal'?{role:'public'}:null;
    if(!actor&&!(prefix==='seller'&&route==='login')){json(401,{error:'Sign in required'});return true;}
    if(req.method==='GET'){
     const visible=registry.keys.filter(k=>actor.role==='admin'||k.sellerId===actor.id);
@@ -42,14 +42,14 @@ function createHierarchy({registry,persist,issue,publicKey,authenticated,session
     }return true;
    }
    if(req.method!=='POST'){json(405,{error:'Method not allowed'});return true;}
-   if(req.headers.origin&&!['http://127.0.0.1:'+url.port,'http://localhost:'+url.port,...String(process.env.NEXUS_ALLOWED_ORIGINS||'').split(',').map(x=>x.trim()).filter(Boolean)].includes(req.headers.origin)){json(403,{error:'Invalid origin'});return true;}
+   if(req.headers.origin&&!['http://127.0.0.1:'+url.port,'http://localhost:'+url.port,...String(process.env.MATRIX_ALLOWED_ORIGINS||'').split(',').map(x=>x.trim()).filter(Boolean)].includes(req.headers.origin)){json(403,{error:'Invalid origin'});return true;}
    if(req.headers['content-type']?.split(';')[0]!=='application/json'){json(415,{error:'JSON required'});return true;}
    let raw='';for await(const chunk of req){raw+=chunk;if(raw.length>(route==='usdt-settings'?750000:16384))throw Error('Request too large');}const b=JSON.parse(raw||'{}');
    if(route==='login'){
     const remote=req.socket.remoteAddress,previous=failures.get(remote);if(previous?.count>=8&&Date.now()-previous.at<900000)throw Error('Too many attempts; retry in 15 minutes');
     const s=registry.sellers.find(s=>s.username===String(b.username||'').trim().toLowerCase());const derived=crypto.scryptSync(String(b.password||''),s?.salt||'dummy-salt',64).toString('hex');
     if(!s?.enabled||derived!==s.passwordHash){const f=!previous||Date.now()-previous.at>=900000?{at:Date.now(),count:0}:previous;f.count++;failures.set(remote,f);throw Error('Invalid seller credentials');}
-    failures.delete(remote);const token=crypto.randomBytes(32).toString('base64url');sellerSessions.set(token,{id:s.id,expiry:Date.now()+28800000});res.setHeader('Set-Cookie',`nexus_seller=${token}; HttpOnly; SameSite=Strict; Path=/api/seller; Max-Age=28800`);json(200,{ok:true,seller:publicSeller(s)});return true;
+    failures.delete(remote);const token=crypto.randomBytes(32).toString('base64url');sellerSessions.set(token,{id:s.id,expiry:Date.now()+28800000});res.setHeader('Set-Cookie',`matrix_seller=${token}; HttpOnly; SameSite=Strict; Path=/api/seller; Max-Age=28800`);json(200,{ok:true,seller:publicSeller(s)});return true;
    }
    let result={ok:true};
    switch(route){
@@ -57,7 +57,7 @@ function createHierarchy({registry,persist,issue,publicKey,authenticated,session
     case 'usdt-quote':result=await usdt.quote(actor,b);break;
     case 'usdt-submit':result=await usdt.submit(actor,b);break;
     case 'usdt-check':result=await usdt.recheck(actor,b);break;
-    case 'logout':sellerSessions.delete(c.nexus_seller);res.setHeader('Set-Cookie','nexus_seller=; HttpOnly; SameSite=Strict; Path=/api/seller; Max-Age=0');break;
+    case 'logout':sellerSessions.delete(c.matrix_seller);res.setHeader('Set-Cookie','matrix_seller=; HttpOnly; SameSite=Strict; Path=/api/seller; Max-Age=0');break;
     case 'signup':{
      const remote=req.socket.remoteAddress,previous=signupAttempts.get(remote);if(previous?.count>=5&&Date.now()-previous.at<3600000)throw Error('Too many signup requests; try again later');
      const attempt=!previous||Date.now()-previous.at>=3600000?{at:Date.now(),count:0}:previous;attempt.count++;signupAttempts.set(remote,attempt);

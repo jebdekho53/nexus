@@ -31,20 +31,20 @@ function developmentOverrides(log = () => {}) {
       };
     },
   ]));
-  function nexusVersionGate() {
-    log('nexus-vendor-version-gate-removed');
+  function matrixVersionGate() {
+    log('matrix-vendor-version-gate-removed');
     const version=require('../../../package.json').version;
     return {allowed:true,state:'skipped',currentVersion:version,allowedVersions:[version],availableVersions:[],
       config:{TestingAllowed:true,extraAnalytics:false,maxPair:8,loginMode:['auto','manual','direct','direct2']},
-      fromCache:false,force:false,reason:'Nexus source build',sysReady:true,sysState:'ready'};
+      fromCache:false,force:false,reason:'Matrix source build',sysReady:true,sysState:'ready'};
   }
-  overrides.f2539=async function(){return nexusVersionGate.call(this);};
-  overrides.f2549=async function(){return nexusVersionGate.call(this);};
-  overrides.f2877=function(){log('nexus-vendor-forced-shutdown-removed');};
-  overrides.f2009=async function(){log('nexus-vendor-reporting-disabled');return {ok:true,skipped:true};};
+  overrides.f2539=async function(){return matrixVersionGate.call(this);};
+  overrides.f2549=async function(){return matrixVersionGate.call(this);};
+  overrides.f2877=function(){log('matrix-vendor-forced-shutdown-removed');};
+  overrides.f2009=async function(){log('matrix-vendor-reporting-disabled');return {ok:true,skipped:true};};
   // True selects the existing key-free booking branch.
   overrides.f3370=function(){return true;};
-  overrides.f3383=async function(){log('nexus-per-booking-vendor-license-gate-removed');return {ok:true};};
+  overrides.f3383=async function(){log('matrix-per-booking-vendor-license-gate-removed');return {ok:true};};
   return overrides;
 }
 

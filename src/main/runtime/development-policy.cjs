@@ -18,7 +18,7 @@ function install(electron,root,log=()=>{},options={}) {
     const old=target[key];target[key]=value;undo.push(()=>{target[key]=old;});
   }
   function denied(_kind,details={}) {
-    stats.shutdownBlocked++;log('nexus-automatic-shutdown-prevented',details);
+    stats.shutdownBlocked++;log('matrix-automatic-shutdown-prevented',details);
   }
   for(const name of ['exit','quit','relaunch'])patch(electron.app,name,(...args)=>{
     if(userShutdown){if(name==='relaunch')return nativeRelaunch({args:[root,'--development']});return nativeExit(args[0]||0);}
@@ -47,7 +47,7 @@ function install(electron,root,log=()=>{},options={}) {
     if(/app:(controller-action|login|start-booking|stop-run|save-form)/.test(channel))log('action-start',{page:channel+(channel==='app:controller-action'?' '+String(args[0]):'')});
     if(channel==='app:get-box-license-info')return {ok:true,data:{gateEnabled:false,licensed:false,fingerprint:'',localOnly:true}};
     if(channel==='app:validate-license-key'||channel==='app:activate-license') {
-      return {ok:false,error:'Nexus source build does not require or activate vendor license keys',localOnly:true};
+      return {ok:false,error:'Matrix source build does not require or activate vendor license keys',localOnly:true};
     }
     if(channel==='app:confirm-quit'||channel==='app:restart') {
       if(!event.sender.getURL().split('?')[0].endsWith('/confirm-quit.html'))return {ok:false,error:'Use the local Quit confirmation window'};
@@ -67,9 +67,9 @@ function install(electron,root,log=()=>{},options={}) {
       if(result?.ok===false)log('development-ipc-error',{channel,error:String(result.error||'Unknown error').slice(0,400)});
       return result;
     } catch(error){log('development-ipc-error',{channel,error:String(error.message).slice(0,400)});throw error;}
-    finally{if(channel==='app:login'&&options.trace){options.trace.active=false;log('nexus-login-function-trace',{calls:Object.fromEntries(options.trace.calls)});}}
+    finally{if(channel==='app:login'&&options.trace){options.trace.active=false;log('matrix-login-function-trace',{calls:Object.fromEntries(options.trace.calls)});}}
   }));
-  log('nexus-runtime-installed',{network:'enabled',childProcesses:'enabled',nativeClients:'enabled',vendorLicenseGate:false});
+  log('matrix-runtime-installed',{network:'enabled',childProcesses:'enabled',nativeClients:'enabled',vendorLicenseGate:false});
   return {stats,finishSmoke:code=>nativeExit(code),restore:()=>{for(const restore of undo.reverse())restore();}};
 }
 module.exports={install,localPages};

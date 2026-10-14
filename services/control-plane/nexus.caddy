@@ -1,4 +1,0 @@
-nexus.vaidya-gpt.com {
-    encode zstd gzip
-    reverse_proxy nexus-service:8082
-}

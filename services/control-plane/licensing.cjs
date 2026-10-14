@@ -14,7 +14,7 @@ function createLicensing({ directory = path.join(__dirname, 'license-data'), adm
     const salt = crypto.randomBytes(16).toString('hex');
     registry = { salt, passwordHash: crypto.scryptSync(password, salt, 64).toString('hex'), signingKey: crypto.randomBytes(32).toString('hex'), keys: [] };
     fs.writeFileSync(file, JSON.stringify(registry, null, 2), { mode: 0o600 });
-    if (!adminPassword) fs.writeFileSync(path.join(directory, 'admin-access.txt'), `NEXUS administrator\nURL: ${process.env.NEXUS_PUBLIC_URL || `http://127.0.0.1:${port}`}/admin\nPassword: ${password}\nKeep this file private.\n`, { mode: 0o600 });
+    if (!adminPassword) fs.writeFileSync(path.join(directory, 'admin-access.txt'), `MATRIX administrator\nURL: ${process.env.MATRIX_PUBLIC_URL || `http://127.0.0.1:${port}`}/admin\nPassword: ${password}\nKeep this file private.\n`, { mode: 0o600 });
   }
   const sessions = new Map(), attempts = new Map(), activationAttempts = new Map(), requestAttempts = new Map();
   function persist() { fs.writeFileSync(file + '.tmp', JSON.stringify(registry, null, 2), { mode: 0o600 }); fs.renameSync(file + '.tmp', file); }
@@ -40,7 +40,7 @@ function createLicensing({ directory = path.join(__dirname, 'license-data'), adm
     if (!customer || customer.length > 100) throw Error('Enter a customer name (maximum 100 characters)');
     if (!Number.isInteger(days) || days < 1 || days > 3650) throw Error('Validity must be 1–3650 days');
     if (!Number.isInteger(maxDevices) || maxDevices < 1 || maxDevices > 10) throw Error('Device limit must be 1–10');
-    const value = String(preferredKey||'').trim() || 'NEXUS-' + crypto.randomBytes(16).toString('hex').toUpperCase().match(/.{8}/g).join('-');
+    const value = String(preferredKey||'').trim() || 'MATRIX-' + crypto.randomBytes(16).toString('hex').toUpperCase().match(/.{8}/g).join('-');
     if(value.length<6||value.length>64||/\s/.test(value))throw Error('Key must contain 6–64 characters without spaces');
     if(registry.keys.some(item=>safeEqual(item.keyHash,hash(value))))throw Error('That key is already in use');
     const key = { id: crypto.randomUUID(), customer, sellerId, paid, plan, keyHash: hash(value), hint: value.slice(-3), issuedAt: new Date().toISOString(), expiresAt: new Date(Date.now() + days * 86400000).toISOString(), maxDevices, devices: [], revoked: false };
@@ -96,28 +96,28 @@ function createLicensing({ directory = path.join(__dirname, 'license-data'), adm
     if (!url.pathname.startsWith('/api/admin/') && !url.pathname.startsWith('/api/license/')) return false;
     const json = (status, data) => { res.writeHead(status, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }); res.end(JSON.stringify(data)); };
     try {
-      const auth = cookies(req).nexus_admin;
+      const auth = cookies(req).matrix_admin;
       if (url.pathname.startsWith('/api/admin/') && url.pathname !== '/api/admin/login' && !authenticated(auth)) { json(401, { error: 'Administrator login required' }); return true; }
       if (req.method === 'GET' && url.pathname === '/api/admin/keys') { json(200, { keys: registry.keys.map(publicKey) }); return true; }
       if (req.method === 'GET' && url.pathname === '/api/admin/session') { json(200, { authenticated: true }); return true; }
       if (req.method === 'GET' && ['/api/admin/notice','/api/license/notice'].includes(url.pathname)) { json(200, {notice:registry.desktopNotice||require('./app/notice-payload').defaults}); return true; }
-      if (req.method === 'GET' && url.pathname === '/api/license/state') { const license = sessionLicense(cookies(req).nexus_license); json(200, { activated: !!license, license, details:license?hierarchy.clientSummary(license.id):null }); return true; }
+      if (req.method === 'GET' && url.pathname === '/api/license/state') { const license = sessionLicense(cookies(req).matrix_license); json(200, { activated: !!license, license, details:license?hierarchy.clientSummary(license.id):null }); return true; }
       if (req.method !== 'POST') { json(405, { error: 'Method not allowed' }); return true; }
       let text = ''; for await (const chunk of req) { text += chunk; if (text.length > 16384) { json(413, { error: 'Request too large' }); return true; } }
       const body = text ? JSON.parse(text) : {};
       switch (url.pathname) {
         case '/api/admin/notice': { registry.desktopNotice=require('./app/notice-payload').validateNotice(body);persist();json(200,{ok:true,notice:registry.desktopNotice});break; }
-        case '/api/admin/login': { const token = login(body.password, req.socket.remoteAddress, body.username); res.setHeader('Set-Cookie', `nexus_admin=${token}; HttpOnly; SameSite=Strict; Path=/api/admin; Max-Age=28800`); json(200, { ok: true }); break; }
-        case '/api/admin/logout': sessions.delete(auth); res.setHeader('Set-Cookie', 'nexus_admin=; HttpOnly; SameSite=Strict; Path=/api/admin; Max-Age=0'); json(200, { ok: true }); break;
+        case '/api/admin/login': { const token = login(body.password, req.socket.remoteAddress, body.username); res.setHeader('Set-Cookie', `matrix_admin=${token}; HttpOnly; SameSite=Strict; Path=/api/admin; Max-Age=28800`); json(200, { ok: true }); break; }
+        case '/api/admin/logout': sessions.delete(auth); res.setHeader('Set-Cookie', 'matrix_admin=; HttpOnly; SameSite=Strict; Path=/api/admin; Max-Age=0'); json(200, { ok: true }); break;
         case '/api/admin/issue': json(200, issue({customer:body.customer,days:body.days,maxDevices:body.maxDevices,preferredKey:body.preferredKey})); break;
         case '/api/admin/revoke': json(200, revoke(body.id)); break;
-        case '/api/license/renew-request': json(200,hierarchy.requestRenewal(cookies(req).nexus_license));break;
+        case '/api/license/renew-request': json(200,hierarchy.requestRenewal(cookies(req).matrix_license));break;
         case '/api/license/request': json(403,{error:'An administrator must issue your first key. Activate it, then personalize your key.'}); break;
-        case '/api/license/change': {const result=limitedLicenseCheck(req.socket.remoteAddress,()=>changeKey(body,cookies(req).nexus_license));res.setHeader('Set-Cookie',`nexus_license=${result.token}; HttpOnly; SameSite=Strict; Path=/; Max-Age=31536000`);json(200,{ok:true,key:result.key,license:result.license});break;}
+        case '/api/license/change': {const result=limitedLicenseCheck(req.socket.remoteAddress,()=>changeKey(body,cookies(req).matrix_license));res.setHeader('Set-Cookie',`matrix_license=${result.token}; HttpOnly; SameSite=Strict; Path=/; Max-Age=31536000`);json(200,{ok:true,key:result.key,license:result.license});break;}
         case '/api/license/activate': {
           const required=require('./desktop-version-policy.cjs').desktopUpdateRequirement(req,body,typeof desktopPolicy==='function'?desktopPolicy():desktopPolicy);if(required){json(426,required);break;}
           const result=limitedLicenseCheck(req.socket.remoteAddress,()=>activate(body.key,String(body.device||'')));
-          res.setHeader('Set-Cookie', `nexus_license=${result.token}; HttpOnly; SameSite=Strict; Path=/; Max-Age=31536000`); json(200, { ok: true, license: result.license }); break;
+          res.setHeader('Set-Cookie', `matrix_license=${result.token}; HttpOnly; SameSite=Strict; Path=/; Max-Age=31536000`); json(200, { ok: true, license: result.license }); break;
         }
         case '/api/license/verify': { const required=require('./desktop-version-policy.cjs').desktopUpdateRequirement(req,body,typeof desktopPolicy==='function'?desktopPolicy():desktopPolicy);if(required){json(426,required);break;}const item = limitedLicenseCheck(req.socket.remoteAddress,()=>check(body.key, String(body.device || ''), false)); json(200, { ok: true, license: publicKey(item) }); break; }
         default: json(404, { error: 'Unknown endpoint' });
@@ -125,6 +125,6 @@ function createLicensing({ directory = path.join(__dirname, 'license-data'), adm
     } catch (error) { json(400, { error: error.message }); }
     return true;
   }
-  return { handle, login, authenticated, issue, changeKey, revoke, activate, sessionLicense, pollPayments:hierarchy.pollPayments, list: () => registry.keys.map(publicKey), requestLicense:req=>sessionLicense(cookies(req).nexus_license), licensedRequest: req => !!sessionLicense(cookies(req).nexus_license) };
+  return { handle, login, authenticated, issue, changeKey, revoke, activate, sessionLicense, pollPayments:hierarchy.pollPayments, list: () => registry.keys.map(publicKey), requestLicense:req=>sessionLicense(cookies(req).matrix_license), licensedRequest: req => !!sessionLicense(cookies(req).matrix_license) };
 }
 module.exports = { createLicensing };

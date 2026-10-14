@@ -17,10 +17,10 @@
     if(rows.length>5000){const removed=rows.shift();ids.delete(removed.id);list.firstChild?.remove();}
     if(document.getElementById('follow').checked)item.scrollIntoView({block:'end'});
   }
-  if(!window.nexusLogs){empty.textContent='Log bridge unavailable. Restart Nexus to load the current build.';return;}
-  window.nexusLogs.subscribe(append);
-  for(const row of await window.nexusLogs.snapshot())append(row);
-  document.getElementById('clearBtn').onclick=async()=>{await window.nexusLogs.clear();rows.length=0;ids.clear();list.replaceChildren();empty.hidden=false;};
-  document.getElementById('downloadBtn').onclick=()=>{const selected=filter.value==='all'?rows:rows.filter(row=>row.runId===filter.value);const url=URL.createObjectURL(new Blob([JSON.stringify(selected,null,2)],{type:'application/json'}));const link=document.createElement('a');link.href=url;link.download='Nexus-activity.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
+  if(!window.matrixLogs){empty.textContent='Log bridge unavailable. Restart Matrix to load the current build.';return;}
+  window.matrixLogs.subscribe(append);
+  for(const row of await window.matrixLogs.snapshot())append(row);
+  document.getElementById('clearBtn').onclick=async()=>{await window.matrixLogs.clear();rows.length=0;ids.clear();list.replaceChildren();empty.hidden=false;};
+  document.getElementById('downloadBtn').onclick=()=>{const selected=filter.value==='all'?rows:rows.filter(row=>row.runId===filter.value);const url=URL.createObjectURL(new Blob([JSON.stringify(selected,null,2)],{type:'application/json'}));const link=document.createElement('a');link.href=url;link.download='Matrix-activity.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
   document.getElementById('winClose').onclick=()=>window.close();
 })();

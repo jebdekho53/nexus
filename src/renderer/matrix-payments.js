@@ -10,5 +10,5 @@
     return text;
   };
   const catalog=Object.freeze({labels,label,normalize});
-  if(typeof module==='object'&&module.exports)module.exports=catalog;else root.NEXUS_PAYMENTS=catalog;
+  if(typeof module==='object'&&module.exports)module.exports=catalog;else root.MATRIX_PAYMENTS=catalog;
 })(globalThis);

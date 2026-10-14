@@ -1,7 +1,7 @@
 {
-  "name": "nexus-source",
-  "version": "1.0.0",
-  "description": "Editable Nexus recovered source project",
+  "name": "matrix-source",
+  "version": "1.0.2",
+  "description": "Editable Matrix recovered source project",
   "private": true,
   "main": "src/main/index.cjs",
   "scripts": {
@@ -12,5 +12,5 @@
   "engines": {
     "node": ">=22.12.0"
   },
-  "productName": "Nexus"
+  "productName": "Matrix"
 }

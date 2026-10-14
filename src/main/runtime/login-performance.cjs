@@ -13,7 +13,7 @@ function loginPerformance(log=()=>{}) {
           return ![...document.querySelectorAll('.loading-overlay,.ui-blockui,.block-ui-wrapper,.ngx-spinner-overlay')]
             .some(el=>el.getClientRects().length&&getComputedStyle(el).visibility!=='hidden');
         },undefined,{timeout:4000,polling:100});
-        log('nexus-login-ready-short-wait');
+        log('matrix-login-ready-short-wait');
         return original(page,{...settings,maxMs:Math.min(settings.maxMs??9000,1500),quietMs:200});
       } catch {
         return original(page,settings);
@@ -24,7 +24,7 @@ function loginPerformance(log=()=>{}) {
       try {
         await field.fill(value,{timeout:5000});
         if(await field.inputValue()===value) {
-          log('nexus-login-field-fill-verified');
+          log('matrix-login-field-fill-verified');
           return true;
         }
       } catch {}

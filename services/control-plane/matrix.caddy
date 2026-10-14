@@ -1,0 +1,4 @@
+matrix.vaidya-gpt.com {
+    encode zstd gzip
+    reverse_proxy matrix-service:8082
+}

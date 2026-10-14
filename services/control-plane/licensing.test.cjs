@@ -1,6 +1,6 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),os=require('node:os'),path=require('node:path');
 const {createLicensing}=require('./licensing.cjs');
-const directory=()=>fs.mkdtempSync(path.join(os.tmpdir(),'nexus-license-test-'));
+const directory=()=>fs.mkdtempSync(path.join(os.tmpdir(),'matrix-license-test-'));
 test('device limits, replay activation, persistence, token tampering, and revocation',()=>{
  const data=directory(),service=createLicensing({directory:data,adminPassword:'test-only-password'});
  assert.throws(()=>service.login('incorrect'),/Invalid/);

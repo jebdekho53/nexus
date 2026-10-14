@@ -24,9 +24,9 @@ async function run(electron,root,log) {
     }
     if(!controller)throw new Error('Controller window unavailable');
     const execute=script=>controller.webContents.executeJavaScript(script);
-    await execute(`window.__nexusQrProbe=null;window.api.onQr(payload=>{
+    await execute(`window.__matrixQrProbe=null;window.api.onQr(payload=>{
       if(payload.closed||!payload.dataUrl)return;
-      const image=new Image();image.onload=()=>{window.__nexusQrProbe={at:Date.now(),formId:payload.formId,ready:true,width:image.naturalWidth,height:image.naturalHeight};};image.src=payload.dataUrl;
+      const image=new Image();image.onload=()=>{window.__matrixQrProbe={at:Date.now(),formId:payload.formId,ready:true,width:image.naturalWidth,height:image.naturalHeight};};image.src=payload.dataUrl;
     });true;`);
     const rows=await execute('window.api.listForms()');
     if(!rows.ok||!rows.data.length)throw new Error('No saved form is available for the authorized live test');
@@ -58,6 +58,17 @@ async function run(electron,root,log) {
     report.form={id:form.id,train:form.journey?.trainNumber,date:form.journey?.journeyDate,from:form.journey?.origin,to:form.journey?.destination,class:form.journey?.classCode,quota:form.journey?.quota,passengers:form.passengers?.length};
     report.flows=await execute('window.api.getLoginFlows()');
     await execute('window.api.openBookingBox('+JSON.stringify(form.id)+')');
+    const panelDeadline=Date.now()+15000;let panelState;
+    while(Date.now()<panelDeadline){
+      const panel=electron.BrowserWindow.getAllWindows().find(w=>w.webContents.getURL().includes('/booking-box.html?id='+form.id));
+      if(panel&&!panel.webContents.isLoading()){
+        panelState=await panel.webContents.executeJavaScript("({account:document.querySelector('#acctPick .bb-pick-label')?.textContent,payment:document.getElementById('paySel')?.value,paymentLabel:document.querySelector('#payPick .bb-pick-label')?.textContent,status:document.getElementById('statusText')?.textContent})");
+        if(panelState.account?.startsWith(account.username.slice(0,4))&&panelState.paymentLabel==='Paytm QR')break;
+      }
+      await new Promise(resolve=>setTimeout(resolve,250));
+    }
+    report.panel={accountLoaded:panelState?.account?.startsWith(account.username.slice(0,4)),paymentLoaded:panelState?.payment===form.payment.method&&panelState?.paymentLabel==='Paytm QR',status:clean(panelState?.status)};write();
+    if(!report.panel.accountLoaded||!report.panel.paymentLoaded)throw Error('Booking panel did not load saved account/payment');
     report.phase='starting-chrome-login';
     const loginStarted=performance.now();
     report.loginStarted=new Date().toISOString();write();
@@ -92,12 +103,12 @@ async function run(electron,root,log) {
             if(++unavailableChecks>=3){report.phase='journey-unavailable';report.bookingToUnavailableSeconds=Number(((performance.now()-bookingStarted)/1000).toFixed(2));break;}
           }else unavailableChecks=0;
           if(state.qrVisible&&state.qrImageReady){report.phase='qr-ready';break;}
-          const probe=await box.webContents.executeJavaScript('window.__nexusQrProbe')||await execute('window.__nexusQrProbe');
+          const probe=await box.webContents.executeJavaScript('window.__matrixQrProbe')||await execute('window.__matrixQrProbe');
           if(probe?.ready&&(!probe.formId||probe.formId===form.id)){
             report.qrEvent={...probe};report.phase='qr-generated';break;
           }
-          if(globalThis.__nexusActualQrAt&&performance.now()-globalThis.__nexusActualQrAt>2000){report.phase='qr-generated-stage';report.qrReportedByBooking=true;break;}
-          if(globalThis.__nexusWarmupQrReady){report.warmupQrVerified=true;if(!testMode){report.phase='browser-check-qr-ready';break;}}
+          if(globalThis.__matrixActualQrAt&&performance.now()-globalThis.__matrixActualQrAt>2000){report.phase='qr-generated-stage';report.qrReportedByBooking=true;break;}
+          if(globalThis.__matrixWarmupQrReady){report.warmupQrVerified=true;if(!testMode){report.phase='browser-check-qr-ready';break;}}
           if(state.captchaVisible||state.otpVisible){report.phase=state.captchaVisible?'captcha-required':'otp-required';break;}
           if(state.failureVisible){report.phase='booking-failed';break;}
         }
@@ -105,12 +116,12 @@ async function run(electron,root,log) {
       }
       if(report.phase==='waiting-for-qr')report.phase='qr-timeout';
       if(['qr-ready','qr-generated','qr-generated-stage','browser-check-qr-ready'].includes(report.phase)) {
-        const qrAt=globalThis.__nexusActualQrAt||(testMode?performance.now():(globalThis.__nexusWarmupQrAt||performance.now()));
+        const qrAt=globalThis.__matrixActualQrAt||(testMode?performance.now():(globalThis.__matrixWarmupQrAt||performance.now()));
         report.loginToQrSeconds=Number(((qrAt-loginStarted)/1000).toFixed(2));
         report.bookingToQrSeconds=Number(((qrAt-bookingStarted)/1000).toFixed(2));
       }
       report.windows=electron.BrowserWindow.getAllWindows().map(w=>({title:clean(w.getTitle()),page:path.basename(w.webContents.getURL().split('?')[0])}));
-      const page=globalThis.__nexusDiagnosticPage;
+      const page=globalThis.__matrixDiagnosticPage;
       if(page&&!page.isClosed()) {
         try {
           report.browser={url:page.url().split('?')[0],title:clean(await page.title()),text:clean(await page.evaluate(()=>document.body.innerText.slice(0,1800)))};
@@ -128,12 +139,12 @@ async function run(electron,root,log) {
       report.testStopped=true;
     }
     report.finished=new Date().toISOString();write();
-    log('nexus-live-login-result',{ok:report.login.ok,phase:report.phase,error:report.login.error});
+    log('matrix-live-login-result',{ok:report.login.ok,phase:report.phase,error:report.login.error});
   } catch(error) {
     report.phase='diagnostic-error';report.error=clean(error.message);report.finished=new Date().toISOString();write();
-    log('nexus-live-login-diagnostic-error',{error:report.error});
+    log('matrix-live-login-diagnostic-error',{error:report.error});
   } finally {
-    if(testMode){report.stages=globalThis.__nexusE2eStages||[];write();}
+    if(testMode){report.stages=globalThis.__matrixE2eStages||[];write();}
     if(process.argv.includes('--isolated-live-test')&&controller&&report.form?.id){
       try {await controller.webContents.executeJavaScript('window.api.stopRun('+JSON.stringify(report.form.id)+').then(()=>window.api.logout('+JSON.stringify(report.form.id)+'))');report.sessionClosed=true;write();}
       catch(error){report.cleanupError=clean(error.message);write();}

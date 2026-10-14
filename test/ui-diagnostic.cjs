@@ -20,12 +20,12 @@ async function run(electron,root,log) {
     const info={id:win.id,page:path.basename(win.webContents.getURL().split('?')[0]),visible:win.isVisible(),loading:win.webContents.isLoading(),title:win.getTitle()};
     const timeout=promise=>Promise.race([promise,new Promise((_,reject)=>setTimeout(()=>reject(Error('Renderer diagnostic timed out')),4000))]);
     try {
-      info.dom=await timeout(win.webContents.executeJavaScript(`({ready:document.readyState,elements:document.querySelectorAll('*').length,api:typeof window.api,logBridge:typeof window.nexusLogs,legacyVisible:/\\b(?:brahmos|xhamster|tatkal software)\\b/i.test(document.body.innerText),font:getComputedStyle(document.body).fontFamily,background:getComputedStyle(document.body).backgroundColor,width:innerWidth,height:innerHeight})`));
+      info.dom=await timeout(win.webContents.executeJavaScript(`({ready:document.readyState,elements:document.querySelectorAll('*').length,api:typeof window.api,logBridge:typeof window.matrixLogs,legacyVisible:/\\b(?:brahmos|xhamster|tatkal software)\\b/i.test(document.body.innerText),font:getComputedStyle(document.body).fontFamily,background:getComputedStyle(document.body).backgroundColor,width:innerWidth,height:innerHeight})`));
       fs.writeFileSync(path.join(root,'diagnostics',`ui-window-${win.id}.png`),(await timeout(win.webContents.capturePage())).toPNG());
     }catch(error){info.error=String(error.message);}
     report.windows.push(info);
   }
   fs.writeFileSync(path.join(root,'diagnostics/ui-diagnostic.json'),JSON.stringify(report,null,2));
-  log('nexus-ui-diagnostic-complete',{windows:report.windows.length,visible:report.windows.filter(w=>w.visible).map(w=>w.page)});
+  log('matrix-ui-diagnostic-complete',{windows:report.windows.length,visible:report.windows.filter(w=>w.visible).map(w=>w.page)});
 }
 module.exports={run};

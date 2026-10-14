@@ -8,7 +8,7 @@ async function run(electron,root,finish){
   if(!activation)throw Error('Activation screen was not opened');
   report.blockedBeforeActivation=!electron.BrowserWindow.getAllWindows().some(w=>w.webContents.getURL().endsWith('/controller.html'));
   const key=JSON.parse(fs.readFileSync(path.join(root,'diagnostics','deployment-test-key.json'))).key;
-  const result=await activation.webContents.executeJavaScript('window.nexusActivation.activate('+JSON.stringify(key)+')');report.activation={ok:result.ok,error:result.error};
+  const result=await activation.webContents.executeJavaScript('window.matrixActivation.activate('+JSON.stringify(key)+')');report.activation={ok:result.ok,error:result.error};
   if(!result.ok)throw Error('Own-server activation rejected');
   while(Date.now()<deadline){const controller=electron.BrowserWindow.getAllWindows().find(w=>w.webContents.getURL().endsWith('/controller.html'));if(controller&&!controller.webContents.isLoading()){report.controllerReady=true;break;}await new Promise(r=>setTimeout(r,500));}
   if(!report.controllerReady)throw Error('Activated release did not initialize');

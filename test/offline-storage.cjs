@@ -37,13 +37,13 @@ module.exports = async function storageRoundTrip() {
   const remaining=Array.isArray(after)?after:after.data;
   if(remaining?.some(form=>form.id===id))throw new Error('Test form was not deleted');
   const select=document.getElementById('paymentMethod');
-  if(!document.getElementById('nexusCheckAvailability')||!document.getElementById('nexusAvailabilityHint'))throw new Error('Explicit form availability refresh is missing');
+  if(!document.getElementById('matrixCheckAvailability')||!document.getElementById('matrixAvailabilityHint'))throw new Error('Explicit form availability refresh is missing');
   const quota=document.getElementById('quota');
   quota.value='GN';quota.dispatchEvent(new Event('change',{bubbles:true}));
   select.value='paytm';select.dispatchEvent(new Event('change',{bubbles:true}));
   await new Promise(resolve=>setTimeout(resolve,600));
   if(quota.value!=='GN'||![...document.querySelectorAll('.dd-label')].some(element=>element.textContent.includes('Book now')))throw new Error('General Book now is not selectable in the visible quota dropdown');
-  const paymentUi={value:select.value,label:select.selectedOptions[0]?.textContent,summary:document.querySelector('.nexus-payment-summary')?.textContent,visibleLabels:[...document.querySelectorAll('.dd-label')].map(element=>element.textContent)};
+  const paymentUi={value:select.value,label:select.selectedOptions[0]?.textContent,summary:document.querySelector('.matrix-payment-summary')?.textContent,visibleLabels:[...document.querySelectorAll('.dd-label')].map(element=>element.textContent)};
   if(paymentUi.value!=='paytm'||paymentUi.label!=='Paytm QR'||paymentUi.summary!=='Selected: Paytm QR'||!paymentUi.visibleLabels.includes('Paytm QR'))throw new Error('Rendered payment label does not match the actual selection: '+JSON.stringify(paymentUi));
   return {passed:true,operations:['saveForm','listForms','getForm','Paytm QR save/read/request consistency','openFormWindow twice','openBookingBox','getBoxLicenseInfo','deleteForm'],paymentUi,localLicenseRequired:false,syntheticData:true};
 };

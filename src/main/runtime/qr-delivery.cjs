@@ -26,8 +26,8 @@ function qrDelivery(electron,root,log=()=>{}){
     if(present)continue;
     const id=new URL(win.webContents.getURL()).searchParams.get('id');
     win.webContents.send('app:qr',{dataUrl,formId:id,caption:payload.caption,amount:payload.amount,account:payload.account,checkNow:!!payload.checkNow});
-    log('nexus-qr-display-delivered',{page:'Payment QR delivered to its local booking panel'});
-   }catch(error){log('nexus-qr-display-error',{error:String(error.message)});}
+    log('matrix-qr-display-delivered',{page:'Payment QR delivered to its local booking panel'});
+   }catch(error){log('matrix-qr-display-error',{error:String(error.message)});}
   }
   return result;
  }};

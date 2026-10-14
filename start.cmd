@@ -1,5 +1,5 @@
 @echo off
-title Nexus
+title Matrix
 setlocal
 cd /d "%~dp0"
 set "ELECTRON_RUN_AS_NODE="

@@ -20,14 +20,14 @@ function createUsdtPayments({registry,persist,audit,fetchImpl=fetch,now=Date.now
  async function rate(){
   const fixed=Number(registry.usdtSettings.fixedRate);if(Number.isFinite(fixed)&&fixed>=1&&fixed<=10000)return{value:fixed,updatedAt:now(),source:'Admin fixed rate'};
   if(rateCache&&now()-rateCache.fetchedAt<60000&&now()-rateCache.updatedAt<600000)return rateCache;
-  const headers={};if(process.env.NEXUS_COINGECKO_API_KEY)headers['x-cg-demo-api-key']=process.env.NEXUS_COINGECKO_API_KEY;
+  const headers={};if(process.env.MATRIX_COINGECKO_API_KEY)headers['x-cg-demo-api-key']=process.env.MATRIX_COINGECKO_API_KEY;
   const data=await json('https://api.coingecko.com/api/v3/simple/price?ids=tether&vs_currencies=inr&include_last_updated_at=true',{headers});
   const value=Number(data.tether?.inr),updatedAt=Number(data.tether?.last_updated_at)*1000;
   if(!Number.isFinite(value)||value<1||value>10000||!Number.isFinite(updatedAt)||Math.abs(now()-updatedAt)>600000)throw Error('Live USDT/INR rate unavailable or stale; payment request was not created');
   rateCache={value,updatedAt,fetchedAt:now(),source:'CoinGecko'};return rateCache;
  }
  function list(actor){return registry.usdtOrders.filter(o=>actor.role==='admin'||o.sellerId===actor.id).map(publicOrder);}
- async function settings(actor){const s=registry.usdtSettings;return{settings:{enabled:s.enabled,address:s.address,qr:s.qr,network:'TRC20',verification:'automatic',fixedRate:s.fixedRate||0,rateSource:s.fixedRate?'Admin fixed rate':'CoinGecko',providerKeyConfigured:actor.role==='admin'?!!process.env.NEXUS_TRONGRID_API_KEY:undefined},orders:list(actor)};}
+ async function settings(actor){const s=registry.usdtSettings;return{settings:{enabled:s.enabled,address:s.address,qr:s.qr,network:'TRC20',verification:'automatic',fixedRate:s.fixedRate||0,rateSource:s.fixedRate?'Admin fixed rate':'CoinGecko',providerKeyConfigured:actor.role==='admin'?!!process.env.MATRIX_TRONGRID_API_KEY:undefined},orders:list(actor)};}
  async function configure(actor,b){
   if(actor.role!=='admin')throw Error('Administrator required');const address=String(b.address||'').trim();addressHex(address);
   // Uploaded QR must decode to the exact receiving address; persist a fresh canonical QR.
@@ -56,7 +56,7 @@ function createUsdtPayments({registry,persist,audit,fetchImpl=fetch,now=Date.now
  async function check(o){
   if(o.status!=='PENDING'||!o.txid||checking.has(o.id)||o.lastCheckedAt&&now()-Date.parse(o.lastCheckedAt)<15000)return publicOrder(o);checking.add(o.id);
   try{
-   const headers={'Content-Type':'application/json'};if(process.env.NEXUS_TRONGRID_API_KEY)headers['TRON-PRO-API-KEY']=process.env.NEXUS_TRONGRID_API_KEY;
+   const headers={'Content-Type':'application/json'};if(process.env.MATRIX_TRONGRID_API_KEY)headers['TRON-PRO-API-KEY']=process.env.MATRIX_TRONGRID_API_KEY;
    const receipt=await json('https://api.trongrid.io/walletsolidity/gettransactioninfobyid',{method:'POST',headers,body:JSON.stringify({value:o.txid})});
    if(!receipt.id){o.message='Waiting for a solidified TRON receipt. Automatic checks continue.';return publicOrder(o);}
    if(receipt.id.toLowerCase()!==o.txid||receipt.receipt?.result!=='SUCCESS'||!Number.isSafeInteger(receipt.blockNumber)||!Number.isSafeInteger(receipt.blockTimeStamp))throw Error('Transaction failed or receipt is invalid');

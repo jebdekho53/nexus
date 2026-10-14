@@ -1,4 +1,4 @@
-# Nexus source-build gates
+# Matrix source-build gates
 
 The source overrides live in src/main/runtime/development.cjs. Original recovered definitions remain available for reference.
 

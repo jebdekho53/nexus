@@ -1,7 +1,7 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),os=require('node:os'),path=require('node:path'),http=require('node:http');
 const {createLicensing}=require('./licensing.cjs');
 test('admin/seller/client hierarchy isolates tenants, gates paid keys, debits once and invalidates reset/disabled sessions',async()=>{
- const directory=fs.mkdtempSync(path.join(os.tmpdir(),'nexus-hierarchy-')),service=createLicensing({directory,adminPassword:'test-admin-only'});
+ const directory=fs.mkdtempSync(path.join(os.tmpdir(),'matrix-hierarchy-')),service=createLicensing({directory,adminPassword:'test-admin-only'});
  const server=http.createServer((req,res)=>service.handle(req,res,new URL(req.url,'http://localhost')));await new Promise(r=>server.listen(0,'127.0.0.1',r));const base='http://127.0.0.1:'+server.address().port;
  async function request(route,body,cookie){const response=await fetch(base+'/api/'+route,{method:body===undefined?'GET':'POST',headers:{'Content-Type':'application/json',...(cookie?{Cookie:cookie}:{})},body:body===undefined?undefined:JSON.stringify(body)});return {status:response.status,data:await response.json(),cookie:response.headers.get('set-cookie')?.split(';')[0]};}
  try{

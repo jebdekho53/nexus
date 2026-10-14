@@ -16,7 +16,7 @@ function createBookNow(log=()=>{}){
    if(channel==='app:login'){
     modes.set(request.formId,{mode:request.mode,automatic:!request.manual&&!request.directLogin&&!request.brahmosLogin});
     if(request.mode==='weblogin'&&forms.get(request.formId)?.quota==='GN'&&!request.manual&&!request.directLogin&&!request.brahmosLogin){
-     log('nexus-auto-book-now',{page:'Auto Book now: automatic login; use current session without scheduled browser check'});
+     log('matrix-auto-book-now',{page:'Auto Book now: automatic login; use current session without scheduled browser check'});
      return [{...request,directLogin:true},...args.slice(1)];
     }
    }

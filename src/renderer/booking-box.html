@@ -6,8 +6,8 @@
       http-equiv="Content-Security-Policy"
       content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"
     />
-    <title>Nexus · Booking</title>
-    <script defer src="./nexus-book-now.js"></script>
+    <title>Matrix · Booking</title>
+    <script defer src="./matrix-book-now.js"></script>
 
 
     <script type="module" crossorigin src="./assets/booking-box-Bsv5-yxI.js"></script>
@@ -20,10 +20,10 @@
     <link rel="modulepreload" crossorigin href="./assets/types-B0-2ZUtm.js">
     <link rel="stylesheet" crossorigin href="./assets/booking-box-D9W7nPM1.css">
     <link rel="stylesheet" crossorigin href="./assets/form-Cq-Qz7YX.css">
-    <link rel="stylesheet" href="./nexus-theme.css">
-    <script defer src="./nexus-build.js"></script>
-    <script defer src="./nexus-payments.js"></script>
-    <script defer src="./nexus-brand.js"></script>
+    <link rel="stylesheet" href="./matrix-theme.css">
+    <script defer src="./matrix-build.js"></script>
+    <script defer src="./matrix-payments.js"></script>
+    <script defer src="./matrix-brand.js"></script>
   </head>
   <body>
     <div class="bb-card">
@@ -110,13 +110,13 @@
       <select id="upiPickSel" class="bb-hidden-sel"></select>
       <select id="railModeSel" class="bb-hidden-sel">
         <option value="normal">NORMAL LOGIN</option>
-        <option value="alt">Nexus Login</option>
+        <option value="alt">Matrix Login</option>
       </select>
       <select id="loginFlowSel" class="bb-hidden-sel">
         <option value="auto">AUTO — Full Warmup</option>
         <option value="manual">MANUAL — You Do Warmup</option>
         <option value="direct">DIRECT — No Warmup</option>
-        <option value="direct2">Nexus — No Warmup</option>
+        <option value="direct2">Matrix — No Warmup</option>
       </select>
       <select id="classSel" class="bb-hidden-sel">
         <option value="SL">Sleeper (SL)</option>
@@ -357,7 +357,7 @@
     <section id="pnrOverlay" class="tk-view hidden">
       <div class="bk-container">
         <div class="bk-card state-cnf" id="pnrCard">
-          <!-- Anti-copy watermark (operator 2026-09-02): ~200-300 tiled "Nexus" marks (mixed white+gold, faint,
+          <!-- Anti-copy watermark (operator 2026-09-02): ~200-300 tiled "Matrix" marks (mixed white+gold, faint,
                rotated) over the WHOLE card, so a screenshot of a genuine success can't be cleanly reused / AI-faked.
                pointer-events:none → never blocks the Download button or ✕. -->
           <div class="bk-watermark" aria-hidden="true"></div>
@@ -366,7 +366,7 @@
                ticket"), never the full names, which stay masked in the grid below. -->
           <div class="bk-header">
             <div class="bk-hrow">
-              <div class="bk-title">Nexus STATUS</div>
+              <div class="bk-title">Matrix STATUS</div>
               <div class="bk-badge confirmed" id="pnrBadge">CONFIRMED</div>
             </div>
             <div class="bk-pnrlabel">PNR</div>
@@ -432,7 +432,7 @@
         <div class="tk-head fail-head">
           <span class="pnr-badge fail-badge" id="failBadge">NOT BOOKED</span>
           <!-- app BRAND, bold, top-RIGHT (operator 2026-08-29) — pushed right by margin-left:auto, before the ✕. -->
-          <span class="fail-brand" id="failBrand">Nexus</span>
+          <span class="fail-brand" id="failBrand">Matrix</span>
           <button type="button" class="modal-x" id="failClose" title="Close">✕</button>
         </div>
         <div class="fail-body">

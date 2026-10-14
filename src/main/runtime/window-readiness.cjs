@@ -4,7 +4,7 @@ function install(electron,root,log) {
   const Native=electron.BrowserWindow;
   const Window=new Proxy(Native,{construct(target,args){
     const options=args[0]||{},preferences={...(options.webPreferences||{}),backgroundThrottling:false};
-    if(preferences.preload&&path.resolve(preferences.preload)===path.join(root,'src/preload/index.js'))preferences.preload=path.join(root,'src/preload/nexus.js');
+    if(preferences.preload&&path.resolve(preferences.preload)===path.join(root,'src/preload/index.js'))preferences.preload=path.join(root,'src/preload/matrix.js');
     const win=Reflect.construct(target,[{...options,show:false,backgroundColor:options.transparent?'#00000000':'#10191d',webPreferences:preferences}]);
     let ready=false,pending=options.show===false?null:win.show.bind(win);
     for(const method of ['show','showInactive'])if(typeof win[method]==='function'){

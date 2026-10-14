@@ -3,7 +3,8 @@ document.addEventListener('DOMContentLoaded',()=>{
  const update=()=>{
   const chip=document.getElementById('loginModeChip');
   if(chip&&document.getElementById('quotaSel')?.value==='GN'&&document.getElementById('loginFlowSel')?.value==='auto'){
-   if(chip.textContent!=='AUTO · NOW')chip.textContent='AUTO · NOW';
+   const label=document.getElementById('loginModeVal');
+   if(label&&label.textContent!=='AUTO · NOW')label.textContent='AUTO · NOW';
    chip.title='Auto Book now: automatic login, current session, required submit wait, then QR. Availability and provider rules apply.';
   }
  };

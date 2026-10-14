@@ -1,6 +1,6 @@
 'use strict';
 document.addEventListener('DOMContentLoaded',()=>{
- const button=document.getElementById('nexusCheckAvailability'),hint=document.getElementById('nexusAvailabilityHint');
+ const button=document.getElementById('matrixCheckAvailability'),hint=document.getElementById('matrixAvailabilityHint');
  button.addEventListener('click',()=>{
   const missing=['trainNumber','journeyDate','fromStation','toStation'].filter(id=>!document.getElementById(id)?.value.trim());
   if(missing.length){hint.textContent='Enter train number, journey date, From and To stations first.';return;}

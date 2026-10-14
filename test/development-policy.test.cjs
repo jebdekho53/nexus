@@ -6,7 +6,7 @@ const net=require('node:net');
 const http=require('node:http');
 const {install,localPages}=require('../src/main/runtime/development-policy.cjs');
 
-test('Nexus permits network, browser processes and original live handlers while vendor prompts stay disabled',async()=>{
+test('Matrix permits network, browser processes and original live handlers while vendor prompts stay disabled',async()=>{
   let accepted=0;
   const server=http.createServer((_req,res)=>{accepted++;res.end('network-ok');});
   await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
@@ -78,7 +78,7 @@ test('Nexus permits network, browser processes and original live handlers while 
     assert.equal((await handlers.get('app:confirm-quit')({sender:controller.webContents})).ok,false);
     await handlers.get('app:confirm-quit')({sender:{getURL:()=> 'file:///C:/local-project/src/renderer/confirm-quit.html'}});
     assert.deepEqual(exits,[0],'explicit user confirmation can exit');
-    assert.ok(events.some(x=>x.event==='nexus-runtime-installed'&&x.network==='enabled'));
+    assert.ok(events.some(x=>x.event==='matrix-runtime-installed'&&x.network==='enabled'));
   } finally {
     policy?.restore();
     await new Promise(resolve=>server.close(resolve));

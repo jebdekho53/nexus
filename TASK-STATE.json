@@ -1,5 +1,5 @@
 {
-  "status": "complete",
-  "task": "Integrate Lexus admin/seller with Nexus; managedrelease andkeyfreedeveloper; deployVPS andpushGithub.",
-  "progress": "Nexus own controlplane liveHTTPS nexus.vaidya-gpt.com/admin and/seller; own registry/sessionsisolated /srv/nexus-data. Managedrelease ownactivationwired and realElectronE2Everified; developerkeyfree9screens/storage smoke passed.37 meaningfultests pass (36suite+portal). Privateadminaccess diagnostics/nexus-admin-access.txt; QAkeyrevoked. ExistingLexus/n8n healthy. OriginalLexus preserved ../lexus-reference, duplicatebooking/runtime/private dataexcluded. Github main pushed https://github.com/urbanmoveservices/nexus.git. Finaldocs/tests commit andportablearchive refresh completed as partof task."
+  "status": "in_progress",
+  "progress": "Published Matrix 1.0.2 after fixing blank account/payment (mode DOM node removal), saved activation before app readiness, and destructive installer/profile storage. 41 automated checks pass. Actual v1.0.2 EXE payload Auto reached visible QR: login 21.93s, total105.36s, no payment; session stopped/logged out. Installed v1.0.2 retains activation and reads1/1savedforms. Persistent own backend and download SHA verified. Remaining: Direct test logged in but railway search form unavailable then browser closed; investigate, do not claim Direct passes. QA input/report paths are ignored diagnostics/packaged-1.0.2. Preserve current user installed app and all profiles; no payment/bookingconfirmation.",
+  "task": "Matrix packaged-build verification and remaining Direct railway-search failure"
 }

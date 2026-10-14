@@ -1,5 +1,5 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),{pathToFileURL}=require('node:url');
-const payments=require('../src/renderer/nexus-payments.js');
+const payments=require('../src/renderer/matrix-payments.js');
 test('form and booking labels share exact method keys without speed claims',()=>{
   for(const file of ['form.html','booking-box.html']){
     const source=fs.readFileSync(path.join(__dirname,'../src/renderer',file),'utf8');

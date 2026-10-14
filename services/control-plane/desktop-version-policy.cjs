@@ -1,3 +1,3 @@
-const {compareVersions}=require('./app/nexus-update-core');
-function desktopUpdateRequirement(req,body,policy){if(!policy)return null;const desktop=req.headers['x-nexus-client']==='desktop'||/^[a-f0-9]{64}$/i.test(String(body.device||''));if(!desktop)return null;const version=String(body.clientVersion||'');try{if(compareVersions(version,policy.version)>=0)return null;}catch{}return{error:'Update required. Install NEXUS '+policy.version+' from '+policy.downloadUrl,code:'UPDATE_REQUIRED',requiredVersion:policy.version,downloadUrl:policy.downloadUrl};}
+const {compareVersions}=require('./app/matrix-update-core');
+function desktopUpdateRequirement(req,body,policy){if(!policy)return null;const desktop=req.headers['x-matrix-client']==='desktop'||/^[a-f0-9]{64}$/i.test(String(body.device||''));if(!desktop)return null;const version=String(body.clientVersion||'');try{if(compareVersions(version,policy.version)>=0)return null;}catch{}return{error:'Update required. Install MATRIX '+policy.version+' from '+policy.downloadUrl,code:'UPDATE_REQUIRED',requiredVersion:policy.version,downloadUrl:policy.downloadUrl};}
 module.exports={desktopUpdateRequirement};

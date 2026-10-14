@@ -1,8 +1,8 @@
 'use strict';
 const path=require('node:path');
-const brand=text=>String(text||'').replace(/Xhamster\s*TS/gi,'Nexus').replace(/Tatkal Software/gi,'Nexus').replace(/\bBrahmos\b/gi,'Nexus').replace(/\bTS\b/g,'Nexus');
+const brand=text=>String(text||'').replace(/Xhamster\s*TS/gi,'Matrix').replace(/Tatkal Software/gi,'Matrix').replace(/\bBrahmos\b/gi,'Matrix').replace(/\bTS\b/g,'Matrix');
 const brahmos=/brahmos/gi;
-const logBrand=text=>text.replace(brahmos,m=>m===m.toUpperCase()?'NEXUS':'Nexus');
+const logBrand=text=>text.replace(brahmos,m=>m===m.toUpperCase()?'MATRIX':'Matrix');
 function brandStream(stream){
   const write=stream.write.bind(stream);
   stream.write=(chunk,...rest)=>{
@@ -16,14 +16,14 @@ function install(electron,root) {
   brandStream(process.stderr);
   const version=require(path.join(root,'package.json')).version;
   electron.app.getVersion=()=>version;
-  electron.app.setName('Nexus');
+  electron.app.setName('Matrix');
   const nativeName=electron.app.setName.bind(electron.app);
-  electron.app.setName=()=>nativeName('Nexus');
-  if(process.platform==='win32')electron.app.setAppUserModelId('com.nexus.workspace');
+  electron.app.setName=()=>nativeName('Matrix');
+  if(process.platform==='win32')electron.app.setAppUserModelId('com.matrix.workspace');
   electron.app.on('browser-window-created',(_event,win)=>{
     if(typeof win.setIcon==='function')win.setIcon(path.join(root,'resources/icon.png'));
-    const title=value=>{const next=brand(value);return next.startsWith('Nexus')?next:'Nexus · '+next;};
-    // Compact dock: the app opens the controller at 974x80 — shrink it to the slim Nexus dock, keeping it bottom-anchored.
+    const title=value=>{const next=brand(value);return next.startsWith('Matrix')?next:'Matrix · '+next;};
+    // Compact dock: the app opens the controller at 974x80 — shrink it to the slim Matrix dock, keeping it bottom-anchored.
     let fitting=false;
     const fitDock=()=>{
       if(fitting||win.isDestroyed())return;

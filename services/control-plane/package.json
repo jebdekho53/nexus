@@ -1,6 +1,6 @@
 {
-  "name": "nexus-control-plane",
-  "version": "1.0.0",
+  "name": "matrix-control-plane",
+  "version": "1.0.2",
   "private": true,
   "scripts": {
     "start": "node server.cjs",

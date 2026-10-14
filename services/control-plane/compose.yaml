@@ -1,10 +1,13 @@
 services:
-  nexus:
+  matrix:
     build: .
-    container_name: nexus-service
+    container_name: matrix-service
     restart: unless-stopped
     volumes:
-      - /srv/nexus-data:/data
+      - /srv/matrix-data:/data
+      - /srv/matrix-releases:/releases:ro
+    environment:
+      MATRIX_RELEASES_DIR: /releases
     networks:
       - edge
     healthcheck:

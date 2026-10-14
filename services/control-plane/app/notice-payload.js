@@ -1,4 +1,4 @@
-const defaults = {enabled:true,title:'NEXUS notice board',message:'Updates install only when you click Update NEXUS. Read the guidance below before booking.',recommended:'For a QR payment, choose PhonePe QR or Paytm QR.',avoid:'Razorpay UPI ID uses collect approval in your UPI app; it does not show a QR.'};
+const defaults = {enabled:true,title:'MATRIX notice board',message:'Updates install only when you click Update MATRIX. Read the guidance below before booking.',recommended:'For a QR payment, choose PhonePe QR or Paytm QR.',avoid:'Razorpay UPI ID uses collect approval in your UPI app; it does not show a QR.'};
 function validateNotice(input) {
  const result={enabled:input.enabled===true};
  for(const [key,max] of [['title',120],['message',4000],['recommended',2000],['avoid',2000]]) {
@@ -15,7 +15,7 @@ function noticeNews(notice, release, current) {
   if(notice.recommended)items.push('Recommended: '+notice.recommended);
   if(notice.avoid)items.push('Avoid: '+notice.avoid);
  }
- if(release?.version&&release.version!==current)items.push('Installed version: '+current+'. Latest release: '+release.version+'. Click Update NEXUS to check and install.');
+ if(release?.version&&release.version!==current)items.push('Installed version: '+current+'. Latest release: '+release.version+'. Click Update MATRIX to check and install.');
  return {items:items.filter(Boolean)};
 }
 module.exports={defaults,validateNotice,noticeNews};

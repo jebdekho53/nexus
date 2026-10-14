@@ -1,1 +1,0 @@
-document.addEventListener('DOMContentLoaded',()=>{for(const button of document.querySelectorAll('[data-nexus-portal]'))button.addEventListener('click',()=>window.nexusPortal.open(button.dataset.nexusPortal));});

@@ -4,7 +4,7 @@ from pathlib import Path
 import zipfile
 
 ROOT = Path(__file__).resolve().parent.parent
-TARGET = ROOT.parent / 'Nexus-source-portable.zip'
+TARGET = ROOT.parent / 'Matrix-source-portable.zip'
 
 def included(path):
     rel = path.relative_to(ROOT)
