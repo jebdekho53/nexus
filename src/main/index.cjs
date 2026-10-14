@@ -75,6 +75,7 @@ activity=require('./runtime/activity-log.cjs').install(appElectron,projectRoot);
 for(const secret of testSecrets)activity.learn({password:secret});
 const actionTrace={active:false,calls:new Map()};
 const developmentPolicy = isDevelopment ? require('./runtime/development-policy.cjs').install(appElectron,projectRoot,log,{managedRelease,trace:actionTrace,learnSecrets:value=>activity.learn(value),observePayment:(...args)=>activity.observePayment(...args),stopActivity:id=>activity.stop(id)}) : null;
+const matrixUpdates=require('./runtime/updates.cjs').install(appElectron,projectRoot,{managedRelease,finish:code=>developmentPolicy?developmentPolicy.finishSmoke(code):electron.app.exit(code)});
 const appRequire = new Proxy(vendorRequire,{apply(target,that,args){return args[0]==='electron'?appElectron:Reflect.apply(target,that,args);}});
 
 function bootRecovered(){try {
@@ -113,7 +114,8 @@ function bootRecovered(){try {
   console.error(error.stack || error);
   if(isSmoke&&developmentPolicy)developmentPolicy.finishSmoke(1);else electron.app.exit(1);
 }}
-if(managedRelease)require('./runtime/activation.cjs').requireActivation(appElectron,projectRoot,{shutdown:()=>developmentPolicy.finishSmoke(0)}).then(bootRecovered).catch(error=>log('matrix-activation-start-error',{error:String(error.message)}));else bootRecovered();
+const startMatrix=()=>{if(managedRelease)require('./runtime/activation.cjs').requireActivation(appElectron,projectRoot,{shutdown:()=>developmentPolicy.finishSmoke(0)}).then(bootRecovered).catch(error=>log('matrix-activation-start-error',{error:String(error.message)}));else bootRecovered();};
+if(managedRelease&&!isSmoke&&!process.argv.includes('--release-activation-test'))appElectron.app.whenReady().then(async()=>{if(!await matrixUpdates.applyOnStartup())startMatrix();});else startMatrix();
 if(managedRelease&&process.argv.includes('--release-activation-test'))setTimeout(()=>require(path.join(projectRoot,'test/release-activation-runner.cjs')).run(electron,projectRoot,code=>{if(code||!process.argv.includes('--live-booking-test'))developmentPolicy.finishSmoke(code);}),1000);
 
 if (isSmoke) {

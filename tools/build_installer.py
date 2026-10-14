@@ -3,13 +3,17 @@ import hashlib, json, os, subprocess, sys, zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-OUT = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT.parent / 'matrix-build'
+IS_UPDATE = '--updater' in sys.argv
+ARGS = [arg for arg in sys.argv[1:] if arg != '--updater']
+OUT = Path(ARGS[0]) if ARGS else ROOT.parent / 'matrix-build'
 VERSION = json.loads((ROOT / 'package.json').read_text())['version']
 INCLUDE = ['.runtime', 'src', 'vendor', 'resources', 'package.json', 'Matrix.cmd', 'test']
+if IS_UPDATE:
+    INCLUDE = ['src', 'resources', 'vendor/package.json', 'package.json', 'Matrix.cmd']
 SKIP_NAMES = {'__pycache__', '.git'}
 CSC = Path(os.environ.get('WINDIR', r'C:\Windows')) / 'Microsoft.NET' / 'Framework64' / 'v4.0.30319' / 'csc.exe'
 OUT.mkdir(parents=True, exist_ok=True)
-exe = OUT / f'Matrix-Setup-{VERSION}.exe'
+exe = OUT / f'Matrix-{"Updater" if IS_UPDATE else "Setup"}-{VERSION}.exe'
 if exe.exists():
     exe.unlink()
 (OUT / 'AssemblyInfo.cs').write_text(
@@ -17,7 +21,7 @@ if exe.exists():
     f'[assembly: System.Reflection.AssemblyFileVersion("{VERSION}")]\n'
     f'[assembly: System.Reflection.AssemblyInformationalVersion("{VERSION}")]\n')
 subprocess.run([
-    str(CSC), '/nologo', '/target:winexe', '/optimize+', f'/out:{exe}', f'/win32icon:{ROOT / "resources" / "matrix.ico"}',
+    str(CSC), '/nologo', '/target:winexe', '/optimize+', *(['/define:MATRIX_UPDATE'] if IS_UPDATE else []), f'/out:{exe}', f'/win32icon:{ROOT / "resources" / "matrix.ico"}',
     '/r:System.IO.Compression.dll', '/r:System.IO.Compression.FileSystem.dll', '/r:System.Windows.Forms.dll', '/r:System.Drawing.dll',
     str(Path(__file__).with_name('installer_stub.cs')), str(OUT / 'AssemblyInfo.cs')], check=True)
 count = 0

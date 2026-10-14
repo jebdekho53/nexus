@@ -8,6 +8,11 @@ using System.Windows.Forms;
 
 // Matrix installer stub: the application payload is a ZIP appended to this executable.
 static class Installer {
+#if MATRIX_UPDATE
+    const bool UpdateOnly = true;
+#else
+    const bool UpdateOnly = false;
+#endif
     static string Log = Path.Combine(Path.GetTempPath(), "matrix-install.log");
     [STAThread]
     static int Main(string[] args) {
@@ -15,14 +20,14 @@ static class Installer {
         string self = Assembly.GetExecutingAssembly().Location;
         string version = FileVersionInfo.GetVersionInfo(self).ProductVersion;
         Exception error = null;
-        Thread worker = new Thread(() => { try { Install(self, noLaunch); } catch (Exception ex) { error = ex; } });
+        Thread worker = new Thread(() => { try { Install(self, noLaunch, args); } catch (Exception ex) { error = ex; } });
         Form form = null;
         if (!silent) {
             Application.EnableVisualStyles();
             form = new Form { Text = "Matrix Setup " + version, Width = 400, Height = 130, StartPosition = FormStartPosition.CenterScreen, FormBorderStyle = FormBorderStyle.FixedDialog, MaximizeBox = false, MinimizeBox = false, ControlBox = false };
             form.Icon = System.Drawing.Icon.ExtractAssociatedIcon(self);
             form.Controls.Add(new PictureBox { Image = form.Icon.ToBitmap(), Left = 18, Top = 12, Width = 42, Height = 42, SizeMode = PictureBoxSizeMode.Zoom });
-            form.Controls.Add(new Label { Text = "Installing Matrix " + version + " ...", Left = 70, Top = 23, Width = 280 });
+            form.Controls.Add(new Label { Text = (UpdateOnly ? "Updating Matrix " : "Installing Matrix ") + version + " ...", Left = 70, Top = 23, Width = 280 });
             form.Controls.Add(new ProgressBar { Style = ProgressBarStyle.Marquee, Left = 20, Top = 50, Width = 345, Height = 18 });
             form.Shown += (s, e) => worker.Start();
             var timer = new System.Windows.Forms.Timer { Interval = 300 };
@@ -38,10 +43,13 @@ static class Installer {
         return 0;
     }
 
-    static void Install(string self, bool noLaunch) {
+    static void Install(string self, bool noLaunch, string[] args) {
         string dest = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Matrix");
+        foreach (string arg in args) if (arg.StartsWith("/target=", StringComparison.OrdinalIgnoreCase)) dest = Path.GetFullPath(arg.Substring(8));
+        dest = Path.GetFullPath(dest);
+        if (UpdateOnly && (!File.Exists(Path.Combine(dest, ".runtime", "electron.exe")) || !File.Exists(Path.Combine(dest, "package.json")))) throw new InvalidOperationException("Install Matrix with the full Setup first, then run this updater.");
         foreach (var p in Process.GetProcessesByName("electron")) {
-            try { if (p.MainModule.FileName.StartsWith(dest, StringComparison.OrdinalIgnoreCase)) { p.Kill(); p.WaitForExit(5000); } } catch { }
+            try { if (p.MainModule.FileName.StartsWith(dest + "\\", StringComparison.OrdinalIgnoreCase)) { p.Kill(); p.WaitForExit(5000); } } catch { }
         }
         // Update application files in place. Saved profiles from older releases
         // must remain available for migration on first launch.
@@ -65,6 +73,7 @@ static class Installer {
         Type shellType = Type.GetTypeFromProgID("WScript.Shell");
         object shell = Activator.CreateInstance(shellType);
         foreach (string link in links) {
+            if (Array.IndexOf(args, "/noshortcuts") >= 0) continue;
             object s = shellType.InvokeMember("CreateShortcut", BindingFlags.InvokeMethod, null, shell, new object[] { link });
             Type t = s.GetType();
             t.InvokeMember("TargetPath", BindingFlags.SetProperty, null, s, new object[] { exe });
