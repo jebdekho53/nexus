@@ -6,6 +6,6 @@
     "task": "Fix QR popup duplication/placement, General timer, booking/calendar styling, toolbar icons and cross-PC Login Data ID checks",
     "version": "1.0.4",
     "progress": "Completed UI/ID/Tatkal-login fixes, 34 app plus 14 backend tests, actual EXE payload synthetic dropdown/calendar/timer checks, hosted activation, and Electron-runtime ID fallback verification. Chromium HTTP/2 failed against the status endpoint; bundled Node fetch passed. Public installer uploaded, SHA-256 verified and download page visibly shows 1.0.4. Another physical PC and fresh live QR timing were not retested. Existing running app was not interrupted. Report: docs/release-1.0.4-qa.md",
-    "sha256": "d66080ce3a831dcb048e391014a91834bfb70287b498cb985fa38082b19a0236"
+    "sha256": "ccead55353d391e8b50f71c251f4f50387ce85c4cf0a8b0850780efd48ed4385"
   }
 }

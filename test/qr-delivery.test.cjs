@@ -8,6 +8,8 @@ test('popup QR hides panel copy and follows its matching booking panel; toggling
  const hook=qrDelivery({BrowserWindow:{getAllWindows:()=>[parent]},screen:{getDisplayMatching:()=>({workArea:{x:0,y:0,width:1920,height:1080}})}},root);
  hook.f3734(()=>true,[]);hook.f3743(()=>popup,['one']);await hook.f3740(async()=>true,[{imageBase64:png},'one']);
  assert.deepEqual(events,[{closed:true,formId:'one'}]);assert.equal(bounds.y,288);assert.equal(bounds.x,100);
+ let parentBounds={x:100,y:900,width:300,height:180};parent.getBounds=()=>parentBounds;parent.setBounds=value=>{parentBounds=value;parent.emit('move');};
+ parent.emit('move');assert.equal(parentBounds.y,592);assert.equal(bounds.y,parentBounds.y+parentBounds.height+8);assert.equal(bounds.y+bounds.height,1080);
  events.length=0;await hook.f4021(async()=>({ok:true}),[{},false]);assert.equal(events.length,1);assert.ok(events[0].dataUrl);assert.equal(events[0].formId,'one');
  popup.emit('closed');assert.equal(parent.listenerCount('move'),0);assert.equal(parent.listenerCount('resize'),0);
 });
