@@ -5,7 +5,9 @@ async function run(electron,root,log) {
   report.initialVisible=electron.BrowserWindow.getAllWindows().filter(win=>win.isVisible()).map(win=>path.basename(win.webContents.getURL().split('?')[0]));
   if(process.argv.includes('--ui-actions')) {
     report.actions=[];
-    const controller=electron.BrowserWindow.getAllWindows().find(win=>win.webContents.getURL().endsWith('/controller.html'));
+    let controller;const deadline=Date.now()+90000;
+    while(Date.now()<deadline){controller=electron.BrowserWindow.getAllWindows().find(win=>win.webContents.getURL().split('?')[0].endsWith('/controller.html'));if(controller&&!controller.webContents.isLoading())break;await new Promise(resolve=>setTimeout(resolve,250));}
+    if(!controller)throw Error('Controller unavailable for UI diagnostic');
     report.dynamicBranding=await controller.webContents.executeJavaScript(`(async()=>{const node=document.createElement('span');node.hidden=true;node.textContent='BRAHMOS LOGIN';node.title='Brahmos Browser';document.body.append(node);await new Promise(resolve=>setTimeout(resolve,0));const result={text:node.textContent,title:node.title};node.remove();return result;})()`);
     const pages={'new-form':'form.html','open-form':'open-form.html','login-data':'login-data.html',proxy:'proxy.html',payment:'payment.html',history:'history.html',tools:'tools.html',updates:'updates.html',logs:'logs.html'};
     for(const [action,page]of Object.entries(pages)) {

@@ -6,15 +6,15 @@ const net=require('node:net');
 const http=require('node:http');
 const {install,localPages}=require('../src/main/runtime/development-policy.cjs');
 
-test('Matrix permits network, browser processes and original live handlers while vendor prompts stay disabled',async()=>{
+for(const managedRelease of [false,true])test('Matrix '+(managedRelease?'release':'development')+' keeps live handlers and restarts in its original mode',async()=>{
   let accepted=0;
   const server=http.createServer((_req,res)=>{accepted++;res.end('network-ok');});
   await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
   const nativeSpawn=require('node:child_process').spawn;
   const nativeConnect=net.Socket.prototype.connect;
   const nativeFetch=globalThis.fetch;
-  const app=new EventEmitter(),exits=[],handlers=new Map(),windows=[];
-  Object.assign(app,{exit:code=>exits.push(code),quit:()=>exits.push(0),relaunch:()=>{},whenReady:()=>Promise.resolve(),commandLine:{appendSwitch(){}}});
+  const app=new EventEmitter(),exits=[],relaunches=[],handlers=new Map(),windows=[];
+  Object.assign(app,{exit:code=>exits.push(code),quit:()=>exits.push(0),relaunch:value=>relaunches.push(value),whenReady:()=>Promise.resolve(),commandLine:{appendSwitch(){}}});
   class Window extends EventEmitter {
     constructor(opts={}) {
       super();this.title=opts.title;this.url='';this.visible=false;this.destroyed=false;windows.push(this);
@@ -36,7 +36,7 @@ test('Matrix permits network, browser processes and original live handlers while
   const events=[];
   let policy;
   try {
-    policy=install(electron,'C:/local-project',(event,details)=>events.push({event,...details}),{processObject:fakeProcess});
+    policy=install(electron,'C:/local-project',(event,details)=>events.push({event,...details}),{managedRelease,processObject:fakeProcess});
     await Promise.resolve();
     app.exit(1);app.quit();app.relaunch();
     assert.deepEqual(exits,[]);
@@ -78,6 +78,9 @@ test('Matrix permits network, browser processes and original live handlers while
     assert.equal((await handlers.get('app:confirm-quit')({sender:controller.webContents})).ok,false);
     await handlers.get('app:confirm-quit')({sender:{getURL:()=> 'file:///C:/local-project/src/renderer/confirm-quit.html'}});
     assert.deepEqual(exits,[0],'explicit user confirmation can exit');
+    electron.ipcMain.handle('app:restart',()=>{});
+    await handlers.get('app:restart')({sender:{getURL:()=> 'file:///C:/local-project/src/renderer/confirm-quit.html'}});
+    assert.deepEqual(relaunches,[{args:['C:/local-project',managedRelease?'--release':'--development']}]);
     assert.ok(events.some(x=>x.event==='matrix-runtime-installed'&&x.network==='enabled'));
   } finally {
     policy?.restore();

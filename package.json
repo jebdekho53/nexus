@@ -1,6 +1,6 @@
 {
   "name": "matrix-source",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Editable Matrix recovered source project",
   "private": true,
   "main": "src/main/index.cjs",

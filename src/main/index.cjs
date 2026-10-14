@@ -74,7 +74,7 @@ require('./runtime/portal-links.cjs').install(appElectron,projectRoot);
 activity=require('./runtime/activity-log.cjs').install(appElectron,projectRoot);
 for(const secret of testSecrets)activity.learn({password:secret});
 const actionTrace={active:false,calls:new Map()};
-const developmentPolicy = isDevelopment ? require('./runtime/development-policy.cjs').install(appElectron,projectRoot,log,{trace:actionTrace,learnSecrets:value=>activity.learn(value),observePayment:(...args)=>activity.observePayment(...args),stopActivity:id=>activity.stop(id)}) : null;
+const developmentPolicy = isDevelopment ? require('./runtime/development-policy.cjs').install(appElectron,projectRoot,log,{managedRelease,trace:actionTrace,learnSecrets:value=>activity.learn(value),observePayment:(...args)=>activity.observePayment(...args),stopActivity:id=>activity.stop(id)}) : null;
 const appRequire = new Proxy(vendorRequire,{apply(target,that,args){return args[0]==='electron'?appElectron:Reflect.apply(target,that,args);}});
 
 function bootRecovered(){try {

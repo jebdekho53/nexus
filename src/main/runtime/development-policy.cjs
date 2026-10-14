@@ -13,6 +13,7 @@ function install(electron,root,log=()=>{},options={}) {
   const undo=[],stats={shutdownBlocked:0,localScreensOpened:0};
   const nativeExit=electron.app.exit.bind(electron.app);
   const nativeRelaunch=electron.app.relaunch.bind(electron.app);
+  const restartArgs=[root,options.managedRelease?'--release':'--development'];
   let userShutdown=false;
   function patch(target,key,value) {
     const old=target[key];target[key]=value;undo.push(()=>{target[key]=old;});
@@ -21,7 +22,7 @@ function install(electron,root,log=()=>{},options={}) {
     stats.shutdownBlocked++;log('matrix-automatic-shutdown-prevented',details);
   }
   for(const name of ['exit','quit','relaunch'])patch(electron.app,name,(...args)=>{
-    if(userShutdown){if(name==='relaunch')return nativeRelaunch({args:[root,'--development']});return nativeExit(args[0]||0);}
+    if(userShutdown){if(name==='relaunch')return nativeRelaunch({args:restartArgs});return nativeExit(args[0]||0);}
     denied('shutdown',{api:'app.'+name});
   });
   const protectWindow=win=>{
@@ -52,7 +53,7 @@ function install(electron,root,log=()=>{},options={}) {
     if(channel==='app:confirm-quit'||channel==='app:restart') {
       if(!event.sender.getURL().split('?')[0].endsWith('/confirm-quit.html'))return {ok:false,error:'Use the local Quit confirmation window'};
       userShutdown=true;log('development-user-shutdown',{channel});
-      if(channel==='app:restart')nativeRelaunch({args:[root,'--development']});
+      if(channel==='app:restart')nativeRelaunch({args:restartArgs});
       nativeExit(0);return {ok:true};
     }
     try {

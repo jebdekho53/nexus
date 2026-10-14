@@ -10,7 +10,7 @@ Edit Form has a **Check availability** button below Journey Planning. Enter trai
 
 Live networking, Chrome launching and native clients are enabled. Original window managers and booking handlers are preserved. The source build removes publisher license/version checks, local inspection gates, forced vendor shutdown and encrypted vendor reporting. Explicit user Quit/Restart remains available. Genuine service authentication and service responses still apply.
 
-41 automated checks pass. Auto Book now with GN uses automatic WebLogin and its authenticated session immediately, retaining provider submit waits. Scheduled 8AM/Tatkal modes retain their original workflow. Train 13307 DDU–BSB, 20 October 2026, SL/GN was verified through a visible Paytm QR in the Matrix panel: login 24.24s, booking-to-QR74.99s, total99.23s in one test. No payment was submitted. Check TASK-STATE.json for latest work.
+42 automated checks pass. Auto Book now with GN uses automatic WebLogin and its authenticated session immediately, retaining provider submit waits. Scheduled 8AM/Tatkal modes retain their original workflow. Train 13307 DDU–BSB, 20 October 2026, SL/GN was verified through a visible Paytm QR in the Matrix panel: login 24.24s, booking-to-QR74.99s, total99.23s in one test. No payment was submitted. Check TASK-STATE.json for latest work.
 
 Edit src/main/runtime for runtime behavior, src/main/generated for recovered definitions, and src/renderer for UI. npm test runs the runtime checks. npm run smoke is deliberately offline and uses synthetic data; it does not describe the normal app's network permissions.
 
