@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"
+    />
+    <title>Nexus · Payment</title>
+
+
+
+    <script type="module" crossorigin src="./assets/payment-CcB65t8N.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/confirm-53PaKcg4.js">
+    <link rel="modulepreload" crossorigin href="./assets/vaultRecovery-Ep_ZvnOW.js">
+    <link rel="modulepreload" crossorigin href="./assets/tamperLock-C-XpNF9g.js">
+    <link rel="modulepreload" crossorigin href="./assets/chrome-Cyb3f76v.js">
+    <link rel="modulepreload" crossorigin href="./assets/types-B0-2ZUtm.js">
+    <link rel="stylesheet" crossorigin href="./assets/form-Cq-Qz7YX.css">
+    <link rel="stylesheet" crossorigin href="./assets/login-data-BzziDCQ6.css">
+    <link rel="stylesheet" crossorigin href="./assets/proxy-DesozvjZ.css">
+    <link rel="stylesheet" href="./nexus-theme.css">
+    <script defer src="./nexus-build.js"></script>
+    <script defer src="./nexus-payments.js"></script>
+    <script defer src="./nexus-brand.js"></script>
+  </head>
+  <body class="pm-page">
+    <header class="topbar">
+      <div class="brand">
+        <span class="dot"></span>
+        <span>Payment</span>
+      </div>
+      <span class="spacer"></span>
+      <button type="button" id="deleteAllBtn" class="btn danger sm" title="Delete every saved payment method">Delete All</button>
+      <button type="button" id="addBtn" class="btn primary sm" title="Add a new payment method">+ New Payment Method</button>
+      <button type="button" id="closeBtn" class="btn sm">Close</button>
+    </header>
+
+    <main class="ld-wrap">
+      <div id="list"></div>
+      <div id="empty" class="empty hidden">
+        No saved payment methods yet. Click <b>+ New Payment Method</b> to save a UPI ID once and pick it in any form.
+      </div>
+    </main>
+
+    <!-- Add / edit. ONE tab today (UPI); the tab strip exists so a card/wallet tab can be added without
+         re-laying-out the dialog, and `SavedPayment.kind` already carries the discriminator. -->
+    <div id="payModal" class="modal-overlay hidden">
+      <div class="modal-card">
+        <div class="modal-head">
+          <div class="modal-title" id="modalTitle">New Payment Method</div>
+          <button type="button" class="modal-x" id="modalClose">✕</button>
+        </div>
+        <div class="pm-tabs" role="tablist">
+          <button type="button" class="pm-tab active" id="tabUpi" role="tab" aria-selected="true">UPI</button>
+        </div>
+        <div class="modal-fields">
+          <div class="field">
+            <label class="lbl" for="pmUpi">UPI ID</label>
+            <input type="text" id="pmUpi" placeholder="name@okhdfc" autocomplete="off" spellcheck="false" />
+          </div>
+          <div class="field">
+            <label class="lbl" for="pmLabel">Name <span class="pm-opt">(optional)</span></label>
+            <input type="text" id="pmLabel" placeholder="e.g. HDFC personal" autocomplete="off" />
+          </div>
+          <div class="pm-note" id="pmNote"></div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn sm" id="modalCancel">Cancel</button>
+          <button type="button" class="btn primary sm" id="modalSave">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+
+  </body>
+</html>

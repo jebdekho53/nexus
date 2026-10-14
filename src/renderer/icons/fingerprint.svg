@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="Chrome Advance">
+  <!-- Chromium-style wheel: three blue segments around a blue centre. -->
+  <g fill="none" stroke-width="9" stroke-linecap="butt">
+    <circle cx="24" cy="24" r="17" stroke="#7aa7e0" stroke-dasharray="32.6 74.2" transform="rotate(-92 24 24)"/>
+    <circle cx="24" cy="24" r="17" stroke="#4a78c0" stroke-dasharray="32.6 74.2" transform="rotate(28 24 24)"/>
+    <circle cx="24" cy="24" r="17" stroke="#2f5aa8" stroke-dasharray="32.6 74.2" transform="rotate(148 24 24)"/>
+  </g>
+  <circle cx="24" cy="24" r="8.6" fill="#ffffff"/>
+  <circle cx="24" cy="24" r="6.6" fill="#4a78c0"/>
+</svg>

@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"
+    />
+    <title>Nexus · Login Data</title>
+
+
+    <script type="module" crossorigin src="./assets/login-data-cJH5cCIl.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/confirm-53PaKcg4.js">
+    <link rel="modulepreload" crossorigin href="./assets/vaultRecovery-Ep_ZvnOW.js">
+    <link rel="modulepreload" crossorigin href="./assets/tamperLock-C-XpNF9g.js">
+    <link rel="modulepreload" crossorigin href="./assets/types-B0-2ZUtm.js">
+    <link rel="modulepreload" crossorigin href="./assets/idStatus-DUQgafJ5.js">
+    <link rel="stylesheet" crossorigin href="./assets/form-Cq-Qz7YX.css">
+    <link rel="stylesheet" crossorigin href="./assets/login-data-BzziDCQ6.css">
+    <link rel="stylesheet" href="./nexus-theme.css">
+    <script defer src="./nexus-build.js"></script>
+    <script defer src="./nexus-payments.js"></script>
+    <script defer src="./nexus-brand.js"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="dot"></span>
+        <span>Login Data</span>
+      </div>
+      <span class="spacer"></span>
+      <!-- ORDER (operator 2026-10-11): the things you DO first, then the destructive ones last — so the red
+           Delete All is nowhere near + Add New, and a mis-click costs nothing. -->
+      <button type="button" id="addBtn" class="btn primary sm" title="Add a new login">+ Add New</button>
+      <button type="button" id="importBtn" class="btn sm">Import</button>
+      <button type="button" id="exportBtn" class="btn sm">Export</button>
+      <button type="button" id="checkIdsBtn" class="btn safe sm" title="Check which saved ids can actually book">Check IDs</button>
+      <button type="button" id="deleteAllBtn" class="btn sm danger" title="Delete every saved login">Delete All</button>
+      <button type="button" id="closeBtn" class="btn sm danger-solid" title="Close this window">Close</button>
+    </header>
+
+    <main class="ld-wrap">
+      <!-- Search the saved logins (operator 2026-10-11: "the login id pane should have search options, like we do for
+           forms"). Same compact centred pill as Open Form, so the two lists search alike. -->
+      <div class="searchbar">
+        <div class="search-field">
+          <span class="search-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg></span>
+          <input id="search" type="search" placeholder="Search login id or mobile…" autocomplete="off" spellcheck="false" />
+          <span id="searchCount" class="search-count"></span>
+        </div>
+      </div>
+      <div id="noMatch" class="empty hidden">No logins match your search.</div>
+      <div id="list"></div>
+      <div id="empty" class="empty hidden">
+        No saved logins yet. Click <b>+ Add New User ID</b>.
+      </div>
+    </main>
+
+    <!-- CHECK IDs summary (operator 2026-10-11): every saved id grouped by whether it can book. -->
+    <div id="idSumModal" class="modal-overlay hidden">
+      <div class="modal-card idsum-card">
+        <div class="modal-head">
+          <div>
+            <div class="modal-title">ID check</div>
+            <div class="idsum-count" id="idSumCount"></div>
+          </div>
+          <button type="button" class="modal-x" id="idSumClose">✕</button>
+        </div>
+        <div class="idsum-body" id="idSumBody"></div>
+        <div class="modal-actions">
+          <button type="button" class="btn primary" id="idSumOk">Done</button>
+        </div>
+      </div>
+    </div>
+    <div id="userModal" class="modal-overlay hidden">
+      <div class="modal-card">
+        <div class="modal-head">
+          <div class="modal-title" id="modalTitle">Add User ID</div>
+          <button type="button" class="modal-x" id="modalClose">✕</button>
+        </div>
+        <div class="modal-fields">
+          <div class="field">
+            <label class="lbl" for="mUsername">Username <span class="req">*</span></label>
+            <!-- Check while ADDING (operator 2026-10-11) — the check needs only the id, never the password. -->
+            <div class="with-btn">
+              <input type="text" id="mUsername" placeholder="Username" autocomplete="off" />
+              <button type="button" id="mCheckId" class="btn ghost-blue sm" title="Check this ID with IRCTC">Check ID</button>
+            </div>
+            <div id="mIdStat" class="id-stat hidden"></div>
+          </div>
+          <div class="field">
+            <label class="lbl" for="mPassword">Password <span class="req">*</span></label>
+            <div class="pw">
+              <input type="password" id="mPassword" placeholder="Password" autocomplete="off" />
+              <button type="button" class="eye" id="mTogglePw" title="Show / hide">👁️</button>
+            </div>
+          </div>
+          <div class="field">
+            <label class="lbl" for="mMobile">Mobile Number <span class="req">*</span></label>
+            <!-- Same Random generator as the form's Phone Number row (operator 2026-10-11): a valid 10-digit Indian
+                 mobile, one tap. Identical markup/classes so it looks and behaves exactly like the one in the form. -->
+            <div class="with-btn">
+              <input
+                type="text"
+                id="mMobile"
+                inputmode="numeric"
+                maxlength="10"
+                placeholder="10-digit mobile (starts 6–9)"
+                autocomplete="off"
+              />
+              <button type="button" id="mRandomMobile" class="btn ghost-blue sm">🎲 Random</button>
+            </div>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn" id="modalCancel">Cancel</button>
+          <button type="button" class="btn primary" id="modalSave">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXPORT picker: select each / Select all → Export selected (operator's "select each, or select all") -->
+    <div id="exportModal" class="modal-overlay hidden">
+      <div class="modal-card">
+        <div class="modal-head">
+          <div class="modal-title">Export logins</div>
+          <button type="button" class="modal-x" id="exportClose">✕</button>
+        </div>
+        <div class="exp-head">
+          <label class="exp-all"><input type="checkbox" id="expSelectAll" /> <span>Select all</span></label>
+          <span class="exp-note">⚠ Includes passwords — keep the file safe</span>
+        </div>
+        <div id="exportList" class="exp-list"></div>
+        <div class="modal-actions">
+          <button type="button" class="btn" id="exportCancel">Cancel</button>
+          <button type="button" class="btn primary" id="exportGo">Export selected</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- IMPORT chooser: two options — Bulk / Single (operator's "bulk import or single import") -->
+    <div id="importModal" class="modal-overlay hidden">
+      <div class="modal-card">
+        <div class="modal-head">
+          <div class="modal-title">Import logins</div>
+          <button type="button" class="modal-x" id="importClose">✕</button>
+        </div>
+        <div class="imp-opts">
+          <button type="button" class="imp-opt" id="impBulk">
+            <div class="l">Bulk Import</div>
+            <div class="r">Pick one or more JSON files — import every login found.</div>
+          </button>
+          <button type="button" class="imp-opt" id="impSingle">
+            <div class="l">Single Import</div>
+            <div class="r">Pick one JSON file — review the login, then add it.</div>
+          </button>
+        </div>
+        <div class="imp-tip">…or just <b>drag &amp; drop</b> exported login file(s) onto this window.</div>
+      </div>
+    </div>
+
+    <!-- Drag-and-drop overlay: shown while files are dragged over the window; a dropped JSON/CSV/TXT export
+         imports every login found (bulk), with fresh ids — the drag-drop twin of Bulk Import. -->
+    <div id="dropOverlay" class="drop-overlay" aria-hidden="true">
+      <div class="drop-card">
+        <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        <div class="drop-title">Drop login files to import</div>
+        <div class="drop-sub">JSON, CSV or TXT · every login is added with a fresh id · invalid files are skipped</div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+  </body>
+</html>

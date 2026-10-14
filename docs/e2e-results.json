@@ -1,0 +1,679 @@
+{
+  "date": "2026-10-14",
+  "journey": {
+    "train": "13037",
+    "from": "DDU",
+    "to": "BSB",
+    "date": "2026-10-15",
+    "class": "SL",
+    "quota": "GN"
+  },
+  "paymentMethod": "Paytm QR",
+  "paymentSubmitted": false,
+  "manual": "Deferred by human; not tested",
+  "modes": [
+    {
+      "mode": "auto",
+      "loginSeconds": 34.53,
+      "availabilitySeconds": 0.23,
+      "availabilityStatus": "NA",
+      "result": "journey-unavailable",
+      "actualJourneyQr": false,
+      "warmupQrFromLoginSeconds": 133.55,
+      "bookingObservedSeconds": 148.7,
+      "sessionClosed": true,
+      "stages": [
+        {
+          "at": "2026-10-14T08:20:03.924Z",
+          "stage": "weblogin:launch"
+        },
+        {
+          "at": "2026-10-14T08:20:05.390Z",
+          "stage": "gologin:proxy"
+        },
+        {
+          "at": "2026-10-14T08:20:05.471Z",
+          "stage": "weblogin:warmup"
+        },
+        {
+          "at": "2026-10-14T08:20:06.788Z",
+          "stage": "weblogin:navigate"
+        },
+        {
+          "at": "2026-10-14T08:20:07.296Z",
+          "stage": "weblogin:settle"
+        },
+        {
+          "at": "2026-10-14T08:20:31.407Z",
+          "stage": "weblogin:trigger"
+        },
+        {
+          "at": "2026-10-14T08:20:32.771Z",
+          "stage": "weblogin:form"
+        },
+        {
+          "at": "2026-10-14T08:20:32.792Z",
+          "stage": "weblogin:fill"
+        },
+        {
+          "at": "2026-10-14T08:20:33.185Z",
+          "stage": "weblogin:submit"
+        },
+        {
+          "at": "2026-10-14T08:20:37.534Z",
+          "stage": "weblogin:done"
+        },
+        {
+          "at": "2026-10-14T08:20:37.813Z",
+          "stage": "booking:start"
+        },
+        {
+          "at": "2026-10-14T08:20:37.921Z",
+          "stage": "booking:warmup"
+        },
+        {
+          "at": "2026-10-14T08:20:37.938Z",
+          "stage": "booking:search"
+        },
+        {
+          "at": "2026-10-14T08:20:39.300Z",
+          "stage": "search:from"
+        },
+        {
+          "at": "2026-10-14T08:20:44.667Z",
+          "stage": "search:to"
+        },
+        {
+          "at": "2026-10-14T08:20:50.167Z",
+          "stage": "search:class"
+        },
+        {
+          "at": "2026-10-14T08:20:57.934Z",
+          "stage": "search:quota"
+        },
+        {
+          "at": "2026-10-14T08:20:57.991Z",
+          "stage": "search:date"
+        },
+        {
+          "at": "2026-10-14T08:20:59.133Z",
+          "stage": "search:submit"
+        },
+        {
+          "at": "2026-10-14T08:21:21.123Z",
+          "stage": "booking:warmup"
+        },
+        {
+          "at": "2026-10-14T08:21:21.203Z",
+          "stage": "ui:train"
+        },
+        {
+          "at": "2026-10-14T08:21:22.807Z",
+          "stage": "ui:select"
+        },
+        {
+          "at": "2026-10-14T08:21:23.518Z",
+          "stage": "ui:book"
+        },
+        {
+          "at": "2026-10-14T08:21:23.664Z",
+          "stage": "ui:book"
+        },
+        {
+          "at": "2026-10-14T08:21:24.568Z",
+          "stage": "ui:psgninput"
+        },
+        {
+          "at": "2026-10-14T08:21:24.643Z",
+          "stage": "ui:passenger"
+        },
+        {
+          "at": "2026-10-14T08:21:30.726Z",
+          "stage": "booking:countdown"
+        },
+        {
+          "at": "2026-10-14T08:21:30.731Z",
+          "stage": "ui:wait"
+        },
+        {
+          "at": "2026-10-14T08:21:30.741Z",
+          "stage": "booking:countdown"
+        },
+        {
+          "at": "2026-10-14T08:21:30.940Z",
+          "stage": "booking:countdown"
+        },
+        {
+          "at": "2026-10-14T08:21:31.140Z",
+          "stage": "booking:countdown"
+        },
+        {
+          "at": "2026-10-14T08:21:31.386Z",
+          "stage": "ui:paytype"
+        },
+        {
+          "at": "2026-10-14T08:21:36.975Z",
+          "stage": "ui:continue"
+        },
+        {
+          "at": "2026-10-14T08:22:13.359Z",
+          "stage": "ui:review"
+        },
+        {
+          "at": "2026-10-14T08:22:13.695Z",
+          "stage": "ui:pay"
+        },
+        {
+          "at": "2026-10-14T08:22:13.746Z",
+          "stage": "ui:pay"
+        },
+        {
+          "at": "2026-10-14T08:22:16.564Z",
+          "stage": "ui:pay"
+        },
+        {
+          "at": "2026-10-14T08:22:16.572Z",
+          "stage": "ui:pay"
+        },
+        {
+          "at": "2026-10-14T08:22:16.584Z",
+          "stage": "booking:warmup"
+        },
+        {
+          "at": "2026-10-14T08:22:16.593Z",
+          "stage": "weblogin:relogin"
+        },
+        {
+          "at": "2026-10-14T08:22:17.844Z",
+          "stage": "weblogin:logout"
+        },
+        {
+          "at": "2026-10-14T08:22:17.993Z",
+          "stage": "weblogin:logout"
+        },
+        {
+          "at": "2026-10-14T08:22:29.071Z",
+          "stage": "weblogin:nav"
+        },
+        {
+          "at": "2026-10-14T08:22:30.940Z",
+          "stage": "weblogin:trigger"
+        },
+        {
+          "at": "2026-10-14T08:22:31.882Z",
+          "stage": "weblogin:form"
+        },
+        {
+          "at": "2026-10-14T08:22:31.887Z",
+          "stage": "weblogin:fill"
+        },
+        {
+          "at": "2026-10-14T08:22:32.673Z",
+          "stage": "weblogin:submit"
+        },
+        {
+          "at": "2026-10-14T08:22:36.111Z",
+          "stage": "weblogin:relogin"
+        },
+        {
+          "at": "2026-10-14T08:22:36.179Z",
+          "stage": "booking:search"
+        },
+        {
+          "at": "2026-10-14T08:22:37.457Z",
+          "stage": "search:from"
+        },
+        {
+          "at": "2026-10-14T08:22:43.339Z",
+          "stage": "search:to"
+        },
+        {
+          "at": "2026-10-14T08:22:48.891Z",
+          "stage": "search:class"
+        },
+        {
+          "at": "2026-10-14T08:22:56.600Z",
+          "stage": "search:quota"
+        },
+        {
+          "at": "2026-10-14T08:22:56.659Z",
+          "stage": "search:date"
+        },
+        {
+          "at": "2026-10-14T08:22:57.511Z",
+          "stage": "search:submit"
+        },
+        {
+          "at": "2026-10-14T08:23:01.664Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:23:01.928Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:23:03.355Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:23:04.844Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:23:06.354Z",
+          "stage": "booking:availability"
+        }
+      ]
+    },
+    {
+      "mode": "direct",
+      "loginSeconds": 37.16,
+      "availabilitySeconds": 0.24,
+      "availabilityStatus": "NA",
+      "result": "booking-failed",
+      "actualJourneyQr": false,
+      "warmupQrFromLoginSeconds": null,
+      "bookingObservedSeconds": 98.52,
+      "sessionClosed": true,
+      "stages": [
+        {
+          "at": "2026-10-14T08:11:53.574Z",
+          "stage": "weblogin:launch"
+        },
+        {
+          "at": "2026-10-14T08:11:55.175Z",
+          "stage": "gologin:proxy"
+        },
+        {
+          "at": "2026-10-14T08:11:55.257Z",
+          "stage": "weblogin:warmup"
+        },
+        {
+          "at": "2026-10-14T08:11:56.501Z",
+          "stage": "weblogin:navigate"
+        },
+        {
+          "at": "2026-10-14T08:11:57.080Z",
+          "stage": "weblogin:settle"
+        },
+        {
+          "at": "2026-10-14T08:12:24.025Z",
+          "stage": "weblogin:trigger"
+        },
+        {
+          "at": "2026-10-14T08:12:25.024Z",
+          "stage": "weblogin:form"
+        },
+        {
+          "at": "2026-10-14T08:12:25.051Z",
+          "stage": "weblogin:fill"
+        },
+        {
+          "at": "2026-10-14T08:12:25.539Z",
+          "stage": "weblogin:submit"
+        },
+        {
+          "at": "2026-10-14T08:12:29.737Z",
+          "stage": "weblogin:done"
+        },
+        {
+          "at": "2026-10-14T08:12:30.026Z",
+          "stage": "booking:start"
+        },
+        {
+          "at": "2026-10-14T08:12:30.054Z",
+          "stage": "weblogin:direct"
+        },
+        {
+          "at": "2026-10-14T08:12:30.124Z",
+          "stage": "booking:search"
+        },
+        {
+          "at": "2026-10-14T08:12:31.423Z",
+          "stage": "search:from"
+        },
+        {
+          "at": "2026-10-14T08:12:37.752Z",
+          "stage": "search:to"
+        },
+        {
+          "at": "2026-10-14T08:12:42.440Z",
+          "stage": "search:class"
+        },
+        {
+          "at": "2026-10-14T08:12:43.236Z",
+          "stage": "search:quota"
+        },
+        {
+          "at": "2026-10-14T08:12:43.305Z",
+          "stage": "search:date"
+        },
+        {
+          "at": "2026-10-14T08:12:44.741Z",
+          "stage": "search:submit"
+        },
+        {
+          "at": "2026-10-14T08:12:48.810Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:12:49.116Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:12:50.498Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:12:52.076Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:12:53.534Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:12:55.073Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:12:56.535Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:12:58.020Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:12:59.532Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:01.050Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:02.552Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:04.061Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:05.537Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:07.060Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:08.555Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:10.082Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:11.561Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:13.112Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:14.567Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:16.102Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:17.656Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:19.301Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:20.623Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:22.126Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:23.680Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:25.122Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:26.658Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:28.144Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:29.650Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:31.182Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:32.649Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:34.160Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:35.680Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:37.171Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:44.412Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:44.964Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:46.410Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:48.249Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:49.531Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:50.981Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:52.454Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:54.391Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:55.468Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:56.981Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:58.442Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:13:59.982Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:14:01.458Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:14:03.033Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:14:04.472Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:14:05.985Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:14:07.476Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:14:07.509Z",
+          "stage": "booking:done"
+        }
+      ]
+    },
+    {
+      "mode": "Nexus",
+      "loginSeconds": 40.15,
+      "availabilitySeconds": 0.15,
+      "availabilityStatus": "NA",
+      "result": "journey-unavailable",
+      "actualJourneyQr": false,
+      "warmupQrFromLoginSeconds": null,
+      "bookingObservedSeconds": 30.32,
+      "sessionClosed": true,
+      "stages": [
+        {
+          "at": "2026-10-14T08:14:38.353Z",
+          "stage": "weblogin:launch"
+        },
+        {
+          "at": "2026-10-14T08:14:39.847Z",
+          "stage": "gologin:proxy"
+        },
+        {
+          "at": "2026-10-14T08:14:39.926Z",
+          "stage": "weblogin:warmup"
+        },
+        {
+          "at": "2026-10-14T08:14:41.145Z",
+          "stage": "weblogin:navigate"
+        },
+        {
+          "at": "2026-10-14T08:14:41.640Z",
+          "stage": "weblogin:settle"
+        },
+        {
+          "at": "2026-10-14T08:15:11.436Z",
+          "stage": "weblogin:trigger"
+        },
+        {
+          "at": "2026-10-14T08:15:12.678Z",
+          "stage": "weblogin:form"
+        },
+        {
+          "at": "2026-10-14T08:15:12.699Z",
+          "stage": "weblogin:fill"
+        },
+        {
+          "at": "2026-10-14T08:15:13.511Z",
+          "stage": "weblogin:submit"
+        },
+        {
+          "at": "2026-10-14T08:15:17.585Z",
+          "stage": "weblogin:done"
+        },
+        {
+          "at": "2026-10-14T08:15:17.878Z",
+          "stage": "booking:start"
+        },
+        {
+          "at": "2026-10-14T08:15:17.903Z",
+          "stage": "weblogin:direct"
+        },
+        {
+          "at": "2026-10-14T08:15:17.974Z",
+          "stage": "booking:search"
+        },
+        {
+          "at": "2026-10-14T08:15:19.278Z",
+          "stage": "search:from"
+        },
+        {
+          "at": "2026-10-14T08:15:24.837Z",
+          "stage": "search:to"
+        },
+        {
+          "at": "2026-10-14T08:15:29.258Z",
+          "stage": "search:class"
+        },
+        {
+          "at": "2026-10-14T08:15:36.920Z",
+          "stage": "search:quota"
+        },
+        {
+          "at": "2026-10-14T08:15:36.985Z",
+          "stage": "search:date"
+        },
+        {
+          "at": "2026-10-14T08:15:38.025Z",
+          "stage": "search:submit"
+        },
+        {
+          "at": "2026-10-14T08:15:41.815Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:15:42.128Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:15:43.484Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:15:44.998Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:15:46.567Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:15:48.033Z",
+          "stage": "booking:availability"
+        }
+      ]
+    }
+  ]
+}

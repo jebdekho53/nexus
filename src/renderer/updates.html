@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"
+    />
+    <title>Nexus · Updates</title>
+
+
+    <script type="module" crossorigin src="./assets/updates-BAT-9ryc.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/tamperLock-C-XpNF9g.js">
+    <link rel="modulepreload" crossorigin href="./assets/chrome-Cyb3f76v.js">
+    <link rel="modulepreload" crossorigin href="./assets/types-B0-2ZUtm.js">
+    <link rel="stylesheet" crossorigin href="./assets/form-Cq-Qz7YX.css">
+    <link rel="stylesheet" crossorigin href="./assets/panel-F3GpfR9X.css">
+    <link rel="stylesheet" href="./nexus-theme.css">
+    <script defer src="./nexus-build.js"></script>
+    <script defer src="./nexus-payments.js"></script>
+    <script defer src="./nexus-brand.js"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="dot"></span>
+        <span>Updates</span>
+        <span class="sub">· version gate</span>
+      </div>
+      <span class="spacer"></span>
+      <button type="button" id="checkBtn" class="btn primary sm">Check now</button>
+      <button type="button" class="win-close" id="winClose" title="Close">✕</button>
+    </header>
+
+    <main class="panel-wrap">
+      <section class="card">
+        <div class="card-head">
+          <span class="ic">⟳</span>
+          <div>
+            <div class="t">App Version</div>
+            <div class="s">Status reported by the control server</div>
+          </div>
+        </div>
+        <div style="text-align: center; margin: 6px 0 16px">
+          <div class="bigver" id="ver">—</div>
+          <div id="statusBadge" style="margin-top: 10px"></div>
+        </div>
+        <div class="kv"><span class="k">Source</span><span class="v" id="source">—</span></div>
+        <div class="kv"><span class="k">Note</span><span class="v" id="reason">—</span></div>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <span class="ic">⤓</span>
+          <div>
+            <div class="t">Auto-update</div>
+            <div class="s">Install the latest allowed version on relaunch</div>
+          </div>
+        </div>
+        <label class="chk" style="margin-top: 2px">
+          <input type="checkbox" id="autoUpdate" />
+          Automatically update on each relaunch
+        </label>
+        <div class="note" style="margin-top: 12px">
+          When off, use <b>Check now</b> to update manually. When on, the latest allowed version is
+          fetched &amp; applied next time the app starts.
+        </div>
+      </section>
+
+      <!-- OFFICIAL TELEGRAM (operator 2026-07-29): the same channel as the controller pill, given a proper card here
+           since Updates is where a user looks for news. Same card grammar as the others (icon + title + sub), with the
+           handle shown so it is verifiable BEFORE clicking, and one unmistakable Follow action. -->
+      <section class="card">
+        <div class="card-head">
+          <span class="ic tg-ic-card">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.94 4.6l-2.9 13.68c-.22 1-.82 1.24-1.66.77l-4.6-3.39-2.22 2.14c-.24.24-.45.45-.92.45l.33-4.68 8.5-7.68c.37-.33-.08-.51-.57-.18L6.4 12.9 1.9 11.5c-.98-.3-1-.98.2-1.45l18.1-6.98c.82-.3 1.54.2 1.27 2.03z"/></svg>
+          </span>
+          <div>
+            <div class="t">Official Telegram Channel</div>
+            <div class="s">Updates, release notes &amp; support announcements</div>
+          </div>
+        </div>
+        <div class="tg-row">
+          <span class="tg-handle" id="tgHandle">@Nexus</span>
+          <button type="button" class="btn tg-follow" id="tgFollow">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.94 4.6l-2.9 13.68c-.22 1-.82 1.24-1.66.77l-4.6-3.39-2.22 2.14c-.24.24-.45.45-.92.45l.33-4.68 8.5-7.68c.37-.33-.08-.51-.57-.18L6.4 12.9 1.9 11.5c-.98-.3-1-.98.2-1.45l18.1-6.98c.82-.3 1.54.2 1.27 2.03z"/></svg>
+            Follow on Telegram
+          </button>
+        </div>
+        <div class="note" style="margin-top: 10px">
+          Opens in the Telegram app when installed, otherwise in your browser.
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <span class="ic">↺</span>
+          <div>
+            <div class="t">Versions &amp; Rollback</div>
+            <div class="s">Switch to a previous build from the download source</div>
+          </div>
+        </div>
+        <div id="versionList" class="version-list"></div>
+      </section>
+    </main>
+
+    <div id="toast" class="toast"></div>
+
+  </body>
+</html>

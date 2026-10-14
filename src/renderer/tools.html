@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"
+    />
+    <title>Nexus · Tools</title>
+
+
+    <script type="module" crossorigin src="./assets/tools-DBDxVx_t.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/tamperLock-C-XpNF9g.js">
+    <link rel="modulepreload" crossorigin href="./assets/chrome-Cyb3f76v.js">
+    <link rel="modulepreload" crossorigin href="./assets/dropdown-L-Zz_M7o.js">
+    <link rel="modulepreload" crossorigin href="./assets/types-B0-2ZUtm.js">
+    <link rel="stylesheet" crossorigin href="./assets/form-Cq-Qz7YX.css">
+    <link rel="stylesheet" crossorigin href="./assets/panel-F3GpfR9X.css">
+    <link rel="stylesheet" href="./nexus-theme.css">
+    <script defer src="./nexus-build.js"></script>
+    <script defer src="./nexus-payments.js"></script>
+    <script defer src="./nexus-brand.js"></script>
+    <script defer src="./nexus-portals.js"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="dot"></span>
+        <span>Tools</span>
+        <span class="sub">· utilities</span>
+      </div>
+      <span class="spacer"></span>
+      <button type="button" class="win-close" id="winClose" title="Close">✕</button>
+    </header>
+
+    <section style="padding:16px"><strong>Nexus account portals</strong><p><button class="btn" data-nexus-portal="admin">Administrator</button> <button class="btn" data-nexus-portal="seller">Seller</button> <button class="btn" data-nexus-portal="client">My key</button></p></section>
+    <style>
+      .opt-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 4px 2px;
+      }
+      .opt-row + .opt-row {
+        margin-top: 14px;
+        border-top: 1px solid #eef1f6;
+        padding-top: 16px;
+      }
+      .opt-label {
+        font-size: 13.5px;
+        font-weight: 700;
+        color: var(--ink);
+      }
+      .opt-sub {
+        font-weight: 600;
+        color: var(--muted);
+      }
+      .gl-head {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        margin-bottom: 12px;
+      }
+      .gl-head .opt-sub {
+        font-size: 12px;
+      }
+      .gl-row {
+        display: flex;
+        gap: 8px;
+      }
+      .gl-input {
+        flex: 1;
+        min-width: 0;
+        font-size: 12.5px;
+        padding: 8px 10px;
+        border: 1.5px solid #aebed5;
+        border-radius: 8px;
+        background: #f7f9fc;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      }
+      .gl-input:focus {
+        outline: none;
+        border-color: #1d4ed8;
+        background: #fff;
+        box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.14);
+      }
+      .gl-status {
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--muted);
+        margin-top: 10px;
+        min-height: 16px;
+      }
+      .gl-status.ok {
+        color: #15803d;
+      }
+      .gl-status.err {
+        color: #b91c1c;
+      }
+      .gl-status.warn {
+        color: #b45309;
+      }
+      /* Backup checklist (what to include) */
+      .bk-list {
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+        margin: 6px 0 14px;
+      }
+      .bk-item {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        font-size: 13px;
+        color: #0f172a;
+        cursor: pointer;
+      }
+      .bk-item input {
+        width: 16px;
+        height: 16px;
+        accent-color: #1d4ed8;
+        cursor: pointer;
+      }
+      .bk-item.empty .bk-name,
+      .bk-item.empty .bk-count {
+        opacity: 0.5;
+      }
+      .bk-name {
+        font-weight: 600;
+      }
+      .bk-count {
+        color: #64748b;
+        font-size: 12px;
+        margin-left: auto;
+      }
+      /* password modal (Backup / Restore) — self-contained classes (Tools doesn't link login-data.css) */
+      .pw-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        background: rgba(15, 23, 42, 0.42);
+      }
+      .pw-overlay.hidden {
+        display: none;
+      }
+      .pw-card {
+        width: 100%;
+        max-width: 380px;
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 24px 64px rgba(15, 23, 42, 0.35);
+        padding: 18px;
+      }
+      .pw-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+      }
+      .pw-titletext {
+        font-size: 15px;
+        font-weight: 800;
+        color: var(--ink);
+      }
+      .pw-x {
+        border: 0;
+        background: #f1f5f9;
+        color: var(--muted);
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        font-size: 13px;
+        cursor: pointer;
+      }
+      .pw-label {
+        display: block;
+        font-size: 12.5px;
+        font-weight: 700;
+        color: var(--ink);
+        margin-bottom: 6px;
+      }
+      .pw-input {
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 13px;
+        padding: 9px 11px;
+        border: 1.5px solid #aebed5;
+        border-radius: 8px;
+        background: #f7f9fc;
+      }
+      .pw-input:focus {
+        outline: none;
+        border-color: #1d4ed8;
+        background: #fff;
+      }
+      .pw-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 16px;
+      }
+      .pw-actions .btn {
+        flex: 1;
+      }
+      /* app-lock passcode modal — 6 digit boxes (Tools doesn't link otp.css) */
+      .alk-inputs {
+        display: flex;
+        gap: 7px;
+        justify-content: center;
+        margin: 10px 0 6px;
+      }
+      .alk-d {
+        width: 36px;
+        height: 44px;
+        text-align: center;
+        font-size: 20px;
+        font-weight: 800;
+        color: #1d4ed8;
+        border: 1.5px solid #aebed5;
+        border-radius: 9px;
+        background: #f7f9fc;
+        caret-color: #2563eb;
+      }
+      .alk-d:focus {
+        outline: none;
+        border-color: #2563eb;
+        background: #fff;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
+      }
+      .alk-err {
+        color: #b91c1c;
+        font-size: 12px;
+        font-weight: 700;
+        min-height: 16px;
+        text-align: center;
+      }
+      /* Compact the Tools panel so the cards fit without scrolling (operator 2026-07-05) — scoped to Tools only. */
+      .panel-wrap { padding: 12px 14px 16px; }
+      section.card { padding: 12px 14px; margin-bottom: 10px; border-top-width: 2px; }
+      .gl-head { margin-bottom: 7px; }
+      .opt-row { padding: 2px; }
+      .opt-row + .opt-row { margin-top: 9px; padding-top: 10px; }
+      .gl-status { margin-top: 6px; }
+      .gl-status:empty { min-height: 0; margin-top: 0; }
+      .gl-input { padding: 7px 9px; }
+      /* Speed Test rating banner — 5 levels (operator 2026-07-05): BOLD green (solid) ≥150 · green (tint) 100-149 ·
+         amber 50-99 · light red (tint) 20-49 · BOLD red (solid) <20. Dark text on tints, white text on the solid
+         BOLD banners — every combination is high-contrast + readable. */
+      .st-rating { padding: 9px 11px; border-radius: 9px; border-left: 4px solid; margin-bottom: 9px; }
+      .st-rating .st-r-title { display: block; font-size: 13px; font-weight: 800; letter-spacing: 0.1px; }
+      .st-rating .st-r-note { display: block; font-size: 11.5px; font-weight: 600; margin-top: 2px; }
+      .st-rating.greenBold { background: #15803d; border-color: #0a4d23; color: #fff; }
+      .st-rating.green { background: #e7f7ec; border-color: #16a34a; color: #0f5c2e; }
+      .st-rating.amber { background: #fdf1de; border-color: #f59e0b; color: #8a4b06; }
+      .st-rating.redLight { background: #fdecec; border-color: #f87171; color: #b23b30; }
+      .st-rating.red { background: #dc2626; border-color: #7f1d1d; color: #fff; }
+      .st-rating.greenBold .st-r-note,
+      .st-rating.red .st-r-note { color: rgba(255, 255, 255, 0.92); } /* readable note on the solid bold banners */
+      /* Speed Test */
+      #stProxy.gl-input { flex: 1; min-width: 0; cursor: pointer; }
+      .st-result { margin-top: 8px; }
+      .st-result.hidden { display: none; }
+      .st-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .st-metric { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 9px 4px 8px; background: #f4f8ff; border: 1px solid #dbe6f7; border-radius: 10px; }
+      .st-ico { font-size: 15px; color: #1d4ed8; font-weight: 800; line-height: 1; }
+      .st-val { font-size: 20px; font-weight: 800; color: #0b2447; font-variant-numeric: tabular-nums; line-height: 1; }
+      .st-cap { font-size: 10.5px; color: #56657c; font-weight: 700; }
+      .st-irctc { margin-top: 7px; padding: 7px 10px; border-radius: 8px; font-size: 12px; font-weight: 700; }
+      .st-irctc.ok { background: #e7f7ec; color: #137a3a; border: 1px solid #b7e6c6; }
+      .st-irctc.bad { background: #fde8e8; color: #b42318; border: 1px solid #f5c2c0; }
+      .st-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 8px; }
+      .st-via { font-size: 11px; color: #6b7a90; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .st-foot .btn { flex: 0 0 auto; }
+    </style>
+    <main class="panel-wrap">
+      <section class="card">
+        <div class="opt-row">
+          <span class="opt-label">Automatic Fixer</span>
+          <label class="switch"><input type="checkbox" id="aiToggle" /><span class="slider"></span></label>
+        </div>
+        <div class="opt-row">
+          <span class="opt-label">QR Popup <span class="opt-sub">(separate window)</span></span>
+          <label class="switch"><input type="checkbox" id="qrPopupToggle" /><span class="slider"></span></label>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="opt-row">
+          <span class="opt-label">Password To Open App <span class="opt-sub">(6-digit passcode)</span></span>
+          <label class="switch"><input type="checkbox" id="appLockToggle" /><span class="slider"></span></label>
+        </div>
+        <div id="appLockStatus" class="gl-status"></div>
+      </section>
+
+      <section class="card">
+        <div class="gl-head">
+          <span class="opt-label">GoLogin API Key</span>
+          <span class="opt-sub">paste your token to launch your GoLogin profiles</span>
+        </div>
+        <div class="gl-row">
+          <input type="password" id="glKey" class="gl-input" placeholder="Paste GoLogin API key (JWT)…" autocomplete="off" spellcheck="false" />
+          <button type="button" id="glSave" class="btn primary sm">Save</button>
+        </div>
+        <div id="glStatus" class="gl-status"></div>
+      </section>
+
+      <section class="card">
+        <div class="gl-head">
+          <span class="opt-label">Backup &amp; Restore</span>
+          <span class="opt-sub">save all forms, login data &amp; GoLogin config to a password-protected file</span>
+        </div>
+        <div class="gl-row">
+          <button type="button" id="backupBtn" class="btn primary sm">Backup…</button>
+          <button type="button" id="restoreBtn" class="btn sm">Restore…</button>
+        </div>
+        <div id="bkStatus" class="gl-status"></div>
+      </section>
+
+      <section class="card">
+        <div class="gl-head">
+          <span class="opt-label">Speed Test</span>
+          <span class="opt-sub">check your connection &amp; that IRCTC is reachable — before a run</span>
+        </div>
+        <div class="gl-row">
+          <select id="stProxy" class="gl-input"></select>
+          <button type="button" id="stRun" class="btn primary sm">Run Test</button>
+        </div>
+        <div id="stResult" class="st-result hidden">
+          <div class="st-rating" id="stRating"></div>
+          <div class="st-grid">
+            <div class="st-metric"><span class="st-ico">↓</span><span class="st-val" id="stDown">—</span><span class="st-cap">Download · Mbps</span></div>
+            <div class="st-metric"><span class="st-ico">↑</span><span class="st-val" id="stUp">—</span><span class="st-cap">Upload · Mbps</span></div>
+            <div class="st-metric"><span class="st-ico">◍</span><span class="st-val" id="stPing">—</span><span class="st-cap">Ping · ms</span></div>
+          </div>
+          <div class="st-irctc" id="stIrctc"></div>
+          <div class="st-foot"><span class="st-via" id="stVia"></span><button type="button" id="stRetest" class="btn sm">Retest</button></div>
+        </div>
+        <div id="stStatus" class="gl-status"></div>
+      </section>
+    </main>
+
+    <div id="pwModal" class="pw-overlay hidden">
+      <div class="pw-card">
+        <div class="pw-head">
+          <span class="pw-titletext" id="pwTitle">Backup password</span>
+          <button type="button" class="pw-x" id="pwClose">✕</button>
+        </div>
+        <label class="pw-label" id="pwLabel" for="pwInput">Choose a password</label>
+        <input type="password" id="pwInput" class="pw-input" placeholder="Password" autocomplete="off" spellcheck="false" />
+        <div class="pw-actions">
+          <button type="button" class="btn" id="pwCancel">Cancel</button>
+          <button type="button" class="btn primary" id="pwOk">OK</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Backup: pick what to include + a password (operator 2026-06-27). Empty categories grey out. -->
+    <div id="bkModal" class="pw-overlay hidden">
+      <div class="pw-card">
+        <div class="pw-head">
+          <span class="pw-titletext">Create Backup</span>
+          <button type="button" class="pw-x" id="bkClose">✕</button>
+        </div>
+        <label class="pw-label">Choose what to back up</label>
+        <div class="bk-list">
+          <label class="bk-item"><input type="checkbox" id="bkForms" checked /><span class="bk-name">Forms</span><span class="bk-count" id="bkFormsCount"></span></label>
+          <label class="bk-item"><input type="checkbox" id="bkUsers" checked /><span class="bk-name">Login Data</span><span class="bk-count" id="bkUsersCount"></span></label>
+          <label class="bk-item"><input type="checkbox" id="bkProxies" checked /><span class="bk-name">Proxies</span><span class="bk-count" id="bkProxiesCount"></span></label>
+          <label class="bk-item"><input type="checkbox" id="bkPayments" checked /><span class="bk-name">Payment (UPI)</span><span class="bk-count" id="bkPaymentsCount"></span></label>
+          <label class="bk-item"><input type="checkbox" id="bkHistory" checked /><span class="bk-name">Tickets (booking history)</span><span class="bk-count" id="bkHistoryCount"></span></label>
+          <label class="bk-item"><input type="checkbox" id="bkGologin" checked /><span class="bk-name">GoLogin API Key</span><span class="bk-count" id="bkGologinCount"></span></label>
+          <label class="bk-item"><input type="checkbox" id="bkAadhaar" checked /><span class="bk-name">Aadhaar OTP registrations</span><span class="bk-count" id="bkAadhaarCount"></span></label>
+          <label class="bk-item"><input type="checkbox" id="bkAppLock" checked /><span class="bk-name">App passcode</span><span class="bk-count" id="bkAppLockCount"></span></label>
+        </div>
+        <label class="pw-label" for="bkPw">Password to encrypt the backup</label>
+        <input type="password" id="bkPw" class="pw-input" placeholder="Password (min 4 characters)" autocomplete="off" spellcheck="false" />
+        <div class="pw-actions">
+          <button type="button" class="btn" id="bkCancel">Cancel</button>
+          <button type="button" class="btn primary" id="bkCreate">Create Backup</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="alkModal" class="pw-overlay hidden">
+      <div class="pw-card">
+        <div class="pw-head">
+          <span class="pw-titletext" id="alkTitle">Set a passcode</span>
+          <button type="button" class="pw-x" id="alkClose">✕</button>
+        </div>
+        <label class="pw-label" id="alkLabel">Choose a 6-digit passcode</label>
+        <div class="alk-inputs" id="alkInputs">
+          <input type="password" inputmode="numeric" class="alk-d" maxlength="1" data-i="0" autocomplete="off" />
+          <input type="password" inputmode="numeric" class="alk-d" maxlength="1" data-i="1" autocomplete="off" />
+          <input type="password" inputmode="numeric" class="alk-d" maxlength="1" data-i="2" autocomplete="off" />
+          <input type="password" inputmode="numeric" class="alk-d" maxlength="1" data-i="3" autocomplete="off" />
+          <input type="password" inputmode="numeric" class="alk-d" maxlength="1" data-i="4" autocomplete="off" />
+          <input type="password" inputmode="numeric" class="alk-d" maxlength="1" data-i="5" autocomplete="off" />
+        </div>
+        <div id="alkErr" class="alk-err"></div>
+        <div class="pw-actions">
+          <button type="button" class="btn" id="alkCancel">Cancel</button>
+          <button type="button" class="btn primary" id="alkOk">Continue</button>
+        </div>
+      </div>
+    </div>
+
+
+  </body>
+</html>

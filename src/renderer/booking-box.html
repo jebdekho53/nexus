@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"
+    />
+    <title>Nexus · Booking</title>
+    <script defer src="./nexus-book-now.js"></script>
+
+
+    <script type="module" crossorigin src="./assets/booking-box-Bsv5-yxI.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/tamperLock-C-XpNF9g.js">
+    <link rel="modulepreload" crossorigin href="./assets/chrome-Cyb3f76v.js">
+    <link rel="modulepreload" crossorigin href="./assets/dropdown-L-Zz_M7o.js">
+    <link rel="modulepreload" crossorigin href="./assets/confirm-53PaKcg4.js">
+    <link rel="modulepreload" crossorigin href="./assets/idStatus-DUQgafJ5.js">
+    <link rel="modulepreload" crossorigin href="./assets/calendar-Ddx6Ecgp.js">
+    <link rel="modulepreload" crossorigin href="./assets/types-B0-2ZUtm.js">
+    <link rel="stylesheet" crossorigin href="./assets/booking-box-D9W7nPM1.css">
+    <link rel="stylesheet" crossorigin href="./assets/form-Cq-Qz7YX.css">
+    <link rel="stylesheet" href="./nexus-theme.css">
+    <script defer src="./nexus-build.js"></script>
+    <script defer src="./nexus-payments.js"></script>
+    <script defer src="./nexus-brand.js"></script>
+  </head>
+  <body>
+    <div class="bb-card">
+    <header class="bb-head">
+      <div class="bb-route">
+        <!-- A custom form NAME (operator 2026-09-29): shown INSTEAD of the route when the operator explicitly
+             renamed the form. #from/.arrow/#to stay in the DOM (hidden via .bb-route.named) because the success
+             and fail cards read the real route back out of them for their context chips. -->
+        <span id="formName" class="bb-formname hidden"></span>
+        <span id="from">—</span><span class="arrow">→</span><span id="to">—</span>
+        <span id="trainNo" class="bb-trainno" title="Train number"></span>
+        <span id="runDot" class="bb-livedot hidden" title="Running — login active"></span>
+        <span id="pairNum" class="bb-pairnum hidden" title="Pair number — P1 is the first box opened"></span>
+      </div>
+      <img id="browserLogo" class="bb-blogo hidden" alt="" title="Browser" />
+      <span id="acctTag" class="bb-acct hidden" title="Browser"></span>
+      <button type="button" class="bb-pin" id="pinBtn" title="Pin on top (stays above other apps)">
+        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5"/><path d="M15 9.34V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v3.34a2 2 0 0 1-.86 1.64l-1.28.9A2 2 0 0 0 6 13.5V15a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-1.5a2 2 0 0 0-.86-1.64l-1.28-.9A2 2 0 0 1 15 9.34z"/></svg>
+      </button>
+      <button type="button" class="bb-edit hidden" id="editBtn" title="Edit this form (locks ~20s before the slot)">✎</button>
+      <button type="button" class="win-close bb-close" id="winClose" title="Close">✕</button>
+    </header>
+
+    <main class="bb-body">
+      <!-- MANUAL LOGIN: shows the account's credentials so the operator can copy/paste them into the visible
+           browser (they're not injected into the provider page — that would be visible to bot-detection). -->
+      <div class="bb-creds hidden" id="credsPanel">
+        <div class="bb-creds-hint">Copy into the browser, then press Hand Over</div>
+        <div class="cred-row">
+          <span class="cred-k">User</span>
+          <code class="cred-v" id="credUser">—</code>
+          <button type="button" class="cred-copy" data-c="user">Copy</button>
+        </div>
+        <div class="cred-row">
+          <span class="cred-k">Pass</span>
+          <code class="cred-v" id="credPass">—</code>
+          <button type="button" class="cred-eye" id="credEye" title="Show / hide">👁</button>
+          <button type="button" class="cred-copy" data-c="pass">Copy</button>
+        </div>
+      </div>
+      <div class="bb-grid">
+        <div class="bb-box">
+          <div class="bb-k" id="kAcct">Account</div>
+          <button type="button" class="bb-pick" id="acctPick">
+            <span class="bb-pick-label">—</span><span class="bb-pick-caret">▾</span>
+          </button>
+          <select id="acctSel"></select>
+        </div>
+        <div class="bb-box">
+          <div class="bb-k" id="kPay">Payment</div>
+          <button type="button" class="bb-pick" id="payPick">
+            <span class="bb-pick-label">—</span><span class="bb-pick-caret">▾</span>
+          </button>
+          <select id="paySel">
+            <option value="paytm">Paytm QR</option>
+            <option value="phonepay">PhonePe QR</option>
+            <option value="razorpayqr">Razorpay QR</option>
+            <option value="irctcqr">IRCTC QR</option>
+            <option value="wallet">RailOne Wallet</option>
+            <option value="webwallet">WebLogin Wallet</option>
+            <option value="railoneqr">RailOne QR</option>
+            <option value="railoneupi">RailOne UPI</option>
+            <option value="paytmupi">Razorpay UPI</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="bb-info">
+        <!-- Order (operator 2026-07-10): login mode FIRST, then PROXY, then Date · Class · Quota · PSG. -->
+        <!-- WebLogin login mode (operator 2026-07-21): a per-pair AUTO / DIRECT / MANUAL dropdown (DIRECT is the 3rd option). -->
+        <button type="button" class="bb-chip bb-chip-pick bb-login" id="loginModeChip" title="WebLogin login mode — tap to pick: AUTO (full warm-up, app logs in) · MANUAL (you do the warm-up + log in in the window) · DIRECT (no warm-up — settle then book at the target time)"><b id="loginModeVal">AUTO</b><span class="bb-chip-caret">▾</span></button>
+        <!-- PROXY (operator 2026-07-10): a COMPACT chip IN the info row (NOT a separate row) — tap → popup to pick a
+             saved proxy; a rerouting proxy turns the chip GREEN + ✓, a fail reverts + "Invalid Proxy". Direct = no tag. -->
+        <button type="button" class="bb-chip bb-chip-pick bb-proxychip" id="proxyPick" title="Proxy for this pair — tap to select + test (Direct = machine IP)"><b id="kProxy">PROXY</b><span class="bb-proxy-tick" id="proxyTick">✓</span><span class="bb-chip-caret">▾</span></button>
+        <button type="button" class="bb-chip bb-chip-pick" id="datePick" title="Journey date — tap to pick"><b id="date">—</b><span class="bb-chip-caret">▾</span></button>
+        <button type="button" class="bb-chip bb-chip-pick" id="classPick" title="Class — tap to pick"><b id="classBox">—</b><span class="bb-chip-caret">▾</span></button>
+        <button type="button" class="bb-chip bb-chip-pick" id="quotaPick" title="Quota — tap to pick"><b id="quotaBox">—</b><span class="bb-chip-caret">▾</span></button>
+        <span class="bb-chip" title="Passengers"><span class="bb-pax">👤</span><b id="paxCount">—</b></span>
+      </div>
+      <!-- hidden value-sources for the Date/Class/Quota + Proxy pickers (operator 2026-07-10). The Date uses the
+           shared calendar (ui/calendar.ts) rendered into #boxCalPop; Class/Quota/Proxy reuse the openPicker() modal. -->
+      <select id="proxySel" class="bb-hidden-sel"><option value="">Direct (no proxy)</option></select>
+      <!-- WebLogin login-mode picker source (operator 2026-07-22): AUTO / MANUAL / DIRECT — DIRECT is the 3rd row. -->
+      <select id="upiPickSel" class="bb-hidden-sel"></select>
+      <select id="railModeSel" class="bb-hidden-sel">
+        <option value="normal">NORMAL LOGIN</option>
+        <option value="alt">Nexus Login</option>
+      </select>
+      <select id="loginFlowSel" class="bb-hidden-sel">
+        <option value="auto">AUTO — Full Warmup</option>
+        <option value="manual">MANUAL — You Do Warmup</option>
+        <option value="direct">DIRECT — No Warmup</option>
+        <option value="direct2">Nexus — No Warmup</option>
+      </select>
+      <select id="classSel" class="bb-hidden-sel">
+        <option value="SL">Sleeper (SL)</option>
+        <option value="3A">AC 3 Tier (3A)</option>
+        <option value="2A">AC 2 Tier (2A)</option>
+        <option value="1A">AC First (1A)</option>
+        <option value="3E">AC 3 Economy (3E)</option>
+        <option value="CC">Chair Car (CC)</option>
+        <option value="EC">Exec Chair (EC)</option>
+        <option value="2S">Second Sitting (2S)</option>
+        <option value="EA">Anubhuti (EA)</option>
+        <option value="EV">Vistadome (EV)</option>
+      </select>
+      <select id="quotaSel" class="bb-hidden-sel">
+        <option value="GN">General · Book now (GN)</option>
+        <option value="TQ">Tatkal (TQ)</option>
+        <option value="PT">Premium Tatkal (PT)</option>
+        <option value="8AM">Opening General · 8AM</option>
+        <option value="LD">Ladies (LD)</option>
+        <option value="SS">Sr. Citizen (SS)</option>
+      </select>
+      <input type="hidden" id="boxDateVal" />
+      <span id="boxDateLbl" class="bb-hidden-sel"></span>
+      <div id="boxCalPop" class="bb-calpop"></div>
+
+      <div class="bb-actions">
+        <!-- RAILONE PHONE PROMPT (operator 2026-07-30): the pair's login is done, but tokens are minted ON DEMAND by
+             the phone's own "TOKEN START". That instruction used to be crammed into the one-line status bar (which
+             ellipsized it away), so it lives here instead: a full-width, BLINKING two-line prompt that says exactly
+             what to press on the phone, then what to press here, with the live token-stream state on the 2nd line. -->
+        <div class="act-hint hidden" id="r1Hint">
+          <span class="hint-l1" id="r1HintL1"></span>
+          <span class="hint-l2" id="r1HintL2"></span>
+        </div>
+        <button type="button" class="act act-railone coming-soon" data-mode="railone" title="RailOne — coming soon">RailOne</button>
+        <button type="button" class="act act-weblogin" data-mode="weblogin">WebLogin</button>
+        <button type="button" class="act act-uilogin" data-mode="uilogin">UI Login</button>
+        <!-- Shown only while a run is active (alongside Pair + Stop): which login is running. The proxy status is
+             already the info-row PROXY chip (#proxyPick) — NO duplicate here (operator 2026-07-11). -->
+        <span class="act-runmode hidden" id="runMode" title="Login method running">● Running</span>
+        <!-- RailOne: "Start now" — arm with the tokens collected SO FAR + run immediately (operator's choice that
+             the current count is enough). Shown only during RailOne collection once login + ≥1 token are in. -->
+        <button type="button" class="act act-startnow hidden" id="r1StartNow" title="Use the tokens collected so far and start the booking now">▶ Start now</button>
+        <!-- RAILONE READY (operator 2026-07-29): the phone's Login is done for this pair, so the pair is READY but has
+             no tokens yet — the phone sends them on demand (its "TOKEN START"). We therefore do NOT auto-run: show a
+             ✓ Ready tick and an explicit START, and hide WebLogin / UI Login (a RailOne pair is RailOne-only). START
+             begins the run, which then waits for the token stream to come alive. -->
+        <span class="act-ready hidden" id="r1Ready" title="Login done for this pair — press START when the phone is minting">✓ Ready</span>
+        <button type="button" class="act act-start hidden" id="r1Start" title="Start this RailOne pair (waits for the phone's tokens)">▶ START</button>
+        <button type="button" class="act act-pair" id="pairBtn">Pair</button>
+        <button type="button" class="act act-handover hidden" id="handoverBtn" title="Take over now">⇥ Hand Over to App</button>
+        <button type="button" class="act act-stop hidden" id="stopBtn" title="Stop this run and close its browser">■ Stop</button>
+      </div>
+
+      <!-- The in-box payment QR lives INSIDE .bb-body so it fills ONLY the area between the header and the status
+           bar — the status bar (with "Check Now") stays visible + clickable during the QR, and the QR is never
+           clipped by it (operator 2026-09-24). -->
+      <div id="qrOverlay" class="qr-panel hidden">
+        <img id="qrImg" class="qr-img" alt="Payment QR" title="Click to enlarge" />
+      </div>
+    </main>
+    <!-- the status+time bar is a DIRECT child of the window (a sibling of .bb-head/.bb-body), so it reaches
+         the bottom corners exactly like the header reaches the top — the macOS frame clips both cleanly. -->
+    <div class="bb-statusrow">
+      <div class="bb-status ready" id="status">
+        <span class="bb-dot"></span>
+        <span id="statusText">Ready for Booking</span>
+        <!-- live availability short code (operator 2026-09-10): AVL 45 / RAC 12 / WL 64, coloured by the rates
+             source (same as the form); shown next to "Ready for Booking", cleared the moment a run starts -->
+        <span class="bb-avl hidden" id="availBadge" title="Live availability"></span>
+        <!-- fare amount (operator 2026-07-08): shown from /Y until the payment proceeds, so the operator sees the
+             amount before/through the QR to decide proceed-or-not; auto-hidden on the final result -->
+        <span class="bb-fare hidden" id="fareBadge" title="Amount to pay for this booking"></span>
+      </div>
+      <!-- IRCTC-QR only (operator 2026-09-24): the PG is polled on an interval (server pollIRCTC, default 10s);
+           "Check Now" forces an immediate poll — e.g. right after the user pays — instead of waiting the interval.
+           While a triggered poll is in flight it shows an in-button spinner + blocks further clicks until the
+           response; a confirmed payment auto-removes it (+ the QR). -->
+      <button type="button" class="bb-checknow hidden" id="checkNowBtn" title="Check the payment status now">
+        <span class="cn-spin" aria-hidden="true"></span>
+        <span class="cn-lbl">Check Now</span>
+      </button>
+      <div class="bb-timebox" title="Current time"><span class="bb-clock" id="clock">--:--:--</span></div>
+    </div>
+
+    <div id="pairModal" class="modal-overlay hidden">
+      <div class="modal-card pair-card">
+        <div class="modal-head">
+          <div class="modal-title">Create a Pair</div>
+          <button type="button" class="modal-x" id="pairClose">✕</button>
+        </div>
+        <div class="bb-field">
+          <label class="bb-lbl" for="pairUser">Saved login</label>
+          <select id="pairUser"><option value="">— Manual entry —</option></select>
+        </div>
+        <div class="pair-grid">
+          <div class="bb-field">
+            <label class="bb-lbl" for="pairUsername">Username</label>
+            <input type="text" id="pairUsername" placeholder="Username" autocomplete="off" />
+          </div>
+          <div class="bb-field">
+            <label class="bb-lbl" for="pairPassword">Password</label>
+            <input type="text" id="pairPassword" placeholder="Password" autocomplete="off" />
+          </div>
+        </div>
+        <div class="bb-field">
+          <label class="bb-lbl">If another pair books first</label>
+          <div class="pair-seg" id="pairConflict" data-value="backup">
+            <button type="button" class="pseg" data-v="stop"><span class="pseg-ic">■</span> Stop this run</button>
+            <button type="button" class="pseg active" data-v="backup"><span class="pseg-ic">＋</span> Book a backup</button>
+          </div>
+        </div>
+        <div class="bb-field">
+          <label class="bb-lbl" for="pairProxy">Proxy for this pair</label>
+          <select id="pairProxy"><option value="">— Same as this form —</option></select>
+          <div id="pairProxyResult" class="pair-proxy-result hidden"></div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn" id="pairCancel">Cancel</button>
+          <button type="button" class="btn primary" id="pairCreate">Create Pair</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="browserModal" class="modal-overlay hidden">
+      <div class="modal-card picker-card">
+        <div class="modal-head">
+          <div class="modal-title">Choose a browser</div>
+          <button type="button" class="modal-x" id="pickClose">✕</button>
+        </div>
+        <div class="picker-sub" id="pickSub">For WebLogin</div>
+        <input type="text" id="glFilter" class="gl-filter hidden" placeholder="🔍 Filter profiles…" autocomplete="off" />
+        <div id="browserList" class="browser-list"></div>
+      </div>
+    </div>
+
+    <div id="captchaOverlay" class="modal-overlay hidden">
+      <div class="modal-card captcha-card">
+        <div class="modal-head">
+          <div class="modal-title">🎟 Booking Captcha</div>
+        </div>
+        <img id="captchaImg" class="captcha-img bg-checker" alt="Captcha" />
+        <div class="cap-tools">
+          <button type="button" class="cap-tool" data-bg="checker" title="Checkerboard — readable for any glyph colour">▦</button>
+          <button type="button" class="cap-tool active" data-bg="dark" title="Dark background (light glyphs)">◼</button>
+          <button type="button" class="cap-tool" data-bg="light" title="Light background (dark glyphs)">◻</button>
+          <button type="button" class="cap-tool" id="capInvert" title="Invert colours">⤬ Invert</button>
+        </div>
+        <div id="captchaCaption" class="qr-caption"></div>
+        <input type="text" id="captchaInput" class="captcha-input" placeholder="Enter the captcha" autocomplete="off" autocapitalize="off" spellcheck="false" />
+        <button type="button" id="captchaSubmit" class="captcha-submit">Submit Captcha</button>
+      </div>
+    </div>
+
+    <!-- AADHAAR OTP — 6-digit input (auto-advance, auto-submit). The relay socket auto-fills + auto-submits
+         when the paired phone delivers the OTP; a pairing QR shows only when Auto OTP Sync is enabled. -->
+    <div id="otpOverlay" class="modal-overlay hidden">
+      <div class="modal-card otp-card">
+        <div class="modal-head">
+          <div class="modal-title">🔐 Aadhaar OTP</div>
+        </div>
+        <div id="otpMessage" class="otp-message">Enter the 6-digit OTP</div>
+        <div class="otp-inputs" id="otpInputs">
+          <input type="text" inputmode="numeric" class="otp-digit" maxlength="1" data-index="0" autocomplete="one-time-code" />
+          <input type="text" inputmode="numeric" class="otp-digit" maxlength="1" data-index="1" autocomplete="off" />
+          <input type="text" inputmode="numeric" class="otp-digit" maxlength="1" data-index="2" autocomplete="off" />
+          <input type="text" inputmode="numeric" class="otp-digit" maxlength="1" data-index="3" autocomplete="off" />
+          <input type="text" inputmode="numeric" class="otp-digit" maxlength="1" data-index="4" autocomplete="off" />
+          <input type="text" inputmode="numeric" class="otp-digit" maxlength="1" data-index="5" autocomplete="off" />
+        </div>
+        <div id="otpError" class="otp-err hidden"></div>
+        <!-- No Verify button — the OTP auto-submits the instant the 6th digit lands (like the extension).
+             Only Resend remains. -->
+        <div class="otp-actions">
+          <button type="button" id="otpResend" class="otp-resend otp-resend-wide">Resend OTP</button>
+        </div>
+        <div id="otpPair" class="otp-pair hidden">
+          <img id="otpQr" class="otp-qr" alt="Pair phone for OTP" />
+          <div class="otp-pair-cap">Scan with the OTP app to auto-fill</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AADHAAR OTP REGISTRATION — auto-prompted once per user id (after license) when Auto OTP Sync is on:
+         enter the last 4 digits → pairing QR + relay connect → Done. Re-prompts for a new user id (Pair). -->
+    <div id="otpRegOverlay" class="modal-overlay hidden">
+      <div class="modal-card otp-card">
+        <div class="modal-head"><div class="modal-title">🔐 Register Aadhaar OTP</div></div>
+        <div id="otpRegMsg" class="otp-message">Auto OTP Sync for <b id="otpRegUser"></b> — enter the last 4 digits of the Aadhaar-linked number.</div>
+        <div id="otpRegStep1">
+          <input type="text" inputmode="numeric" id="otpRegLast4" class="captcha-input otp-reg-last4" maxlength="4" placeholder="Last 4 digits" autocomplete="off" />
+          <div id="otpRegErr" class="otp-err hidden"></div>
+          <button type="button" id="otpRegStart" class="captcha-submit">Register &amp; Connect</button>
+        </div>
+        <div id="otpRegStep2" class="hidden">
+          <div id="otpRegStatus" class="otp-reg-status"></div>
+          <img id="otpRegQr" class="otp-qr" alt="Pair phone" />
+          <div class="otp-pair-cap">Scan with the OTP app, then tap Done</div>
+          <button type="button" id="otpRegDone" class="captcha-submit">Done</button>
+        </div>
+        <button type="button" id="otpRegSkip" class="otp-resend otp-reg-skip">Skip for now</button>
+      </div>
+    </div>
+
+    <div id="confirmOverlay" class="modal-overlay hidden">
+      <div class="modal-card confirm-card">
+        <div class="confirm-head">
+          <span id="confirmIcon" class="confirm-head-ic">⚠</span>
+          <span id="confirmTitle" class="confirm-title">Not Confirmed</span>
+        </div>
+        <div id="confirmStatus" class="confirm-status">WL</div>
+        <div id="confirmBreakdown" class="confirm-breakdown hidden"></div>
+        <div id="confirmDetail" class="confirm-detail"></div>
+        <div class="confirm-actions">
+          <button type="button" id="confirmCancel" class="confirm-btn cancel">Cancel</button>
+          <button type="button" id="confirmProceed" class="confirm-btn proceed">Proceed</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Usage time-window gate — booking runs only inside the allowed IST windows (themed, on-brand popup). -->
+    <div id="usageOverlay" class="modal-overlay hidden">
+      <div class="modal-card confirm-card usage-card">
+        <button type="button" id="usageClose" class="usage-x" title="Close" aria-label="Close">✕</button>
+        <div class="confirm-head">
+          <span class="confirm-head-ic info">⏰</span>
+          <span class="confirm-title">Booking Not Open Yet</span>
+        </div>
+        <div class="usage-sub">Booking runs only during these times <b>(IST)</b>:</div>
+        <div id="usageWindows" class="usage-windows"></div>
+        <div id="usageNext" class="usage-next hidden"></div>
+      </div>
+    </div>
+
+    <!-- SUCCESS booking confirmation — faithful port of the extension's showBookingModal (bundle.js:10343):
+         dark card, 10-item info grid with REDACTED PNR/boarding/destination/payment/login, masked passenger
+         rows (name + age), the waitlist screen when no berth confirmed, Download-E-Ticket + fingerprint. -->
+    <section id="pnrOverlay" class="tk-view hidden">
+      <div class="bk-container">
+        <div class="bk-card state-cnf" id="pnrCard">
+          <!-- Anti-copy watermark (operator 2026-09-02): ~200-300 tiled "Nexus" marks (mixed white+gold, faint,
+               rotated) over the WHOLE card, so a screenshot of a genuine success can't be cleanly reused / AI-faked.
+               pointer-events:none → never blocks the Download button or ✕. -->
+          <div class="bk-watermark" aria-hidden="true"></div>
+          <!-- Top half (operator 2026-08-28): the two things you actually scan for — PNR + route — promoted into the
+               coloured header. Station CODES only (fromCode/toCode, the fields kept "for the redacted short-code
+               ticket"), never the full names, which stay masked in the grid below. -->
+          <div class="bk-header">
+            <div class="bk-hrow">
+              <div class="bk-title">Nexus STATUS</div>
+              <div class="bk-badge confirmed" id="pnrBadge">CONFIRMED</div>
+            </div>
+            <div class="bk-pnrlabel">PNR</div>
+            <div class="bk-pnrbig" id="pnrNum"></div>
+            <div class="bk-route" id="pnrRoute">
+              <div class="bk-rstn"><span id="pnrFromCode"></span><small>Boarding</small></div>
+              <div class="bk-rline"></div>
+              <div class="bk-rstn"><span id="pnrToCode"></span><small>Destination</small></div>
+              <div class="bk-rmeta"><span id="pnrDate"></span><small id="pnrClassQuota"></small></div>
+            </div>
+          </div>
+          <!-- Which browser (+ GoLogin profile) + LOGIN MODE booked this ticket — operator 2026-06-09 / 2026-06-11.
+               Hidden if unknown. -->
+          <div class="bk-browser hidden" id="pnrBrowser">
+            <img class="bk-bicon" id="pnrBicon" alt="" />
+            <span class="bk-bname" id="pnrBname"></span>
+            <span class="bk-bmode" id="pnrBmode"></span>
+          </div>
+          <div class="bk-content">
+            <div id="pnrContent">
+              <!-- PNR / route / date / class / quota now live in the header, so the grid carries only what's left —
+                   which is what frees the room for the passenger table to fill the card. -->
+              <div class="bk-grid">
+                <div class="bk-item"><div class="bk-label">Train</div><div class="bk-value" id="pnrTrain"></div></div>
+                <div class="bk-item"><div class="bk-label">Boarding</div><div class="bk-value bk-masked" id="pnrBoard"></div></div>
+                <div class="bk-item"><div class="bk-label">Destination</div><div class="bk-value bk-masked" id="pnrDest"></div></div>
+                <div class="bk-item"><div class="bk-label">Payment</div><div class="bk-value bk-masked" id="pnrPay"></div></div>
+                <div class="bk-item"><div class="bk-label">Login ID</div><div class="bk-value bk-masked" id="pnrUser"></div></div>
+                <div class="bk-item"><div class="bk-label">PNR Time</div><div class="bk-value" id="pnrTime"></div></div>
+              </div>
+              <div class="bk-sec-title">Passengers</div>
+              <!-- The table BLOCK flexes to fill every remaining pixel and its rows stretch evenly, so a 3-passenger
+                   PNR leaves no dead space and a 6+ one compresses instead of growing the card. -->
+              <div class="bk-table">
+                <div class="bk-trow bk-thead"><div>#</div><div>Name</div><div>Age</div><div>Status</div></div>
+                <div id="pnrPaxRows"></div>
+              </div>
+            </div>
+            <!-- NOT MET: unchanged behaviour (no PNR was issued → no details, no download), just given a real
+                 explanation + the reassurance that nothing was charged, instead of a bare shouting heading. -->
+            <div class="bk-waitlist hidden" id="pnrWaitlist">
+              <div class="bk-nm-icon">🎫</div>
+              <h2 class="bk-wl-title">CHOICE OF CONFIRM<br />BERTHS NOT MET</h2>
+              <div class="bk-nm-sub">No berth could be confirmed for this journey, so the booking was not completed.</div>
+              <div class="bk-nm-note">✓ No amount charged</div>
+            </div>
+          </div>
+          <div class="bk-footer" id="pnrFooter">
+            <div class="bk-fbtns">
+              <button type="button" class="bk-dl" id="pnrPrint">Download E-Ticket</button>
+              <span class="bk-ver" id="pnrVer"></span>
+            </div>
+            <div class="bk-fp" id="pnrFp"></div>
+          </div>
+        </div>
+        <button type="button" class="bk-close" id="pnrClose" title="Close">&times;</button>
+      </div>
+    </section>
+
+    <!-- Final FAILURE / not-booked result — replaces the box too (no popup), ticket-style in red. -->
+    <section id="failView" class="tk-view hidden">
+      <div class="ticket-card">
+        <div class="tk-head fail-head">
+          <span class="pnr-badge fail-badge" id="failBadge">NOT BOOKED</span>
+          <!-- app BRAND, bold, top-RIGHT (operator 2026-08-29) — pushed right by margin-left:auto, before the ✕. -->
+          <span class="fail-brand" id="failBrand">Nexus</span>
+          <button type="button" class="modal-x" id="failClose" title="Close">✕</button>
+        </div>
+        <div class="fail-body">
+          <div class="fail-main">
+            <div class="fail-icon" id="failIcon">⚠</div>
+            <div class="fail-title" id="failTitle">Booking Unsuccessful</div>
+            <div class="fail-msg" id="failMsg">—</div>
+          </div>
+          <div class="tk-chips fail-ctx" id="failCtx"></div>
+          <div class="fail-note" id="failNote"></div>
+        </div>
+        <div class="tk-actions">
+          <button type="button" class="tk-btn tk-retry" id="failRetryBtn" title="Fix it in the browser, then resume from the current page">↻ Try Again</button>
+          <button type="button" class="tk-btn tk-edit hidden" id="failEditBtn" title="Edit the train / class / quota / boarding, then Resume">✎ Edit</button>
+          <button type="button" class="tk-btn tk-print" id="failCloseBtn">Close</button>
+        </div>
+      </div>
+    </section>
+
+    <div id="pickerModal" class="modal-overlay hidden">
+      <div class="modal-card select-card">
+        <div class="modal-head">
+          <div class="modal-title" id="pickerTitle">Select</div>
+          <button type="button" class="modal-x" id="pickerClose">✕</button>
+        </div>
+        <!-- SEARCH (operator 2026-10-03): shown only when the list is long enough to need it (100+ saved IDs are
+             unusable otherwise). Hidden for short lists so the compact picker stays clean. -->
+        <div id="pickerSearchRow" class="picker-search hidden">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+          <input id="pickerSearch" type="text" autocomplete="off" spellcheck="false" placeholder="Search…" />
+          <span id="pickerCount" class="picker-count"></span>
+        </div>
+        <div id="pickerList" class="picker-list"></div>
+        <div id="pickerEmpty" class="picker-empty hidden">No match</div>
+      </div>
+    </div>
+
+    <!-- License gate — the box opens LOCKED behind this until a valid key is entered. -->
+    <div id="licOverlay" class="lic-overlay hidden">
+      <div class="lic-card">
+        <div class="lic-head">
+          <span class="lic-title"><span class="lic-lock">🔒</span> License Required</span>
+          <span id="licRoute" class="lic-route"></span>
+          <button type="button" id="licClose" class="lic-x" title="Close this pair">✕</button>
+        </div>
+        <div class="lic-body">
+          <div id="licEntry">
+            <div class="lic-flabel">Fingerprint ID</div>
+            <div class="lic-fp-wrap">
+              <code id="licFp" class="lic-fp" title="Click to copy">—</code>
+              <button type="button" id="licCopy" class="lic-copy" title="Copy fingerprint">⧉</button>
+            </div>
+            <div class="lic-flabel">License Key</div>
+            <textarea id="licKey" class="lic-key" rows="2" placeholder="Paste your license key here…" spellcheck="false"></textarea>
+            <div id="licErr" class="lic-err"></div>
+            <div class="lic-actions">
+              <button type="button" id="licPaste" class="lic-paste" title="Paste the license key you copied">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="2" width="8" height="4" rx="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path></svg>
+                <span>Paste Key</span>
+              </button>
+              <button type="button" id="licValidate" class="lic-btn">Validate &amp; Unlock</button>
+            </div>
+          </div>
+          <div id="licBlocked" class="lic-blocked hidden">
+            <div class="lic-blk-icon">⛔</div>
+            <div id="licBlkMsg" class="lic-blk-msg">Blocked</div>
+            <div class="lic-blk-sub">You cannot proceed.</div>
+            <button type="button" id="licBlkClose" class="lic-blk-btn">Close</button>
+          </div>
+        </div>
+        <!-- Progress overlay while /analytics is checked (so the operator doesn't re-click Validate). -->
+        <div id="licProgress" class="lic-progress hidden">
+          <div class="lic-spinner"></div>
+          <div class="lic-progress-txt">Validating license…</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+    </div><!-- /.bb-card -->
+
+  </body>
+</html>

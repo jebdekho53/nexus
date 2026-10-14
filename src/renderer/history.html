@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"
+    />
+    <title>Nexus · Tickets</title>
+
+
+    <script type="module" crossorigin src="./assets/history-D4ndJJYZ.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/tamperLock-C-XpNF9g.js">
+    <link rel="modulepreload" crossorigin href="./assets/chrome-Cyb3f76v.js">
+    <link rel="modulepreload" crossorigin href="./assets/confirm-53PaKcg4.js">
+    <link rel="modulepreload" crossorigin href="./assets/types-B0-2ZUtm.js">
+    <link rel="stylesheet" crossorigin href="./assets/history-D_wxLsCS.css">
+    <link rel="stylesheet" crossorigin href="./assets/form-Cq-Qz7YX.css">
+    <link rel="stylesheet" href="./nexus-theme.css">
+    <script defer src="./nexus-build.js"></script>
+    <script defer src="./nexus-payments.js"></script>
+    <script defer src="./nexus-brand.js"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="dot"></span>
+        <span>Tickets</span>
+        <span class="sub">· booked on this device</span>
+      </div>
+      <span class="spacer"></span>
+      <button type="button" id="deleteAllBtn" class="btn danger sm" title="Delete ALL history + free the on-disk ticket archive">🗑 Delete All</button>
+      <button type="button" class="win-close" id="winClose" title="Close">✕</button>
+    </header>
+
+    <main class="hist-wrap">
+      <div class="searchbar">
+        <div class="search-field">
+          <span class="search-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="20" y1="20" x2="16.5" y2="16.5"></line></svg></span>
+          <input id="search" type="search" placeholder="Search id, route, train or PNR…" autocomplete="off" spellcheck="false" />
+          <span id="searchCount" class="search-count"></span>
+        </div>
+        <div class="date-field">
+          <span class="cal-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16" rx="2"></rect><path d="M3 9h18M8 2.5v4M16 2.5v4"></path></svg></span>
+          <select id="dateFilter" title="Filter by booking date">
+            <option value="all">All dates</option>
+            <option value="today">Today</option>
+            <option value="yesterday">Yesterday</option>
+            <option value="7d">Last 7 days</option>
+            <option value="30d">Last 30 days</option>
+          </select>
+        </div>
+      </div>
+      <div id="list"></div>
+      <div id="noMatch" class="empty hidden">No bookings match your filter.</div>
+      <div id="empty" class="empty hidden">No bookings yet. Every confirmed ticket you book will appear here.</div>
+    </main>
+
+    <div id="toast" class="toast"></div>
+
+
+  </body>
+</html>

@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"
+    />
+    <title>Nexus · Live Logs</title>
+
+
+
+    <style>
+      .run-banner {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        background: linear-gradient(90deg, #e8f0ff, #f6faff);
+        border-bottom: 1px solid #d7e3f5;
+        font-size: 13px;
+        font-weight: 800;
+        color: #1d4ed8;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .run-banner .ri-icon {
+        flex: 0 0 auto;
+        font-size: 12px;
+      }
+      .run-banner #runInfo.ri-idle {
+        color: #94a3b8;
+        font-weight: 600;
+      }
+    </style>
+    <script defer src="./nexus-logs.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/tamperLock-C-XpNF9g.js">
+    <link rel="modulepreload" crossorigin href="./assets/chrome-Cyb3f76v.js">
+    <link rel="modulepreload" crossorigin href="./assets/confirm-53PaKcg4.js">
+    <link rel="modulepreload" crossorigin href="./assets/types-B0-2ZUtm.js">
+    <link rel="stylesheet" crossorigin href="./assets/logs-BVps8JDq.css">
+    <link rel="stylesheet" crossorigin href="./assets/form-Cq-Qz7YX.css">
+    <link rel="stylesheet" crossorigin href="./assets/panel-F3GpfR9X.css">
+    <link rel="stylesheet" href="./nexus-theme.css">
+    <script defer src="./nexus-build.js"></script>
+    <script defer src="./nexus-payments.js"></script>
+    <script defer src="./nexus-brand.js"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="dot"></span>
+        <span>Live Logs</span>
+        <span class="sub">· booking diagnostics</span>
+      </div>
+      <span class="spacer"></span>
+      <label class="chk follow"><input type="checkbox" id="follow" checked /> Auto-scroll</label>
+      <button type="button" id="downloadBtn" class="btn sm" title="Download the diagnostic log to share for support">⤓ Download</button>
+      <button type="button" id="clearBtn" class="btn sm">Clear</button>
+      <button type="button" class="win-close" id="winClose" title="Close">✕</button>
+    </header>
+    <div class="run-banner" id="runBanner">
+      <span class="ri-icon">▶</span>
+      <span id="runInfo" class="ri-idle">No active run yet — start a booking to see the browser &amp; login mode here.</span>
+    </div>
+    <!-- Per-pair filter: All / P1 / P2 … (each chip matches that pair's booking-box colour). Hidden until a pair appears. -->
+    <div class="filter-bar" id="filterBar" style="display: none"></div>
+
+    <main class="logs-wrap">
+      <div id="logList" class="log-list"></div>
+      <div id="empty" class="log-empty">Waiting for activity… run a booking to see live logs here.</div>
+    </main>
+
+    <!-- Download picker: choose which minibox(es) to export (default All). Export = one JSON grouped + sorted by pair. -->
+    <div class="pick-overlay" id="pickerOverlay" style="display: none">
+      <div class="pick-card">
+        <div class="pick-title">Download logs</div>
+        <div class="pick-sub">Choose which minibox(es) to include — entries are grouped &amp; sorted by pair order.</div>
+        <div class="pick-list" id="pickerList"></div>
+        <div class="pick-actions">
+          <button type="button" class="btn sm" id="pickerCancel">Cancel</button>
+          <button type="button" class="btn sm primary" id="pickerConfirm">Download</button>
+        </div>
+      </div>
+    </div>
+
+
+  </body>
+</html>

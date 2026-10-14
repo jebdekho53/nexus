@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-14",
+  "domain": "https://nexus.vaidya-gpt.com",
+  "server": "62.72.57.41",
+  "service": "nexus-service",
+  "registry": "/srv/nexus-data",
+  "testsPassed": 36,
+  "releaseActivationVerified": true,
+  "qaKeyRevoked": true,
+  "developerKeyFree": true,
+  "adminApiAuthVerified": true,
+  "adminSellerPagesHttps": true,
+  "credentialsCommitted": false,
+  "existingServicesPreserved": true
+}

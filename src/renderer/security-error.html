@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self' blob:"
+    />
+    <title>Nexus · Security Check</title>
+
+
+    <script type="module" crossorigin src="./assets/security-error-4nE4tbqg.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/security-error-BiEWpQRq.css">
+    <link rel="stylesheet" crossorigin href="./assets/form-Cq-Qz7YX.css">
+    <link rel="stylesheet" href="./nexus-theme.css">
+    <script defer src="./nexus-build.js"></script>
+    <script defer src="./nexus-payments.js"></script>
+    <script defer src="./nexus-brand.js"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="dot" aria-hidden="true"></span>
+        <span>
+          Security Check
+          <span class="sub">Device protection</span>
+        </span>
+      </div>
+      <span class="spacer"></span>
+      <span class="sechead-state">ACTION REQUIRED</span>
+      <button type="button" class="win-close" id="topQuitBtn" aria-label="Quit">✕</button>
+    </header>
+
+    <main class="secmain">
+      <section class="secsummary">
+        <div class="secsummary-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" role="presentation">
+            <path d="M12 2.5 20 6v5.2c0 5.1-3.3 8.7-8 10.3-4.7-1.6-8-5.2-8-10.3V6l8-3.5Z" />
+            <path d="M12 7.2v5.4M12 16.2h.01" />
+          </svg>
+        </div>
+        <div class="secsummary-copy">
+          <div class="sectitle" id="title">Unsupported Software Detected</div>
+          <div class="secsub" id="sub">The app can’t run while this software is on your device.</div>
+        </div>
+      </section>
+
+      <section class="secpanel">
+        <div class="secsection-head">
+          <div class="seclabel" id="listLabel">Found on this device</div>
+          <span class="secblocked-chip" id="blockState">STARTUP PAUSED</span>
+        </div>
+        <ul class="seclist" id="list"></ul>
+        <div class="secsteps" id="steps">
+          <span class="secsteps-icon" aria-hidden="true">1</span>
+          <span id="stepsText">
+            Close the software if it is running, delete the folders/files listed above, then press Re-check.
+          </span>
+        </div>
+        <div class="secnote hidden" id="note"></div>
+        <div class="secbypass hidden" id="bypassPanel">
+          <div class="secbypass-head">
+            <span class="secbypass-mark">KEY</span>
+            <div class="secbypass-title">Operator security bypass</div>
+          </div>
+          <div class="secbypass-help">
+            Send the device ID code to the operator. Paste back only the signed key generated for this device and app
+            version. License, version and server blocks remain enforced.
+          </div>
+          <label for="bypassRequest">Device ID code</label>
+          <div class="secbypass-row">
+            <textarea id="bypassRequest" readonly spellcheck="false"></textarea>
+            <button type="button" class="seccopy" id="copyBypassRequest">Copy</button>
+          </div>
+          <label for="bypassKey">Signed bypass key</label>
+          <textarea id="bypassKey" placeholder="Paste support key" spellcheck="false"></textarea>
+          <div class="secbypass-submit">
+            <span class="secbypass-status" id="bypassStatus"></span>
+            <button type="button" class="btn primary" id="applyBypassBtn">Unlock &amp; restart</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="secactions">
+      <button type="button" class="btn danger hidden" id="deleteAllBtn">Delete all</button>
+      <button type="button" class="btn bypass hidden" id="bypassBtn">BYPASS</button>
+      <span class="spacer"></span>
+      <button type="button" class="btn ghost" id="quitBtn">Quit</button>
+      <button type="button" class="btn primary" id="recheckBtn">Re-check device</button>
+    </footer>
+
+  </body>
+</html>

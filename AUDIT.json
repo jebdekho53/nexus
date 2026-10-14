@@ -1,0 +1,1290 @@
+{
+  "functionsScanned": 4354,
+  "method": "Decoded property/string references in every generated function; candidates include ordinary browser closes and RegExp.exec. Counts are not counts of harmful behavior.",
+  "counts": {
+    "exit_candidates": 92,
+    "network_candidates": 51,
+    "command_candidates": 64
+  },
+  "reviewedPaths": {
+    "f2689": "Quick local process denylist that blocked ChatGPT/Codex after startup",
+    "f2835": "Continuous runtime check",
+    "f2877": "Forced shutdown: app.exit, process.exit, process.kill(SIGKILL)",
+    "f2009": "Encrypted client-update reporting containing booking metadata",
+    "f1778": "External captcha-service calls under a telementry route",
+    "f4249": "Updater writes batch/VBS scripts and invokes taskkill/installer/restart",
+    "f4252": "Updater fallback launches cmd.exe",
+    "nativeDllRequests": "Koffi loads shipped native request/requestAsync clients. Native clients are enabled in the live build."
+  },
+  "policy": "Live source build: networking, browser processes and native clients enabled. Original window managers preserved. Vendor license/version and local inspection gates overridden; f2877 forced shutdown and f2009 reporting disabled. Genuine service authentication remains. Explicit Quit/Restart uses the confirmation page.",
+  "nativeNodeAddons": [
+    "vendor\\node_modules\\@koromix\\koffi-win32-ia32\\win32_ia32\\koffi.node",
+    "vendor\\node_modules\\@koromix\\koffi-win32-x64\\win32_x64\\koffi.node",
+    "vendor\\node_modules\\sqlite3\\build\\Release\\node_sqlite3.node"
+  ],
+  "candidates": {
+    "exit_candidates": [
+      {
+        "function": "f4352",
+        "references": [
+          "quit"
+        ]
+      },
+      {
+        "function": "f2836",
+        "references": [
+          "onKill"
+        ]
+      },
+      {
+        "function": "f2400",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f2142",
+        "references": [
+          "relaunch"
+        ]
+      },
+      {
+        "function": "f2136",
+        "references": [
+          "relaunch"
+        ]
+      },
+      {
+        "function": "f2129",
+        "references": [
+          "relaunch"
+        ]
+      },
+      {
+        "function": "f2096",
+        "references": [
+          "relaunch"
+        ]
+      },
+      {
+        "function": "f2087",
+        "references": [
+          "relaunch"
+        ]
+      },
+      {
+        "function": "f2082",
+        "references": [
+          "relaunch"
+        ]
+      },
+      {
+        "function": "f2079",
+        "references": [
+          "relaunch"
+        ]
+      },
+      {
+        "function": "f1938",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f1927",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f1904",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f1862",
+        "references": [
+          "destroy"
+        ]
+      },
+      {
+        "function": "f1794",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f1793",
+        "references": [
+          "destroy"
+        ]
+      },
+      {
+        "function": "f1710",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f1704",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f1593",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f847",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f298",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f240",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f246",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f199",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f4349",
+        "references": [
+          "quit"
+        ]
+      },
+      {
+        "function": "f4346",
+        "references": [
+          "relaunch"
+        ]
+      },
+      {
+        "function": "f4296",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f4297",
+        "references": [
+          "relaunch"
+        ]
+      },
+      {
+        "function": "f4292",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f4288",
+        "references": [
+          "destroy"
+        ]
+      },
+      {
+        "function": "f4263",
+        "references": [
+          "destroy"
+        ]
+      },
+      {
+        "function": "f4255",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f4249",
+        "references": [
+          "destroy"
+        ]
+      },
+      {
+        "function": "f4239",
+        "references": [
+          "destroy"
+        ]
+      },
+      {
+        "function": "f4237",
+        "references": [
+          "quit"
+        ]
+      },
+      {
+        "function": "f4235",
+        "references": [
+          "destroy"
+        ]
+      },
+      {
+        "function": "f4162",
+        "references": [
+          "quit"
+        ]
+      },
+      {
+        "function": "f4160",
+        "references": [
+          "relaunch"
+        ]
+      },
+      {
+        "function": "f4155",
+        "references": [
+          "quit"
+        ]
+      },
+      {
+        "function": "f4147",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f4141",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f4145",
+        "references": [
+          "destroy"
+        ]
+      },
+      {
+        "function": "f4132",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f4128",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f4112",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f4101",
+        "references": [
+          "destroy"
+        ]
+      },
+      {
+        "function": "f4081",
+        "references": [
+          "relaunch"
+        ]
+      },
+      {
+        "function": "f3941",
+        "references": [
+          "relaunch"
+        ]
+      },
+      {
+        "function": "f3942",
+        "references": [
+          "exit"
+        ]
+      },
+      {
+        "function": "f3926",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f3929",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f3897",
+        "references": [
+          "relaunch"
+        ]
+      },
+      {
+        "function": "f3783",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f3780",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f3774",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f3762",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f3764",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f3756",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f3730",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f3729",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f3711",
+        "references": [
+          "destroy"
+        ]
+      },
+      {
+        "function": "f3702",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f3601",
+        "references": [
+          "exit",
+          "relaunch"
+        ]
+      },
+      {
+        "function": "f3227",
+        "references": [
+          "destroy"
+        ]
+      },
+      {
+        "function": "f3225",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f3213",
+        "references": [
+          "destroy"
+        ]
+      },
+      {
+        "function": "f3004",
+        "references": [
+          "destroy"
+        ]
+      },
+      {
+        "function": "f2984",
+        "references": [
+          "destroy"
+        ]
+      },
+      {
+        "function": "f2877",
+        "references": [
+          "exit"
+        ]
+      },
+      {
+        "function": "f2791",
+        "references": [
+          "destroy"
+        ]
+      },
+      {
+        "function": "f2788",
+        "references": [
+          "destroy"
+        ]
+      },
+      {
+        "function": "f2786",
+        "references": [
+          "destroy"
+        ]
+      },
+      {
+        "function": "f2647",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f750",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f271",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f269",
+        "references": [
+          "exit"
+        ]
+      },
+      {
+        "function": "f260",
+        "references": [
+          "relaunch"
+        ]
+      },
+      {
+        "function": "f174",
+        "references": [
+          "exit"
+        ]
+      },
+      {
+        "function": "f172",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f163",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f141",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f133",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f132",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f105",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f86",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f24",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f34",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f28",
+        "references": [
+          "destroy"
+        ]
+      },
+      {
+        "function": "f27",
+        "references": [
+          "destroy"
+        ]
+      },
+      {
+        "function": "f10",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f21",
+        "references": [
+          "close"
+        ]
+      },
+      {
+        "function": "f14",
+        "references": [
+          "close"
+        ]
+      }
+    ],
+    "network_candidates": [
+      {
+        "function": "f2397",
+        "references": [
+          "connect"
+        ]
+      },
+      {
+        "function": "f2246",
+        "references": [
+          "durable queue failed before telemetry \u2014 attempting live delivery"
+        ]
+      },
+      {
+        "function": "f2132",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f2116",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f2052",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f1771",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f1652",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f1625",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f1619",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f1550",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f313",
+        "references": [
+          "http"
+        ]
+      },
+      {
+        "function": "f289",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f288",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f287",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f286",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f285",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f3926",
+        "references": [
+          "connect"
+        ]
+      },
+      {
+        "function": "f3911",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f3780",
+        "references": [
+          "connect"
+        ]
+      },
+      {
+        "function": "f3719",
+        "references": [
+          "http"
+        ]
+      },
+      {
+        "function": "f3712",
+        "references": [
+          "fetch",
+          "request"
+        ]
+      },
+      {
+        "function": "f3695",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f3286",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f3266",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f3253",
+        "references": [
+          "fetch",
+          "request"
+        ]
+      },
+      {
+        "function": "f3000",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f2983",
+        "references": [
+          "connect",
+          "request"
+        ]
+      },
+      {
+        "function": "f2984",
+        "references": [
+          "connect"
+        ]
+      },
+      {
+        "function": "f2790",
+        "references": [
+          "connect"
+        ]
+      },
+      {
+        "function": "f2795",
+        "references": [
+          "connect"
+        ]
+      },
+      {
+        "function": "f2784",
+        "references": [
+          "connect"
+        ]
+      },
+      {
+        "function": "f2009",
+        "references": [
+          "telemetry"
+        ]
+      },
+      {
+        "function": "f2007",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f1193",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f1206",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f1057",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f979",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f974",
+        "references": [
+          "fetch"
+        ]
+      },
+      {
+        "function": "f973",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f801",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f764",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f750",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f728",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f734",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f662",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f616",
+        "references": [
+          "fetch",
+          "request"
+        ]
+      },
+      {
+        "function": "f611",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f300",
+        "references": [
+          "http"
+        ]
+      },
+      {
+        "function": "f24",
+        "references": [
+          "connect",
+          "request"
+        ]
+      },
+      {
+        "function": "f29",
+        "references": [
+          "request"
+        ]
+      },
+      {
+        "function": "f25",
+        "references": [
+          "connect"
+        ]
+      }
+    ],
+    "command_candidates": [
+      {
+        "function": "f3518",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f2764",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f2729",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f2728",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f2716",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f2655",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f1764",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f1760",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f1736",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f1662",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f1587",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f4314",
+        "references": [
+          "execFile",
+          "powershell"
+        ]
+      },
+      {
+        "function": "f4249",
+        "references": [
+          "cmd.exe",
+          "spawn"
+        ]
+      },
+      {
+        "function": "f4252",
+        "references": [
+          "cmd.exe",
+          "spawn"
+        ]
+      },
+      {
+        "function": "f4186",
+        "references": [
+          "execFile"
+        ]
+      },
+      {
+        "function": "f4173",
+        "references": [
+          "execFile"
+        ]
+      },
+      {
+        "function": "f4170",
+        "references": [
+          "execFile",
+          "powershell"
+        ]
+      },
+      {
+        "function": "f4067",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f3359",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f3357",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f3314",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f3232",
+        "references": [
+          "powershell"
+        ]
+      },
+      {
+        "function": "f3096",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f3013",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f2993",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f2932",
+        "references": [
+          "powershell"
+        ]
+      },
+      {
+        "function": "f2805",
+        "references": [
+          "exec",
+          "powershell"
+        ]
+      },
+      {
+        "function": "f2782",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f2780",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f2738",
+        "references": [
+          "powershell"
+        ]
+      },
+      {
+        "function": "f2732",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f2731",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f2730",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f2660",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f2654",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f2648",
+        "references": [
+          "powershell"
+        ]
+      },
+      {
+        "function": "f2645",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f2644",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f2643",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f2623",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f2609",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f2607",
+        "references": [
+          "powershell"
+        ]
+      },
+      {
+        "function": "f1612",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f1611",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f1610",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f1609",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f1608",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f1602",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f1601",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f1319",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f1052",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f982",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f639",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f558",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f548",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f506",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f319",
+        "references": [
+          "execFile",
+          "powershell"
+        ]
+      },
+      {
+        "function": "f270",
+        "references": [
+          "cmd.exe",
+          "spawn"
+        ]
+      },
+      {
+        "function": "f266",
+        "references": [
+          "execFile",
+          "powershell"
+        ]
+      },
+      {
+        "function": "f265",
+        "references": [
+          "powershell"
+        ]
+      },
+      {
+        "function": "f255",
+        "references": [
+          "powershell"
+        ]
+      },
+      {
+        "function": "f208",
+        "references": [
+          "execFile",
+          "powershell"
+        ]
+      },
+      {
+        "function": "f163",
+        "references": [
+          "exec"
+        ]
+      },
+      {
+        "function": "f42",
+        "references": [
+          "exec"
+        ]
+      }
+    ]
+  }
+}

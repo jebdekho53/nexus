@@ -1,0 +1,16 @@
+services:
+  nexus:
+    build: .
+    container_name: nexus-service
+    restart: unless-stopped
+    volumes:
+      - /srv/nexus-data:/data
+    networks:
+      - edge
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8082/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+networks:
+  edge:
+    external: true

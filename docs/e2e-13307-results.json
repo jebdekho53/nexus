@@ -1,0 +1,804 @@
+{
+  "date": "2026-10-14",
+  "train": "13307",
+  "route": "DDU → BSB",
+  "journeyDate": "2026-10-20",
+  "class": "SL",
+  "quota": "GN",
+  "availability": "AVL-8",
+  "paymentMethod": "Paytm QR",
+  "paymentSubmitted": false,
+  "originalFormsChanged": false,
+  "modes": [
+    {
+      "mode": "direct",
+      "loginSeconds": 25.68,
+      "qrReportedByBooking": true,
+      "loginToQrSeconds": 101.36,
+      "bookingToQrSeconds": 75.41,
+      "panelQrImageVerified": false,
+      "qrEventImageVerified": false,
+      "outcome": "booking-failed",
+      "availabilitySeconds": 0.21,
+      "sessionClosed": true,
+      "stages": [
+        {
+          "at": "2026-10-14T08:29:38.181Z",
+          "stage": "weblogin:launch"
+        },
+        {
+          "at": "2026-10-14T08:29:39.690Z",
+          "stage": "gologin:proxy"
+        },
+        {
+          "at": "2026-10-14T08:29:39.771Z",
+          "stage": "weblogin:warmup"
+        },
+        {
+          "at": "2026-10-14T08:29:41.053Z",
+          "stage": "weblogin:navigate"
+        },
+        {
+          "at": "2026-10-14T08:29:41.876Z",
+          "stage": "weblogin:settle"
+        },
+        {
+          "at": "2026-10-14T08:29:54.601Z",
+          "stage": "weblogin:nav"
+        },
+        {
+          "at": "2026-10-14T08:29:56.291Z",
+          "stage": "weblogin:trigger"
+        },
+        {
+          "at": "2026-10-14T08:29:57.605Z",
+          "stage": "weblogin:form"
+        },
+        {
+          "at": "2026-10-14T08:29:57.622Z",
+          "stage": "weblogin:fill"
+        },
+        {
+          "at": "2026-10-14T08:29:58.390Z",
+          "stage": "weblogin:submit"
+        },
+        {
+          "at": "2026-10-14T08:30:02.940Z",
+          "stage": "weblogin:done"
+        },
+        {
+          "at": "2026-10-14T08:30:03.230Z",
+          "stage": "booking:start"
+        },
+        {
+          "at": "2026-10-14T08:30:03.254Z",
+          "stage": "weblogin:direct"
+        },
+        {
+          "at": "2026-10-14T08:30:03.321Z",
+          "stage": "booking:search"
+        },
+        {
+          "at": "2026-10-14T08:30:04.621Z",
+          "stage": "search:from"
+        },
+        {
+          "at": "2026-10-14T08:30:10.445Z",
+          "stage": "search:to"
+        },
+        {
+          "at": "2026-10-14T08:30:15.607Z",
+          "stage": "search:class"
+        },
+        {
+          "at": "2026-10-14T08:30:23.385Z",
+          "stage": "search:quota"
+        },
+        {
+          "at": "2026-10-14T08:30:23.445Z",
+          "stage": "search:date"
+        },
+        {
+          "at": "2026-10-14T08:30:24.287Z",
+          "stage": "search:submit"
+        },
+        {
+          "at": "2026-10-14T08:30:28.406Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:30:28.985Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:30:28.991Z",
+          "stage": "booking:boarding"
+        },
+        {
+          "at": "2026-10-14T08:31:14.573Z",
+          "stage": "booking:submit"
+        },
+        {
+          "at": "2026-10-14T08:31:15.253Z",
+          "stage": "booking:fare"
+        },
+        {
+          "at": "2026-10-14T08:31:15.270Z",
+          "stage": "booking:addon"
+        },
+        {
+          "at": "2026-10-14T08:31:15.859Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:31:16.190Z",
+          "stage": "booking:fare"
+        },
+        {
+          "at": "2026-10-14T08:31:16.195Z",
+          "stage": "booking:pay-ready"
+        },
+        {
+          "at": "2026-10-14T08:31:16.199Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:31:16.229Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:31:16.906Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:31:18.640Z",
+          "stage": "booking:qr"
+        },
+        {
+          "at": "2026-10-14T08:31:21.169Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:31:23.654Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:31:25.751Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:31:27.848Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:31:29.945Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:31:32.084Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:31:34.237Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:31:36.362Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:31:38.473Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:31:40.591Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:31:42.687Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:31:45.062Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:31:47.216Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:31:49.347Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:31:51.472Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:31:53.653Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:31:55.959Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:31:58.048Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:32:00.160Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:32:02.410Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:32:04.541Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:32:06.639Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:32:08.826Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:32:10.972Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:32:13.076Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:32:15.187Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:32:17.306Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:32:19.418Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:32:21.521Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:32:23.611Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:32:25.902Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:32:28.020Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:32:30.111Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:32:32.201Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:32:34.353Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:32:36.478Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:32:38.563Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:32:40.804Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:32:42.999Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:32:45.235Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:32:47.401Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:32:49.492Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:32:51.596Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:32:53.700Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:32:55.825Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:32:57.964Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:33:00.054Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:33:02.159Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:33:04.248Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:33:11.546Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:33:13.739Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:33:15.892Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:33:18.025Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:33:20.142Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:33:22.274Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:33:24.371Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:33:26.455Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:33:28.635Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:33:30.816Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:33:32.968Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:33:35.049Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:33:37.135Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:33:39.288Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:33:41.378Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:33:43.468Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:33:45.573Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:33:47.670Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:33:49.754Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:33:51.843Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:33:53.940Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:33:56.072Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:33:58.176Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:34:00.343Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:34:02.453Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:34:04.676Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:34:06.759Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:34:08.842Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:34:10.946Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:34:13.038Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:34:15.122Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:34:17.212Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:34:19.310Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:34:21.392Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:34:23.483Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:34:25.573Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:34:27.670Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:34:29.782Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:34:31.872Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:34:33.955Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:34:36.045Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:34:38.142Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:34:40.234Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:34:42.343Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:34:42.821Z",
+          "stage": "booking:error"
+        },
+        {
+          "at": "2026-10-14T08:34:43.100Z",
+          "stage": "booking:error"
+        },
+        {
+          "at": "2026-10-14T08:34:43.123Z",
+          "stage": "booking:done"
+        }
+      ]
+    },
+    {
+      "mode": "Nexus",
+      "loginSeconds": 26.19,
+      "qrReportedByBooking": true,
+      "loginToQrSeconds": 100.35,
+      "bookingToQrSeconds": 73.93,
+      "panelQrImageVerified": false,
+      "qrEventImageVerified": false,
+      "outcome": "qr-generated-stage",
+      "availabilitySeconds": 0.24,
+      "sessionClosed": true,
+      "stages": [
+        {
+          "at": "2026-10-14T08:38:04.458Z",
+          "stage": "weblogin:launch"
+        },
+        {
+          "at": "2026-10-14T08:38:05.962Z",
+          "stage": "gologin:proxy"
+        },
+        {
+          "at": "2026-10-14T08:38:06.040Z",
+          "stage": "weblogin:warmup"
+        },
+        {
+          "at": "2026-10-14T08:38:07.518Z",
+          "stage": "weblogin:navigate"
+        },
+        {
+          "at": "2026-10-14T08:38:07.990Z",
+          "stage": "weblogin:settle"
+        },
+        {
+          "at": "2026-10-14T08:38:20.736Z",
+          "stage": "weblogin:nav"
+        },
+        {
+          "at": "2026-10-14T08:38:22.736Z",
+          "stage": "weblogin:trigger"
+        },
+        {
+          "at": "2026-10-14T08:38:24.082Z",
+          "stage": "weblogin:form"
+        },
+        {
+          "at": "2026-10-14T08:38:24.101Z",
+          "stage": "weblogin:fill"
+        },
+        {
+          "at": "2026-10-14T08:38:24.830Z",
+          "stage": "weblogin:submit"
+        },
+        {
+          "at": "2026-10-14T08:38:29.770Z",
+          "stage": "weblogin:done"
+        },
+        {
+          "at": "2026-10-14T08:38:30.025Z",
+          "stage": "booking:start"
+        },
+        {
+          "at": "2026-10-14T08:38:30.051Z",
+          "stage": "weblogin:direct"
+        },
+        {
+          "at": "2026-10-14T08:38:30.129Z",
+          "stage": "booking:search"
+        },
+        {
+          "at": "2026-10-14T08:38:31.437Z",
+          "stage": "search:from"
+        },
+        {
+          "at": "2026-10-14T08:38:37.555Z",
+          "stage": "search:to"
+        },
+        {
+          "at": "2026-10-14T08:38:42.803Z",
+          "stage": "search:class"
+        },
+        {
+          "at": "2026-10-14T08:38:50.576Z",
+          "stage": "search:quota"
+        },
+        {
+          "at": "2026-10-14T08:38:50.637Z",
+          "stage": "search:date"
+        },
+        {
+          "at": "2026-10-14T08:38:51.762Z",
+          "stage": "search:submit"
+        },
+        {
+          "at": "2026-10-14T08:38:55.539Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:38:55.963Z",
+          "stage": "booking:availability"
+        },
+        {
+          "at": "2026-10-14T08:38:55.970Z",
+          "stage": "booking:boarding"
+        },
+        {
+          "at": "2026-10-14T08:39:41.599Z",
+          "stage": "booking:submit"
+        },
+        {
+          "at": "2026-10-14T08:39:42.284Z",
+          "stage": "booking:fare"
+        },
+        {
+          "at": "2026-10-14T08:39:42.300Z",
+          "stage": "booking:addon"
+        },
+        {
+          "at": "2026-10-14T08:39:42.440Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:39:42.759Z",
+          "stage": "booking:fare"
+        },
+        {
+          "at": "2026-10-14T08:39:42.764Z",
+          "stage": "booking:pay-ready"
+        },
+        {
+          "at": "2026-10-14T08:39:42.770Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:39:42.797Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:39:43.167Z",
+          "stage": "booking:payment"
+        },
+        {
+          "at": "2026-10-14T08:39:43.951Z",
+          "stage": "booking:qr"
+        }
+      ]
+    },
+    {
+      "mode": "auto",
+      "loginSeconds": 40.04,
+      "qrReportedByBooking": false,
+      "loginToQrSeconds": null,
+      "bookingToQrSeconds": null,
+      "panelQrImageVerified": false,
+      "qrEventImageVerified": false,
+      "outcome": "qr-timeout",
+      "availabilitySeconds": 0.23,
+      "sessionClosed": true,
+      "stages": [
+        {
+          "at": "2026-10-14T08:41:25.636Z",
+          "stage": "weblogin:launch"
+        },
+        {
+          "at": "2026-10-14T08:41:27.103Z",
+          "stage": "gologin:proxy"
+        },
+        {
+          "at": "2026-10-14T08:41:27.188Z",
+          "stage": "weblogin:warmup"
+        },
+        {
+          "at": "2026-10-14T08:41:29.331Z",
+          "stage": "weblogin:navigate"
+        },
+        {
+          "at": "2026-10-14T08:41:30.127Z",
+          "stage": "weblogin:settle"
+        },
+        {
+          "at": "2026-10-14T08:41:57.859Z",
+          "stage": "weblogin:trigger"
+        },
+        {
+          "at": "2026-10-14T08:41:59.011Z",
+          "stage": "weblogin:form"
+        },
+        {
+          "at": "2026-10-14T08:41:59.030Z",
+          "stage": "weblogin:fill"
+        },
+        {
+          "at": "2026-10-14T08:41:59.946Z",
+          "stage": "weblogin:submit"
+        },
+        {
+          "at": "2026-10-14T08:42:04.754Z",
+          "stage": "weblogin:done"
+        },
+        {
+          "at": "2026-10-14T08:42:05.043Z",
+          "stage": "booking:start"
+        },
+        {
+          "at": "2026-10-14T08:42:05.148Z",
+          "stage": "booking:warmup"
+        },
+        {
+          "at": "2026-10-14T08:42:05.165Z",
+          "stage": "booking:search"
+        },
+        {
+          "at": "2026-10-14T08:42:06.463Z",
+          "stage": "search:from"
+        },
+        {
+          "at": "2026-10-14T08:42:11.843Z",
+          "stage": "search:to"
+        },
+        {
+          "at": "2026-10-14T08:42:18.061Z",
+          "stage": "search:class"
+        },
+        {
+          "at": "2026-10-14T08:42:25.716Z",
+          "stage": "search:quota"
+        },
+        {
+          "at": "2026-10-14T08:42:25.777Z",
+          "stage": "search:date"
+        },
+        {
+          "at": "2026-10-14T08:42:26.798Z",
+          "stage": "search:submit"
+        },
+        {
+          "at": "2026-10-14T08:42:47.704Z",
+          "stage": "booking:warmup"
+        },
+        {
+          "at": "2026-10-14T08:42:47.785Z",
+          "stage": "ui:train"
+        },
+        {
+          "at": "2026-10-14T08:42:54.154Z",
+          "stage": "ui:select"
+        },
+        {
+          "at": "2026-10-14T08:45:45.796Z",
+          "stage": "booking:warmup"
+        },
+        {
+          "at": "2026-10-14T08:45:45.802Z",
+          "stage": "ui:train"
+        },
+        {
+          "at": "2026-10-14T08:45:50.190Z",
+          "stage": "ui:select"
+        }
+      ]
+    }
+  ]
+}

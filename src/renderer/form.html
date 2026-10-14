@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"
+    />
+    <title>Nexus · New Form</title>
+    <script defer src="./nexus-availability.js"></script>
+
+    <script type="module" crossorigin src="./assets/form-CEfCrSsa.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/tamperLock-C-XpNF9g.js">
+    <link rel="modulepreload" crossorigin href="./assets/chrome-Cyb3f76v.js">
+    <link rel="modulepreload" crossorigin href="./assets/dropdown-L-Zz_M7o.js">
+    <link rel="modulepreload" crossorigin href="./assets/calendar-Ddx6Ecgp.js">
+    <link rel="modulepreload" crossorigin href="./assets/confirm-53PaKcg4.js">
+    <link rel="modulepreload" crossorigin href="./assets/vaultRecovery-Ep_ZvnOW.js">
+    <link rel="modulepreload" crossorigin href="./assets/types-B0-2ZUtm.js">
+    <link rel="stylesheet" crossorigin href="./assets/form-Cq-Qz7YX.css">
+    <link rel="stylesheet" href="./nexus-theme.css">
+    <script defer src="./nexus-build.js"></script>
+    <script defer src="./nexus-payments.js"></script>
+    <script defer src="./nexus-brand.js"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="dot"></span>
+        <span id="formTitle">New Booking Form</span>
+        <span class="sub">· collected once, used by every mode</span>
+      </div>
+      <span class="spacer"></span>
+      <button type="button" id="bulkImportBtn" class="btn sm" title="Bulk import multiple forms from CSV / JSON files (saved to Open Form)">⤓ Bulk Import</button>
+      <button type="button" id="importFormBtn" class="btn sm" title="Load ONE JSON file into this form">⤓ Import</button>
+      <button type="button" id="exportFormBtn" class="btn sm" title="Save this form to a JSON file">⤒ Export</button>
+      <span id="saveState" class="save-state">Not saved</span>
+      <button type="button" class="win-close" id="winClose" title="Close">✕</button>
+    </header>
+
+    <main class="wrap">
+      <form id="form" autocomplete="off" novalidate>
+        <!-- Account -->
+        <section class="card">
+          <div class="card-head">
+            <span class="ic">👤</span>
+            <div>
+              <div class="t">Account</div>
+              <div class="s">Pick a saved login (Login Data) or enter one</div>
+            </div>
+          </div>
+          <div class="grid">
+            <div class="field span">
+              <label class="lbl" for="savedUser">Saved login</label>
+              <select id="savedUser" data-search="always">
+                <option value="">— Manual entry —</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="lbl" for="username">Username</label>
+              <input type="text" id="username" placeholder="Account username" />
+            </div>
+            <div class="field">
+              <label class="lbl" for="password">Password</label>
+              <div class="pw">
+                <input type="password" id="password" placeholder="Account password" />
+                <button type="button" class="eye" id="togglePw" title="Show / hide">👁️</button>
+              </div>
+            </div>
+            <div class="field span">
+              <label class="lbl" for="mobileNumber">Phone Number</label>
+              <div class="with-btn">
+                <input type="text" id="mobileNumber" inputmode="numeric" maxlength="10" placeholder="10-digit mobile (starts 6–9)" />
+                <button type="button" id="randomMobile" class="btn ghost-blue sm">🎲 Random</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Journey Planning -->
+        <section class="card">
+          <div class="card-head">
+            <span class="ic">🚆</span>
+            <div>
+              <div class="t">Journey Planning</div>
+              <div class="s">Configure your travel details</div>
+            </div>
+          </div>
+          <div class="grid">
+            <div class="field">
+              <label class="lbl" for="trainNumber">Train Number</label>
+              <input type="text" id="trainNumber" inputmode="numeric" placeholder="e.g. 12952" />
+            </div>
+            <div class="field">
+              <label class="lbl" for="calTrigger">Journey Date</label>
+              <div class="cal" id="cal">
+                <button type="button" class="cal-trigger" id="calTrigger">
+                  <span id="calLabel" class="cal-label placeholder">Select date</span>
+                  <span class="cal-ic">📅</span>
+                </button>
+                <input type="hidden" id="journeyDate" />
+                <div class="cal-pop" id="calPop"></div>
+              </div>
+            </div>
+            <div class="field">
+              <label class="lbl" for="fromStation">From Station</label>
+              <input type="text" id="fromStation" placeholder="From code (e.g. BCT)" />
+            </div>
+            <div class="field">
+              <label class="lbl" for="toStation">To Station</label>
+              <div class="with-btn">
+                <input type="text" id="toStation" placeholder="To code (e.g. NDLS)" />
+                <button type="button" id="searchTrainsBtn" class="btn ghost-blue sm">🔍 Trains</button>
+              </div>
+            </div>
+            <div class="field">
+              <label class="lbl" for="boardingStation">Boarding Station (optional)</label>
+              <input type="text" id="boardingStation" placeholder="Defaults to From station" />
+            </div>
+            <div class="field">
+              <label class="lbl" for="quota">Booking Quota</label>
+              <select id="quota">
+                <option value="GN">GN — General · Book now</option>
+                <option value="TQ">TQ — Tatkal</option>
+                <option value="PT">PT — Premium Tatkal</option>
+                <option value="8AM">8AM — Opening General</option>
+                <option value="LD">LD — Ladies Quota</option>
+                <option value="SS">SS — Senior Citizen</option>
+              </select>
+              <small>General starts when you run it. Auto Book now logs in automatically and uses the current session; required submit waits still apply. Opening General and Tatkal use scheduled timers.</small>
+            </div>
+            <div class="field">
+              <label class="lbl" for="classCode">Travel Class</label>
+              <select id="classCode">
+                <option value="SL">SL — Sleeper</option>
+                <option value="3A">3A — Three Tier AC</option>
+                <option value="2A">2A — Two Tier AC</option>
+                <option value="1A">1A — First Class AC</option>
+                <option value="3E">3E — Three Tier AC Economy</option>
+                <option value="CC">CC — Chair Car</option>
+                <option value="EC">EC — Executive Chair</option>
+                <option value="EA">EA — Anubhuti Class</option>
+                <option value="2S">2S — Second Seating</option>
+                <option value="EV">EV — Vistadome AC</option>
+              </select>
+            </div>
+            <div class="field" id="fareLimitField">
+              <label class="lbl" for="fareLimit">Fare Limit (optional)</label>
+              <input type="number" id="fareLimit" min="0" step="any" placeholder="Max fare to accept" />
+            </div>
+          </div>
+          <div class="checks" style="margin-top: 14px">
+            <label class="chk"><input type="checkbox" id="specialTrain" /> Special train</label>
+          </div>
+
+          <button type="button" id="nexusCheckAvailability" class="btn ghost-blue">Check availability</button>
+          <div id="nexusAvailabilityHint" role="status" aria-live="polite"></div>
+          <div class="avail-pane hidden" id="availPane">
+            <div class="avail-top">
+              <span class="avail-train" id="availTrain">—</span>
+              <span class="avail-meta" id="availMeta"></span>
+            </div>
+            <div class="avail-status" id="availStatus">Checking availability…</div>
+            <div class="avail-foot" id="availFoot"></div>
+          </div>
+        </section>
+
+        <!-- Options -->
+        <section class="card">
+          <div class="card-head">
+            <span class="ic">⚑</span>
+            <div>
+              <div class="t">Booking Options</div>
+              <div class="s">Fine-tune the booking behaviour</div>
+            </div>
+          </div>
+          <div class="checks">
+            <label class="chk"><input type="checkbox" id="bookOnlyIfConfirmed" checked /> Book only if confirmed berths</label>
+            <label class="chk"><input type="checkbox" id="travelInsurance" checked /> Travel insurance</label>
+            <label class="chk"><input type="checkbox" id="autoOtpSync" /> Aadhaar OTP Bypass</label>
+            <!-- WebLogin login mode (operator 2026-06-14): default OFF = AUTO (the app logs in); ON = MANUAL (you log
+                 in by hand in the visible window). Only WebLogin honours it; the mini box mirrors this as a pill. -->
+            <label class="chk" id="manualLoginRow"><input type="checkbox" id="manualLogin" /> Manual login (WebLogin) — I log in myself</label>
+          </div>
+        </section>
+
+        <!-- Payment -->
+        <section class="card">
+          <div class="card-head">
+            <span class="ic">💳</span>
+            <div>
+              <div class="t">Payment Information</div>
+              <div class="s">Select your preferred payment method</div>
+            </div>
+          </div>
+          <div class="grid">
+            <div class="field span">
+              <label class="lbl" for="paymentMethod">Payment Method</label>
+              <select id="paymentMethod">
+                <option value="">Select a payment method</option>
+                <option value="paytm">Paytm QR</option>
+                <option value="phonepay">PhonePe QR</option>
+                <option value="razorpayqr">Razorpay QR</option>
+                <option value="irctcqr">IRCTC QR</option>
+                <option value="wallet">RailOne Wallet</option>
+                <option value="webwallet">WebLogin Wallet</option>
+                <option value="railoneqr">RailOne QR</option>
+                <option value="railoneupi">RailOne UPI</option>
+                <option value="paytmupi">Razorpay UPI</option>
+              </select>
+            </div>
+            <!-- Saved UPI (Controller → Payment) + manual entry, side by side in the SAME row so a saved id is one
+                 tap and a new one is still typeable. Mirrors the Account card's "Saved login" → fields pattern. -->
+            <div class="field hidden" id="upiSavedField">
+              <label class="lbl" for="savedUpi">Saved UPI</label>
+              <select id="savedUpi">
+                <option value="">— Manual entry —</option>
+              </select>
+            </div>
+            <div class="field hidden" id="upiField">
+              <label class="lbl" for="upiId">UPI ID</label>
+              <input type="text" id="upiId" placeholder="name@bank" />
+            </div>
+          </div>
+
+          <div class="checks" style="margin-top: 14px">
+            <label class="chk"><input type="checkbox" id="paymentPause" /> Payment pause (pay first, decide later)</label>
+            <label class="chk"><input type="checkbox" id="freechargeBypass" /> Freecharge bypass</label>
+          </div>
+        </section>
+
+        <!-- Passengers -->
+        <section class="card">
+          <div class="card-head">
+            <span class="ic">👥</span>
+            <div>
+              <div class="t">Passenger Information</div>
+              <div class="s">Add details for all passengers</div>
+            </div>
+            <span class="spacer" style="flex: 1"></span>
+            <button type="button" id="addPassenger" class="btn ghost-blue sm">+ Add Passenger</button>
+          </div>
+          <table class="ptable">
+            <thead>
+              <tr>
+                <th style="width: 28%">Full Name</th>
+                <th style="width: 9%">Age</th>
+                <th style="width: 14%">Gender</th>
+                <th style="width: 18%">Berth</th>
+                <th style="width: 25%">Food</th>
+                <th style="width: 6%"></th>
+              </tr>
+            </thead>
+            <tbody id="paxBody"></tbody>
+          </table>
+          <div class="empty-pax" id="paxEmpty">No passengers yet — click “Add Passenger”.</div>
+        </section>
+
+        <!-- Proxy -->
+        <section class="card">
+          <div class="card-head">
+            <span class="ic">🌐</span>
+            <div>
+              <div class="t">Proxy (optional)</div>
+              <div class="s">Route this profile through a proxy</div>
+            </div>
+            <span class="spacer" style="flex: 1"></span>
+            <!-- ON/OFF colour switch. The switch can only go ON after the proxy is VERIFIED (a passing Verify
+                 below); flipping it ON unverified auto-runs the test, and editing any field turns it back OFF. -->
+            <span class="proxy-state off" id="proxyState">Off</span>
+            <label class="switch" title="Verify the proxy below, then it switches on automatically">
+              <input type="checkbox" id="proxyEnabled" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <!-- Saved-proxy picker (Controller → Proxy). Selecting one fills the fields below + immediately tests;
+               a passing test auto-enables the proxy for this form (operator 2026-06-06). -->
+          <div class="field" id="proxyPickRow">
+            <label class="lbl" for="proxyPick">Saved proxy</label>
+            <select id="proxyPick">
+              <option value="">— manual entry —</option>
+            </select>
+          </div>
+          <div class="grid" id="proxyFields">
+            <div class="field">
+              <label class="lbl" for="proxyHost">Host / IP</label>
+              <input type="text" id="proxyHost" placeholder="0.0.0.0" />
+            </div>
+            <div class="field">
+              <label class="lbl" for="proxyPort">Port</label>
+              <input type="text" id="proxyPort" inputmode="numeric" placeholder="8080" />
+            </div>
+            <div class="field">
+              <label class="lbl" for="proxyUser">Username (optional)</label>
+              <input type="text" id="proxyUser" placeholder="username" />
+            </div>
+            <div class="field">
+              <label class="lbl" for="proxyPass">Password (optional)</label>
+              <input type="password" id="proxyPass" placeholder="password" />
+            </div>
+          </div>
+          <!-- HTTP proxy only. "Test Proxy" fetches your IP directly vs through the proxy and confirms it
+               actually changed before you rely on it (the operator's import flow). -->
+          <div class="proxy-test" id="proxyTestRow">
+            <button type="button" class="btn ghost-blue" id="proxyTestBtn">Verify Proxy</button>
+            <span class="proxy-note">HTTP proxy only · verify before it switches on</span>
+            <span class="proxy-test-result" id="proxyTestResult" aria-live="polite"></span>
+          </div>
+        </section>
+
+        <!-- Advanced Configuration (per-form timing, #5) -->
+        <section class="card">
+          <details class="adv">
+            <summary class="adv-summary">
+              <span class="adv-ic">🕑</span>
+              <span class="adv-title">Advanced Configuration</span>
+              <span class="adv-hint">per-form login &amp; availability timing</span>
+              <span class="adv-chev">▾</span>
+            </summary>
+            <div class="adv-body">
+              <div class="adv-sub">Login Times — when each slot's login opens (HH:MM)</div>
+              <div class="times-grid" id="advLoginGrid"></div>
+              <div class="adv-sub">Availability Check Times (HH:MM:SS:MS)</div>
+              <div class="times-grid" id="advAvailGrid"></div>
+              <div class="adv-actions">
+                <button type="button" id="advRestore" class="btn ghost-blue" title="Reset these to the latest default timings">↺ Restore Defaults</button>
+              </div>
+            </div>
+          </details>
+        </section>
+      </form>
+    </main>
+
+    <footer class="savebar">
+      <div class="field label-field">
+        <input type="text" id="formLabel" placeholder="Form name (e.g. Mum→Del · Mom)" />
+      </div>
+      <span class="grow"></span>
+      <button type="button" id="saveBtn" class="btn primary">Save Form</button>
+    </footer>
+
+    <div id="trainModal" class="modal-overlay hidden">
+      <div class="modal-card train-modal">
+        <div class="modal-head">
+          <div class="modal-title">Available Trains</div>
+          <button type="button" class="modal-x" id="trainModalClose">✕</button>
+        </div>
+        <div class="modal-sub" id="trainRoute">—</div>
+        <label class="chk train-nearby"
+          ><input type="checkbox" id="showNearby" checked /> Also show trains from nearby stations</label
+        >
+        <div id="trainState" class="train-state">Searching…</div>
+        <div class="train-table-wrap">
+          <table class="train-table">
+            <thead>
+              <tr>
+                <th>Train</th>
+                <th>Dep</th>
+                <th>Arr</th>
+                <th>Dur</th>
+                <th>Runs</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="trainBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+
+  </body>
+</html>

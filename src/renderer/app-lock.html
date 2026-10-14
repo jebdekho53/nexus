@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"
+    />
+    <title>Nexus · Enter Passcode</title>
+
+
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
+      /* OPAQUE designed background (operator 2026-06-25): a blue gradient FILLS the window — no more transparent
+         "odd white box" artifact on Windows, and crisp text. `html body` to override form.css. Font-smoothing +
+         optimizeLegibility keep the title/labels sharp on every OS. */
+      html body {
+        margin: 0;
+        background: linear-gradient(155deg, #6aa6fb 0%, #3b82f6 52%, #2563eb 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-app-region: drag;
+        user-select: none;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+      }
+      .al-card {
+        position: relative;
+        width: 312px;
+        background: #fff;
+        border-radius: 18px;
+        box-shadow:
+          0 16px 38px rgba(13, 32, 70, 0.34),
+          0 2px 6px rgba(13, 32, 70, 0.18);
+        padding: 28px 22px 22px;
+        text-align: center;
+        -webkit-app-region: no-drag;
+      }
+      /* red close icon at the card's top-right EDGE → closing quits the app */
+      .al-x {
+        position: absolute;
+        top: -9px;
+        right: -9px;
+        border: 0;
+        background: #dc2626;
+        color: #fff;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        font-size: 14px;
+        font-weight: 800;
+        line-height: 1;
+        cursor: pointer;
+        box-shadow: 0 3px 10px rgba(220, 38, 38, 0.5);
+        -webkit-app-region: no-drag;
+      }
+      .al-x:hover {
+        background: #b91c1c;
+      }
+      .al-x:active {
+        background: #991b1b;
+      }
+      .al-lock {
+        width: 60px;
+        height: 60px;
+        margin: 0 auto 14px;
+        border-radius: 50%;
+        background: linear-gradient(160deg, #eef4ff, #dbe7ff);
+        box-shadow:
+          0 4px 12px rgba(37, 99, 235, 0.22),
+          inset 0 0 0 1px rgba(37, 99, 235, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .al-lock svg {
+        width: 30px;
+        height: 30px;
+        display: block;
+      }
+      .al-title {
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: -0.2px;
+        color: var(--ink, #0f172a);
+      }
+      .al-sub {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--muted, #64748b);
+        margin: 5px 0 18px;
+        line-height: 1.4;
+      }
+      .al-card.al-shake {
+        animation: al-shake 0.4s;
+      }
+      @keyframes al-shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        20%,
+        60% {
+          transform: translateX(-7px);
+        }
+        40%,
+        80% {
+          transform: translateX(7px);
+        }
+      }
+      .al-err {
+        color: #dc2626;
+        font-size: 12px;
+        font-weight: 700;
+        min-height: 17px;
+        margin-bottom: 4px;
+        line-height: 1.35;
+      }
+      .al-err.wipe {
+        color: #b45309;
+      }
+      .al-quit {
+        margin-top: 6px;
+        background: none;
+        border: 0;
+        color: var(--muted, #64748b);
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        -webkit-app-region: no-drag;
+      }
+      .al-quit:hover {
+        color: #b91c1c;
+      }
+    </style>
+    <script type="module" crossorigin src="./assets/app-lock-svWOWY_4.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/form-Cq-Qz7YX.css">
+    <link rel="stylesheet" crossorigin href="./assets/otp-GlFCD_li.css">
+    <link rel="stylesheet" href="./nexus-theme.css">
+    <script defer src="./nexus-build.js"></script>
+    <script defer src="./nexus-payments.js"></script>
+    <script defer src="./nexus-brand.js"></script>
+  </head>
+  <body>
+    <div class="al-card" id="alCard">
+      <button type="button" class="al-x" id="alX" title="Quit">✕</button>
+      <div class="al-lock">
+        <!-- crisp vector padlock — replaces the 🔒 emoji (blurry/basic on Windows) -->
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="4.25" y="10.25" width="15.5" height="11" rx="3" fill="#2563eb" />
+          <path d="M7.4 10.25V7.6a4.6 4.6 0 0 1 9.2 0v2.65" fill="none" stroke="#2563eb" stroke-width="2.2" stroke-linecap="round" />
+          <circle cx="12" cy="14.7" r="1.7" fill="#fff" />
+          <rect x="11.2" y="15.4" width="1.6" height="3.4" rx="0.8" fill="#fff" />
+        </svg>
+      </div>
+      <div class="al-title">Enter Passcode</div>
+      <div class="al-sub" id="alSub">Enter your 6-digit passcode to open the app</div>
+      <div class="ow-inputs" id="alInputs">
+        <input type="password" inputmode="numeric" class="otp-digit" maxlength="1" data-i="0" autocomplete="off" />
+        <input type="password" inputmode="numeric" class="otp-digit" maxlength="1" data-i="1" autocomplete="off" />
+        <input type="password" inputmode="numeric" class="otp-digit" maxlength="1" data-i="2" autocomplete="off" />
+        <input type="password" inputmode="numeric" class="otp-digit" maxlength="1" data-i="3" autocomplete="off" />
+        <input type="password" inputmode="numeric" class="otp-digit" maxlength="1" data-i="4" autocomplete="off" />
+        <input type="password" inputmode="numeric" class="otp-digit" maxlength="1" data-i="5" autocomplete="off" />
+      </div>
+      <div class="al-err hidden" id="alErr"></div>
+    </div>
+
+  </body>
+</html>

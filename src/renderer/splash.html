@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'"
+    />
+    <title>Nexus</title>
+
+    <script type="module" crossorigin src="./assets/splash-KCQ4zlcg.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/splash-DvB6yHI5.css">
+    <link rel="stylesheet" href="./nexus-theme.css">
+    <script defer src="./nexus-build.js"></script>
+    <script defer src="./nexus-payments.js"></script>
+    <script defer src="./nexus-brand.js"></script>
+  </head>
+  <body>
+    <div class="splash">
+      <video class="bg" muted loop playsinline aria-hidden="true"></video>
+      <!-- Full-page real Vande Bharat footage as a faded watermark behind the UI. NO `autoplay` — splash.ts plays it
+           ONLY for the new theme (playVideo()), so the classic splash never decodes it. `loop` keeps it moving if the
+           security scan extends the splash past the ~20s clip (the normal case ends within one play-through). -->
+      
+      <div class="scrim"></div>
+      <div class="content">
+        <div class="logo">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+          </svg>
+        </div>
+        <div class="title">Nexus <span class="ver">V1.0.0</span></div>
+        <div class="tagline">&nbsp;</div>
+        <div class="loader"><div class="loader-bar"></div></div>
+        <div class="status">Preparing your workspace…</div>
+      </div>
+    </div>
+
+  </body>
+</html>

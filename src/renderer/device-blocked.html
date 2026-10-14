@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'"
+    />
+    <title>Nexus · Device Blocked</title>
+
+    <script type="module" crossorigin src="./assets/device-blocked-sUuxz88U.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/device-blocked-CzAzjDyh.css">
+    <link rel="stylesheet" href="./nexus-theme.css">
+    <script defer src="./nexus-build.js"></script>
+    <script defer src="./nexus-payments.js"></script>
+    <script defer src="./nexus-brand.js"></script>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="icon">⛔</div>
+      <div class="title">Your Device is Blocked</div>
+      <div class="sub">This device is not allowed to use Nexus.</div>
+      <div class="support">Please contact support to resolve this.</div>
+      <div class="idcard" id="idCard">
+        <div class="idlabel">MAC ID (share this with support to unblock)</div>
+        <div class="idrow">
+          <code class="idvalue" id="vmId">—</code>
+          <button type="button" class="idcopy" id="copyVm">Copy</button>
+        </div>
+      </div>
+      <button type="button" class="btn" id="quitBtn">Close App</button>
+    </div>
+
+  </body>
+</html>

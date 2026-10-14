@@ -1,0 +1,216 @@
+{
+  "date": "2026-10-14",
+  "train": "13307",
+  "journey": {
+    "from": "DDU",
+    "to": "BSB",
+    "date": "2026-10-20",
+    "class": "SL",
+    "quota": "GN"
+  },
+  "mode": "Auto Book now",
+  "loginSeconds": 24.24,
+  "bookingToQrSeconds": 74.99,
+  "loginToQrSeconds": 99.23,
+  "panelQrVisible": true,
+  "panelQrImageReady": true,
+  "qrVisuallyInspected": true,
+  "paymentSubmitted": false,
+  "sessionClosed": true,
+  "testsPassed": 22,
+  "scheduledModes": "Preserved",
+  "stages": [
+    {
+      "at": "2026-10-14T09:01:03.319Z",
+      "stage": "weblogin:launch"
+    },
+    {
+      "at": "2026-10-14T09:01:04.746Z",
+      "stage": "gologin:proxy"
+    },
+    {
+      "at": "2026-10-14T09:01:04.834Z",
+      "stage": "weblogin:warmup"
+    },
+    {
+      "at": "2026-10-14T09:01:06.358Z",
+      "stage": "weblogin:navigate"
+    },
+    {
+      "at": "2026-10-14T09:01:06.981Z",
+      "stage": "weblogin:settle"
+    },
+    {
+      "at": "2026-10-14T09:01:19.292Z",
+      "stage": "weblogin:nav"
+    },
+    {
+      "at": "2026-10-14T09:01:20.796Z",
+      "stage": "weblogin:trigger"
+    },
+    {
+      "at": "2026-10-14T09:01:21.669Z",
+      "stage": "weblogin:form"
+    },
+    {
+      "at": "2026-10-14T09:01:21.690Z",
+      "stage": "weblogin:fill"
+    },
+    {
+      "at": "2026-10-14T09:01:22.495Z",
+      "stage": "weblogin:submit"
+    },
+    {
+      "at": "2026-10-14T09:01:26.586Z",
+      "stage": "weblogin:done"
+    },
+    {
+      "at": "2026-10-14T09:01:26.900Z",
+      "stage": "booking:start"
+    },
+    {
+      "at": "2026-10-14T09:01:26.926Z",
+      "stage": "weblogin:direct"
+    },
+    {
+      "at": "2026-10-14T09:01:26.996Z",
+      "stage": "booking:search"
+    },
+    {
+      "at": "2026-10-14T09:01:28.295Z",
+      "stage": "search:from"
+    },
+    {
+      "at": "2026-10-14T09:01:35.065Z",
+      "stage": "search:to"
+    },
+    {
+      "at": "2026-10-14T09:01:40.715Z",
+      "stage": "search:class"
+    },
+    {
+      "at": "2026-10-14T09:01:48.287Z",
+      "stage": "search:quota"
+    },
+    {
+      "at": "2026-10-14T09:01:48.349Z",
+      "stage": "search:date"
+    },
+    {
+      "at": "2026-10-14T09:01:49.430Z",
+      "stage": "search:submit"
+    },
+    {
+      "at": "2026-10-14T09:01:53.089Z",
+      "stage": "booking:availability"
+    },
+    {
+      "at": "2026-10-14T09:01:53.422Z",
+      "stage": "booking:availability"
+    },
+    {
+      "at": "2026-10-14T09:01:53.429Z",
+      "stage": "booking:boarding"
+    },
+    {
+      "at": "2026-10-14T09:01:54.026Z",
+      "stage": "booking:countdown"
+    },
+    {
+      "at": "2026-10-14T09:01:57.308Z",
+      "stage": "booking:countdown"
+    },
+    {
+      "at": "2026-10-14T09:02:00.404Z",
+      "stage": "booking:countdown"
+    },
+    {
+      "at": "2026-10-14T09:02:03.453Z",
+      "stage": "booking:countdown"
+    },
+    {
+      "at": "2026-10-14T09:02:06.563Z",
+      "stage": "booking:countdown"
+    },
+    {
+      "at": "2026-10-14T09:02:09.591Z",
+      "stage": "booking:countdown"
+    },
+    {
+      "at": "2026-10-14T09:02:12.626Z",
+      "stage": "booking:countdown"
+    },
+    {
+      "at": "2026-10-14T09:02:15.639Z",
+      "stage": "booking:countdown"
+    },
+    {
+      "at": "2026-10-14T09:02:19.842Z",
+      "stage": "booking:countdown"
+    },
+    {
+      "at": "2026-10-14T09:02:23.513Z",
+      "stage": "booking:countdown"
+    },
+    {
+      "at": "2026-10-14T09:02:26.625Z",
+      "stage": "booking:countdown"
+    },
+    {
+      "at": "2026-10-14T09:02:29.958Z",
+      "stage": "booking:countdown"
+    },
+    {
+      "at": "2026-10-14T09:02:33.188Z",
+      "stage": "booking:countdown"
+    },
+    {
+      "at": "2026-10-14T09:02:36.756Z",
+      "stage": "booking:countdown"
+    },
+    {
+      "at": "2026-10-14T09:02:39.059Z",
+      "stage": "booking:submit"
+    },
+    {
+      "at": "2026-10-14T09:02:39.548Z",
+      "stage": "booking:fare"
+    },
+    {
+      "at": "2026-10-14T09:02:39.564Z",
+      "stage": "booking:addon"
+    },
+    {
+      "at": "2026-10-14T09:02:39.752Z",
+      "stage": "booking:payment"
+    },
+    {
+      "at": "2026-10-14T09:02:40.291Z",
+      "stage": "booking:fare"
+    },
+    {
+      "at": "2026-10-14T09:02:40.300Z",
+      "stage": "booking:pay-ready"
+    },
+    {
+      "at": "2026-10-14T09:02:40.306Z",
+      "stage": "booking:payment"
+    },
+    {
+      "at": "2026-10-14T09:02:40.344Z",
+      "stage": "booking:payment"
+    },
+    {
+      "at": "2026-10-14T09:02:40.714Z",
+      "stage": "booking:payment"
+    },
+    {
+      "at": "2026-10-14T09:02:41.604Z",
+      "stage": "booking:qr"
+    },
+    {
+      "at": "2026-10-14T09:02:43.537Z",
+      "stage": "booking:done"
+    }
+  ]
+}

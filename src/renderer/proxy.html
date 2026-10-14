@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"
+    />
+    <title>Nexus · Proxy</title>
+
+
+
+    <script type="module" crossorigin src="./assets/proxy-DjRA3tNj.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/confirm-53PaKcg4.js">
+    <link rel="modulepreload" crossorigin href="./assets/vaultRecovery-Ep_ZvnOW.js">
+    <link rel="modulepreload" crossorigin href="./assets/tamperLock-C-XpNF9g.js">
+    <link rel="modulepreload" crossorigin href="./assets/types-B0-2ZUtm.js">
+    <link rel="stylesheet" crossorigin href="./assets/form-Cq-Qz7YX.css">
+    <link rel="stylesheet" crossorigin href="./assets/login-data-BzziDCQ6.css">
+    <link rel="stylesheet" crossorigin href="./assets/proxy-DesozvjZ.css">
+    <link rel="stylesheet" href="./nexus-theme.css">
+    <script defer src="./nexus-build.js"></script>
+    <script defer src="./nexus-payments.js"></script>
+    <script defer src="./nexus-brand.js"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="dot"></span>
+        <span>Proxy</span>
+      </div>
+      <span class="spacer"></span>
+      <button type="button" id="deleteAllBtn" class="btn danger sm" title="Delete all saved proxies">Delete All</button>
+      <button type="button" id="exportBtn" class="btn sm">Export</button>
+      <button type="button" id="importBtn" class="btn sm">Import</button>
+      <button type="button" id="addBtn" class="btn primary sm" title="Add a new proxy">+ Add New</button>
+      <button type="button" id="closeBtn" class="btn sm">Close</button>
+    </header>
+
+    <main class="ld-wrap">
+      <div id="list"></div>
+      <div id="empty" class="empty hidden">No saved proxies yet. Click <b>+ Add New</b>.</div>
+    </main>
+
+    <div id="proxyModal" class="modal-overlay hidden">
+      <div class="modal-card">
+        <div class="modal-head">
+          <div class="modal-title" id="modalTitle">Add Proxy</div>
+          <button type="button" class="modal-x" id="modalClose">✕</button>
+        </div>
+        <div class="modal-fields">
+          <div class="field">
+            <label class="lbl" for="mLabel">Label <span class="opt">(optional)</span></label>
+            <input type="text" id="mLabel" placeholder="e.g. Mumbai residential" autocomplete="off" />
+          </div>
+          <div class="px-row">
+            <div class="field px-host">
+              <label class="lbl" for="mHost">IP / Host <span class="req">*</span></label>
+              <input type="text" id="mHost" placeholder="123.45.67.89" autocomplete="off" />
+            </div>
+            <div class="field px-port">
+              <label class="lbl" for="mPort">Port <span class="req">*</span></label>
+              <input type="text" id="mPort" inputmode="numeric" maxlength="5" placeholder="8080" autocomplete="off" />
+            </div>
+          </div>
+          <div class="px-row">
+            <div class="field">
+              <label class="lbl" for="mUser">Username <span class="opt">(optional)</span></label>
+              <input type="text" id="mUser" placeholder="username" autocomplete="off" />
+            </div>
+            <div class="field">
+              <label class="lbl" for="mPass">Password <span class="opt">(optional)</span></label>
+              <div class="pw">
+                <input type="password" id="mPass" placeholder="password" autocomplete="off" />
+                <button type="button" class="eye" id="mTogglePw" title="Show / hide">👁️</button>
+              </div>
+            </div>
+          </div>
+          <div class="px-test">
+            <button type="button" class="btn sm" id="mTest">⚡ Test Now</button>
+            <span class="px-hint">optional — confirms the proxy reroutes (shows latency + IP)</span>
+          </div>
+          <div id="mTestResult" class="px-result hidden"></div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn" id="modalCancel">Cancel</button>
+          <button type="button" class="btn primary" id="modalSave">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXPORT picker: select each / Select all → Export selected -->
+    <div id="exportModal" class="modal-overlay hidden">
+      <div class="modal-card">
+        <div class="modal-head">
+          <div class="modal-title">Export proxies</div>
+          <button type="button" class="modal-x" id="exportClose">✕</button>
+        </div>
+        <div class="exp-head">
+          <label class="exp-all"><input type="checkbox" id="expSelectAll" /> <span>Select all</span></label>
+          <span class="exp-note">⚠ Includes credentials — keep the file safe</span>
+        </div>
+        <div id="exportList" class="exp-list"></div>
+        <div class="modal-actions">
+          <button type="button" class="btn" id="exportCancel">Cancel</button>
+          <button type="button" class="btn primary" id="exportGo">Export selected</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADD NEW chooser: Type manually / Paste (operator 2026-07-25) -->
+    <div id="addModal" class="modal-overlay hidden">
+      <div class="modal-card">
+        <div class="modal-head">
+          <div class="modal-title">Add proxy</div>
+          <button type="button" class="modal-x" id="addChooserClose">✕</button>
+        </div>
+        <div class="imp-opts">
+          <button type="button" class="imp-opt" id="addManual">
+            <div class="l">Type Manually</div>
+            <div class="r">Fill the form — label, IP / host, port, username, password (with Test Now).</div>
+          </button>
+          <button type="button" class="imp-opt" id="addPaste">
+            <div class="l">Paste</div>
+            <div class="r">Paste proxies — one per line, IP:PORT:USERNAME:PASSWORD.</div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- IMPORT chooser: Bulk / Single (file-based only — Paste now lives under + Add New) -->
+    <div id="importModal" class="modal-overlay hidden">
+      <div class="modal-card">
+        <div class="modal-head">
+          <div class="modal-title">Import proxies</div>
+          <button type="button" class="modal-x" id="importClose">✕</button>
+        </div>
+        <div class="imp-opts">
+          <button type="button" class="imp-opt" id="impBulk">
+            <div class="l">Bulk Import</div>
+            <div class="r">Pick JSON/TXT files — import every proxy found (host:port[:user:pass] per line ok).</div>
+          </button>
+          <button type="button" class="imp-opt" id="impSingle">
+            <div class="l">Single Import</div>
+            <div class="r">Pick one file — review the proxy, then add it.</div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PASTE: a textarea of IP:PORT:USER:PASS lines (reached from + Add New → Paste) -->
+    <div id="pasteModal" class="modal-overlay hidden">
+      <div class="modal-card">
+        <div class="modal-head">
+          <div class="modal-title">Paste proxies</div>
+          <button type="button" class="modal-x" id="pasteClose">✕</button>
+        </div>
+        <div class="paste-body">
+          <div class="paste-hint">One proxy per line, format: <code>IP:PORT:USERNAME:PASSWORD</code> &nbsp;(or <code>IP:PORT</code> for no auth)</div>
+          <textarea id="pasteArea" class="paste-area" rows="8" spellcheck="false" placeholder="192.23.2.2:8990:user1:password&#10;45.12.9.7:3128:user2:pass2&#10;103.4.5.6:8080"></textarea>
+          <div id="pasteErr" class="paste-err hidden"></div>
+          <div class="modal-actions">
+            <button type="button" class="btn" id="pasteCancel">Cancel</button>
+            <button type="button" class="btn primary" id="pasteGo">Add</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+  </body>
+</html>

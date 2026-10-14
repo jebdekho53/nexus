@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'"
+    />
+    <title>Nexus · Update Required</title>
+
+    <script type="module" crossorigin src="./assets/version-blocked-XN0EbBpR.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/version-blocked-BBNGQE8o.css">
+    <link rel="stylesheet" href="./nexus-theme.css">
+    <script defer src="./nexus-build.js"></script>
+    <script defer src="./nexus-payments.js"></script>
+    <script defer src="./nexus-brand.js"></script>
+  </head>
+  <body>
+    <div class="card">
+      <button type="button" class="x" id="closeBtn" title="Close">✕</button>
+      <div class="icon" id="icon">⚠</div>
+      <div class="tt" id="title">Checking…</div>
+      <div class="msg" id="msg">Checking the current version…</div>
+      <div class="ver" id="ver"></div>
+
+      <!-- download progress (shown while the dmg downloads) -->
+      <div class="dl" id="dl" style="display: none">
+        <div class="dl-bar"><div class="dl-fill" id="dlFill"></div></div>
+        <div class="dl-pct" id="dlPct">Starting…</div>
+      </div>
+
+      <!-- guided install (shown after the download completes) -->
+      <div class="guide" id="guide" style="display: none">
+        <div class="guide-title">Finish installing</div>
+        <div class="anim" aria-hidden="true">
+          <div class="anim-icon dmg">
+            <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </div>
+          <div class="anim-track">
+            <div class="anim-mover"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></div>
+          </div>
+          <div class="anim-icon apps"><span>Applications</span></div>
+        </div>
+        <ol class="steps">
+          <li>Open <b id="dmgName">the downloaded file</b> from your <b>Downloads</b></li>
+          <li>Drag the <b>X app</b> onto the <b>Applications</b> folder, and click <b>Replace</b></li>
+          <li>Quit this app and reopen it from Applications</li>
+        </ol>
+        <div class="xattr">
+          <div class="xattr-label">If macOS says it's “damaged” or from an unidentified developer, run this in Terminal once, then reopen:</div>
+          <div class="xattr-row">
+            <code id="xattrCmd">xattr -dr com.apple.quarantine /Applications/Nexus.app</code>
+            <button type="button" class="copy" id="copyBtn">Copy</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn ghost" id="laterBtn">Close</button>
+        <button type="button" class="btn primary" id="updateBtn">Open Updates</button>
+      </div>
+    </div>
+
+  </body>
+</html>

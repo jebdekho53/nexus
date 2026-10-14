@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nexus · Aadhaar OTP</title>
+
+
+    <script type="module" crossorigin src="./assets/otp-DmHa4xsB.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/form-Cq-Qz7YX.css">
+    <link rel="stylesheet" crossorigin href="./assets/otp-GlFCD_li.css">
+    <link rel="stylesheet" href="./nexus-theme.css">
+    <script defer src="./nexus-build.js"></script>
+    <script defer src="./nexus-payments.js"></script>
+    <script defer src="./nexus-brand.js"></script>
+  </head>
+  <body>
+    <div class="ow-head">
+      <span class="ow-title" id="owTitle">🔐 Aadhaar OTP</span>
+      <button type="button" class="ow-x" id="owClose" title="Close">✕</button>
+    </div>
+    <div class="ow-body">
+      <!-- ENTRY: 6-digit OTP (auto-submits on the 6th digit; relay auto-fills + auto-submits) -->
+      <div id="entry" class="hidden">
+        <div class="ow-title2">Enter OTP</div>
+        <div id="otpMessage" class="ow-sub">Enter the 6-digit OTP</div>
+        <div class="ow-inputs" id="otpInputs">
+          <input type="text" inputmode="numeric" class="otp-digit" maxlength="1" data-index="0" autocomplete="one-time-code" />
+          <input type="text" inputmode="numeric" class="otp-digit" maxlength="1" data-index="1" autocomplete="off" />
+          <input type="text" inputmode="numeric" class="otp-digit" maxlength="1" data-index="2" autocomplete="off" />
+          <input type="text" inputmode="numeric" class="otp-digit" maxlength="1" data-index="3" autocomplete="off" />
+          <input type="text" inputmode="numeric" class="otp-digit" maxlength="1" data-index="4" autocomplete="off" />
+          <input type="text" inputmode="numeric" class="otp-digit" maxlength="1" data-index="5" autocomplete="off" />
+        </div>
+        <div id="otpError" class="ow-err hidden"></div>
+        <button type="button" id="otpResend" class="ow-btn ow-resend">Resend OTP</button>
+        <div id="otpPair" class="ow-pair hidden">
+          <div class="ow-qrbox"><img id="otpQr" class="ow-qr" alt="Pair phone for OTP" /></div>
+          <div class="ow-cap">Scan with the OTP app to auto-fill</div>
+          <button type="button" class="ow-dl"><span class="ow-dl-ic">📲</span> Download OTP App</button>
+        </div>
+      </div>
+
+      <!-- REGISTER: one-time per-user-id pairing (last-4 → QR + connect → Done) -->
+      <div id="reg" class="hidden">
+        <div class="ow-title2">Pair Aadhaar OTP</div>
+        <div class="ow-sub">for <b id="regUser"></b></div>
+        <div id="regStep1">
+          <div class="ow-hint">Enter the last 4 digits of the Aadhaar-linked mobile.</div>
+          <div class="ow-inputs" id="regInputs">
+            <input type="text" inputmode="numeric" class="otp-digit" maxlength="1" data-ri="0" autocomplete="off" />
+            <input type="text" inputmode="numeric" class="otp-digit" maxlength="1" data-ri="1" autocomplete="off" />
+            <input type="text" inputmode="numeric" class="otp-digit" maxlength="1" data-ri="2" autocomplete="off" />
+            <input type="text" inputmode="numeric" class="otp-digit" maxlength="1" data-ri="3" autocomplete="off" />
+          </div>
+          <div id="regErr" class="ow-err hidden"></div>
+          <button type="button" id="regStart" class="ow-btn ow-primary">Register &amp; Connect</button>
+          <button type="button" class="ow-dl"><span class="ow-dl-ic">📲</span> Download OTP App</button>
+        </div>
+        <div id="regStep2" class="hidden">
+          <div id="regStatus" class="ow-status"></div>
+          <div class="ow-qrbox"><img id="regQr" class="ow-qr" alt="Pair phone" /></div>
+          <div class="ow-cap">Scan with the OTP app, then tap Done</div>
+          <button type="button" class="ow-dl"><span class="ow-dl-ic">📲</span> Download OTP App</button>
+          <button type="button" id="regDone" class="ow-btn ow-primary">Done</button>
+        </div>
+        <button type="button" id="regSkip" class="ow-btn ow-ghost">Skip for now</button>
+      </div>
+    </div>
+
+  </body>
+</html>

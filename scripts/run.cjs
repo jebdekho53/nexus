@@ -1,0 +1,14 @@
+'use strict';
+const fs=require('node:fs');
+const path=require('node:path');
+const os=require('node:os');
+const {spawn}=require('node:child_process');
+const root=path.dirname(__dirname);
+const candidates=[process.env.ELECTRON_BINARY,path.join(root,'.runtime','electron.exe'),path.join(os.homedir(),'.cache','ts-v8-recovery','electron-43.6.0-ia32','electron.exe')].filter(Boolean);
+const binary=candidates.find(file=>fs.existsSync(file));
+if(!binary)throw new Error('Set ELECTRON_BINARY to Electron 43.6.0 ia32 electron.exe. See README.md.');
+const env={...process.env};delete env.ELECTRON_RUN_AS_NODE;
+const args=process.argv.slice(2);
+if(!args.includes('--release')&&!args.includes('--original-checks')&&!args.includes('--development'))args.unshift('--development');
+const child=spawn(binary,[root,...args],{stdio:'inherit',windowsHide:process.argv.includes('--smoke-test'),env});
+child.on('exit',code=>process.exit(code ?? 1));

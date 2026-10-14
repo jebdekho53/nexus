@@ -1,0 +1,44 @@
+@font-face{font-family:Nexus;src:url('./assets/nexus-manrope.ttf') format('truetype');font-weight:200 800;font-display:swap}
+:root{color-scheme:dark;--blue:#64e5ba;--blue-600:#64e5ba;--blue-700:#41cda0;--blue-50:#183c34;--blue-100:#285b4c;--ink:#e8f1ef;--muted:#9caeac;--line:#2c3c3d;--line-2:#3c5050;--bg:#10191d;--white:#19252a;--ok:#64e5ba;--danger:#ff8c92;--radius:10px;--shadow:0 8px 28px #0003}
+html body{font-family:Nexus,'Segoe UI',sans-serif!important;background:#10191d!important;color:#e8f1ef!important;letter-spacing:.005em;-webkit-font-smoothing:antialiased}
+button,input,select,textarea,.dd,.cal{font-family:inherit!important}
+button{font-weight:650!important;letter-spacing:.015em;transition:background .15s,border-color .15s,box-shadow .15s!important}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid #64e5ba!important;outline-offset:2px}
+::selection{background:#64e5ba;color:#10191d}
+::-webkit-scrollbar{width:7px;height:7px}::-webkit-scrollbar-track{background:#10191d}::-webkit-scrollbar-thumb{background:#3c5050;border-radius:8px}
+.topbar,.bb-head{background:#17262a!important;color:#e8f1ef!important;border-bottom:1px solid #34504a!important;box-shadow:none!important}
+.topbar{padding:13px 20px!important}
+.brand{font-weight:750!important;letter-spacing:-.035em}.brand .dot{background:#64e5ba!important;box-shadow:0 0 0 4px #64e5ba12!important}
+.brand .sub{color:#9caeac!important;font-size:11px!important;letter-spacing:0}
+.topbar .brand::before{content:'NEXUS /';color:#64e5ba;letter-spacing:.14em;font-size:10px;margin-right:4px}.topbar .brand .sub{display:none}
+.topbar .brand .dot{background:transparent url('./assets/nexus-mark.svg') center/contain no-repeat!important;width:26px!important;height:26px!important;border-radius:0!important;box-shadow:none!important}
+.savebar{background:#17262a!important;border-color:#34504a!important;box-shadow:0 -8px 20px #0002!important}.avail-pane,.day-chip{background:#203136!important;color:#b8ceca!important}
+.card,.modal,.modal-card,.dialog,.bb-box,.bb-section,.panel,.login-card,.empty,.cal-pop,.dd-menu,.ac-pop,.pw-pop{background:#19252a!important;border-color:#2c3c3d!important;color:#e8f1ef!important;box-shadow:var(--shadow)!important;border-radius:10px!important}
+.card{border:1px solid #2c3c3d!important}.card-head{border-color:#2c3c3d!important}.card-head .ic{background:#203d36!important;color:#64e5ba!important;border-radius:8px!important}
+.al-card,.ow-head{background:#19252a!important;border-color:#34504a!important;color:#e8f1ef!important}.al-title,.al-input,.ow-title,.ow-title2,.tt,.msg{color:#e8f1ef!important}.al-sub,.ow-sub,.ow-cap{color:#9caeac!important}.al-btn,.ow-btn{background:#233439!important;color:#e8f1ef!important;border-color:#3b5352!important}.ow-btn.primary,.al-btn.primary{background:#64e5ba!important;color:#10241e!important}
+.card-head .t,.title,.lbl,label,.bb-label,.bb-value,.dd-label,.cal-label,.ac-v{color:#e8f1ef!important}
+.card-head .t{font-size:14px!important;font-weight:750!important;letter-spacing:-.025em}
+.s,.sub,.note,.hint,.muted,.help,.field-hint,.save-state,.bb-caption,.ac-l{color:#9caeac!important}
+input:not([type=checkbox]):not([type=radio]),select,textarea,.dd-trigger,.cal-trigger{background:#111d21!important;color:#e8f1ef!important;border-color:#38504e!important;border-radius:7px!important;box-shadow:none!important}
+input::placeholder,textarea::placeholder{color:#748e89!important}
+input[type=checkbox],input[type=radio]{accent-color:#64e5ba}
+.btn,.topbar .btn,.bb-pin,.bb-edit,.bb-close,.win-close,.eye,.cal-nav{background:#233439!important;color:#e8f1ef!important;border:1px solid #3b5352!important;border-radius:7px!important;box-shadow:none!important}
+.btn:hover,.topbar .btn:hover,.eye:hover{background:#304a49!important;border-color:#64e5ba!important}
+.btn.primary,.btn.save,.act-weblogin,.m-expand{background:#64e5ba!important;border-color:#64e5ba!important;color:#10241e!important;box-shadow:none!important}
+.btn.danger,.btn.del,.row-del{color:#ff9b9f!important;background:#40272d!important;border-color:#684048!important}
+.grid .field,.table-wrap,thead,th,td,.version-row{border-color:#2c3c3d!important}
+thead,th{background:#203136!important;color:#b8ceca!important}td{color:#e8f1ef!important}tbody tr:hover{background:#203b35!important}
+.dd-opt,.ac-item,.cal-day{color:#d8e8e2!important;background:transparent!important}.dd-opt:hover,.dd-opt.hi,.dd-opt.sel,.ac-item:hover,.cal-day:hover{background:#285346!important;color:#8af1cd!important}
+.bb-card{background:#10191d!important}.bb-head{padding:6px 10px!important}.bb-head::before{content:'N';display:grid;place-items:center;width:20px;height:20px;border:1px solid #64e5ba;color:#64e5ba;border-radius:5px;font-size:12px;font-weight:800;flex:none}
+.bb-pick,.bb-chip,.bb-proxychip,.bb-chip-pick,.bb-creds{background:#1b3032!important;color:#d7e9e1!important;border-color:#3b5352!important}.bb-pick:hover,.bb-chip-pick:hover{background:#285346!important}.bb-timebox{background:#203d36!important;margin-left:0!important;padding-left:10px!important}.bb-clock{color:#83ecc5!important;text-shadow:none!important;animation:none!important;font-size:12px!important}.bb-checknow{background:#203d36!important;color:#83ecc5!important}.bb-k{font-size:9px!important;letter-spacing:.12em!important;color:#8caaa0!important}
+.bb-body,.bb-footer,.bb-status,.bb-actions{background:#10191d!important;border-color:#2c3c3d!important}.bb-status{color:#64e5ba!important}.bb-box{box-shadow:none!important}.bb-box label,.bb-box .lbl{color:#9caeac!important}.bb-acct,.bb-pairnum{background:#244a3d!important;color:#90e9c6!important}
+.act{background:#233439!important;color:#caddd7!important;border:1px solid #3b5352!important;border-radius:7px!important;box-shadow:none!important}.act-weblogin{background:#64e5ba!important;color:#10241e!important}.act-stop{background:#40272d!important;color:#ff9b9f!important}
+.bk-watermark{display:none!important}.bk-title,.fail-brand{font-family:Nexus,sans-serif!important;letter-spacing:.14em!important}.bk-card,.fail-card{background:#19252a!important;border-color:#3c5050!important}
+.nexus-wordmark{font-family:Nexus,sans-serif!important;letter-spacing:.16em;font-weight:800;color:#e8f1ef}.nexus-mark{width:34px;height:34px;display:block}
+body.nexus-controller .tgbtn{display:none!important}.tg-row,.tg-ic-card{display:none!important}.nexus-vendor-channel{display:none!important}
+body.nexus-splash .bg,body.nexus-splash .scrim{display:none!important}body.nexus-splash .splash{background:radial-gradient(ellipse at 50% 40%,#204b3f 0,#10191d 65%)!important}body.nexus-splash .content{color:#e8f1ef!important}body.nexus-splash .logo{background:transparent!important;border:0!important;box-shadow:none!important}body.nexus-splash .logo img{width:68px;height:68px}body.nexus-splash .title{font-weight:800!important;letter-spacing:.22em!important;font-size:34px!important}body.nexus-splash .tagline{color:#9cbcaf!important;letter-spacing:.28em!important;font-size:10px!important}body.nexus-splash .loader{background:#29433c!important;height:3px!important;box-shadow:none!important}body.nexus-splash .loader-bar{background:#64e5ba!important}body.nexus-splash .status{color:#a5beb4!important}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+.run-banner{background:#203d36!important;color:#cde9da!important;border-color:#34504a!important}.nx-log{display:grid;grid-template-columns:110px 68px 150px 1fr;gap:8px;padding:9px 10px;border-bottom:1px solid #2c3c3d;font-size:11px;line-height:1.5}.nx-log span:nth-child(1),.nx-log span:nth-child(2){color:#8ca89c;font-variant-numeric:tabular-nums}.nx-log span:nth-child(3){color:#80edc5;overflow-wrap:anywhere}.nx-log span:last-child{overflow-wrap:anywhere}.nx-log.heartbeat{color:#9caeac}.log-list{display:block!important}
+.log-empty[hidden],.nx-log[hidden]{display:none!important}
+.nexus-payment-summary{font-size:11px;color:#8ebcad;padding-top:5px;line-height:1.4}.bb-box .nexus-payment-summary{font-size:8px;padding-top:2px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.nx-log.error{border-left:2px solid #ff8c92}.nx-log.error span:nth-child(3){color:#ff8c92}.nx-log.warn{border-left:2px solid #e8ba74}

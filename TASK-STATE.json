@@ -1,0 +1,5 @@
+{
+  "status": "in_progress",
+  "task": "Integrate Nexus own admin/seller service, managedrelease/developerkeyfree, deploy VPS andpushGithub.",
+  "progress": "Nexus service deployed HTTPS andhealthy. Admin/seller/coreownkeys wired; privateadminpassword stored diagnostics/nexus-admin-access.txt. Release Electron E2E beforekeyblocked/after ownkeycontrollerready passed; QAkeyrevoked.36tests pass plusoffline9screens/storage smoke. Toolsportal shortcutsadded. OriginalLexus movedsafely../lexus-reference. ExistingLexus/n8n healthy. Stagedsourcepassedprivatepassword/key scan. FinalGitcommit/push andportable packagingpending."
+}
