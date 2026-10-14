@@ -1,6 +1,6 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),{pathToFileURL}=require('node:url');
-async function requireActivation(electron,root){
+async function requireActivation(electron,root,options={}){
  const base='https://nexus.vaidya-gpt.com',file=path.join(electron.app.getPath('userData'),'nexus-activation.bin'),deviceFile=path.join(electron.app.getPath('userData'),'nexus-device');
  if(!fs.existsSync(deviceFile))fs.writeFileSync(deviceFile,crypto.randomBytes(32).toString('hex'),{mode:0o600});
  const device=fs.readFileSync(deviceFile,'utf8').trim();let key='',license=null,message='Enter a key issued by your Nexus administrator or seller.';
@@ -15,10 +15,11 @@ async function requireActivation(electron,root){
   if(['app:login','app:start-booking'].includes(channel)&&(!license||Date.parse(license.expiresAt)<=Date.now()))return {ok:false,error:'Nexus activation required. Open the activation window to renew your key.'};
   return handler(event,...args);
  });
- let win;
+ let win,booted=false;
  const open=()=>{
   if(win&&!win.isDestroyed()){win.show();return;}
   win=new electron.BrowserWindow({width:540,height:460,webPreferences:{preload:path.join(root,'src/preload/activation.cjs'),contextIsolation:true,nodeIntegration:false}});
+  win.on?.('closed',()=>{if(!license&&!booted)options.shutdown?.();});
   win.loadFile(path.join(root,'src/renderer/activation.html'));
  };
  let finish;const ready=new Promise(resolve=>{finish=resolve;});
@@ -35,6 +36,6 @@ async function requireActivation(electron,root){
  });
  for(const role of ['admin','seller'])originalHandle('nexus:activation:'+role,event=>trusted(event)?electron.shell.openExternal(base+'/'+role):undefined);
  setInterval(async()=>{if(!key)return;try{license=await verify(key,false);}catch(error){license=null;message=String(error.message);open();}},300000).unref();
- await electron.app.whenReady();if(!license){open();await ready;}
+ await electron.app.whenReady();if(!license){open();await ready;}booted=true;
 }
 module.exports={requireActivation};

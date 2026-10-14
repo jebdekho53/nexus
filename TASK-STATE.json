@@ -1,5 +1,5 @@
 {
-  "status": "in_progress",
-  "task": "Integrate Nexus own admin/seller service, managedrelease/developerkeyfree, deploy VPS andpushGithub.",
-  "progress": "Nexus service deployed HTTPS andhealthy. Admin/seller/coreownkeys wired; privateadminpassword stored diagnostics/nexus-admin-access.txt. Release Electron E2E beforekeyblocked/after ownkeycontrollerready passed; QAkeyrevoked.36tests pass plusoffline9screens/storage smoke. Toolsportal shortcutsadded. OriginalLexus movedsafely../lexus-reference. ExistingLexus/n8n healthy. Stagedsourcepassedprivatepassword/key scan. FinalGitcommit/push andportable packagingpending."
+  "status": "complete",
+  "task": "Integrate Lexus admin/seller with Nexus; managedrelease andkeyfreedeveloper; deployVPS andpushGithub.",
+  "progress": "Nexus own controlplane liveHTTPS nexus.vaidya-gpt.com/admin and/seller; own registry/sessionsisolated /srv/nexus-data. Managedrelease ownactivationwired and realElectronE2Everified; developerkeyfree9screens/storage smoke passed.37 meaningfultests pass (36suite+portal). Privateadminaccess diagnostics/nexus-admin-access.txt; QAkeyrevoked. ExistingLexus/n8n healthy. OriginalLexus preserved ../lexus-reference, duplicatebooking/runtime/private dataexcluded. Github main pushed https://github.com/urbanmoveservices/nexus.git. Finaldocs/tests commit andportablearchive refresh completed as partof task."
 }

@@ -113,7 +113,7 @@ function bootRecovered(){try {
   console.error(error.stack || error);
   if(isSmoke&&developmentPolicy)developmentPolicy.finishSmoke(1);else electron.app.exit(1);
 }}
-if(managedRelease)require('./runtime/activation.cjs').requireActivation(appElectron,projectRoot).then(bootRecovered).catch(error=>log('nexus-activation-start-error',{error:String(error.message)}));else bootRecovered();
+if(managedRelease)require('./runtime/activation.cjs').requireActivation(appElectron,projectRoot,{shutdown:()=>developmentPolicy.finishSmoke(0)}).then(bootRecovered).catch(error=>log('nexus-activation-start-error',{error:String(error.message)}));else bootRecovered();
 if(managedRelease&&process.argv.includes('--release-activation-test'))setTimeout(()=>require(path.join(projectRoot,'test/release-activation-runner.cjs')).run(electron,projectRoot,code=>developmentPolicy.finishSmoke(code)),1000);
 
 if (isSmoke) {

@@ -1804,5 +1804,15 @@
         "stage": "booking:done"
       }
     ]
+  },
+  "adminSellerIntegration": {
+    "domain": "https://nexus.vaidya-gpt.com",
+    "deployed": true,
+    "releaseActivationE2e": true,
+    "qaKeyRevoked": true,
+    "testsPassed": 37,
+    "developerSmokeScreens": 9,
+    "developerStorage": true,
+    "privateSecretsCommitted": false
   }
 }
