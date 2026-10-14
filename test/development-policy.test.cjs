@@ -56,6 +56,11 @@ for(const managedRelease of [false,true])test('Matrix '+(managedRelease?'release
       assert.equal((await handlers.get('app:controller-action')({sender:controller.webContents},action)).action,action);
     }
     assert.equal(originalInvoked,9);
+    let targetCalls=0;electron.ipcMain.handle('app:get-login-target',()=>{targetCalls++;return{ok:true,data:{atMs:Date.now()+36000000}};});
+    const bookingSender={getURL:()=> 'file:///C:/local-project/src/renderer/booking-box.html?id=synthetic'};
+    assert.deepEqual(await handlers.get('app:get-login-target')({sender:bookingSender},{mode:'weblogin',quota:'TQ'}),{ok:true,data:null});
+    assert.equal(targetCalls,0);
+    await handlers.get('app:get-login-target')({sender:controller.webContents},{mode:'weblogin',quota:'TQ'});assert.equal(targetCalls,1);
     for(const channel of ['app:get-box-license-info','app:validate-license-key','app:activate-license']) {
       electron.ipcMain.handle(channel,()=>{throw new Error('Vendor license handler must not run locally');});
     }
@@ -69,7 +74,7 @@ for(const managedRelease of [false,true])test('Matrix '+(managedRelease?'release
     assert.equal((await handlers.get('app:activate-license')({sender:controller.webContents},'unused')).localOnly,true);
     for(const channel of ['app:login','app:start-booking']) {
       let entered=false;
-      electron.ipcMain.handle(channel,()=>{entered=true;return {ok:false,error:'genuine-provider-response'};});
+      electron.ipcMain.handle(channel,async()=>{entered=true;await Promise.resolve();const target=require('../src/main/runtime/booking-timing.cjs').bookingTiming().f2281(()=> 'scheduled',[{quota:'TQ'}]);assert.equal(target,channel==='app:login'?null:'scheduled');return {ok:false,error:'genuine-provider-response'};});
       const result=await handlers.get(channel)({sender:controller.webContents},{credentials:{username:'synthetic'}});
       assert.equal(entered,true);assert.equal(result.error,'genuine-provider-response');
       assert.equal(result.code,undefined);

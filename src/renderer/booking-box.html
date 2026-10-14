@@ -8,6 +8,7 @@
     />
     <title>Matrix · Booking</title>
     <script defer src="./matrix-book-now.js"></script>
+    <script defer src="./matrix-booking-timer.js"></script>
 
 
     <script type="module" crossorigin src="./assets/booking-box-Bsv5-yxI.js"></script>
@@ -199,7 +200,7 @@
         <span class="cn-spin" aria-hidden="true"></span>
         <span class="cn-lbl">Check Now</span>
       </button>
-      <div class="bb-timebox" title="Current time"><span class="bb-clock" id="clock">--:--:--</span></div>
+      <div class="bb-timebox" title="Current time and booking countdown"><span class="bb-clock" id="clock">--:--:--</span><span id="matrixGeneralTimer" role="timer" hidden></span></div>
     </div>
 
     <div id="pairModal" class="modal-overlay hidden">

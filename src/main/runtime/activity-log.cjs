@@ -16,6 +16,7 @@ function install(electron,root) {
     rows.push(row);if(rows.length>5000)rows.shift();
     try{if(fs.existsSync(file)&&fs.statSync(file).size>10*1024*1024)fs.renameSync(file,file+'.previous');fs.appendFileSync(file,JSON.stringify(row)+'\n');}catch{}
     for(const win of electron.BrowserWindow.getAllWindows())try{if(!win.isDestroyed()&&!win.webContents.isDestroyed()&&trusted(win.webContents))win.webContents.send('matrix:logs:event',row);}catch{}
+    if(run)for(const win of electron.BrowserWindow.getAllWindows())try{const url=new URL(win.webContents.getURL());if(!win.isDestroyed()&&url.protocol==='file:'&&url.pathname===new URL(pathToFileURL(path.join(root,'src/renderer/booking-box.html'))).pathname&&url.searchParams.get('id')===runId)win.webContents.send('matrix:booking:timing',{runId,stage:row.stage,elapsedSeconds:row.elapsedSeconds,active:run.active,remainingMs:run.remaining?Math.max(0,run.remaining.ms-(now-run.remaining.at)):null});}catch{}
     return row;
   }
   function stage(name,message,runId='app',level='info'){

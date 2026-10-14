@@ -2,6 +2,25 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),{pathToFileURL}=require('node:url');
 const definitions=require('../src/main/generated/index.cjs'),{createEngine}=require('../src/main/runtime/engine.cjs');
 const strings=require('./fixtures/booking-timing-strings.json');
+test('clicked login skips Tatkal login waiting without changing scheduled booking or other runs',async()=>{
+ const {bookingTiming,withImmediateLogin}=require('../src/main/runtime/booking-timing.cjs');
+ const hook=bookingTiming().f2281,scheduled={ms:Date.now()+36000000,label:'login'};
+ const original=()=>scheduled;
+ await withImmediateLogin(async()=>{
+  await new Promise(resolve=>setImmediate(resolve));
+  for(const quota of ['TQ','PT','8AM'])assert.equal(hook(original,[{quota}]),null);
+ });
+ for(const quota of ['TQ','PT','8AM'])assert.equal(hook(original,[{quota}]),scheduled);
+ const engine=createEngine(definitions,{functionInterceptors:bookingTiming()}),parent=engine.context(940,null),context=engine.context(6,parent);
+ parent[934]=()=> 'acTatkal';parent[5]=decoder('f2280');
+ const form={quota:'TQ',classCode:'3A',timing:{availTimes:{acTatkal:{hour:10,minute:0,second:0,ms:0}}}};
+ parent[279]=()=>false;parent[625]=()=>false;parent[280]=()=>({hour:10});parent[938]=()=>scheduled.ms;
+ const actor={opts:{timing:form.timing},isChancesFlow:()=>false,serverNow:()=>Date.now(),log:()=>{}};
+ const booking=engine.makeFunction('f2280',context);
+ const before=booking.call(actor,form);
+ assert.equal(before.ms,scheduled.ms);
+ assert.deepEqual(withImmediateLogin(()=>booking.call(actor,form)),before);
+});
 function decoder(id){return (index,key)=>{const value=strings[id][index+'|'+key];assert.notEqual(value,undefined,'missing decoder '+id+': '+index+'|'+key);return value;};}
 test('actual slot resolver keeps General immediate and existing opening/Tatkal slots scheduled',()=>{
  const engine=createEngine(definitions),context=engine.context(940,null);

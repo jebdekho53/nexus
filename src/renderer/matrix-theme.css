@@ -42,3 +42,26 @@ body.matrix-splash .bg,body.matrix-splash .scrim{display:none!important}body.mat
 .log-empty[hidden],.nx-log[hidden]{display:none!important}
 .matrix-payment-summary{font-size:11px;color:#8da4bd;padding-top:5px;line-height:1.4}.bb-box .matrix-payment-summary{font-size:8px;padding-top:2px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .nx-log.error{border-left:2px solid #ff8c92}.nx-log.error span:nth-child(3){color:#ff8c92}.nx-log.warn{border-left:2px solid #e8ba74}
+/* State styles override the old light-theme button states without changing hit targets. */
+.matrix-booking-box .act:not(:disabled):hover{background:#2c4260!important;color:#f4f8ff!important;border-color:#669ff4!important}
+.matrix-booking-box .act:not(:disabled):active,.matrix-booking-box .act.active,.matrix-booking-box .act.on{background:#245bac!important;color:#fff!important;border-color:#80b4ff!important}
+.matrix-booking-box .act:disabled{background:#202632!important;color:#8491a3!important;opacity:.65;cursor:not-allowed}
+.cal-day.sel,.cal-day[aria-selected=true]{background:#245bac!important;color:#fff!important;box-shadow:inset 0 0 0 1px #8ab9ff!important}
+.cal-day.today:not(.sel){color:#8bbaff!important;box-shadow:inset 0 0 0 1px #426084!important}
+.cal-day:disabled,.cal-day.past{background:#151b25!important;color:#657185!important;cursor:not-allowed!important;opacity:.65}
+.cal-day:hover:not(:disabled):not(.past):not(.sel){background:#2c4260!important;color:#fff!important}
+.cal-title,.cal-dow span{color:#c8d8ee!important}.cal-pop,.bb-calpop{background:#191e2a!important;color:#e8ecf1!important;z-index:1000!important}
+.matrix-controller .box .ic,.matrix-controller .box .ic svg{width:24px!important;height:24px!important}.matrix-controller .box .ic svg{stroke-width:1.9}
+.matrix-booking-box .bb-timebox{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:1px}
+#matrixGeneralTimer{font-size:10px;line-height:12px;color:#b9d7ff;font-variant-numeric:tabular-nums;white-space:nowrap}#matrixGeneralTimer[hidden]{display:none}
+.matrix-header-logo{width:26px;height:26px;object-fit:contain;flex-shrink:0}.matrix-app-lock .al-lock{background:transparent!important}.matrix-app-lock .al-lock .matrix-mark{width:48px;height:48px}
+.matrix-booking-box .bb-pick,.matrix-booking-box .bb-chip-pick{background:#1d2b3e!important;color:#e8f1ff!important;-webkit-text-fill-color:#e8f1ff!important}
+.matrix-booking-box .bb-pick-label,.matrix-booking-box #loginModeVal,.matrix-booking-box .bb-chip-caret{color:#e8f1ff!important;-webkit-text-fill-color:#e8f1ff!important;opacity:1!important;visibility:visible!important}
+.matrix-booking-box .bb-pick-label{font-size:11px!important;line-height:16px!important;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.matrix-booking-box #loginModeVal{font-size:11px!important;line-height:16px!important}.matrix-booking-box .bb-chip-pick:disabled{opacity:.65!important}
+.matrix-booking-box .picker,.matrix-booking-box .picker-item,.matrix-booking-box .pick-row{color:#e8f1ff!important;-webkit-text-fill-color:#e8f1ff!important}
+.matrix-booking-box .picker-opt{background:#1d2b3e!important;color:#e8f1ff!important;-webkit-text-fill-color:#e8f1ff!important;border-color:#40516a!important}
+.matrix-booking-box .picker-opt-label,.matrix-booking-box .browser-tile,.matrix-booking-box .picker-sub,.matrix-booking-box .picker-opt span{color:#e8f1ff!important;-webkit-text-fill-color:#e8f1ff!important}
+.matrix-booking-box .picker-opt:not(:disabled):not(.blocked):hover{background:#2c4260!important;border-color:#80b4ff!important}.matrix-booking-box .picker-opt.active{background:#245bac!important;color:#fff!important;-webkit-text-fill-color:#fff!important;border-color:#80b4ff!important}
+.matrix-booking-box .picker-opt.blocked,.matrix-booking-box .picker-opt:disabled{background:#25242c!important;color:#b49aa4!important;-webkit-text-fill-color:#b49aa4!important;opacity:.65!important;cursor:not-allowed!important}
+.matrix-booking-box .pay-tag{background:#293d55!important;color:#dceaff!important;-webkit-text-fill-color:#dceaff!important;border:1px solid #496481!important}.matrix-booking-box .pay-tag-weblogin{background:#193e36!important;color:#9cebd1!important;-webkit-text-fill-color:#9cebd1!important}.matrix-booking-box .pay-tag-uilogin{background:#352b51!important;color:#dcc5ff!important;-webkit-text-fill-color:#dcc5ff!important}.matrix-booking-box .pay-tag-railone{background:#233e65!important;color:#b4d4ff!important;-webkit-text-fill-color:#b4d4ff!important}

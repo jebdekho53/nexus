@@ -57,11 +57,18 @@ function install(electron,root,log=()=>{},options={}) {
       nativeExit(0);return {ok:true};
     }
     try {
+      if(channel==='app:get-login-target'&&args[0]?.mode==='weblogin'){
+        try{const sender=new URL(event.sender.getURL());if(sender.protocol==='file:'&&path.resolve(require('node:url').fileURLToPath(sender))===path.join(root,'src/renderer/booking-box.html'))return{ok:true,data:null};}catch{}
+      }
       args=bookNow.prepare(channel,args);
       if(channel==='app:start-booking')options.observePayment?.(channel,args);
       if(channel==='app:stop-run'||channel==='app:logout')options.stopActivity?.(typeof args[0]==='string'?args[0]:args[0]?.formId);
       if(channel==='app:login'&&options.trace){options.trace.active=true;options.trace.calls=new Map();}
-      const result=await Reflect.apply(handler,undefined,[event,...args]);
+      let result;
+      try{const invoke=()=>Reflect.apply(handler,undefined,[event,...args]);result=await(channel==='app:login'?require('./booking-timing.cjs').withImmediateLogin(invoke):invoke());}catch(error){if(channel!=='app:check-id-status')throw error;result={ok:false,error:'Primary ID check unavailable'};}
+      // The provider intermittently rejects Chromium HTTP/2. Node's bundled
+      // fetch uses its own HTTP transport and needs no machine-installed curl.
+      if(channel==='app:check-id-status')result=await require('./id-check.cjs').fallbackIds(args[0],result,(url,init)=>globalThis.fetch(url,init));
       bookNow.observe(channel,args,result);
       if(channel!=='app:start-booking')options.observePayment?.(channel,args,result);
       if(result?.ok===false&&(channel==='app:login'||channel==='app:start-booking'))options.stopActivity?.(args[0]?.formId);

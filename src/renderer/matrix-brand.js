@@ -4,6 +4,7 @@
   const page=location.pathname.split('/').pop().replace('.html','');
   const version=globalThis.MATRIX_BUILD?.version;
   const logo='./assets/matrix-mark.png';
+  let favicon=document.querySelector('link[rel="icon"]');if(!favicon){favicon=document.createElement('link');favicon.rel='icon';document.head.append(favicon);}favicon.href=logo;
   document.body.classList.add('matrix-'+page);
   const cleanNode=node=>{
     if(node.nodeType===Node.TEXT_NODE&&!node.parentElement?.closest('script,style,textarea,input,[contenteditable]')) {
@@ -28,6 +29,8 @@
   for(const element of document.querySelectorAll('.center,.verlogo,.m-logo,.splash .logo')) {
     const image=document.createElement('img');image.src=logo;image.alt='Matrix';image.className='matrix-mark';element.replaceChildren(image);
   }
+  for(const dot of document.querySelectorAll('.topbar .brand > .dot')){const image=document.createElement('img');image.src=logo;image.alt='Matrix';image.className='matrix-header-logo';dot.replaceWith(image);}
+  if(page==='app-lock'){const box=document.querySelector('.al-lock');if(box){const image=document.createElement('img');image.src=logo;image.alt='Matrix';image.className='matrix-mark';box.replaceChildren(image);}}
   const vendor=document.getElementById('tgHandle')?.closest('section');if(vendor)vendor.classList.add('matrix-vendor-channel');
   const failBrand=document.getElementById('failBrand');if(failBrand)failBrand.textContent='MATRIX';
   if(page==='splash'){
@@ -43,6 +46,12 @@
       const sync=()=>{
         for(const option of select.options){const label=globalThis.MATRIX_PAYMENTS?.labels[option.value];if(label&&option.textContent!==label)option.textContent=label;}
         if(select.value!==previous){previous=select.value;summary.textContent='Selected: '+(globalThis.MATRIX_PAYMENTS?.label(previous)||previous||'Not selected');}
+        if(page==='booking-box'){
+          const label=document.querySelector('#payPick .bb-pick-label'),payment=globalThis.MATRIX_PAYMENTS?.label(select.value)||select.selectedOptions[0]?.textContent;
+          if(label&&payment&&label.textContent!==payment)label.textContent=payment;
+          const mode=document.getElementById('loginFlowSel')?.value,modeLabel=document.getElementById('loginModeVal'),text={auto:document.getElementById('quotaSel')?.value==='GN'?'AUTO · NOW':'AUTO',manual:'MANUAL',direct:'DIRECT',direct2:'MATRIX'}[mode];
+          if(modeLabel&&text&&modeLabel.textContent!==text)modeLabel.textContent=text;
+        }
       };
       sync();select.addEventListener('change',sync);setInterval(sync,500);
     }

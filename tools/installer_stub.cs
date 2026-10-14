@@ -20,7 +20,9 @@ static class Installer {
         if (!silent) {
             Application.EnableVisualStyles();
             form = new Form { Text = "Matrix Setup " + version, Width = 400, Height = 130, StartPosition = FormStartPosition.CenterScreen, FormBorderStyle = FormBorderStyle.FixedDialog, MaximizeBox = false, MinimizeBox = false, ControlBox = false };
-            form.Controls.Add(new Label { Text = "Installing Matrix " + version + " ...", Left = 20, Top = 20, Width = 340 });
+            form.Icon = System.Drawing.Icon.ExtractAssociatedIcon(self);
+            form.Controls.Add(new PictureBox { Image = form.Icon.ToBitmap(), Left = 18, Top = 12, Width = 42, Height = 42, SizeMode = PictureBoxSizeMode.Zoom });
+            form.Controls.Add(new Label { Text = "Installing Matrix " + version + " ...", Left = 70, Top = 23, Width = 280 });
             form.Controls.Add(new ProgressBar { Style = ProgressBarStyle.Marquee, Left = 20, Top = 50, Width = 345, Height = 18 });
             form.Shown += (s, e) => worker.Start();
             var timer = new System.Windows.Forms.Timer { Interval = 300 };

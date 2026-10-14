@@ -8,8 +8,24 @@ async function run(electron,root){
   await controller.webContents.executeJavaScript('window.api.openBookingBox('+JSON.stringify(form.id)+')');
   const deadline=Date.now()+12000;let state,panel;
   while(Date.now()<deadline){panel=electron.BrowserWindow.getAllWindows().find(w=>w.webContents.getURL().includes('booking-box.html?id='+form.id));if(panel&&!panel.webContents.isLoading()){state=await panel.webContents.executeJavaScript("({account:document.querySelector('#acctPick .bb-pick-label')?.textContent,payment:document.getElementById('paySel')?.value,paymentLabel:document.querySelector('#payPick .bb-pick-label')?.textContent,modeLabelPresent:!!document.getElementById('loginModeVal'),status:document.getElementById('statusText')?.textContent})");if(state.account?.startsWith(form.account.username.slice(0,4))&&state.paymentLabel==='Paytm QR')break;}await new Promise(resolve=>setTimeout(resolve,200));}
-  if(panel)fs.writeFileSync(path.join(root,'diagnostics/packaged-panel.png'),(await panel.webContents.capturePage()).toPNG());
-  const result={accountLoaded:state?.account?.startsWith(form.account.username.slice(0,4)),paymentLoaded:state?.payment===form.payment.method&&state?.paymentLabel==='Paytm QR',modeLabelPresent:state?.modeLabelPresent,status:state?.status,syntheticData:true};fs.writeFileSync(path.join(root,'diagnostics/packaged-panel.json'),JSON.stringify(result,null,2));if(!result.accountLoaded||!result.paymentLoaded||!result.modeLabelPresent)throw Error('Packaged panel account/payment failed: '+JSON.stringify(result));return result;
+  if(panel){
+   panel.show();await new Promise(resolve=>setTimeout(resolve,300));
+   const visual=await panel.webContents.executeJavaScript(`(()=>{const read=id=>{const el=document.getElementById(id),s=getComputedStyle(el);return{text:el.textContent.trim(),color:s.color,fill:s.webkitTextFillColor,visible:!!el.getClientRects().length&&s.visibility!=='hidden'&&s.opacity!=='0'};};return{mode:read('loginModeVal'),payment:read('payPick'),timer:read('matrixGeneralTimer')};})()`);
+   if(!visual.mode.text||!visual.mode.visible||!visual.payment.visible||!visual.timer.visible)throw Error('Panel selected labels/timer are not visible');
+   state.visual=visual;
+   fs.writeFileSync(path.join(root,'diagnostics/packaged-panel.png'),(await panel.webContents.capturePage()).toPNG());
+   for(const id of ['payPick','loginModeChip']){
+    await panel.webContents.executeJavaScript(`document.getElementById('${id}').click()`);await new Promise(resolve=>setTimeout(resolve,150));
+    const options=await panel.webContents.executeJavaScript(`Array.from(document.querySelectorAll('#pickerList .picker-opt')).map(el=>({text:el.innerText.trim(),color:getComputedStyle(el).color,background:getComputedStyle(el).backgroundColor,visible:!!el.getClientRects().length}))`);
+    if(!options.length||options.some(row=>!row.text||!row.visible||row.color===row.background))throw Error('Dropdown options are unreadable: '+id);
+    state.visual[id]=options;
+    fs.writeFileSync(path.join(root,'diagnostics/packaged-'+id+'.png'),(await panel.webContents.capturePage()).toPNG());
+    await panel.webContents.executeJavaScript(`document.getElementById('pickerClose').click()`);
+   }
+   const calendar=await panel.webContents.executeJavaScript(`(()=>{document.getElementById('datePick').click();const days=[...document.querySelectorAll('#boxCalPop .cal-day')];const day=days.find(el=>!el.disabled&&!el.classList.contains('past')&&el.textContent.trim());if(!day)return{passed:false};const bg=getComputedStyle(day).backgroundColor;day.click();return{passed:true,days:days.length,background:bg,date:document.getElementById('date').textContent};})()`);
+   if(!calendar.passed)throw Error('Calendar selectable date unavailable');state.visual.calendar=calendar;
+  }
+  const result={accountLoaded:state?.account?.startsWith(form.account.username.slice(0,4)),paymentLoaded:state?.payment===form.payment.method&&state?.paymentLabel==='Paytm QR',modeLabelPresent:state?.modeLabelPresent,status:state?.status,visual:state?.visual,syntheticData:true};fs.writeFileSync(path.join(root,'diagnostics/packaged-panel.json'),JSON.stringify(result,null,2));if(!result.accountLoaded||!result.paymentLoaded||!result.modeLabelPresent)throw Error('Packaged panel account/payment failed: '+JSON.stringify(result));return result;
  }finally{await controller.webContents.executeJavaScript('window.api.deleteForm('+JSON.stringify(form.id)+')');}
 }
 module.exports={run};

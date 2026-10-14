@@ -2,4 +2,4 @@ function _0x255736(_0x474633,_0x1c6162){return _0x30e1(_0x1c6162- -0x1f8,_0x4746
 ;(()=>{const {contextBridge,ipcRenderer}=require('electron');contextBridge.exposeInMainWorld('matrixLogs',{
  snapshot:()=>ipcRenderer.invoke('matrix:logs:snapshot'),clear:()=>ipcRenderer.invoke('matrix:logs:clear'),
  subscribe:callback=>{const listener=(_event,row)=>callback(row);ipcRenderer.on('matrix:logs:event',listener);return ()=>ipcRenderer.removeListener('matrix:logs:event',listener);}
-});contextBridge.exposeInMainWorld('matrixPortal',{open:role=>ipcRenderer.invoke('matrix:portal:open',role)});})();
+});contextBridge.exposeInMainWorld('matrixBookingTiming',{subscribe:callback=>{const listener=(_event,row)=>callback(row);ipcRenderer.on('matrix:booking:timing',listener);return ()=>ipcRenderer.removeListener('matrix:booking:timing',listener);}});contextBridge.exposeInMainWorld('matrixPortal',{open:role=>ipcRenderer.invoke('matrix:portal:open',role)});})();
