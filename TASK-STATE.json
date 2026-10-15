@@ -1,7 +1,7 @@
 {
-  "status": "complete",
-  "progress": "Exact renderer pre-login sequence reproduced with blocked network and synthetic sessions: closeAuxWindows uses legacy title filtering in f4292, closes rebranded other booking panel and disposes its session. Added trusted local-page auxiliary whitelist in app:close-aux-windows instead of title-based classification. Preserves booking/ticket/QR/controller and unknown/remote windows, caller unchanged.58app tests pass. Before test2panels->1/other sessiondisposed; source and actual installed1.0.10 aftertest2panels->2/both sessionsactive. No real credential submission or booking/payment.1.0.10 updater installed preserving5profileJSON; full/updater payload normal/relocation/truncation checks pass, disposable updater preservesruntime/marker. VPS hashes verified, manifestpublishedatomically, publicGET200 matchingbytes. Codepush follows. Live authenticated booking/QR and Auto speed remain unverified and are not prerequisites/claims for this reproduced UIcleanup fix. Report docs/release-1.0.10-qa.md",
-  "task": "Fix WebLogin Chrome selection closing another independent pair panel",
+  "status": "in_progress",
+  "progress": "Human requests faster General route, local QR comparison then choose winner. Inspected Lexus direct flow: validate/altAvl/fare/boarding,35s fallback, also GN opening gate and100retry budgets; whole engine not copied. Matrix already has altAvl priming via skipTrainSearch. Implemented source-only developer opt-in --general-api-candidate: GN Auto login reuse and per-booking actual f3406getter scope for existing API-search branch. Default/release untouched; scheduled andexplicit modes preserved, provider45s fallback unchanged.61app tests pass incl actual getter/asyncconcurrency; offline candidate smoke8windows passed. No live credentials or QR attempt; previous automaticapprovalrejection not bypassed. Actual speed/QRcompatibility unverified; cannot choose fastest/promote. Public and installed remain1.0.10 with completed pair-close fix. Report docs/general-api-candidate.md",
+  "task": "Compare General Auto with Lexus-style API-search candidate and select only after valid QR timing",
   "completedLatestTask": {
     "task": "Fix WebLogin Chrome selection closing another independent pair panel",
     "version": "1.0.10",
@@ -53,5 +53,14 @@
       "report": "diagnostics/link-audit/native-marker-audit.json",
       "limits": "Known literal markers only; not a runtime egress guarantee"
     }
+  },
+  "candidate": {
+    "report": "docs/general-api-candidate.md",
+    "defaultEnabled": false,
+    "installed": false,
+    "tests": 61,
+    "smokeWindows": 8,
+    "liveQrVerified": false,
+    "promotion": "await matched authorized live evidence; do not retry rejected action via alternate route"
   }
 }

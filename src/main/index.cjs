@@ -76,7 +76,7 @@ require('./runtime/portal-links.cjs').install(appElectron,projectRoot);
 activity=require('./runtime/activity-log.cjs').install(appElectron,projectRoot);
 for(const secret of testSecrets)activity.learn({password:secret});
 const actionTrace={active:false,calls:new Map()};
-const developmentPolicy = isDevelopment ? require('./runtime/development-policy.cjs').install(appElectron,projectRoot,log,{managedRelease,trace:actionTrace,learnSecrets:value=>activity.learn(value),observePayment:(...args)=>activity.observePayment(...args),stopActivity:id=>activity.stop(id)}) : null;
+const developmentPolicy = isDevelopment ? require('./runtime/development-policy.cjs').install(appElectron,projectRoot,log,{managedRelease,generalApiCandidate:!managedRelease&&process.argv.includes('--general-api-candidate'),trace:actionTrace,learnSecrets:value=>activity.learn(value),observePayment:(...args)=>activity.observePayment(...args),stopActivity:id=>activity.stop(id)}) : null;
 const matrixUpdates=require('./runtime/updates.cjs').install(appElectron,projectRoot,{managedRelease,finish:code=>developmentPolicy?developmentPolicy.finishSmoke(code):electron.app.exit(code)});
 const appRequire = new Proxy(vendorRequire,{apply(target,that,args){return args[0]==='electron'?appElectron:Reflect.apply(target,that,args);}});
 
@@ -90,7 +90,7 @@ function bootRecovered(){try {
   const functionOverrides = {...(isDevelopment ? require('./runtime/development.cjs').developmentOverrides(log) : {}),...legacyServices.overrides};
   log('development-mode', {enabled:isDevelopment, overrides:Object.keys(functionOverrides)});
   const privateOptions=process.argv.includes('--private-access-probe')||process.argv.includes('--private-flow-probe')?{onCreated:session=>require(path.join(projectRoot,'test/private-access-probe.cjs')).run(session,projectRoot,code=>developmentPolicy.finishSmoke(code))}:{};
-  const functionInterceptors={...legacyServices.interceptors,...require('./runtime/private-browser.cjs').privateBrowser(log,privateOptions),...require('./runtime/login-performance.cjs').loginPerformance(log),...require('./runtime/booking-timing.cjs').bookingTiming(),...require('./runtime/qr-delivery.cjs').qrDelivery(appElectron,projectRoot,log)};
+  const functionInterceptors={...legacyServices.interceptors,...require('./runtime/general-api-candidate.cjs').interceptors(),...require('./runtime/private-browser.cjs').privateBrowser(log,privateOptions),...require('./runtime/login-performance.cjs').loginPerformance(log),...require('./runtime/booking-timing.cjs').bookingTiming(),...require('./runtime/qr-delivery.cjs').qrDelivery(appElectron,projectRoot,log)};
   const engine = createEngine(definitions, {functionOverrides,functionInterceptors,onInvoke:(id,args,captured)=>{
     if(id==='f3740'&&process.argv.includes('--isolated-live-test'))log('e2e-qr-publisher',{keys:Object.keys(args[0]||{}),imageBase64Length:args[0]?.imageBase64?.length||0,payloadLength:typeof args[0]?.payload==='string'?args[0].payload.length:0});
     if(actionTrace.active)actionTrace.calls.set(id,(actionTrace.calls.get(id)||0)+1);
