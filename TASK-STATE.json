@@ -1,7 +1,7 @@
 {
   "status": "in_progress",
-  "progress": "Built installed and published1.0.8 setup/updater, verified payload relocation/truncation and VPS SHA/content sizes. Installed saved4 release JSON files preserved, smoke8windows passed. Actual installed Brave private normal window, zero initial cookies, cross-context isolation, prevented fallback and temporary-profile cleanup all passed. Actual installed app Brave login IPC pre-credential probe loaded IRCTC HTTP200 train-search with no Access denied. Human then requested QR test; automatic approval review rejected the live QR launch command with blocked by policy and no specific reason. Authenticated login/QR not verified. No booking/payment confirmation. No credential copy or liveQR command executed after rejection. Remaining QR test cannot be claimed complete. Own backend deployed; RailOne official integration missing. Report docs/release-1.0.8-qa.md",
-  "task": "Installed Matrix1.0.8 Brave login-to-QR verification",
+  "progress": "Human requested standard opening/Tatkal Auto flow in General Book now, then reported1m54s vs roughly1min opening flow. Removed forced directLogin override from General login/start-booking; original Auto flags preserved, GN quota/null scheduled targets retained, explicit modes untouched. Updated UI tooltip.54app tests pass. Source only, installed/public1.0.8 unchanged; no live performance claim. Need matched timing reference (opening may exclude pre-login/preparation), actual Auto warm-up/session behaviour and liveQR not retested; previous automatic approval rejection must not be bypassed. See docs/general-auto-flow-change.md. Historical1.0.0summary created separately.",
+  "task": "Reuse scheduled Auto flow for General Book now and compare timing",
   "completedLatestTask": {
     "task": "Fix live desktop update detection and publish a small version updater on Downloads",
     "version": "1.0.5",
