@@ -10,9 +10,20 @@ test('ready page uses shorter quiet period but keeps original popup handler',asy
   },[page,{maxMs:16000,quietMs:3000,extra:true}]);
   assert.equal(waited,true);assert.equal(result,3);
 });
-test('unready page retains original wait settings',async()=>{
-  const page={async waitForFunction(){throw Error('not ready');}},settings={maxMs:16000,quietMs:3000};
-  await loginPerformance().f698((actual,options)=>{assert.equal(actual,page);assert.equal(options,settings);},[page,settings]);
+test('unready page retains popup handling and subtracts readiness time from original budget',async()=>{
+  let time=0;const page={async waitForFunction(){time=4000;throw Error('not ready');}},settings={maxMs:16000,quietMs:3000};
+  await loginPerformance(()=>{},{now:()=>time}).f698((actual,options)=>{assert.equal(actual,page);assert.deepEqual(options,{maxMs:12000,quietMs:3000});},[page,settings]);
+  assert.deepEqual(settings,{maxMs:16000,quietMs:3000});
+});
+test('original popup failure is propagated without invoking it twice',async()=>{
+  let calls=0;const error=Error('popup handler failed'),events=[];
+  await assert.rejects(loginPerformance((name,data)=>events.push({name,data}),{now:()=>0}).f698(async()=>{calls++;throw error;},[{waitForFunction:async()=>{}},{maxMs:16000}]),error);
+  assert.equal(calls,1);assert.equal(events.at(-1).name,'matrix-login-settle-timing');
+});
+test('short or exhausted caller budget never gains an additional readiness timeout',async()=>{
+  let time=0;const page={waitForFunction:async(_p,_a,options)=>{assert.equal(options.timeout,1000);time=1000;throw Error('not ready');}};
+  await loginPerformance(()=>{},{now:()=>time}).f698((_page,options)=>assert.equal(options.maxMs,0),[page,{maxMs:1000}]);
+  await loginPerformance().f698((_page,options)=>assert.equal(options.maxMs,0),[{waitForFunction:async()=>{throw Error('must not probe zero budget');}},{maxMs:0}]);
 });
 test('field value is verified; mismatches retain original typing recovery',async()=>{
   const hook=loginPerformance().f583;let fallback=0;

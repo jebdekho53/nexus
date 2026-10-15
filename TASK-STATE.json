@@ -1,7 +1,7 @@
 {
   "status": "in_progress",
-  "progress": "Human requests faster General route, local QR comparison then choose winner. Inspected Lexus direct flow: validate/altAvl/fare/boarding,35s fallback, also GN opening gate and100retry budgets; whole engine not copied. Matrix already has altAvl priming via skipTrainSearch. Implemented source-only developer opt-in --general-api-candidate: GN Auto login reuse and per-booking actual f3406getter scope for existing API-search branch. Default/release untouched; scheduled andexplicit modes preserved, provider45s fallback unchanged.61app tests pass incl actual getter/asyncconcurrency; offline candidate smoke8windows passed. No live credentials or QR attempt; previous automaticapprovalrejection not bypassed. Actual speed/QRcompatibility unverified; cannot choose fastest/promote. Public and installed remain1.0.10 with completed pair-close fix. Report docs/general-api-candidate.md",
-  "task": "Compare General Auto with Lexus-style API-search candidate and select only after valid QR timing",
+  "progress": "Human clarified target is BEFORE45s countdown. Read-only manual-run stages show settle->trigger13.6s/26.6s; login-confirmation5.1/4.9s, postlogin-to-countdown3.5/2.6s. Fixed own f698 interceptor readiness probe adding up to4s before full budget and synchronous handler failure being called twice: shared budget, single handler invocation, timing telemetry.63tests pass incl budgetexhaustion/errorpropagation. Source-only, installed/public1.0.10unchanged. Need next human-operated trace to measure real reduction and identify remaining settle/navigation work; no new live login/booking or rejectedQRretry initiated. Report docs/pre-countdown-login-analysis.md",
+  "task": "Reduce login preparation delay before passenger countdown",
   "completedLatestTask": {
     "task": "Fix WebLogin Chrome selection closing another independent pair panel",
     "version": "1.0.10",
@@ -61,6 +61,16 @@
     "tests": 61,
     "smokeWindows": 8,
     "liveQrVerified": false,
-    "promotion": "await matched authorized live evidence; do not retry rejected action via alternate route"
+    "promotion": "await matched authorized live evidence; do not retry rejected action via alternate route",
+    "manualObservation": {
+      "source": "human-operated local run, read-only logs",
+      "report": "diagnostics/general-api-manual-observation.json",
+      "qrEventSeconds": [
+        77.3,
+        87.8
+      ],
+      "uiQrVerified": false,
+      "matchedBaseline": false
+    }
   }
 }
