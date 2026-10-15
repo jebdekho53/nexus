@@ -14,6 +14,53 @@ static class Installer {
     const bool UpdateOnly = false;
 #endif
     static string Log = Path.Combine(Path.GetTempPath(), "matrix-install.log");
+    // Downloads may receive an executable wrapper/prefix. ZIP offsets then
+    // refer to the original payload position, not the physical file position.
+    // Locate the actual central directory and give .NET a relative view.
+    static ZipArchive OpenPayload(string file) {
+        var input = File.OpenRead(file);
+        try {
+            int tailLength = (int)Math.Min(input.Length, 131072);
+            byte[] tail = new byte[tailLength];
+            input.Position = input.Length - tailLength;
+            int read = 0;
+            while (read < tail.Length) { int n = input.Read(tail, read, tail.Length - read); if (n == 0) throw new EndOfStreamException(); read += n; }
+            for (int i = tail.Length - 22; i >= 0; i--) {
+                if (BitConverter.ToUInt32(tail, i) != 0x06054b50) continue;
+                int comment = BitConverter.ToUInt16(tail, i + 20);
+                if (i + 22 + comment > tail.Length) continue;
+                ushort disk = BitConverter.ToUInt16(tail, i + 4), cdDisk = BitConverter.ToUInt16(tail, i + 6);
+                ushort onDisk = BitConverter.ToUInt16(tail, i + 8), total = BitConverter.ToUInt16(tail, i + 10);
+                uint size = BitConverter.ToUInt32(tail, i + 12), offset = BitConverter.ToUInt32(tail, i + 16);
+                if (disk != 0 || cdDisk != 0 || onDisk != total || total == 0 || total == 65535 || size == uint.MaxValue || offset == uint.MaxValue) continue;
+                long end = input.Length - tailLength + i;
+                long central = end - size, start = central - offset;
+                if (central < 0 || start < 0 || central + 4 > input.Length) continue;
+                input.Position = central;
+                byte[] signature = new byte[4];
+                if (input.Read(signature, 0, 4) != 4 || BitConverter.ToUInt32(signature, 0) != 0x02014b50) continue;
+                var zip = new ZipArchive(new PayloadStream(input, start, end + 22 + comment - start), ZipArchiveMode.Read);
+                if (zip.Entries.Count != total) { zip.Dispose(); throw new InvalidDataException("Installer payload entry count mismatch"); }
+                return zip;
+            }
+            throw new InvalidDataException("Installer payload is missing or incomplete. Download the updater again.");
+        } catch { input.Dispose(); throw; }
+    }
+    sealed class PayloadStream : Stream {
+        readonly Stream input; readonly long start, length; long position;
+        public PayloadStream(Stream input, long start, long length) { this.input = input; this.start = start; this.length = length; }
+        public override bool CanRead { get { return true; } }
+        public override bool CanSeek { get { return true; } }
+        public override bool CanWrite { get { return false; } }
+        public override long Length { get { return length; } }
+        public override long Position { get { return position; } set { Seek(value, SeekOrigin.Begin); } }
+        public override int Read(byte[] buffer, int offset, int count) { input.Position = start + position; int n = input.Read(buffer, offset, (int)Math.Min(count, length - position)); position += n; return n; }
+        public override long Seek(long offset, SeekOrigin origin) { long next = origin == SeekOrigin.Begin ? offset : origin == SeekOrigin.Current ? position + offset : length + offset; if (next < 0 || next > length) throw new IOException("Payload seek outside archive"); position = next; return next; }
+        public override void Flush() { }
+        public override void SetLength(long value) { throw new NotSupportedException(); }
+        public override void Write(byte[] buffer, int offset, int count) { throw new NotSupportedException(); }
+        protected override void Dispose(bool disposing) { if (disposing) input.Dispose(); base.Dispose(disposing); }
+    }
     [STAThread]
     static int Main(string[] args) {
         bool silent = Array.IndexOf(args, "/S") >= 0, noLaunch = Array.IndexOf(args, "/nolaunch") >= 0;
@@ -44,17 +91,29 @@ static class Installer {
     }
 
     static void Install(string self, bool noLaunch, string[] args) {
+        bool verifyOnly = Array.IndexOf(args, "/verify") >= 0;
+        string payloadFile = self;
+        if (verifyOnly) foreach (string arg in args) if (arg.StartsWith("/archive=", StringComparison.OrdinalIgnoreCase)) payloadFile = Path.GetFullPath(arg.Substring(9));
         string dest = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Matrix");
         foreach (string arg in args) if (arg.StartsWith("/target=", StringComparison.OrdinalIgnoreCase)) dest = Path.GetFullPath(arg.Substring(8));
         dest = Path.GetFullPath(dest);
-        if (UpdateOnly && (!File.Exists(Path.Combine(dest, ".runtime", "electron.exe")) || !File.Exists(Path.Combine(dest, "package.json")))) throw new InvalidOperationException("Install Matrix with the full Setup first, then run this updater.");
+        if (!verifyOnly && UpdateOnly && (!File.Exists(Path.Combine(dest, ".runtime", "electron.exe")) || !File.Exists(Path.Combine(dest, "package.json")))) throw new InvalidOperationException("Install Matrix with the full Setup first, then run this updater.");
+        using (var zip = OpenPayload(payloadFile)) {
+        // Validate the directory and all destination paths before stopping apps.
+        foreach (var entry in zip.Entries) {
+            string target = Path.GetFullPath(Path.Combine(dest, entry.FullName.Replace('/', '\\')));
+            if (!target.StartsWith(dest + "\\", StringComparison.OrdinalIgnoreCase)) throw new InvalidDataException("Bad path " + entry.FullName);
+        }
+        if (verifyOnly) {
+            foreach (var entry in zip.Entries) using (var stream = entry.Open()) stream.CopyTo(Stream.Null);
+            return;
+        }
         foreach (var p in Process.GetProcessesByName("electron")) {
             try { if (p.MainModule.FileName.StartsWith(dest + "\\", StringComparison.OrdinalIgnoreCase)) { p.Kill(); p.WaitForExit(5000); } } catch { }
         }
         // Update application files in place. Saved profiles from older releases
         // must remain available for migration on first launch.
         Directory.CreateDirectory(dest);
-        using (var zip = ZipFile.OpenRead(self)) {
             foreach (var entry in zip.Entries) {
                 if (entry.FullName.EndsWith("/")) continue;
                 string target = Path.GetFullPath(Path.Combine(dest, entry.FullName.Replace('/', '\\')));
