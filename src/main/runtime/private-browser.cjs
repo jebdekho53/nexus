@@ -33,6 +33,7 @@ async function withPrivateLogin(invoke){
 // ownership in the recovered launcher, but never browse in its disk profile.
 function privateBrowser(log=()=>{},dependencies={}) {
   const files=dependencies.fs||fs;
+  const ownedPages=new WeakSet();
   const freshLogin=(original,[credentials,options={}])=>{
     const invoke=()=>original(credentials,{...options,cookieState:undefined,cookieStatePool:undefined,launchHidden:false});
     return loginScope.getStore()?invoke():withPrivateLogin(invoke);
@@ -67,6 +68,7 @@ function privateBrowser(log=()=>{},dependencies={}) {
         // Do not copy storageState, cookies, user agents or profile init scripts.
         context=await browser.newContext({viewport:null,...(options.proxy?.server?{proxy:options.proxy}:{})});
         const page=await context.newPage();
+        ownedPages.add(page);
         // Restore the private window, including when the inherited launcher
         // or OS previously left the browser minimized/off screen.
         if(typeof context.newCDPSession==='function'){
@@ -87,7 +89,13 @@ function privateBrowser(log=()=>{},dependencies={}) {
             return goto(entry,...args);
           };
         }
-        for(const oldPage of session.context.pages())await oldPage.close().catch(()=>{});
+        // CDP launchers can expose pages from an already attached context.
+        // Never close another pair's page or a restored/nonblank user tab.
+        for(const oldPage of session.context.pages()){
+          if(ownedPages.has(oldPage))continue;
+          let url;try{url=oldPage.url();}catch{continue;}
+          if(url==='about:blank'||/^(?:chrome|edge|brave):\/\/newtab\/?$/.test(url))await oldPage.close().catch(()=>{});
+        }
         context.once('close',()=>{dispose().catch(()=>{});});
         browser.once('disconnected',()=>{dispose().catch(()=>{});});
         state?.disposers.add(dispose);

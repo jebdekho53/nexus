@@ -70,6 +70,7 @@ globalThis.__esmImport = specifier => {
 
 const baseElectron = isSmoke ? require('./runtime/offline-smoke.cjs').install(electron,projectRoot,log) : electron;
 const appElectron=require('./runtime/window-readiness.cjs').install(baseElectron,projectRoot,log);
+require('./runtime/ticket-docking.cjs').install(appElectron,projectRoot);
 if(!isSmoke)require('./runtime/legacy-services.cjs').install(appElectron,log);
 require('./runtime/portal-links.cjs').install(appElectron,projectRoot);
 activity=require('./runtime/activity-log.cjs').install(appElectron,projectRoot);

@@ -45,7 +45,7 @@ function install(electron,root,log=()=>{},options={}) {
   const nativeHandle=electron.ipcMain.handle.bind(electron.ipcMain);
   patch(electron.ipcMain,'handle',(channel,handler)=>nativeHandle(channel,async(event,...args)=>{
     for(const value of args)options.learnSecrets?.(value);
-    if(/app:(controller-action|login|start-booking|stop-run|save-form)/.test(channel))log('action-start',{page:channel+(channel==='app:controller-action'?' '+String(args[0]):'')});
+    if(/app:(controller-action|login|start-booking|stop-run|logout|save-form)/.test(channel))log('action-start',{page:channel+(channel==='app:controller-action'?' '+String(args[0]):''),formId:typeof args[0]==='string'?args[0]:args[0]?.formId||args[0]?.id,profileId:args[0]?.profileId,senderId:event.sender.id});
     if(channel==='app:get-box-license-info')return {ok:true,data:{gateEnabled:false,licensed:false,fingerprint:'',localOnly:true}};
     if(channel==='app:validate-license-key'||channel==='app:activate-license') {
       return {ok:false,error:'Matrix source build does not require or activate vendor license keys',localOnly:true};

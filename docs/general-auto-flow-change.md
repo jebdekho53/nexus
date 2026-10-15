@@ -1,4 +1,4 @@
-# General Auto flow change (unreleased)
+# General Auto flow change (1.0.9)
 
 User requested the existing 8AM/AC-Tatkal/SL-Tatkal Auto pipeline for General
 Book now, then reported General taking 1m54s versus roughly one minute for
@@ -25,5 +25,6 @@ include long warm-up/re-login paths and cannot establish that every one-minute
 opening observation includes the initial login. A matched live timing trace
 has not been obtained; the earlier live QR tool rejection remains in effect.
 
-Installed/public version remains 1.0.8. This change is source-only and must not
-be described as already installed or as a guaranteed one-minute QR flow.
+This routing change is included in the installed 1.0.9 build. See
+`release-1.0.9-qa.md` for verification and publication state. It is not a
+guaranteed one-minute QR flow.

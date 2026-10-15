@@ -14,7 +14,7 @@ function imageUrl(value){
 function qrDelivery(electron,root,log=()=>{}){
  let popupMode=false;
  const popups=new Map(),cached=new Map();let publisher,hooks;
- const booking=id=>electron.BrowserWindow.getAllWindows().find(win=>{try{const u=new URL(win.webContents.getURL());return !win.isDestroyed()&&u.protocol==='file:'&&path.resolve(fileURLToPath(u))===path.join(root,'src/renderer/booking-box.html')&&u.searchParams.get('id')===id;}catch{return false;}});
+ const booking=id=>electron.BrowserWindow.getAllWindows().find(win=>{try{const u=new URL(win.webContents.getURL());return !win.isDestroyed()&&u.protocol==='file:'&&path.resolve(fileURLToPath(u))===path.join(root,'src/renderer/booking-box.html')&&u.searchParams.get('view')!=='ticket'&&u.searchParams.get('id')===id;}catch{return false;}});
  const place=(popup,id)=>{const parent=booking(id);if(!parent||popup.isDestroyed())return;let b=parent.getBounds();const p=popup.getBounds(),area=electron.screen.getDisplayMatching(b).workArea;
   if(b.height+8+p.height<=area.height){const y=Math.max(area.y,Math.min(b.y,area.y+area.height-b.height-8-p.height));if(y!==b.y){b={...b,y};parent.setBounds(b);}}
   const next={...p,x:Math.max(area.x,Math.min(b.x,area.x+area.width-p.width)),y:Math.max(area.y,Math.min(b.y+b.height+8,area.y+area.height-p.height))};if(next.x!==p.x||next.y!==p.y)popup.setBounds(next);};

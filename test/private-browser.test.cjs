@@ -8,7 +8,7 @@ function fixture(){
   const context=new EventEmitter(),browser=new EventEmitter();
   context.newPage=async()=>Object.assign(new EventEmitter(),{private:true});context.close=async()=>{closed++;context.emit('close');};
   browser.newContext=async options=>{assert.deepEqual(options,{viewport:null});return context;};
-  const original=async options=>{launches.push(options);return {context:{browser:()=>browser,pages:()=>[{close:async()=>oldClosed++}]},dispose:async()=>disposed++,cdpAttached:true};};
+  const original=async options=>{launches.push(options);return {context:{browser:()=>browser,pages:()=>[{url:()=>'about:blank',close:async()=>oldClosed++}]},dispose:async()=>disposed++,cdpAttached:true};};
   const fs={mkdtemp:async()=>'/owned/matrix-private-one',rm:async dir=>removed.push(dir)};
   const hook=privateBrowser((...event)=>events.push(event),{fs,tmpdir:'/owned'}).f184;
   return {hook,original,context,browser,removed,launches,events,counts:()=>({closed,disposed,oldClosed})};
@@ -27,6 +27,16 @@ test('failed private-context creation cleans the owned profile and native browse
   const f=fixture();f.browser.newContext=async()=>{throw Error('creation failed');};
   await assert.rejects(f.hook(f.original,[{}]),/creation failed/);
   assert.deepEqual(f.removed,['/owned/matrix-private-one']);assert.equal(f.counts().disposed,1);
+});
+test('launcher page cleanup preserves other pair pages and restored nonblank tabs',async()=>{
+  const first=fixture(),second=fixture();let unrelatedClosed=0;
+  const hook=privateBrowser(()=>{},{fs:{mkdtemp:async()=>'/owned/pair',rm:async()=>{}}}).f184;
+  const one=await withPrivateLogin(()=>hook(first.original,[{id:'pair-one'}]));
+  one.page.url=()=> 'about:blank';one.page.close=async()=>{unrelatedClosed++;};
+  const original=async options=>{const session=await second.original(options);session.context.pages=()=>[one.page,{url:()=> 'https://example.test/restored',close:async()=>unrelatedClosed++}];return session;};
+  const two=await withPrivateLogin(()=>hook(original,[{id:'pair-two'}]));
+  assert.equal(unrelatedClosed,0);assert.equal(first.counts().disposed,0);
+  await two.dispose();assert.equal(first.counts().disposed,0);await one.dispose();
 });
 test('a failed selected browser never launches a fallback browser in the same login',async()=>{
   const f=fixture();let attempts=0;
