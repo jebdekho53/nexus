@@ -47,6 +47,12 @@
     "report": "docs/external-link-audit-1.0.7.md",
     "evidence": "diagnostics/link-audit",
     "outcome": "known legacy startup/reporting paths removed in source; backend replacements live; native/browser exhaustive audit and desktop release pending",
-    "cleanupReport": "docs/vendor-service-cleanup.md"
+    "cleanupReport": "docs/vendor-service-cleanup.md",
+    "nativeMarkerCheck": {
+      "files": 7,
+      "matchingFiles": 0,
+      "report": "diagnostics/link-audit/native-marker-audit.json",
+      "limits": "Known literal markers only; not a runtime egress guarantee"
+    }
   }
 }

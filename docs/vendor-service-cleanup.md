@@ -38,6 +38,12 @@ authentication/sensor integration or a CAPTCHA-solving service.
 - Raw recovered definitions, encrypted strings and inherited native resources
   still exist. These are not proof of a live callback, but static names alone
   cannot establish that the app has no remaining data-sharing path.
+- A repeatable native marker check scanned seven resource/dependency EXE,
+  DLL and Node addon files in ASCII and both UTF-16 byte alignments. No literal
+  matches for the six known vendor/bootstrap markers were found. This says
+  nothing about encrypted/constructed URLs or unrecognized callback hosts.
+  Run `python tools/audit_native_vendor_markers.py` to repeat the check; its
+  private report records each file's SHA-256 without dumping binary strings.
 - No exhaustive native-library/socket or live RailOne/OTP/payment/browser trace
   was performed. Global JavaScript transport wrappers are not an OS firewall.
   Do not claim the previous vendor can never identify the app or that every
