@@ -1,12 +1,12 @@
 {
-  "status": "in_progress",
-  "progress": "User confirmed different IDs/independent pairs, then requested confirmed ticket beneath its booking panel (screenshot). Implemented ticket docking to matching local non-ticket panel; follows move/resize and resists legacy side positioning; QR anchor excludes ticket view. Guarded launcher cleanup to close only unowned blank tabs; other pair pages preserved. Added form/profile/sender action IDs for diagnosis.56app tests pass. Installed1.0.9 preserves4profileJSON; installed native docking window test passed; installed smoke8windows passed; actual two-Brave offline session isolation passed. Source app two synthetic mocked logins with independent panels/sessions passed, bug not reproduced.1.0.9 setup/updater payload checks pass, staged VPS hashes verified, manifest atomically published, publicGETsizes match. General Auto standard routing included, no liveQR/timing claim. Real authenticated first-pair auto-close remains unverified; previous liveQR policy rejection not bypassed. Latest ticket placement task complete. Report docs/release-1.0.9-qa.md",
-  "task": "Follow up authenticated independent-pair auto-close after1.0.9 ticket docking release",
+  "status": "complete",
+  "progress": "Exact renderer pre-login sequence reproduced with blocked network and synthetic sessions: closeAuxWindows uses legacy title filtering in f4292, closes rebranded other booking panel and disposes its session. Added trusted local-page auxiliary whitelist in app:close-aux-windows instead of title-based classification. Preserves booking/ticket/QR/controller and unknown/remote windows, caller unchanged.58app tests pass. Before test2panels->1/other sessiondisposed; source and actual installed1.0.10 aftertest2panels->2/both sessionsactive. No real credential submission or booking/payment.1.0.10 updater installed preserving5profileJSON; full/updater payload normal/relocation/truncation checks pass, disposable updater preservesruntime/marker. VPS hashes verified, manifestpublishedatomically, publicGET200 matchingbytes. Codepush follows. Live authenticated booking/QR and Auto speed remain unverified and are not prerequisites/claims for this reproduced UIcleanup fix. Report docs/release-1.0.10-qa.md",
+  "task": "Fix WebLogin Chrome selection closing another independent pair panel",
   "completedLatestTask": {
-    "task": "Fix live desktop update detection and publish a small version updater on Downloads",
-    "version": "1.0.5",
+    "task": "Fix WebLogin Chrome selection closing another independent pair panel",
+    "version": "1.0.10",
     "status": "complete",
-    "progress": "Published full setup and 26 MB updater. Fixed legacy local-version-only Updates page using the same live manifest as Downloads. 37 app and 14 backend tests pass. Actual updater applied 1.0.4 -> 1.0.5 to isolated installation without changing runtime hash or profile marker. Updated app smoke passed. Actual Electron UI harness reporting installed 1.0.3 sees live 1.0.5, shows install action, passes Check now and preference persistence. Server hashes verified, page shows both packages. Existing customer app was not interrupted. One-time bootstrap with small updater is required for old 1.0.3 checker. Report docs/release-1.0.5-qa.md"
+    "report": "docs/release-1.0.10-qa.md"
   },
   "completedTasks": [
     {
@@ -21,25 +21,25 @@
     "progress": "New human request overrides previous completed release task. Read-only comparison confirms Matrix1.0.3 does browser station/class/date selection before the45s countdown: booking start12:31:52.542 -> countdown12:32:21.332 (28.79s); countdown -> submit12:33:06.493 (45.161s); submit ->QR12:33:08.834 (2.341s). Lexus app/inject/booking_direct.js fetchTrainList calls authenticated altAvlEnq directly instead of browser dropdown selection. Lexus web2-timing.cjs is a51s target monitor, not measured proof. Original TS wait implementation and API compatibility still need inspection. No production edits, credential transmissions or live booking tests made in this heartbeat. Original TS recovered f3026 (native CO) reads mobileAppConfigDTO.minmPsgnInputTime, parses first # component, and falls back to45000ms. Its original decoded/disassembly files also contain this field/fallback. Thus do not remove/overlap the provider minimum blindly. Original TS f2161 already has a skipTrainSearch path that primes journey via altAvlEnq/TC instead of dropdown interactions (part-07 lines7057/7485). Investigate safe per-General routing through this existing authenticated path, preserving required passenger timing and manual/scheduled modes. No functional source edits or live tests yet. Latest UI/build request completed separately in 1.0.4. Resume timing comparison only; do not repeat completed UI release or transmit credentials without the retained testing permissions. Completed live update checks/small updater request in 1.0.5; do not repeat that release. Original timing optimization remains pending."
   },
   "evidence": {
-    "ticket": "diagnostics/ticket-docking-native.json",
-    "pairs": "diagnostics/pair-login-isolation.json",
-    "nativePairs": "diagnostics/two-pair-browser.json",
-    "install": "diagnostics/local-1.0.9-update.json"
+    "before": "diagnostics/pair-login-isolation-before-aux-fix.json",
+    "sourceAfter": "diagnostics/pair-login-isolation-after-source-aux-fix.json",
+    "installedAfter": "diagnostics/pair-login-isolation.json",
+    "install": "diagnostics/local-1.0.10-update.json"
   },
   "release": {
-    "version": "1.0.9",
+    "version": "1.0.10",
     "name": "Matrix",
     "distribution": "windows-offline-installer",
-    "notes": "Dock confirmed ticket windows below their own booking panels; protect existing pair pages from launcher cleanup; use standard Auto flags for General without opening-time wait. Authenticated multi-pair closure and live QR timing remain unverified. Manual CAPTCHA; RailOne integration unconfigured.",
+    "notes": "Fix WebLogin browser selection closing other pair panels: auxiliary cleanup now uses trusted page paths instead of window titles. Preserves independent booking/ticket/QR windows.",
     "offlineSetup": {
-      "url": "/downloads/Matrix-Setup-1.0.9.exe",
-      "bytes": 264680420,
-      "sha256": "5c52f97763601a3645cb380c8904721f13a9dc70e57b366b0e83fb1840c1bdb5"
+      "url": "/downloads/Matrix-Setup-1.0.10.exe",
+      "bytes": 264681985,
+      "sha256": "044e92ed0e2e31a3ab6bce4dca0183aa1e0dafebd364c0976ef3b04344f4d28d"
     },
     "updaterExe": {
-      "url": "/downloads/Matrix-Updater-1.0.9.exe",
-      "bytes": 27268170,
-      "sha256": "6742c3b0a40a7d55b87fb5a53fa04a021c8b3ea1976b5f798edf12f8cfcea50b"
+      "url": "/downloads/Matrix-Updater-1.0.10.exe",
+      "bytes": 27268885,
+      "sha256": "84c2884db044f89e10bf199e3d9ed700760a01ac9a2d06e81450d37388d1bdf9"
     }
   },
   "audit": {

@@ -10,7 +10,7 @@ Edit Form has a **Check availability** button below Journey Planning. Enter trai
 
 Live networking, Chrome launching and native clients are enabled. Original window managers and booking handlers are preserved. The source build removes publisher license/version checks, local inspection gates, forced vendor shutdown and encrypted vendor reporting. Explicit user Quit/Restart remains available. Genuine service authentication and service responses still apply.
 
-56 application tests passed on the latest source change. General Auto now preserves the standard Auto flags used by opening/Tatkal instead of forcing Direct; GN retains no opening-time countdown. This routing change is included in installed 1.0.9; see docs/release-1.0.9-qa.md for verification and publication state. Live warm-up/QR performance of the new routing has not been verified. See docs/general-auto-flow-change.md.
+58 application tests passed on the latest source change. General Auto now preserves the standard Auto flags used by opening/Tatkal instead of forcing Direct; GN retains no opening-time countdown. This routing change is included in installed 1.0.9; see docs/release-1.0.9-qa.md for verification and publication state. Live warm-up/QR performance of the new routing has not been verified. See docs/general-auto-flow-change.md.
 
 Historical General Book now test, before this routing change: train 13307 DDUâ€“BSB, 20 October 2026, SL/GN reached a visible Paytm QR; login 24.24s, booking-to-QR 74.99s, total 99.23s. No payment was submitted. This is not a timing result for the latest source or a guarantee. Check TASK-STATE.json for latest work.
 
@@ -34,3 +34,5 @@ Payment display names come from src/renderer/matrix-payments.js. Form and bookin
 Latest packaged-build verification: docs/packaged-build-qa.md. Earlier mode comparison and limits: docs/e2e-results.md. Auto warm-up QR reached; actual saved journey returned NOT AVAILABLE in Auto, Direct and Matrix. Manual deferred; no payment submitted.
 
 Matrix administration is live at https://matrix.vaidya-gpt.com/admin and /seller. See services/control-plane/README.md for server deployment and own-key verification. Existing Lexus and n8n services are separate. Original Lexus input was preserved outside this project in ../lexus-reference.
+
+Latest pair-close fix: docs/release-1.0.10-qa.md. WebLogin auxiliary cleanup preserves panels by trusted page path rather than legacy window title; installed synthetic two-pair regression passed.
