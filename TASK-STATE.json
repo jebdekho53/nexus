@@ -1,7 +1,7 @@
 {
   "status": "complete",
-  "progress": "Completed. App/control plane version1.0.6. 45 app and14 backend tests pass. Both final EXE payload integrity/version/private-data exclusion checks pass. Actual isolated updater preserves runtime hash and saved marker; final rebuilt package boots with8 rendered windows, no renderer errors, toolbar and Updates showv1.0.6, account/payment/dropdown/calendar synthetic checks pass. Fixed installer builder to generate renderer version from package.json. Full setup264667912bytes and updater27260263bytes published to matrix.vaidya-gpt.com/downloads with server SHA hashes matching final artifacts. Public GET200/content lengths, live1.0.6 manifest/health and older1.0.5 update detection verified. Source commit88a16a8 pushed to origin/main. Full authenticated login/QR not retested; no booking/payment submitted. Existing customer app was not interrupted. Release report docs/release-1.0.6-qa.md.",
-  "task": "Build and publish Matrix1.0.6 and push private-browser/canonical-entry fix to GitHub",
+  "progress": "Completed downloaded updater extraction repair. Root cause: downloaded EXEs contain relocated intact ZIP records with original stored offsets, which .NET ZipFile.OpenRead does not compensate for. New bounded payload stream fixes offset relocation; directory/path validation happens before app shutdown. New extractor verifies all4 failed downloaded1.0.6 copies. Both1.0.7 setup/updater pass normal/relocated/truncated regressions; wrapped updater actually installs with runtime/marker preservation.45 app+14 backend tests pass. Packaged1.0.7 startup has8 rendered windows/no errors/correct toolbar version. Corrected updater applied to actual local installation while closed: exit0, version1.0.7,8 saved profile files unchanged, not launched. Full setup/updater published, server SHA and public GET200/lengths/live health/manifest verified. Source b7183e1 pushed to main. No live login/booking/payment. docs/release-1.0.7-qa.md.",
+  "task": "Fix downloaded updater ZIP offset failure and publish Matrix1.0.7",
   "completedLatestTask": {
     "task": "Fix live desktop update detection and publish a small version updater on Downloads",
     "version": "1.0.5",
@@ -26,21 +26,21 @@
     "after": "diagnostics/private-flow-probe.json"
   },
   "release": {
-    "version": "1.0.6",
-    "commit": "88a16a8",
-    "downloads": "https://matrix.vaidya-gpt.com/downloads",
+    "version": "1.0.7",
     "name": "Matrix",
     "distribution": "windows-offline-installer",
-    "notes": "Private native browser sessions, session cleanup, canonical IRCTC application entry and accurate browser-challenge errors.",
+    "notes": "Fix downloaded installer ZIP offset failures, validate payload before stopping Matrix, and preserve private-session/IRCTC entry fixes.",
     "offlineSetup": {
-      "url": "/downloads/Matrix-Setup-1.0.6.exe",
-      "bytes": 264667912,
-      "sha256": "f2af7a67e55a3df05ab9e9cae0033a0fba5a0f05cbc96ba813ca4c9a298e4997"
+      "url": "/downloads/Matrix-Setup-1.0.7.exe",
+      "bytes": 264670471,
+      "sha256": "181b8b96695dcd1aed95f85c2e1f4f111d0cb0dd3c3faf6c694c0343dc595da0"
     },
     "updaterExe": {
-      "url": "/downloads/Matrix-Updater-1.0.6.exe",
-      "bytes": 27260263,
-      "sha256": "a0a4085c14e226afd7f399b200b3b4874f7693096882c8c463126172f94d8473"
-    }
+      "url": "/downloads/Matrix-Updater-1.0.7.exe",
+      "bytes": 27262823,
+      "sha256": "89b804e627e8f01fc0c7c6ffa76afa639b8e3aa610d78f92fc1179499f018b52"
+    },
+    "commit": "b7183e1",
+    "downloads": "https://matrix.vaidya-gpt.com/downloads"
   }
 }
