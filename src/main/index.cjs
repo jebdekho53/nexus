@@ -70,6 +70,7 @@ globalThis.__esmImport = specifier => {
 
 const baseElectron = isSmoke ? require('./runtime/offline-smoke.cjs').install(electron,projectRoot,log) : electron;
 const appElectron=require('./runtime/window-readiness.cjs').install(baseElectron,projectRoot,log);
+if(!isSmoke)require('./runtime/legacy-services.cjs').install(appElectron,log);
 require('./runtime/portal-links.cjs').install(appElectron,projectRoot);
 activity=require('./runtime/activity-log.cjs').install(appElectron,projectRoot);
 for(const secret of testSecrets)activity.learn({password:secret});
@@ -81,10 +82,14 @@ const appRequire = new Proxy(vendorRequire,{apply(target,that,args){return args[
 function bootRecovered(){try {
   const definitions = require('./generated/index.cjs');
   log('definitions-loaded',{functions:Object.keys(definitions).length});
-  const functionOverrides = isDevelopment ? require('./runtime/development.cjs').developmentOverrides(log) : {};
+  const matrixServices=require('./runtime/matrix-services.cjs').create({log});
+  require('./runtime/matrix-services.cjs').install(appElectron,projectRoot,matrixServices);
+  if(!isSmoke)void matrixServices.refresh();
+  const legacyServices=require('./runtime/legacy-services.cjs').hooks(log);
+  const functionOverrides = {...(isDevelopment ? require('./runtime/development.cjs').developmentOverrides(log) : {}),...legacyServices.overrides};
   log('development-mode', {enabled:isDevelopment, overrides:Object.keys(functionOverrides)});
   const privateOptions=process.argv.includes('--private-access-probe')||process.argv.includes('--private-flow-probe')?{onCreated:session=>require(path.join(projectRoot,'test/private-access-probe.cjs')).run(session,projectRoot,code=>developmentPolicy.finishSmoke(code))}:{};
-  const functionInterceptors={...require('./runtime/private-browser.cjs').privateBrowser(log,privateOptions),...require('./runtime/login-performance.cjs').loginPerformance(log),...require('./runtime/booking-timing.cjs').bookingTiming(),...require('./runtime/qr-delivery.cjs').qrDelivery(appElectron,projectRoot,log)};
+  const functionInterceptors={...legacyServices.interceptors,...require('./runtime/private-browser.cjs').privateBrowser(log,privateOptions),...require('./runtime/login-performance.cjs').loginPerformance(log),...require('./runtime/booking-timing.cjs').bookingTiming(),...require('./runtime/qr-delivery.cjs').qrDelivery(appElectron,projectRoot,log)};
   const engine = createEngine(definitions, {functionOverrides,functionInterceptors,onInvoke:(id,args,captured)=>{
     if(id==='f3740'&&process.argv.includes('--isolated-live-test'))log('e2e-qr-publisher',{keys:Object.keys(args[0]||{}),imageBase64Length:args[0]?.imageBase64?.length||0,payloadLength:typeof args[0]?.payload==='string'?args[0].payload.length:0});
     if(actionTrace.active)actionTrace.calls.set(id,(actionTrace.calls.get(id)||0)+1);

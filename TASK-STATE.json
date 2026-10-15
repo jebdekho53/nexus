@@ -1,7 +1,7 @@
 {
-  "status": "complete",
-  "progress": "Completed downloaded updater extraction repair. Root cause: downloaded EXEs contain relocated intact ZIP records with original stored offsets, which .NET ZipFile.OpenRead does not compensate for. New bounded payload stream fixes offset relocation; directory/path validation happens before app shutdown. New extractor verifies all4 failed downloaded1.0.6 copies. Both1.0.7 setup/updater pass normal/relocated/truncated regressions; wrapped updater actually installs with runtime/marker preservation.45 app+14 backend tests pass. Packaged1.0.7 startup has8 rendered windows/no errors/correct toolbar version. Corrected updater applied to actual local installation while closed: exit0, version1.0.7,8 saved profile files unchanged, not launched. Full setup/updater published, server SHA and public GET200/lengths/live health/manifest verified. Source b7183e1 pushed to main. No live login/booking/payment. docs/release-1.0.7-qa.md.",
-  "task": "Fix downloaded updater ZIP offset failure and publish Matrix1.0.7",
+  "status": "in_progress",
+  "progress": "Implemented own config/status/time backend and deployed it; all three public endpoints HTTP200. Desktop fixed-origin service client and Tools status added, encrypted bootstrap cache bypassed, known legacy destinations sanitized/transport-blocked, old CAPTCHA/RailOne unavailable explicitly, account/booking reporter and heartbeat disabled in both release and development. 52 app/14 backend tests passed; changed reporting assertions additionally pass. Final source smoke passed8 windows; before-after isolated request trace old GitHub bootstrap2->0. Installed/public1.0.7 unchanged. Remaining: package/release validation before applying desktop changes; official RailOne integration not configured; native/browser mode-specific egress audit not exhaustive. No guarantee of invisibility to vendor. Report docs/vendor-service-cleanup.md",
+  "task": "Remove inherited vendor data-sharing paths and introduce Matrix-owned services",
   "completedLatestTask": {
     "task": "Fix live desktop update detection and publish a small version updater on Downloads",
     "version": "1.0.5",
@@ -42,5 +42,11 @@
     },
     "commit": "b7183e1",
     "downloads": "https://matrix.vaidya-gpt.com/downloads"
+  },
+  "audit": {
+    "report": "docs/external-link-audit-1.0.7.md",
+    "evidence": "diagnostics/link-audit",
+    "outcome": "known legacy startup/reporting paths removed in source; backend replacements live; native/browser exhaustive audit and desktop release pending",
+    "cleanupReport": "docs/vendor-service-cleanup.md"
   }
 }

@@ -14,6 +14,7 @@ const server=http.createServer(async(req,res)=>{
  const setHeader=res.setHeader.bind(res);res.setHeader=(name,value)=>setHeader(name,name.toLowerCase()==='set-cookie'&&base.startsWith('https:')?(Array.isArray(value)?value.map(x=>x+'; Secure'):value+'; Secure'):value);
  try{
   const url=new URL(req.url,base);
+  if(require('./desktop-services.cjs').handle(req,res,url))return;
   if(req.method==='POST'&&((req.headers.origin&&req.headers.origin!==base)||!String(req.headers['content-type']).startsWith('application/json'))){res.writeHead(403);return res.end(JSON.stringify({error:'Use the same-origin JSON API'}));}
   if(url.pathname==='/health'){res.setHeader('Content-Type','application/json');return res.end(JSON.stringify({ok:true,name:'Matrix',version:require('./package.json').version}));}
   if(req.method==='GET'&&(url.pathname==='/api/portal/downloads'||url.pathname.startsWith('/downloads/'))){
