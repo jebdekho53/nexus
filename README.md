@@ -10,7 +10,9 @@ Edit Form has a **Check availability** button below Journey Planning. Enter trai
 
 Live networking, Chrome launching and native clients are enabled. Original window managers and booking handlers are preserved. The source build removes publisher license/version checks, local inspection gates, forced vendor shutdown and encrypted vendor reporting. Explicit user Quit/Restart remains available. Genuine service authentication and service responses still apply.
 
-42 automated checks pass. Auto Book now with GN uses automatic WebLogin and its authenticated session immediately, retaining provider submit waits. Scheduled 8AM/Tatkal modes retain their original workflow. Train 13307 DDU–BSB, 20 October 2026, SL/GN was verified through a visible Paytm QR in the Matrix panel: login 24.24s, booking-to-QR74.99s, total99.23s in one test. No payment was submitted. Check TASK-STATE.json for latest work.
+54 application tests passed on the latest source change. General Auto now preserves the standard Auto flags used by opening/Tatkal instead of forcing Direct; GN retains no opening-time countdown. This routing change is unreleased: installed/public 1.0.8 still uses the earlier policy. Live warm-up/QR performance of the new routing has not been verified. See docs/general-auto-flow-change.md.
+
+Historical General Book now test, before this routing change: train 13307 DDU–BSB, 20 October 2026, SL/GN reached a visible Paytm QR; login 24.24s, booking-to-QR 74.99s, total 99.23s. No payment was submitted. This is not a timing result for the latest source or a guarantee. Check TASK-STATE.json for latest work.
 
 Edit src/main/runtime for runtime behavior, src/main/generated for recovered definitions, and src/renderer for UI. npm test runs the runtime checks. npm run smoke is deliberately offline and uses synthetic data; it does not describe the normal app's network permissions.
 
