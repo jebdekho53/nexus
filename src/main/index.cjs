@@ -83,7 +83,8 @@ function bootRecovered(){try {
   log('definitions-loaded',{functions:Object.keys(definitions).length});
   const functionOverrides = isDevelopment ? require('./runtime/development.cjs').developmentOverrides(log) : {};
   log('development-mode', {enabled:isDevelopment, overrides:Object.keys(functionOverrides)});
-  const functionInterceptors={...require('./runtime/login-performance.cjs').loginPerformance(log),...require('./runtime/booking-timing.cjs').bookingTiming(),...require('./runtime/qr-delivery.cjs').qrDelivery(appElectron,projectRoot,log)};
+  const privateOptions=process.argv.includes('--private-access-probe')||process.argv.includes('--private-flow-probe')?{onCreated:session=>require(path.join(projectRoot,'test/private-access-probe.cjs')).run(session,projectRoot,code=>developmentPolicy.finishSmoke(code))}:{};
+  const functionInterceptors={...require('./runtime/private-browser.cjs').privateBrowser(log,privateOptions),...require('./runtime/login-performance.cjs').loginPerformance(log),...require('./runtime/booking-timing.cjs').bookingTiming(),...require('./runtime/qr-delivery.cjs').qrDelivery(appElectron,projectRoot,log)};
   const engine = createEngine(definitions, {functionOverrides,functionInterceptors,onInvoke:(id,args,captured)=>{
     if(id==='f3740'&&process.argv.includes('--isolated-live-test'))log('e2e-qr-publisher',{keys:Object.keys(args[0]||{}),imageBase64Length:args[0]?.imageBase64?.length||0,payloadLength:typeof args[0]?.payload==='string'?args[0].payload.length:0});
     if(actionTrace.active)actionTrace.calls.set(id,(actionTrace.calls.get(id)||0)+1);
@@ -99,7 +100,7 @@ function bootRecovered(){try {
         globalThis.__matrixWarmupQrAt=performance.now();
       }
     }
-    if(process.argv.includes('--live-booking-test')) {
+    if(process.argv.includes('--live-booking-test')||process.argv.includes('--live-login-test')) {
       const page=args.find(value=>value&&typeof value.url==='function'&&typeof value.screenshot==='function'&&typeof value.evaluate==='function');
       if(page)globalThis.__matrixDiagnosticPage=page;
     }

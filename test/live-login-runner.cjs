@@ -51,9 +51,11 @@ async function run(electron,root,log) {
       if(!process.argv.includes('--isolated-live-test'))throw new Error('Mode tests require isolated profile');
       const saved=await execute('window.api.saveForm('+JSON.stringify(form)+')');
       if(!saved?.ok)throw new Error('Unable to prepare isolated test form');
+      if(process.argv.includes('--live-booking-test')){
       const availabilityStarted=performance.now();
       const result=await Promise.race([execute("import('./assets/types-B0-2ZUtm.js').then(module=>window.api.checkAvailability("+JSON.stringify({source:form.journey.origin,destination:form.journey.destination,classCode:form.journey.classCode,quota:'GN',doj:form.journey.journeyDate.replaceAll('-',''),trainNumber:form.journey.trainNumber})+",module.N("+JSON.stringify(form.proxy)+")))"),new Promise(resolve=>setTimeout(()=>resolve({ok:false,error:'Availability request exceeded 30 seconds'}),30000))]);
       report.availability={seconds:Number(((performance.now()-availabilityStarted)/1000).toFixed(2)),ok:result?.ok,status:clean(result?.data?.status||result?.data?.text),error:clean(result?.error)};
+      }
     }
     report.form={id:form.id,train:form.journey?.trainNumber,date:form.journey?.journeyDate,from:form.journey?.origin,to:form.journey?.destination,class:form.journey?.classCode,quota:form.journey?.quota,passengers:form.passengers?.length};
     report.flows=await execute('window.api.getLoginFlows()');
@@ -138,6 +140,8 @@ async function run(electron,root,log) {
       report.stop=await execute('window.api.stopRun('+JSON.stringify(form.id)+')');
       report.testStopped=true;
     }
+    const loginPage=globalThis.__matrixDiagnosticPage;
+    if(!process.argv.includes('--live-booking-test')&&loginPage&&!loginPage.isClosed())try{report.browser={url:loginPage.url().split('?')[0],title:clean(await loginPage.title()),text:clean(await loginPage.evaluate(()=>document.body.innerText.slice(0,1600)))};await loginPage.screenshot({path:path.join(directory,'live-login-browser.png')});}catch(error){report.browserCaptureError=clean(error.message);}
     report.finished=new Date().toISOString();write();
     log('matrix-live-login-result',{ok:report.login.ok,phase:report.phase,error:report.login.error});
   } catch(error) {

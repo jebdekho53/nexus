@@ -3,6 +3,7 @@
 function loginPerformance(log=()=>{}) {
   return {
     async f698(original,[page,settings={}]) {
+      if(await require('./private-browser.cjs').checkAccessDenied(page,log))throw new Error(require('./private-browser.cjs').denialMessage);
       // Keep the recovered popup handling. Shorten only its quiet period once
       // the application DOM is usable; slow/blocked pages retain the old path.
       try {

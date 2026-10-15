@@ -1,1 +1,1 @@
-globalThis.MATRIX_BUILD=Object.freeze({"name":"Matrix","version":"1.0.5"});
+globalThis.MATRIX_BUILD=Object.freeze({"name":"Matrix","version":"1.0.6"});

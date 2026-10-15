@@ -7,6 +7,9 @@ IS_UPDATE = '--updater' in sys.argv
 ARGS = [arg for arg in sys.argv[1:] if arg != '--updater']
 OUT = Path(ARGS[0]) if ARGS else ROOT.parent / 'matrix-build'
 VERSION = json.loads((ROOT / 'package.json').read_text())['version']
+(ROOT / 'src/renderer/matrix-build.js').write_text(
+    'globalThis.MATRIX_BUILD=Object.freeze(' + json.dumps({'name': 'Matrix', 'version': VERSION}, separators=(',', ':')) + ');\n',
+    encoding='utf-8', newline='\n')
 INCLUDE = ['.runtime', 'src', 'vendor', 'resources', 'package.json', 'Matrix.cmd', 'test']
 if IS_UPDATE:
     INCLUDE = ['src', 'resources', 'vendor/package.json', 'package.json', 'Matrix.cmd']
