@@ -65,7 +65,7 @@ function install(electron,root,log=()=>{},options={}) {
       if(channel==='app:stop-run'||channel==='app:logout')options.stopActivity?.(typeof args[0]==='string'?args[0]:args[0]?.formId);
       if(channel==='app:login'&&options.trace){options.trace.active=true;options.trace.calls=new Map();}
       let result;
-      try{const invoke=()=>Reflect.apply(handler,undefined,[event,...args]);result=await(channel==='app:login'?require('./private-browser.cjs').withPrivateLogin(()=>require('./booking-timing.cjs').withImmediateLogin(invoke)):invoke());}catch(error){if(channel!=='app:check-id-status')throw error;result={ok:false,error:'Primary ID check unavailable'};}
+      try{const invoke=()=>Reflect.apply(handler,undefined,[event,...args]);result=await(channel==='app:login'?require('./private-browser.cjs').withPrivateLogin(()=>require('./booking-timing.cjs').withImmediateLogin(invoke)):channel==='app:start-booking'?require('./private-browser.cjs').withPrivateLogin(invoke):invoke());}catch(error){if(channel!=='app:check-id-status')throw error;result={ok:false,error:'Primary ID check unavailable'};}
       // The provider intermittently rejects Chromium HTTP/2. Node's bundled
       // fetch uses its own HTTP transport and needs no machine-installed curl.
       if(channel==='app:check-id-status')result=await require('./id-check.cjs').fallbackIds(args[0],result,(url,init)=>globalThis.fetch(url,init));

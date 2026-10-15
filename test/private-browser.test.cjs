@@ -28,6 +28,25 @@ test('failed private-context creation cleans the owned profile and native browse
   await assert.rejects(f.hook(f.original,[{}]),/creation failed/);
   assert.deepEqual(f.removed,['/owned/matrix-private-one']);assert.equal(f.counts().disposed,1);
 });
+test('a failed selected browser never launches a fallback browser in the same login',async()=>{
+  const f=fixture();let attempts=0;
+  await withPrivateLogin(async()=>{
+    await assert.rejects(f.hook(async()=>{attempts++;throw Error('selected Brave failed');},[{nativeBrowser:'brave'}]),/selected Brave failed/);
+    await assert.rejects(f.hook(async()=>{attempts++;return f.original({});},[{nativeBrowser:'chrome'}]),{code:'MATRIX_BROWSER_RETRY_STOPPED'});
+  });
+  assert.equal(attempts,1);
+  // A later explicit user retry is independent.
+  await withPrivateLogin(async()=>{const session=await f.hook(f.original,[{}]);await session.dispose();});
+});
+test('private window restores normal bounds, comes to front and overrides hidden launch',async()=>{
+  const f=fixture(),calls=[];
+  f.context.newPage=async()=>Object.assign(new EventEmitter(),{bringToFront:async()=>calls.push('front')});
+  f.context.newCDPSession=async()=>({send:async(method,args)=>{calls.push([method,args]);return {windowId:7};},detach:async()=>calls.push('detach')});
+  const session=await f.hook(f.original,[{launchHidden:true,windowPosition:{x:-30000,y:-30000}}]);
+  assert.equal(f.launches[0].launchHidden,false);assert.equal(f.launches[0].windowPosition,undefined);
+  assert.deepEqual(calls,[['Browser.getWindowForTarget',undefined],['Browser.setWindowBounds',{windowId:7,bounds:{windowState:'normal'}}],'detach','front']);
+  await session.dispose();
+});
 test('browser disconnection triggers cleanup without waiting for a later logout',async()=>{
   const f=fixture();await f.hook(f.original,[{}]);f.browser.emit('disconnected');
   await new Promise(resolve=>setImmediate(resolve));
