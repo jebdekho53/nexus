@@ -1,7 +1,7 @@
 {
   "status": "in_progress",
-  "progress": "Latest user reports client access denial, normal/minimized windows, and Brave->Chrome->Edge rotation. Added one native launch per explicit login/booking async scope (including Book now), fresh private window foreground/normal bounds, launchHidden false and no inherited offscreen position. Cookie isolation remains. 54 application tests pass including failed selected browser prevents fallback, explicit later retry allowed, visible window CDP restore and private context lifecycle. No IP block proven; no site-control bypass. Source changes not yet installed/public; actual selected Brave runtime verification and release packaging remain pending. Prior Matrix-owned backend is deployed and vendor cleanup source pushed. Official RailOne integration and exhaustive native egress remain unsupported/unverified.",
-  "task": "Verify vendor privacy and fix selected-browser private visible login without browser rotation",
+  "progress": "Built installed and published1.0.8 setup/updater, verified payload relocation/truncation and VPS SHA/content sizes. Installed saved4 release JSON files preserved, smoke8windows passed. Actual installed Brave private normal window, zero initial cookies, cross-context isolation, prevented fallback and temporary-profile cleanup all passed. Actual installed app Brave login IPC pre-credential probe loaded IRCTC HTTP200 train-search with no Access denied. Human then requested QR test; automatic approval review rejected the live QR launch command with blocked by policy and no specific reason. Authenticated login/QR not verified. No booking/payment confirmation. No credential copy or liveQR command executed after rejection. Remaining QR test cannot be claimed complete. Own backend deployed; RailOne official integration missing. Report docs/release-1.0.8-qa.md",
+  "task": "Installed Matrix1.0.8 Brave login-to-QR verification",
   "completedLatestTask": {
     "task": "Fix live desktop update detection and publish a small version updater on Downloads",
     "version": "1.0.5",
@@ -26,22 +26,20 @@
     "after": "diagnostics/private-flow-probe.json"
   },
   "release": {
-    "version": "1.0.7",
+    "version": "1.0.8",
     "name": "Matrix",
     "distribution": "windows-offline-installer",
-    "notes": "Fix downloaded installer ZIP offset failures, validate payload before stopping Matrix, and preserve private-session/IRCTC entry fixes.",
+    "notes": "Keep the selected browser without automatic rotation; visible private sessions; remove inherited vendor bootstrap/reporting. CAPTCHA requires manual entry; RailOne official integration is not configured.",
     "offlineSetup": {
-      "url": "/downloads/Matrix-Setup-1.0.7.exe",
-      "bytes": 264670471,
-      "sha256": "181b8b96695dcd1aed95f85c2e1f4f111d0cb0dd3c3faf6c694c0343dc595da0"
+      "url": "/downloads/Matrix-Setup-1.0.8.exe",
+      "bytes": 264678016,
+      "sha256": "5d2f02e57464cbbc241aa0b68594dc8de0177d4684d4b7b65f26f832c3667b20"
     },
     "updaterExe": {
-      "url": "/downloads/Matrix-Updater-1.0.7.exe",
-      "bytes": 27262823,
-      "sha256": "89b804e627e8f01fc0c7c6ffa76afa639b8e3aa610d78f92fc1179499f018b52"
-    },
-    "commit": "b7183e1",
-    "downloads": "https://matrix.vaidya-gpt.com/downloads"
+      "url": "/downloads/Matrix-Updater-1.0.8.exe",
+      "bytes": 27266930,
+      "sha256": "4cc52ce79cf323b257904af1b7d9f00a567b6b6ce4d91108c4b551777c30d736"
+    }
   },
   "audit": {
     "report": "docs/external-link-audit-1.0.7.md",

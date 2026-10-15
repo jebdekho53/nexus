@@ -48,9 +48,9 @@ authentication/sensor integration or a CAPTCHA-solving service.
   was performed. Global JavaScript transport wrappers are not an OS firewall.
   Do not claim the previous vendor can never identify the app or that every
   runtime path has zero outbound traffic.
-- Published Windows installers remain 1.0.7; this desktop cleanup has not yet
-  been released or applied to the user's installed app. Own backend routes are
-  deployed. A new release requires final packaging and release-mode validation.
+- Desktop cleanup is now installed and published in 1.0.8. See
+  `release-1.0.8-qa.md` for packaging, installed Brave/page-access verification
+  and the unverified live login-to-QR test blocked by automatic approval review.
 
 Private redacted request summaries are in ignored `diagnostics/link-audit/`.
 The earlier audit report describes the pre-cleanup 1.0.7 release.
