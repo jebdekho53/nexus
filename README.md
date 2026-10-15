@@ -4,7 +4,7 @@ Editable reconstruction of 4,354 recovered main-process functions and 512,857 in
 
 Portable release: launch Matrix.cmd and activate with a Matrix-issued key. Developer launch: Develop Matrix.cmd or start.cmd (key-free). Tools includes Administrator, Seller and My key shortcuts. Release data stays in %APPDATA%/Matrix/profiles/release and survives installer updates. The previous diagnostics/release-profile is migrated once; developer data remains in diagnostics/development-profile. Private data, access credentials and original Lexus files are excluded from Git and distribution. The Git checkout contains source; portable runtime/dependencies are excluded from Git. The supplied local portable ZIP includes them.
 
-Select **GN — General · Book now** in the form (or General · Book now in the booking panel) to start at any time when you run the form. Login and availability slot countdowns do not apply to GN, including saved timing fields. **Opening General · 8AM** and Tatkal keep their scheduled behavior. This starts the normal booking flow; railway availability, service hours, authentication and payment still apply. Existing saved forms keep their quota until you change and save it.
+Select **GN â€” General Â· Book now** in the form (or General Â· Book now in the booking panel) to start at any time when you run the form. Login and availability slot countdowns do not apply to GN, including saved timing fields. **Opening General Â· 8AM** and Tatkal keep their scheduled behavior. This starts the normal booking flow; railway availability, service hours, authentication and payment still apply. Existing saved forms keep their quota until you change and save it.
 
 Edit Form has a **Check availability** button below Journey Planning. Enter train, date, origin and destination; it refreshes the existing availability panel with the selected class/quota and proxy configuration. This is a current availability snapshot and does not save the form or submit a booking.
 
@@ -12,7 +12,7 @@ Live networking, Chrome launching and native clients are enabled. Original windo
 
 54 application tests passed on the latest source change. General Auto now preserves the standard Auto flags used by opening/Tatkal instead of forcing Direct; GN retains no opening-time countdown. This routing change is unreleased: installed/public 1.0.8 still uses the earlier policy. Live warm-up/QR performance of the new routing has not been verified. See docs/general-auto-flow-change.md.
 
-Historical General Book now test, before this routing change: train 13307 DDU–BSB, 20 October 2026, SL/GN reached a visible Paytm QR; login 24.24s, booking-to-QR 74.99s, total 99.23s. No payment was submitted. This is not a timing result for the latest source or a guarantee. Check TASK-STATE.json for latest work.
+Historical General Book now test, before this routing change: train 13307 DDUâ€“BSB, 20 October 2026, SL/GN reached a visible Paytm QR; login 24.24s, booking-to-QR 74.99s, total 99.23s. No payment was submitted. This is not a timing result for the latest source or a guarantee. Check TASK-STATE.json for latest work.
 
 Edit src/main/runtime for runtime behavior, src/main/generated for recovered definitions, and src/renderer for UI. npm test runs the runtime checks. npm run smoke is deliberately offline and uses synthetic data; it does not describe the normal app's network permissions.
 
