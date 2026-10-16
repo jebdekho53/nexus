@@ -1,82 +1,56 @@
-# Matrix source reconstruction — phases 1–10
+# Matrix source reconstruction — phases1–11
 
-Date: 16 October 2026. This is source work after the published 1.0.11 diagnostics release. It has not been built or deployed.
+Verified16October2026: **51 native entry replacements**, **132 pinned recovered definitions**, **696 passing application tests**. Eight isolated source smoke screens rendered complete DOMs with all51 factories(PID2384). Public1.0.11 is unchanged; this candidate has not been built or deployed.
 
-## Native modules now implemented
+## Readable modules
 
-| Recovered entry | Readable source | Responsibility |
+Files below are under src/main/payment/. Local callbacks are included in the native implementations and contract pins.
+
+| Recovered entries | Source | Responsibility |
 | --- | --- | --- |
-| f152, f1666, f1756/f1757 | src/main/payment/payment-error.cjs, gateway-headers.cjs, gateway-retry.cjs | Closed-browser classification, header merging and bounded network retries |
-| f1719–f1721, f1727–f1729 | src/main/payment/gateway-requests.cjs | Booking-data and print-ticket HTTP orchestration |
-| f2233–f2242 | src/main/payment/finish-booking.cjs | Finalization core, callbacks and ticket/report timing |
-| f2247/f2248 | src/main/payment/print-ticket.cjs | Optional print-ticket detail capture |
-| f547, f548 | src/main/payment/request-url.cjs, retry-delay.cjs | Booking-data URL and bounded provider retry delay |
-| f549 plus f550–f553, f554 | src/main/payment/booking-result.cjs | Booking/passenger result normalization and fresh empty records |
-| f2230, f2231, f2232 | src/main/payment/session-context.cjs | Session token reference, payment referrer and request ID |
-| f2243 | src/main/payment/finish-booking.cjs | Ordered cleanup around the still-recovered finalization core |
-| f2181 | src/main/payment/settlement.cjs | Common paid/declined/timeout/result handoff |
-| f2220, f2221 | src/main/payment/pnr-lifecycle.cjs | Request eligibility, retry timer and cancellation ownership |
-| f2226 plus f2227–f2229 | src/main/payment/booking-data.cjs | Booking-data request and bounded provider-directed polling |
-| f2172 | src/main/payment/payment-init.cjs | Initialization orchestration, retry/fallback and dispatch handoff |
-| f2176 plus f2177–f2180 | src/main/payment/gateway-dispatch.cjs | Gateway routing and wallet countdown/verification |
-| f510 | src/main/payment/request-url.cjs | Payment initialization URL, insurance query semantics |
-| f535 | src/main/payment/request-body.cjs | Wallet and ordinary initialization payloads |
-| f542, f544 | src/main/payment/gateway-selection.cjs | Bank-ID selection, gateway preference/fallback ordering |
-| f545, f546 | src/main/payment/payment-error.cjs | Bank processing classification and structured response error extraction |
-| f2186 plus f2187–f2192 | src/main/payment/provider-qr.cjs | Provider QR redirect, bounded retries, QR callback, polling and settlement handoff |
-| f2193 plus its local callbacks | src/main/payment/paytm.cjs | PayTM redirect, QR delivery, payment-result handling and booking-result handoff |
-| f2196 plus f2197–f2204 | src/main/payment/paytm-watch.cjs | First-truthy WebSocket/poll result, cancellation and timer cleanup |
-| f2208 plus f2209–f2212 | src/main/payment/phonepe.cjs | PhonePe redirect, QR delivery, polling and settlement handoff |
-| f2213 plus f2214–f2219 | src/main/payment/razorpay.cjs | Razorpay checkout, QR/collect callbacks, polling and settlement handoff |
+| f510,f535,f542,f544–f548 | request-url.cjs,request-body.cjs,gateway-selection.cjs,payment-error.cjs,retry-delay.cjs | Payment/PNR contracts, gateway choices and errors |
+| f549,f554 | booking-result.cjs | Booking/passenger normalization |
+| f2172,f2176 | payment-init.cjs,gateway-dispatch.cjs | Initialization, retries and provider routing |
+| f2186,f2193,f2196,f2208,f2213 | provider-qr.cjs,paytm.cjs,paytm-watch.cjs,phonepe.cjs,razorpay.cjs | QR/payment orchestration and result coordination |
+| f2181,f2220,f2221,f2226 | settlement.cjs,pnr-lifecycle.cjs,booking-data.cjs | Settlement, cancellable PNR verification and booking-data polling |
+| f2230–f2233,f2243 | session-context.cjs,finish-booking.cjs | Session references, finalization and ordered cleanup |
+| f2247 | print-ticket.cjs | Optional print detail attachment |
+| f1719,f1727 | gateway-requests.cjs | Booking-data/print-ticket HTTP requests |
+| f152,f1666,f1756 | payment-error.cjs,gateway-headers.cjs,gateway-retry.cjs | Closed-browser detection, headers and bounded retries |
+| f1659,f1660,f1662–f1665 | gateway-session.cjs | Browser hints/cache, origins and referrers |
+| f1621,f1630 | gateway-lifecycle.cjs | Actor-owned request-context disposal |
+| f1609,f1610,f1667 | gateway-redirect.cjs | PaymentRedirect payload, HTML parsing and bounded retries |
+| f1602,f1603,f1608,f1668,f1673,f1678 | qr-response.cjs,provider-qr-request.cjs,provider-qr-poll.cjs | Provider QR config/amount/status parsing, generation, polling and encdata |
+| f1611,f1681 | bank-response.cjs | Full provider interstitial waits and one-form bank settlement |
 
-These implementations are ordinary JavaScript, not wrappers that execute the same instruction definitions. `engine.cjs` now supports optional function factories so a remaining recovered caller can call a native function. The factory's `readBinding` bridge resolves required lexical configuration at invocation time, preserving initialization errors and separate captured scopes. Existing function interceptors and invocation tracing still run around the native implementation.
+These are ordinary JavaScript, not wrappers executing the same instruction definitions. runtime/reconstructed-payment.cjs bridges remaining recovered callers through engine functionFactories/readBinding. Existing invocation tracing/interceptors remain. All132 entry/local-callback contracts validate before enabling the candidate.
 
-## Activation and fallback
+## Candidate use and limits
 
-`runtime/reconstructed-payment.cjs` installs forty-nine entry replacements only with **all** of: developer mode, unmanaged checkout, and `--reconstructed-payment`. Without this flag the original functions remain active; managed releases ignore it. The General API candidate is a different, independent flag.
-
-Local opt-in launch, with no automatic login or booking:
+Replacements require all of: unmanaged developer checkout and --reconstructed-payment. Default and managed releases retain the recovered implementation. The General API candidate is a separate flag. Local opt-in launch(without automatic login or booking):
 
 ```powershell
 cd "C:\Users\gurpr\OneDrive\Documents\ts\nexus"
 & ".\.runtime\electron.exe" "." --development --reconstructed-payment
 ```
 
-Do not describe the whole app as fully reconstructed. No generated definitions have been deleted because the fallback and other callers still need them.
+Most of the application still uses the recovered engine. No generated definitions have been deleted. Required passenger waits, authentication/session checks, gateway validations, release activation, private-browser and independent-pair ownership are preserved. Retired vendor reporting remains disabled by runtime/legacy-services.cjs f2009 in release and development.
 
 ## Evidence
 
-Final full application suite: **663 tests passed**. No test failures remain. The opt-in adapter also validates pinned native IDs and definition SHA-256 contracts before installing replacements; changed recovery output must be reviewed and retested, not blindly accepted.
+The696-test suite includes actual recovered-versus-native comparisons of requests/order, return values, errors, cancellation, timers, state changes and reference identity using synthetic fixtures. The complete Provider-QR chain now runs native initialization→redirect→QR creation→status polling→encdata→bank response→PNR→ticket/finalization. Five complete-chain checks cover ordinary results, parallel actors, transient network failure, pending→paid polling and a virtual45000ms bank interstitial with bodiless continuation.
 
-- Tests execute actual recovered functions with a static decoded-string fixture and synthetic transports, then compare request data, call order, callbacks, results, errors, cancellation and state changes against the native implementation.
-- Payment payload tests cover 875 combinations of method, amount and bank override. Gateway candidate tests cover 90 combinations and bank lookup tests cover 20.
-- Thirty-nine scenarios compare the actual recovered f2172 with the complete native orchestrator. Twenty-seven compare gateway dispatch including the wallet branch. Two complete chain tests cover payment-init → dispatch → PayTM QR with mocked transport and parallel actor isolation.
-- A native-factory test runs f2186 with no decoder/captured actor and verifies its local recovered callbacks are not invoked. Factories preserve `this` and existing duration instrumentation.
-- Eight source smoke screens rendered with all forty-nine entry factories enabled with complete DOMs and no native bytecode loaded with reconstruction enabled (PID 4132). This is boot/UI evidence, not a service or QR speed measurement.
-- The decoder fixture is static program data, not a captured HTTP response. `tools/export_payment_fixture.py` can regenerate it from the local original string table using the recovery decoder. No credentials or passenger records are involved.
+Low-level HTTP, browser navigator/session and timing effects are synthetic. No real credentials, account/passenger records, cookies or provider responses were used as fixtures; no live login, booking, payment or QR requests occurred. No live QR speed improvement is established. The historical38–42second payment-stage gap remains unverified.
 
-Required passenger wait, authentication/session checks, request ordering, gateway validation, existing release activation, pair ownership and retired-vendor restrictions are preserved. No live login, booking, payment or QR requests were made during reconstruction.
+Intentional diagnostic differences: booking-data logs omit raw responses/transaction IDs/supplier errors; provider QR missing-ID logs omit auth-page HTML. Tests normalize those specific messages and assert privacy independently. Other recovered waits and result semantics are retained, including the redundant second await after finalization's5second report race.
 
-## Still recovered / next work
+tools/export_payment_fixture.py exports static program strings from the locally recovered table; tools/review_recovered_function.cjs writes compact instruction listings with branch targets. Future functions can appear in the fixture before migration. Approximate readable-reference is not the control-flow authority.
 
-1. Gateway transport methods: API/session/CSRF helpers, redirect fetching, QR extraction, WebSocket and provider polling implementations.
-2. Broader passenger submission flow and persistence outside the reconstructed finalization core. Preserve existing retired-vendor reporting restrictions.
-3. Remaining application logic and eventual removal of the execution engine after all required callers have been migrated.
+## Remaining work
 
-Payment-init f2172 and gateway dispatch f2176 are now reconstructed and verified offline. The Antigravity draft was not integrated unchanged: its invented actor helper interface, exclusion filtering, retry policy, conditional referrer handling, transaction rejection conditions, browser minimization and callbacks were corrected against actual recovered instructions. See docs/reconstruction-phase-2.md.
+1. Actual browser/HTTP request routing and settlement context arming/proxy ownership(f1617–f1658).
+2. Remaining PayTM/PhonePe/Razorpay-specific gateway transports.
+3. Broader passenger submission, browser/session/controller logic and remaining application functions.
+4. Full source migration before removing the execution engine; service validation requires appropriate authorization and cannot be inferred from mocks.
 
-The earlier 38–42 second payment-to-pay-ready gap remains unresolved. Instruction equivalence and offline reconstruction do not establish a faster real journey.
-
-Phase 3 adds common settlement (25 parity cases), PNR lifecycle (13) and booking-data polling (20). Booking-data diagnostics intentionally omit raw response/transaction IDs and raw supplier error messages; comparisons explicitly account for that privacy change. Provider waits, bounded re-verification and result semantics match. Native entry and local closure fingerprints cover 64 recovered definitions.
-
-Phase 4 adds booking-result normalization, provider retry-delay parsing, session/referrer/request-ID helpers and the finalization wrapper. Forty-nine additional tests pass, including field coercion, missing/error responses, reference identity, cleanup failure ordering and independent actor isolation. The complete-chain comparison now executes actual recovered versus native init → Provider QR → synthetic paid result → settlement → booking-data → normalization → finalization wrapper; transport and finalization-core effects remain synthetic. All 76 entry/local-closure fingerprints are pinned. See docs/reconstruction-phase-4.md.
-
-Phases 5–6 complete the finalization core, print-ticket attachment, booking-data/print-ticket gateway request methods, shared retry/header helpers and browser-closed classification. The full chain now executes these native modules against synthetic low-level HTTP and browser hints, including transient failure recovery. Current count: 32 entry replacements and 98 fingerprints; see docs/reconstruction-phases-5-6.md. Retired vendor reporting remains disabled. Live QR timing is unverified.
-
-Phase7 reconstructs gateway session/origin/hint helpers f1659–f1665 and disposal f1621/f1630 with original-versus-native tests. Current total:40 entries,109 fingerprints,554 tests,eight smoke windows(PID10540). See docs/reconstruction-phase-7.md. Payment redirect and provider transports still need migration.
-
-Phase8 adds PaymentRedirect f1667 and form parsers f1609/f1610; current43 entries,112 fingerprints,575 tests. See docs/reconstruction-phase-8.md. Provider QR generation/polling still needs migration; no live timing claim.
-
-Phase9 adds provider QR creation f1668 and config/amount parsing f1602/f1608. Current46 entries,119 fingerprints,610 tests. Missing-ID logs intentionally omit auth-page HTML; request/result behavior matches. See docs/reconstruction-phase-9.md. Polling/encdata helpers still recovered.
-
-Phase10 adds provider command polling f1673, encdata fetch f1678 and classifier f1603. Current49 entries,129 fingerprints,663 tests. Full synthetic chain includes pending→paid requested wait. See docs/reconstruction-phase-10.md. BankResponse/survivor arming and remaining provider transports still recovered.
+Read the numbered reconstruction phase reports for historical checkpoints and detailed compatibility findings. Current next step is in reconstruction-phase-11.md. A prior authenticated automated launch was rejected by automatic approval review; do not use an alternate route to retry it. Current continuation remains offline.

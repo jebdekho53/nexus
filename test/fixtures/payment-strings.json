@@ -171,6 +171,11 @@
   "f1610": {
     "7152|]TXZ": "exec"
   },
+  "f1611": {
+    "9396|P3P7": "exec",
+    "22257|RuQs": "parseInt",
+    "11081|%I%T": "parseInt"
+  },
   "f1621": {
     "23410|k([I": "survivorReq",
     "1764|7u]a": "survivorReq",

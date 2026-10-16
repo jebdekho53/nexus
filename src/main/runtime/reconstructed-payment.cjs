@@ -27,6 +27,7 @@ const {hiddenFormValue,formAction,paymentRedirect}=require('../payment/gateway-r
 const {appConfig,qrAmount,commandStatus}=require('../payment/qr-response.cjs');
 const {createProviderQr}=require('../payment/provider-qr-request.cjs');
 const {fetchProviderEncdata,pollProviderQr}=require('../payment/provider-qr-poll.cjs');
+const {interstitialDelay,bankResponse}=require('../payment/bank-response.cjs');
 const {createHash}=require('node:crypto');
 const contracts=require('../payment/recovered-contract.json');
 
@@ -41,6 +42,8 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
       throw new Error('Reconstructed payment contract changed for '+id+'. Review the recovered definition and comparison tests before enabling this candidate.');
   }
   return {
+    f1611:()=>interstitialDelay,
+    f1681:({readBinding})=>function(payload,responseKey){return bankResponse(this,payload,responseKey,{isBrowserClosed:error=>readBinding(139,undefined,1)(error),parseDelay:html=>readBinding(785,undefined,1)(html)});},
     f1603:()=>commandStatus,
     f1678:({readBinding})=>function(qr){return fetchProviderEncdata(this,qr,{parseConfig:html=>readBinding(777,undefined,1)(html)});},
     f1673:({readBinding})=>function(qr,stopped,onWait,maxAttempts,interval,sleep){return pollProviderQr(this,qr,stopped,onWait,maxAttempts,interval,sleep,{parseConfig:html=>readBinding(777,undefined,1)(html),classify:body=>readBinding(778,undefined,1)(body),clock:dependencies.clock});},

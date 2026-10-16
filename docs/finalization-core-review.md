@@ -1,6 +1,6 @@
-# Next module: recovered f2233 finalization core
+# Historical review: recovered f2233 finalization core
 
-Read-only instruction review, 16 October 2026. This function is NOT yet replaced. Verified reconstruction checkpoint: 52c32fd, 341 tests, 25 native entry functions, 76 pinned definitions, eight offline smoke windows (PID 10828).
+Historical read-only review,16October2026. Superseded by the native implementation verified in phases5–6; retained for the instruction findings. At the time of this review the function had not yet been replaced. Verified reconstruction checkpoint: 52c32fd, 341 tests, 25 native entry functions, 76 pinned definitions, eight offline smoke windows (PID 10828).
 
 The static decoder fixture already covers f2233–f2242. Raw instruction definitions in generated/index.cjs remain the authority. Ignored diagnostics/f2233-review.txt and f2234-review.txt through f2242-review.txt contain decoded instruction listings; they replace only verified four-instruction constant preparation sequences before decoder calls, retaining control flow. Do not rely on approximate readable-reference alone.
 
