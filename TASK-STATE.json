@@ -186,7 +186,18 @@
     "phaseSixteenReport": "docs/reconstruction-phase-16.md",
     "phaseSeventeenReport": "docs/reconstruction-phase-17.md",
     "phaseEighteenReport": "docs/reconstruction-phase-18.md",
-    "phaseNineteenReport": "docs/reconstruction-phase-19.md"
+    "phaseNineteenReport": "docs/reconstruction-phase-19.md",
+    "inventory": {
+      "report": "docs/reconstruction-inventory/README.md",
+      "json": "docs/reconstruction-inventory/functions.json",
+      "csv": "docs/reconstruction-inventory/functions.csv",
+      "tool": "tools/classify_recovered_functions.cjs",
+      "functions": 4354,
+      "instructions": 512857,
+      "nativeEntryInstructionPercent": 4.05,
+      "pinnedSupportInstructionPercent": 0.78,
+      "limitation": "Static instruction volume and review-load heuristic, not remaining effort or delivery-time percentage."
+    }
   },
   "continuationSchedule": "First16Oct2026at18:42IST, then every5h30m (330min). Existing general unfinished-task fallback remains active."
 }
