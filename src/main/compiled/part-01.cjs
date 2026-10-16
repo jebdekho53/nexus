@@ -34515,6 +34515,7 @@ exports.f2=function(rt,fn,self,args,newTarget,ctx,K){
       return acc;
     }
 };
+// f3 hasOwnProperty
 exports.f3=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20;
@@ -34751,6 +34752,7 @@ exports.f3=function(rt,fn,self,args,newTarget,ctx,K){
     acc=args[0];
     return acc;
 };
+// f4 call
 exports.f4=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0;
@@ -34760,6 +34762,7 @@ exports.f4=function(rt,fn,self,args,newTarget,ctx,K){
     acc=r0[acc];
     return acc;
 };
+// f5 hasOwnProperty
 exports.f5=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
@@ -35003,6 +35006,7 @@ exports.f6=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r6,r7,[r1]);
     return acc;
 };
+// f7 get
 exports.f7=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0;
@@ -35012,6 +35016,7 @@ exports.f7=function(rt,fn,self,args,newTarget,ctx,K){
     acc=r0[acc];
     return acc;
 };
+// f8 undici
 exports.f8=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2;
@@ -35741,18 +35746,21 @@ exports.f10=async function(rt,fn,self,args,newTarget,ctx,K){
       throw acc;
     }
 };
+// f11 catch
 exports.f11=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f12 catch
 exports.f12=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=null;
     return acc;
 };
+// f13 catch
 exports.f13=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
@@ -35947,36 +35955,42 @@ exports.f14=async function(rt,fn,self,args,newTarget,ctx,K){
       throw acc;
     }
 };
+// f15 catch
 exports.f15=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f16 catch
 exports.f16=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f17 catch
 exports.f17=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f18 catch
 exports.f18=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f19 catch
 exports.f19=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f20 catch
 exports.f20=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
@@ -36521,6 +36535,7 @@ exports.f24=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=r6;
     return acc;
 };
+// f25 connect
 exports.f25=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8;
@@ -36644,6 +36659,7 @@ exports.f25=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f26 host
 exports.f26=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7;
@@ -36713,6 +36729,7 @@ exports.f26=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f27 data
 exports.f27=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12;
@@ -36993,6 +37010,7 @@ exports.f27=function(rt,fn,self,args,newTarget,ctx,K){
       return acc;
     }
 };
+// f28 data
 exports.f28=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r4,r5;
@@ -37021,6 +37039,7 @@ exports.f28=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f29 request
 exports.f29=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9;
@@ -37141,6 +37160,7 @@ exports.f29=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f30 url
 exports.f30=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7;
@@ -37191,6 +37211,7 @@ exports.f30=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f31 error
 exports.f31=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
@@ -37236,6 +37257,7 @@ exports.f31=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f32 request
 exports.f32=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
@@ -37279,6 +37301,7 @@ exports.f32=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f33 local egress bridge ready on 127.0.0.1:
 exports.f33=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1;
@@ -37501,6 +37524,7 @@ exports.f36=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r3,r1,[]);
     return acc;
 };
+// f37 en-NL,en
 exports.f37=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4;
@@ -37617,6 +37641,7 @@ exports.f38=async function(rt,fn,self,args,newTarget,ctx,K){
       return acc;
     }
 };
+// f39 en-NL,en
 exports.f39=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
@@ -38112,6 +38137,7 @@ exports.f42=function(rt,fn,self,args,newTarget,ctx,K){
     acc=null;
     return acc;
 };
+// f43 find
 exports.f43=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3;
@@ -38346,6 +38372,7 @@ exports.f45=function(rt,fn,self,args,newTarget,ctx,K){
     acc=r0+acc;
     return acc;
 };
+// f46 preprocess
 exports.f46=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r1,r2,r3;
@@ -38374,6 +38401,7 @@ exports.f46=function(rt,fn,self,args,newTarget,ctx,K){
     }
     return acc;
 };
+// f47 preprocess
 exports.f47=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r1,r2,r3;
@@ -38402,6 +38430,7 @@ exports.f47=function(rt,fn,self,args,newTarget,ctx,K){
     }
     return acc;
 };
+// f48 preprocess
 exports.f48=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r1,r2,r3;
@@ -38800,6 +38829,7 @@ exports.f53=function(rt,fn,self,args,newTarget,ctx,K){
       return acc;
     }
 };
+// f54 filter
 exports.f54=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12;

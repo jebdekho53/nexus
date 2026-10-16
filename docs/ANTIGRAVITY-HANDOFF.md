@@ -1,4 +1,8 @@
-# Latest checkpoint — phase22
+# Latest checkpoint — phase23
+
+Readability pass, first slice: compiled functions that have a short single-line hint in docs/reconstruction-inventory/function-names.csv now carry a `// <id> <hint>` comment above their `exports.<id>=` line (2882 of 4354; tools/compiler/build.cjs+compile.cjs). Comment-only, nothing else changed. Re-verified: full suite 1686/1686 (plain and MATRIX_COMPILED=1), differential --seeds 4 (4354 checked, 0 failing), offline smoke --compiled-runtime (8/8 windows complete, nativeBytecodeLoaded:false). See docs/reconstruction-phase-23.md. Exact next action: continue the readability pass (inline temps, promote context-array slots to lexical variables, split the f1 bootstrap), keep soaking --compiled-runtime offline before making it the default, per docs/reconstruction-phase-22.md and -23.md.
+
+# Earlier checkpoint — phase22
 
 All 4354 recovered definitions are compiled to ordinary JavaScript (src/main/compiled, tools/compiler) and verified by differential execution plus the full suite (1686 tests, also with MATRIX_COMPILED=1). src/main/runtime/compiled-runtime.cjs runs them without the instruction definitions (index.cjs --compiled-runtime; offline smoke passes). Exact next action: soak the compiled runtime offline, make it the default, then readability passes (inline temps, names from function-names.csv, promote context slots to lexical variables, split the f1 bootstrap) per docs/reconstruction-phase-22.md. The sections below are earlier history.
 

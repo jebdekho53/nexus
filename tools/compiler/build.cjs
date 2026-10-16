@@ -6,6 +6,36 @@ const definitions=require('../../src/main/generated/index.cjs');
 const{compileDefinition,Unsupported}=require('./compile.cjs');
 const excludeArgument=process.argv.indexOf('--exclude');
 const excluded=new Set(excludeArgument>=0?process.argv[excludeArgument+1].split(','):[]);
+
+// Parses docs/reconstruction-inventory/function-names.csv (RFC4180-ish: quoted fields, "" escapes) into id -> nameHint,
+// keeping only short single-line hints that are useful as a readability comment, not incidental string constants.
+function loadNameHints() {
+  const csvPath=path.resolve(__dirname,'../../docs/reconstruction-inventory/function-names.csv');
+  const text=fs.readFileSync(csvPath,'utf8');
+  const rows=[];
+  let row=[],field='',inQuotes=false;
+  for(let i=0;i<text.length;i++) {
+    const c=text[i];
+    if(inQuotes) {
+      if(c==='"'){if(text[i+1]==='"'){field+='"';i++;}else inQuotes=false;}
+      else field+=c;
+    } else if(c==='"')inQuotes=true;
+    else if(c===','){row.push(field);field='';}
+    else if(c==='\n'){row.push(field);rows.push(row);row=[];field='';}
+    else if(c==='\r'){}
+    else field+=c;
+  }
+  if(field.length||row.length){row.push(field);rows.push(row);}
+  const hints=new Map();
+  for(const[id,,hint]of rows.slice(1)) {
+    if(!hint)continue;
+    if(hint.length>40)continue;
+    if([...hint].some(ch=>{const code=ch.codePointAt(0);return code===10||code===13||code===8232||code===8233;}))continue;
+    hints.set(id,hint);
+  }
+  return hints;
+}
+const nameHints=loadNameHints();
 const outputDirectory=path.resolve(__dirname,'../../src/main/compiled');
 fs.mkdirSync(outputDirectory,{recursive:true});
 for(const name of fs.readdirSync(outputDirectory))if(/^part-\d+\.cjs$/.test(name))fs.unlinkSync(path.join(outputDirectory,name));
@@ -23,7 +53,7 @@ const flush=()=>{
 for(const id of ids) {
   if(excluded.has(id))continue;
   try {
-    const source=compileDefinition(definitions[id]);
+    const source=compileDefinition(definitions[id],{nameHint:nameHints.get(id)});
     chunk.push(source);size+=source.length;compiled++;
     if(size>1500000)flush();
   } catch(error) {

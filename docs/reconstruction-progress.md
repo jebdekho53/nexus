@@ -77,3 +77,5 @@ Phase20: PayTM WebSocket watcher f1693 and final status f1712 are native; see do
 Phase21: PhonePe, Razorpay and wallet verification transports are native, PayTM watcher/final status composed into the chain, and dropped regex flags were restored in the recovered definitions; see docs/reconstruction-phase-21.md. 88 native entries, 261 pins, 1406 tests passed.
 
 Phase22: booking helpers native and a verified compiler produces src/main/compiled for all 4354 definitions; a standalone compiled runtime (--compiled-runtime) runs the offline smoke without the instruction definitions. See docs/reconstruction-phase-22.md. 1686 tests passed.
+
+Phase23: readability pass (first slice) — 2882 of 4354 compiled functions now carry a `// <id> <hint>` naming comment from function-names.csv; comment-only, re-verified by the full suite (1686/1686, plain and MATRIX_COMPILED=1), differential --seeds 4 (4354 checked, 0 failing) and an offline --compiled-runtime smoke (8/8 windows complete, no native bytecode). See docs/reconstruction-phase-23.md.

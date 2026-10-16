@@ -70,13 +70,16 @@ function compileDefinition(definition,options={}) {
   const incoming=Number.isInteger(definition.incoming)&&definition.incoming>=0&&definition.incoming<definition.registerCount?definition.incoming:null;
   if(incoming!==null)registers.add(incoming);
   const declarations=['acc','pending=HOLE',...[...registers].sort((a,b)=>a-b).map(index=>'r'+index+(index===incoming?'=newTarget':''))];
-  return[
+  const lines=[];
+  if(options.nameHint)lines.push('// '+definition.id+' '+options.nameHint);
+  lines.push(
     'exports.'+definition.id+'='+(isAsync?'async ':'')+'function(rt,fn,self,args,newTarget,ctx,K){',
     '  const{HOLE}=rt;',
     '  let '+declarations.join(',')+';',
     source,
     '};',
-  ].join('\n');
+  );
+  return lines.join('\n');
 }
 
 module.exports={compileDefinition,Unsupported};

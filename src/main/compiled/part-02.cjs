@@ -1,5 +1,6 @@
 'use strict';
 // Compiled from recovered definitions by tools/compiler (do not edit; rebuild instead).
+// f55 map
 exports.f55=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
@@ -104,6 +105,7 @@ exports.f56=function(rt,fn,self,args,newTarget,ctx,K){
     }
     return acc;
 };
+// f57 claude-haiku-4-5-20251001
 exports.f57=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3;
@@ -145,6 +147,7 @@ exports.f57=function(rt,fn,self,args,newTarget,ctx,K){
     }
     return acc;
 };
+// f58 claude-haiku-4-5-20251001
 exports.f58=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3;
@@ -1223,6 +1226,7 @@ exports.f61=function(rt,fn,self,args,newTarget,ctx,K){
     acc=null;
     return acc;
 };
+// f62 find
 exports.f62=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3;
@@ -1547,6 +1551,7 @@ exports.f64=function(rt,fn,self,args,newTarget,ctx,K){
     acc=r4[acc];
     return acc;
 };
+// f65 then
 exports.f65=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25;
@@ -1897,6 +1902,7 @@ exports.f65=function(rt,fn,self,args,newTarget,ctx,K){
       throw acc;
     }
 };
+// f66 then
 exports.f66=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
@@ -1983,6 +1989,7 @@ exports.f67=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r2,undefined,[r3,r4,r5]);
     return acc;
 };
+// f68 stringify
 exports.f68=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7;
@@ -2532,6 +2539,7 @@ exports.f71=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=r9;
     return acc;
 };
+// f72 map
 exports.f72=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r2,r3,r4;
@@ -3597,6 +3605,7 @@ exports.f79=async function(rt,fn,self,args,newTarget,ctx,K){
       return acc;
     }
 };
+// f80 some
 exports.f80=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
@@ -3897,6 +3906,7 @@ exports.f81=async function(rt,fn,self,args,newTarget,ctx,K){
       return acc;
     }
 };
+// f82 some
 exports.f82=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4;
@@ -4740,6 +4750,7 @@ exports.f84=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=r16;
     return acc;
 };
+// f85 find
 exports.f85=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4;
@@ -5190,6 +5201,7 @@ exports.f87=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=r6;
     return acc;
 };
+// f88 unknown
 exports.f88=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2=newTarget,r3,r4,r5,r6,r7;
@@ -5252,6 +5264,7 @@ exports.f88=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=r5;
     return acc;
 };
+// f89 unknown
 exports.f89=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r1,r2,r3;
@@ -5546,6 +5559,7 @@ exports.f90=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=r9;
     return acc;
 };
+// f91 map
 exports.f91=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r2,r3,r4;
@@ -5561,6 +5575,7 @@ exports.f91=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r0,args[0],[]);
     return acc;
 };
+// f92 filter
 exports.f92=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
@@ -5993,6 +6008,7 @@ exports.f93=async function(rt,fn,self,args,newTarget,ctx,K){
       }
     }
 };
+// f94  does not exist → auto-detect
 exports.f94=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1=newTarget,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12;
@@ -6825,6 +6841,7 @@ exports.f99=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=r5;
     return acc;
 };
+// f100 gologinReady
 exports.f100=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9;
@@ -6955,6 +6972,7 @@ exports.f100=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r0,r1,[r2]);
     return acc;
 };
+// f101 map
 exports.f101=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
@@ -7220,6 +7238,7 @@ exports.f105=function(rt,fn,self,args,newTarget,ctx,K){
     acc=ctx[4];
     return acc;
 };
+// f106 close
 exports.f106=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
@@ -7372,6 +7391,7 @@ exports.f109=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r0,undefined,[r1]);
     return acc;
 };
+// f110 then
 exports.f110=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1;
@@ -7386,6 +7406,7 @@ exports.f110=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f111 then
 exports.f111=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1;
@@ -7902,6 +7923,7 @@ exports.f113=function(rt,fn,self,args,newTarget,ctx,K){
     }
     return acc;
 };
+// f114 catch
 exports.f114=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
@@ -8009,12 +8031,14 @@ exports.f115=function(rt,fn,self,args,newTarget,ctx,K){
     acc=r1[acc];
     return acc;
 };
+// f116 catch
 exports.f116=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f117 finally
 exports.f117=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4;
@@ -8111,6 +8135,7 @@ exports.f118=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f119 timer
 exports.f119=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
@@ -8520,12 +8545,14 @@ exports.f121=async function(rt,fn,self,args,newTarget,ctx,K){
       return acc;
     }
 };
+// f122 catch
 exports.f122=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f123 finally
 exports.f123=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4;
@@ -8993,12 +9020,14 @@ exports.f125=function(rt,fn,self,args,newTarget,ctx,K){
     }
     return acc;
 };
+// f126 catch
 exports.f126=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f127 catch
 exports.f127=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
@@ -9178,6 +9207,7 @@ exports.f130=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r2,r0,[r4]);
     return acc;
 };
+// f131 filter
 exports.f131=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
@@ -9185,6 +9215,7 @@ exports.f131=function(rt,fn,self,args,newTarget,ctx,K){
     acc=!acc;
     return acc;
 };
+// f132 map
 exports.f132=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2;
@@ -9600,6 +9631,7 @@ exports.f133=async function(rt,fn,self,args,newTarget,ctx,K){
       return acc;
     }
 };
+// f134 sleep
 exports.f134=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2;
@@ -9626,6 +9658,7 @@ exports.f135=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r0,undefined,[args[0],r2]);
     return acc;
 };
+// f136 filter
 exports.f136=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r2,r3,r4;
@@ -9642,6 +9675,7 @@ exports.f136=function(rt,fn,self,args,newTarget,ctx,K){
     acc=!acc;
     return acc;
 };
+// f137 map
 exports.f137=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r5,r6;
@@ -9669,6 +9703,7 @@ exports.f137=function(rt,fn,self,args,newTarget,ctx,K){
     acc="";
     return acc;
 };
+// f138 some
 exports.f138=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r1,r2,r3;
@@ -9803,6 +9838,7 @@ exports.f139=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.makeFunction("f146",ctx,{thisValue:self,newTarget});
     return acc;
 };
+// f140 forMs
 exports.f140=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3;
@@ -9942,12 +9978,14 @@ exports.f141=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f142 catch
 exports.f142=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f143 catch
 exports.f143=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1;
@@ -9970,6 +10008,7 @@ exports.f144=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r0,undefined,[r1]);
     return acc;
 };
+// f145 page
 exports.f145=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
@@ -10006,6 +10045,7 @@ exports.f145=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f146 unref
 exports.f146=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
@@ -10136,6 +10176,7 @@ exports.f147=function(rt,fn,self,args,newTarget,ctx,K){
     }
     return acc;
 };
+// f148 toLowerCase
 exports.f148=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
@@ -10494,6 +10535,7 @@ exports.f152=function(rt,fn,self,args,newTarget,ctx,K){
     }
     return acc;
 };
+// f153 split
 exports.f153=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4;
@@ -10772,6 +10814,7 @@ exports.f155=function(rt,fn,self,args,newTarget,ctx,K){
       throw acc;
     }
 };
+// f156 length
 exports.f156=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
@@ -11086,6 +11129,7 @@ exports.f157=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r6,r4,[r8]);
     return acc;
 };
+// f158 flatMap
 exports.f158=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9;
@@ -12096,6 +12140,7 @@ exports.f161=function(rt,fn,self,args,newTarget,ctx,K){
       return acc;
     }
 };
+// f162 sort
 exports.f162=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4;
@@ -13392,6 +13437,7 @@ exports.f168=async function(rt,fn,self,args,newTarget,ctx,K){
       throw acc;
     }
 };
+// f169 filter
 exports.f169=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r1,r2,r3;
@@ -13504,6 +13550,7 @@ exports.f171=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f172 127.0.0.1
 exports.f172=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
@@ -13581,6 +13628,7 @@ exports.f172=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f173 close
 exports.f173=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4;
@@ -14640,6 +14688,7 @@ exports.f174=async function(rt,fn,self,args,newTarget,ctx,K){
       }
     }
 };
+// f175 exit
 exports.f175=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
@@ -14648,6 +14697,7 @@ exports.f175=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f176 /json/version
 exports.f176=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r2;
@@ -14658,6 +14708,7 @@ exports.f176=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r0,undefined,[args[0],r2]);
     return acc;
 };
+// f177 some
 exports.f177=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3;
@@ -14680,6 +14731,7 @@ exports.f177=function(rt,fn,self,args,newTarget,ctx,K){
     acc=r0===acc;
     return acc;
 };
+// f178 some
 exports.f178=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r2;
@@ -14690,6 +14742,7 @@ exports.f178=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r0,undefined,[args[0],r2]);
     return acc;
 };
+// f179 SIGKILL
 exports.f179=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r2;
@@ -14700,6 +14753,7 @@ exports.f179=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r0,undefined,[args[0],r2]);
     return acc;
 };
+// f180 --disable-sync
 exports.f180=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r2,r3,r4;
@@ -14724,6 +14778,7 @@ exports.f180=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f181 type
 exports.f181=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r3,r4;
@@ -14737,6 +14792,7 @@ exports.f181=function(rt,fn,self,args,newTarget,ctx,K){
     acc=self[acc];
     return acc;
 };
+// f182 resolveExe
 exports.f182=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
@@ -14761,12 +14817,14 @@ exports.f182=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r1,undefined,[r2,r3]);
     return acc;
 };
+// f183 engineArgs
 exports.f183=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=[];
     return acc;
 };
+// f184 open
 exports.f184=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32,r33,r34,r35,r36,r37,r38,r39,r40,r41;
@@ -17365,6 +17423,7 @@ exports.f185=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f186 kind
 exports.f186=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9;
@@ -17556,6 +17615,7 @@ exports.f186=function(rt,fn,self,args,newTarget,ctx,K){
     acc=r0;
     return acc;
 };
+// f187 filter
 exports.f187=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r1,r2,r3;
@@ -17570,6 +17630,7 @@ exports.f187=function(rt,fn,self,args,newTarget,ctx,K){
     acc=!acc;
     return acc;
 };
+// f188 filter
 exports.f188=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r1,r2,r3;
@@ -17584,6 +17645,7 @@ exports.f188=function(rt,fn,self,args,newTarget,ctx,K){
     acc=!acc;
     return acc;
 };
+// f189 find
 exports.f189=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r2,r3,r4;
@@ -17607,48 +17669,56 @@ exports.f189=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r0,args[0],[r2]);
     return acc;
 };
+// f190 catch
 exports.f190=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f191 sas-profiles
 exports.f191=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f192 userDataDir
 exports.f192=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f193 catch
 exports.f193=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=null;
     return acc;
 };
+// f194 catch
 exports.f194=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f195 catch
 exports.f195=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f196 catch
 exports.f196=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f197 then
 exports.f197=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8;
@@ -17704,12 +17774,14 @@ exports.f197=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f198 catch
 exports.f198=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f199 catch
 exports.f199=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1=newTarget,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13;
@@ -17949,12 +18021,14 @@ exports.f199=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=r4;
     return acc;
 };
+// f200 catch
 exports.f200=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f201 catch
 exports.f201=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r2;
@@ -17965,18 +18039,21 @@ exports.f201=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r0,undefined,[args[0],r2]);
     return acc;
 };
+// f202 catch
 exports.f202=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f203 catch
 exports.f203=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f204 catch
 exports.f204=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r2;
@@ -17987,12 +18064,14 @@ exports.f204=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r0,undefined,[args[0],r2]);
     return acc;
 };
+// f205 catch
 exports.f205=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f206 sas-profiles
 exports.f206=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4;
@@ -18224,6 +18303,7 @@ exports.f209=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f210 pkill
 exports.f210=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
@@ -18773,6 +18853,7 @@ exports.f212=function(rt,fn,self,args,newTarget,ctx,K){
     acc="";
     return acc;
 };
+// f213 findIndex
 exports.f213=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3;
@@ -18798,6 +18879,7 @@ exports.f213=function(rt,fn,self,args,newTarget,ctx,K){
     }
     return acc;
 };
+// f214 filter
 exports.f214=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r2,r3,r4;
@@ -19194,6 +19276,7 @@ exports.f216=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f217 open
 exports.f217=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
@@ -19721,6 +19804,7 @@ exports.f218=function(rt,fn,self,args,newTarget,ctx,K){
       throw acc;
     }
 };
+// f219 map
 exports.f219=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2;
@@ -19984,6 +20068,7 @@ exports.f222=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=r4;
     return acc;
 };
+// f223 __esmImport
 exports.f223=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2;
@@ -20426,6 +20511,7 @@ exports.f226=async function(rt,fn,self,args,newTarget,ctx,K){
       throw acc;
     }
 };
+// f227 Unsupported host
 exports.f227=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1;
@@ -20458,6 +20544,7 @@ exports.f227=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f228 Unsupported host
 exports.f228=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8;
@@ -21164,6 +21251,7 @@ exports.f232=function(rt,fn,self,args,newTarget,ctx,K){
     acc=r6;
     return acc;
 };
+// f233 map
 exports.f233=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
@@ -21203,6 +21291,7 @@ exports.f233=function(rt,fn,self,args,newTarget,ctx,K){
     }
     return acc;
 };
+// f234 filter
 exports.f234=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
@@ -21470,6 +21559,7 @@ exports.f235=function(rt,fn,self,args,newTarget,ctx,K){
       return acc;
     }
 };
+// f236 filter
 exports.f236=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
@@ -21578,6 +21668,7 @@ exports.f236=function(rt,fn,self,args,newTarget,ctx,K){
     }
     return acc;
 };
+// f237 map
 exports.f237=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0;
@@ -21814,6 +21905,7 @@ exports.f238=async function(rt,fn,self,args,newTarget,ctx,K){
       return acc;
     }
 };
+// f239 open
 exports.f239=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3;
@@ -21830,6 +21922,7 @@ exports.f239=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f240 open
 exports.f240=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22;
@@ -22627,6 +22720,7 @@ exports.f241=function(rt,fn,self,args,newTarget,ctx,K){
     }
     return acc;
 };
+// f242 catch
 exports.f242=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r4,r5;
@@ -22648,24 +22742,28 @@ exports.f242=function(rt,fn,self,args,newTarget,ctx,K){
     acc=Reflect.construct(r1,[r2],acc||r1);
     throw acc;
 };
+// f243 catch
 exports.f243=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc={};
     return acc;
 };
+// f244 catch
 exports.f244=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f245 catch
 exports.f245=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f246 webrtcMode
 exports.f246=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1=newTarget,r2,r3,r4,r5,r6,r7,r8;
@@ -22773,18 +22871,21 @@ exports.f246=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=r4;
     return acc;
 };
+// f247 catch
 exports.f247=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f248 catch
 exports.f248=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f249 --disable-quic
 exports.f249=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1;
@@ -23252,6 +23353,7 @@ exports.f250=function(rt,fn,self,args,newTarget,ctx,K){
       }
     }
 };
+// f251 toLowerCase
 exports.f251=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
@@ -23637,6 +23739,7 @@ exports.f253=function(rt,fn,self,args,newTarget,ctx,K){
       throw acc;
     }
 };
+// f254 open
 exports.f254=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
@@ -24050,6 +24153,7 @@ exports.f256=function(rt,fn,self,args,newTarget,ctx,K){
     acc=r1;
     return acc;
 };
+// f257 win32
 exports.f257=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2;
@@ -24921,12 +25025,14 @@ exports.f266=function(rt,fn,self,args,newTarget,ctx,K){
       throw acc;
     }
 };
+// f267 powershell
 exports.f267=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f268 pkill
 exports.f268=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
@@ -25748,6 +25854,7 @@ exports.f272=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r0,r1,[r2,r3]);
     return acc;
 };
+// f273 catch
 exports.f273=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r3,r4;
@@ -25774,18 +25881,21 @@ exports.f273=function(rt,fn,self,args,newTarget,ctx,K){
       return acc;
     }
 };
+// f274 catch
 exports.f274=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f275 catch
 exports.f275=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f276 %gologin[_]profile[_]%
 exports.f276=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r2,r3,r4;
@@ -25802,6 +25912,7 @@ exports.f276=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f277 build
 exports.f277=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r3,r4,r5;
@@ -25852,6 +25963,7 @@ exports.f277=function(rt,fn,self,args,newTarget,ctx,K){
     }
     return acc;
 };
+// f278 generate
 exports.f278=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8;
@@ -25994,6 +26106,7 @@ exports.f278=function(rt,fn,self,args,newTarget,ctx,K){
     acc=r2;
     return acc;
 };
+// f279 fromTemplate
 exports.f279=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11;
@@ -26199,6 +26312,7 @@ exports.f280=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r1,r2,[r3]);
     return acc;
 };
+// f281 fromTemplate
 exports.f281=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r4,r5,r6;
@@ -26242,6 +26356,7 @@ exports.f281=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f282 post
 exports.f282=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0;
@@ -26252,6 +26367,7 @@ exports.f282=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f283 baseUrl
 exports.f283=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
@@ -26299,6 +26415,7 @@ exports.f283=function(rt,fn,self,args,newTarget,ctx,K){
       throw acc;
     }
 };
+// f284 request
 exports.f284=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2=newTarget,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16;
@@ -26594,6 +26711,7 @@ exports.f284=async function(rt,fn,self,args,newTarget,ctx,K){
       throw acc;
     }
 };
+// f285 initLogin
 exports.f285=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r3,r4,r5,r6,r7;
@@ -26629,6 +26747,7 @@ exports.f285=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r1,self,[r3,r4]);
     return acc;
 };
+// f286 submitLogin
 exports.f286=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r3,r4,r5,r6,r7;
@@ -26660,6 +26779,7 @@ exports.f286=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r1,self,[r3,r4]);
     return acc;
 };
+// f287 refresh
 exports.f287=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r3,r4,r5,r6,r7,r8,r9;
@@ -26702,6 +26822,7 @@ exports.f287=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r1,self,[r3,r4]);
     return acc;
 };
+// f288 get
 exports.f288=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r4,r5;
@@ -26721,6 +26842,7 @@ exports.f288=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r1,self,[args[0],r4]);
     return acc;
 };
+// f289 post
 exports.f289=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r4,r5,r6,r7;
@@ -26832,6 +26954,7 @@ exports.f290=function(rt,fn,self,args,newTarget,ctx,K){
     acc=r1;
     return acc;
 };
+// f291 post
 exports.f291=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r4,r5,r6;
@@ -26859,6 +26982,7 @@ exports.f291=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f292 login
 exports.f292=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3;
@@ -26875,6 +26999,7 @@ exports.f292=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f293 login
 exports.f293=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16;
@@ -27200,6 +27325,7 @@ exports.f293=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=r10;
     return acc;
 };
+// f294 filter
 exports.f294=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12;
@@ -27361,6 +27487,7 @@ exports.f294=function(rt,fn,self,args,newTarget,ctx,K){
       throw acc;
     }
 };
+// f295 login
 exports.f295=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r4,r5,r6;
@@ -27388,6 +27515,7 @@ exports.f295=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f296 close
 exports.f296=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0;
@@ -27398,6 +27526,7 @@ exports.f296=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f297 launch
 exports.f297=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9;
@@ -27574,6 +27703,7 @@ exports.f297=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=r4;
     return acc;
 };
+// f298 cdpAttached
 exports.f298=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4;
@@ -27591,6 +27721,7 @@ exports.f298=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r0,r1,[]);
     return acc;
 };
+// f299 close
 exports.f299=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r7,r8;
@@ -28116,6 +28247,7 @@ exports.f302=function(rt,fn,self,args,newTarget,ctx,K){
       return acc;
     }
 };
+// f303 close
 exports.f303=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r4,r5,r6;
@@ -28143,6 +28275,7 @@ exports.f303=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f304 reconcileProxy
 exports.f304=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3;
@@ -28159,6 +28292,7 @@ exports.f304=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f305 open
 exports.f305=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17;
@@ -28569,6 +28703,7 @@ exports.f305=async function(rt,fn,self,args,newTarget,ctx,K){
       throw acc;
     }
 };
+// f306 __esmImport
 exports.f306=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2;
@@ -28579,6 +28714,7 @@ exports.f306=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.runtime("DynamicImportCall",[r0,r1,r2],{});
     return acc;
 };
+// f307 catch
 exports.f307=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
@@ -28604,6 +28740,7 @@ exports.f307=function(rt,fn,self,args,newTarget,ctx,K){
     acc=Reflect.construct(r1,[r2],acc||r1);
     throw acc;
 };
+// f308 now
 exports.f308=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8;
@@ -28659,6 +28796,7 @@ exports.f308=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=r4;
     return acc;
 };
+// f309 race
 exports.f309=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1=newTarget,r2,r3,r4,r5,r6,r7,r8;
@@ -28739,18 +28877,21 @@ exports.f309=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=r4;
     return acc;
 };
+// f310 catch
 exports.f310=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f311 catch
 exports.f311=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f312 race
 exports.f312=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r2;
@@ -28761,6 +28902,7 @@ exports.f312=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r0,undefined,[args[0],r2]);
     return acc;
 };
+// f313 reconcileProxy
 exports.f313=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21;
@@ -29335,6 +29477,7 @@ exports.f313=async function(rt,fn,self,args,newTarget,ctx,K){
       }
     }
 };
+// f314 proxy
 exports.f314=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6;
@@ -29373,6 +29516,7 @@ exports.f314=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=r3;
     return acc;
 };
+// f315 catch
 exports.f315=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1;
@@ -29385,12 +29529,14 @@ exports.f315=function(rt,fn,self,args,newTarget,ctx,K){
     acc=Reflect.construct(r0,[r1],acc||r0);
     throw acc;
 };
+// f316 catch
 exports.f316=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f317 catch
 exports.f317=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r2;
@@ -29405,6 +29551,7 @@ exports.f317=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r0,undefined,[args[0],r2]);
     return acc;
 };
+// f318 catch
 exports.f318=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
@@ -29560,6 +29707,7 @@ exports.f320=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f321 pkill
 exports.f321=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
@@ -30163,6 +30311,7 @@ exports.f323=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=r5;
     return acc;
 };
+// f324 engineArgs
 exports.f324=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0;
@@ -30177,6 +30326,7 @@ exports.f324=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f325 none
 exports.f325=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0=newTarget,r1,r2,r4,r5,r6,r7,r8,r9,r10;
@@ -30224,6 +30374,7 @@ exports.f325=function(rt,fn,self,args,newTarget,ctx,K){
     if(acc===HOLE)throw new ReferenceError("Must call super constructor");
     return acc;
 };
+// f326 resolveExe
 exports.f326=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r4,r5;
@@ -30241,6 +30392,7 @@ exports.f326=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r1,undefined,[r2]);
     return acc;
 };
+// f327 open
 exports.f327=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13;
@@ -30546,6 +30698,7 @@ exports.f327=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=r7;
     return acc;
 };
+// f328 engineArgs
 exports.f328=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12;
@@ -31174,6 +31327,7 @@ exports.f332=function(rt,fn,self,args,newTarget,ctx,K){
     acc=Reflect.construct(r1,[r2,r3],acc||r1);
     return acc;
 };
+// f333 engineArgs
 exports.f333=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r6,r7,r8;
@@ -31222,6 +31376,7 @@ exports.f333=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f334 select
 exports.f334=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7;
@@ -31280,6 +31435,7 @@ exports.f334=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f335 loc
 exports.f335=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
@@ -31328,6 +31484,7 @@ exports.f335=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r1,r2,[]);
     return acc;
 };
+// f336 setPace
 exports.f336=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r2,r3,r4,r5,r6,r7,r8,r9,r10;
@@ -31368,6 +31525,7 @@ exports.f336=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f337 setTouch
 exports.f337=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r2,r3,r4;
@@ -31384,6 +31542,7 @@ exports.f337=function(rt,fn,self,args,newTarget,ctx,K){
     acc=undefined;
     return acc;
 };
+// f338 isTouch
 exports.f338=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10;
@@ -31488,12 +31647,14 @@ exports.f338=async function(rt,fn,self,args,newTarget,ctx,K){
       return acc;
     }
 };
+// f339 catch
 exports.f339=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=null;
     return acc;
 };
+// f340 touchCdp
 exports.f340=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10;
@@ -31574,6 +31735,7 @@ exports.f340=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=r4;
     return acc;
 };
+// f341 measure
 exports.f341=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8;
@@ -31642,18 +31804,21 @@ exports.f341=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=r4;
     return acc;
 };
+// f342 catch
 exports.f342=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f343 catch
 exports.f343=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=null;
     return acc;
 };
+// f344 touchTap
 exports.f344=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2=newTarget,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r21,r23,r24,r25;
@@ -32091,12 +32256,14 @@ exports.f344=async function(rt,fn,self,args,newTarget,ctx,K){
       return acc;
     }
 };
+// f345 catch
 exports.f345=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f346 tapFallback
 exports.f346=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9;
@@ -32169,12 +32336,14 @@ exports.f346=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=r5;
     return acc;
 };
+// f347 catch
 exports.f347=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f348 scrollDown
 exports.f348=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23;
@@ -32622,24 +32791,28 @@ exports.f348=async function(rt,fn,self,args,newTarget,ctx,K){
       return acc;
     }
 };
+// f349 catch
 exports.f349=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f350 catch
 exports.f350=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f351 catch
 exports.f351=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f352 rand
 exports.f352=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r7,r8;
@@ -32673,6 +32846,7 @@ exports.f352=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r1,r2,[r3]);
     return acc;
 };
+// f353 frand
 exports.f353=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r2,r3,r5,r6;
@@ -32695,6 +32869,7 @@ exports.f353=function(rt,fn,self,args,newTarget,ctx,K){
     acc=args[0]+acc;
     return acc;
 };
+// f354 wait
 exports.f354=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11;
@@ -32759,6 +32934,7 @@ exports.f354=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=r4;
     return acc;
 };
+// f355 ease
 exports.f355=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
@@ -32802,6 +32978,7 @@ exports.f355=function(rt,fn,self,args,newTarget,ctx,K){
     }
     return acc;
 };
+// f356 pause
 exports.f356=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9;
@@ -32893,6 +33070,7 @@ exports.f356=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=r4;
     return acc;
 };
+// f357 dwell
 exports.f357=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r11,r12;
@@ -33006,6 +33184,7 @@ exports.f357=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=r6;
     return acc;
 };
+// f358 humanMove
 exports.f358=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3=newTarget,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31;
@@ -33479,6 +33658,7 @@ exports.f358=async function(rt,fn,self,args,newTarget,ctx,K){
       return acc;
     }
 };
+// f359 driftBurst
 exports.f359=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2=newTarget,r3,r4,r5,r6,r7,r8,r9,r10,r11;
@@ -33554,6 +33734,7 @@ exports.f359=async function(rt,fn,self,args,newTarget,ctx,K){
       }
     }
 };
+// f360 idleDrift
 exports.f360=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1=newTarget,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20;
@@ -33788,12 +33969,14 @@ exports.f360=async function(rt,fn,self,args,newTarget,ctx,K){
       return acc;
     }
 };
+// f361 catch
 exports.f361=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f362 moveInto
 exports.f362=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2=newTarget,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28;
@@ -34378,6 +34561,7 @@ exports.f362=async function(rt,fn,self,args,newTarget,ctx,K){
       return acc;
     }
 };
+// f363 hover
 exports.f363=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2=newTarget,r3,r4,r5,r6,r7,r8,r9,r10;
@@ -34452,12 +34636,14 @@ exports.f363=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=r6;
     return acc;
 };
+// f364 catch
 exports.f364=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f365 click
 exports.f365=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2=newTarget,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16;
@@ -34770,12 +34956,14 @@ exports.f365=async function(rt,fn,self,args,newTarget,ctx,K){
       return acc;
     }
 };
+// f366 catch
 exports.f366=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f367 clickPoint
 exports.f367=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7;
@@ -34926,6 +35114,7 @@ exports.f367=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=r4;
     return acc;
 };
+// f368 hits
 exports.f368=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9;
@@ -34970,12 +35159,14 @@ exports.f368=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=r4;
     return acc;
 };
+// f369 catch
 exports.f369=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=true;
     return acc;
 };
+// f370 typeText
 exports.f370=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0=newTarget,r1,r2,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r20,r21,r22,r23,r24;
@@ -35204,6 +35395,7 @@ exports.f370=async function(rt,fn,self,args,newTarget,ctx,K){
       throw acc;
     }
 };
+// f371 backspace
 exports.f371=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r10,r11,r12;
@@ -35281,6 +35473,7 @@ exports.f371=async function(rt,fn,self,args,newTarget,ctx,K){
       }
     }
 };
+// f372 clearField
 exports.f372=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2=newTarget,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12;
@@ -35648,36 +35841,42 @@ exports.f372=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=r6;
     return acc;
 };
+// f373 catch
 exports.f373=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc="";
     return acc;
 };
+// f374 catch
 exports.f374=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f375 catch
 exports.f375=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f376 catch
 exports.f376=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f377 catch
 exports.f377=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f378 type
 exports.f378=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3=newTarget,r4,r5,r6,r7,r8,r9,r10;
@@ -35763,6 +35962,7 @@ exports.f378=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=r7;
     return acc;
 };
+// f379 select
 exports.f379=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r6,r7,r8;
@@ -36635,6 +36835,7 @@ exports.f388=function(rt,fn,self,args,newTarget,ctx,K){
       return acc;
     }
 };
+// f389 filter
 exports.f389=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4;
@@ -37980,6 +38181,7 @@ exports.f391=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=r20;
     return acc;
 };
+// f392 now
 exports.f392=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4;
@@ -38024,60 +38226,70 @@ exports.f392=function(rt,fn,self,args,newTarget,ctx,K){
     }
     return acc;
 };
+// f393 catch
 exports.f393=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=false;
     return acc;
 };
+// f394 catch
 exports.f394=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=false;
     return acc;
 };
+// f395 catch
 exports.f395=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f396 catch
 exports.f396=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f397 catch
 exports.f397=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=0;
     return acc;
 };
+// f398 catch
 exports.f398=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=false;
     return acc;
 };
+// f399 catch
 exports.f399=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=false;
     return acc;
 };
+// f400 catch
 exports.f400=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=false;
     return acc;
 };
+// f401 catch
 exports.f401=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
     acc=undefined;
     return acc;
 };
+// f402 catch
 exports.f402=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
@@ -38191,6 +38403,7 @@ exports.f404=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r1,r2,[r3]);
     return acc;
 };
+// f405 map
 exports.f405=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
@@ -38238,6 +38451,7 @@ exports.f405=function(rt,fn,self,args,newTarget,ctx,K){
     }
     return acc;
 };
+// f406 filter
 exports.f406=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0;
@@ -38669,6 +38883,7 @@ exports.f409=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r1,r2,[r3]);
     return acc;
 };
+// f410 filter
 exports.f410=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r5,r6,r7;
@@ -38761,6 +38976,7 @@ exports.f411=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r1,r2,[r3]);
     return acc;
 };
+// f412 filter
 exports.f412=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8;
@@ -39321,6 +39537,7 @@ exports.f416=function(rt,fn,self,args,newTarget,ctx,K){
     acc=null;
     return acc;
 };
+// f417 object
 exports.f417=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3;
@@ -41178,6 +41395,7 @@ exports.f429=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r1,args[0],[r3,r4]);
     return acc;
 };
+// f430 reduce
 exports.f430=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1;
@@ -42730,6 +42948,7 @@ exports.f442=function(rt,fn,self,args,newTarget,ctx,K){
       throw acc;
     }
 };
+// f443 find
 exports.f443=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
@@ -43789,6 +44008,7 @@ exports.f456=function(rt,fn,self,args,newTarget,ctx,K){
     }
     return acc;
 };
+// f457 some
 exports.f457=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4;
@@ -44450,6 +44670,7 @@ exports.f460=function(rt,fn,self,args,newTarget,ctx,K){
       throw acc;
     }
 };
+// f461 some
 exports.f461=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
@@ -44630,6 +44851,7 @@ exports.f462=function(rt,fn,self,args,newTarget,ctx,K){
       }
     }
 };
+// f463 filter
 exports.f463=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
@@ -44659,6 +44881,7 @@ exports.f463=function(rt,fn,self,args,newTarget,ctx,K){
     acc=!acc;
     return acc;
 };
+// f464 filter
 exports.f464=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3;
@@ -44675,6 +44898,7 @@ exports.f464=function(rt,fn,self,args,newTarget,ctx,K){
     acc=r0===acc;
     return acc;
 };
+// f465 filter
 exports.f465=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3;
@@ -47136,6 +47360,7 @@ exports.f473=function(rt,fn,self,args,newTarget,ctx,K){
       return acc;
     }
 };
+// f474 some
 exports.f474=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
@@ -47144,6 +47369,7 @@ exports.f474=function(rt,fn,self,args,newTarget,ctx,K){
     acc=!acc;
     return acc;
 };
+// f475 some
 exports.f475=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
@@ -47229,6 +47455,7 @@ exports.f476=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r1,r2,[r3]);
     return acc;
 };
+// f477 map
 exports.f477=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r2,r3,r4;
@@ -47244,6 +47471,7 @@ exports.f477=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r0,args[0],[]);
     return acc;
 };
+// f478 map
 exports.f478=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17;
@@ -47628,6 +47856,7 @@ exports.f478=function(rt,fn,self,args,newTarget,ctx,K){
       throw acc;
     }
 };
+// f479 map
 exports.f479=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4;
@@ -47653,6 +47882,7 @@ exports.f479=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r0,r1,[]);
     return acc;
 };
+// f480 filter
 exports.f480=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r1,r2,r3;
@@ -48220,6 +48450,7 @@ exports.f481=function(rt,fn,self,args,newTarget,ctx,K){
       return acc;
     }
 };
+// f482 map
 exports.f482=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
@@ -48261,6 +48492,7 @@ exports.f482=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r0,r1,[r2,r3]);
     return acc;
 };
+// f483 length
 exports.f483=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19;
@@ -49171,6 +49403,7 @@ exports.f485=function(rt,fn,self,args,newTarget,ctx,K){
     acc=r3;
     return acc;
 };
+// f486 map
 exports.f486=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
@@ -49978,6 +50211,7 @@ exports.f489=function(rt,fn,self,args,newTarget,ctx,K){
       }
     }
 };
+// f490 map
 exports.f490=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r2,r3,r4;
@@ -50058,6 +50292,7 @@ exports.f490=function(rt,fn,self,args,newTarget,ctx,K){
     acc=r0;
     return acc;
 };
+// f491 some
 exports.f491=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r1,r2,r3;
@@ -50071,6 +50306,7 @@ exports.f491=function(rt,fn,self,args,newTarget,ctx,K){
     acc=args[0][acc];
     return acc;
 };
+// f492 map
 exports.f492=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r1,r2,r3;
@@ -50501,6 +50737,7 @@ exports.f494=function(rt,fn,self,args,newTarget,ctx,K){
       }
     }
 };
+// f495 forEach
 exports.f495=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9;
@@ -50620,6 +50857,7 @@ exports.f495=function(rt,fn,self,args,newTarget,ctx,K){
       return acc;
     }
 };
+// f496 reduce
 exports.f496=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE;
@@ -53684,6 +53922,7 @@ exports.f525=function(rt,fn,self,args,newTarget,ctx,K){
     acc=r4;
     return acc;
 };
+// f526 filter
 exports.f526=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0;
@@ -53693,6 +53932,7 @@ exports.f526=function(rt,fn,self,args,newTarget,ctx,K){
     acc=!acc;
     return acc;
 };
+// f527 map
 exports.f527=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
@@ -53720,6 +53960,7 @@ exports.f527=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r0,undefined,[r1,r2,r3,r4,r5]);
     return acc;
 };
+// f528 map
 exports.f528=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r2;
@@ -54559,6 +54800,7 @@ exports.f536=function(rt,fn,self,args,newTarget,ctx,K){
     }
     return acc;
 };
+// f537 map
 exports.f537=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
@@ -54668,6 +54910,7 @@ exports.f538=function(rt,fn,self,args,newTarget,ctx,K){
       return acc;
     }
 };
+// f539 find
 exports.f539=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3;
@@ -54729,6 +54972,7 @@ exports.f540=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r2,r3,[r4]);
     return acc;
 };
+// f541 some
 exports.f541=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1;
@@ -54793,6 +55037,7 @@ exports.f542=function(rt,fn,self,args,newTarget,ctx,K){
     }
     return acc;
 };
+// f543 find
 exports.f543=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1;
@@ -56460,6 +56705,7 @@ exports.f549=function(rt,fn,self,args,newTarget,ctx,K){
     acc=r11;
     return acc;
 };
+// f550 psgnDtlList
 exports.f550=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0;
@@ -56478,6 +56724,7 @@ exports.f550=function(rt,fn,self,args,newTarget,ctx,K){
     }
     return acc;
 };
+// f551 map
 exports.f551=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8;
@@ -56704,6 +56951,7 @@ exports.f551=function(rt,fn,self,args,newTarget,ctx,K){
     acc=r3;
     return acc;
 };
+// f552 map
 exports.f552=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0;
@@ -56712,6 +56960,7 @@ exports.f552=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r0,undefined,[args[0]]);
     return acc;
 };
+// f553 every
 exports.f553=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r1,r2,r3;
@@ -57992,6 +58241,7 @@ exports.f560=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r7,undefined,[r8]);
     return acc;
 };
+// f561 find
 exports.f561=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
@@ -58051,6 +58301,7 @@ exports.f561=function(rt,fn,self,args,newTarget,ctx,K){
     acc=r0===acc;
     return acc;
 };
+// f562 find
 exports.f562=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
@@ -58976,6 +59227,7 @@ exports.f566=function(rt,fn,self,args,newTarget,ctx,K){
     }
     return acc;
 };
+// f567 some
 exports.f567=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
   let acc,pending=HOLE,r0,r1,r2,r3,r4;
