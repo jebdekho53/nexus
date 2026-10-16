@@ -19,7 +19,7 @@ spec = importlib.util.spec_from_file_location('payment_fixture_decoder', args.de
 decoder = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(decoder)
 table = decoder.StringTable(args.string_table)
-code = "const d=require('./src/main/generated/index.cjs');console.log(JSON.stringify(Object.fromEntries(['f510','f535','f542','f543','f544','f545','f546','f2382',...Array.from({length:9},(_,i)=>'f'+(2172+i)),...Array.from({length:34},(_,i)=>'f'+(2186+i))].map(id=>[id,d[id]]))));"
+code = "const d=require('./src/main/generated/index.cjs');console.log(JSON.stringify(Object.fromEntries(['f510','f535','f542','f543','f544','f545','f546','f2382',...Array.from({length:14},(_,i)=>'f'+(2172+i)),...Array.from({length:44},(_,i)=>'f'+(2186+i))].map(id=>[id,d[id]]))));"
 definitions = json.loads(subprocess.run([args.node, '-e', code], cwd=root, check=True, capture_output=True, text=True).stdout)
 output = {}
 for name, definition in definitions.items():
@@ -43,5 +43,5 @@ for name, definition in definitions.items():
             accumulator = None
     output[name] = strings
 destination = root / 'test/fixtures/payment-strings.json'
-destination.write_text(json.dumps(output, indent=2, ensure_ascii=True) + '\n', encoding='utf-8')
+destination.write_text(json.dumps(output, indent=2, ensure_ascii=True) + '\n', encoding='utf-8', newline='\n')
 print(f'Exported {sum(map(len, output.values()))} static lookups from {len(output)} functions')

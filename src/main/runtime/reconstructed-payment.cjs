@@ -10,6 +10,9 @@ const {paymentCandidates,choosePaymentBank}=require('../payment/gateway-selectio
 const {runRazorpay}=require('../payment/razorpay.cjs');
 const {initializePayment}=require('../payment/payment-init.cjs');
 const {dispatchPayment}=require('../payment/gateway-dispatch.cjs');
+const {settlePayment}=require('../payment/settlement.cjs');
+const {canRequestPnr,waitForPnrRetry}=require('../payment/pnr-lifecycle.cjs');
+const {pollBookingData}=require('../payment/booking-data.cjs');
 const {createHash}=require('node:crypto');
 const contracts=require('../payment/recovered-contract.json');
 
@@ -31,6 +34,12 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
       return bookingPaymentBody(method,amount,bankOverride,key=>readBinding(386)(key));
     },
     f545:()=>isBankProcessingError,
+    f2220:()=>function(){return canRequestPnr(this);},
+    f2221:()=>function(ms){return waitForPnrRetry(this,ms,dependencies.timers);},
+    f2226:({readBinding})=>function(transactionId,journey,maxAttempts){
+      const binding=slot=>(...args)=>readBinding(slot,undefined,1)(...args);
+      return pollBookingData(this,transactionId,journey,maxAttempts,{bookingDataUrl:binding(397),retryAfter:binding(398),normalizeBooking:binding(399)},dependencies);
+    },
     f2172:({readBinding})=>function(journey,transactionId,amount,excluded){
       const binding=slot=>(...args)=>readBinding(slot,undefined,1)(...args);
       return initializePayment(this,journey,transactionId,amount,excluded,{
@@ -39,6 +48,9 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
       },dependencies);
     },
     f546:()=>paymentResponseError,
+    f2181:({readBinding})=>function(payment,responseKey,transactionId,journey,requireBankResponse){
+      return settlePayment(this,payment,responseKey,transactionId,journey,requireBankResponse,{normalizeProxy:value=>readBinding(561,undefined,1)(value)});
+    },
     f2176:({readBinding})=>function(journey,transactionId,amount,method,initResponse){
       const binding=slot=>(...args)=>readBinding(slot,undefined,1)(...args);
       return dispatchPayment(this,journey,transactionId,amount,method,initResponse,{
