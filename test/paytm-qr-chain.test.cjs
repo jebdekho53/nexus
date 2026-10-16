@@ -9,7 +9,7 @@ async function run(native,options={}) {
   const globals={URL,Buffer,String,Promise,Math:math,JSON,RegExp,encodeURIComponent,...timers};
   const engine=createEngine(definitions,{functionFactories:native?reconstructedPayment({development:true,enabled:true,dependencies:{globals,random,timers}}):{},globals}),root=engine.context(1842,null),context=engine.context(2,root);
   root[5]=root[1841]=(n,key)=>{assert.notEqual(table[n+'|'+key],undefined);return table[n+'|'+key];};
-  for(const[slot,id]of [[775,'f1599'],[776,'f1601'],[779,'f1605'],[780,'f1606'],[781,'f1607'],[783,'f1609'],[784,'f1610']])root[slot]=engine.makeFunction(id,root);
+  for(const[slot,id]of [[775,'f1599'],[776,'f1601'],[779,'f1605'],[780,'f1606'],[781,'f1607'],[783,'f1609'],[784,'f1610'],[785,'f1611']])root[slot]=engine.makeFunction(id,root);
   let redirects=0;
   const gateway={hosts:{wps:'https://provider.invalid',paytm:'https://gateway.invalid'},
     async reqRetry(label,fn){trace.push(['retry',label]);return fn();},
@@ -18,7 +18,7 @@ async function run(native,options={}) {
     req:{async post(url,settings){trace.push(['post',url,settings]);const redirect=url.includes('/PaymentRedirect');if(redirect)redirects++;
       const data=options.noQr?{}:{qr:{dataurl:'data:image/png;base64,synthetic-image'},orderId:'synthetic-order'};
       const html=redirect?(options.retry&&redirects===1?'':'<form action="/start"><input name="mid" value="synthetic-mid"><input name="encData" value="synthetic-enc"><input name="checksum" value="synthetic-checksum">'):'pushAppData="'+Buffer.from(JSON.stringify(data)).toString('base64')+'"';
-      return{async text(){return html;},status(){return 200;},url(){return url;}};
+      return{async text(){return html;},status(){return 200;},url(){return url.includes('/BankResponse')?'https://provider.invalid/booking-confirm':url;}};
     }},
     async waitForPaytmWs(mid,order){trace.push(['ws',mid,order]);return{syntheticPaid:true};},
     async pollPaytmStatus(){return null;},
@@ -45,6 +45,8 @@ async function run(native,options={}) {
     gateway.paytmInPageFetch=engine.makeFunction('f1708',context).bind(gateway);
     gateway.disposePaytmPage=engine.makeFunction('f1710',context).bind(gateway);
     gateway.pollPaytmStatus=engine.makeFunction('f1689',context).bind(gateway);
+    gateway.paytmBankResponse=engine.makeFunction('f1717',context).bind(gateway);
+    gateway.bankResponseOrigin=()=>undefined;
     gateway.waitForPaytmWs=async()=>null;
   }
   const actor={gateway,api:{currentCsrf:'synthetic-csrf'},opts:{onQr(value){trace.push(['qr',value]);},onQrClose(){trace.push(['qr-close']);}},
@@ -64,6 +66,8 @@ test('synthetic PayTM chain uses owned browser status page then disposes it',asy
   assert.equal(trace.filter(row=>row[0]==='page-close').length,1);
   const fetch=trace.find(row=>row[0]==='page-fetch');assert.match(fetch[1],/transactionStatus\?MID=synthetic-mid&ORDER_ID=synthetic-order/);
   assert.equal(fetch[2].credentials,'include');assert.deepEqual(trace.find(row=>row[0]==='final')[1],{merchantId:'synthetic-mid',orderId:'synthetic-order',paymentMode:'UPI',topicName:'DYNAMIC_QR',acquirementId:'synthetic-acq',cashierRequestId:'',_id:'synthetic-mid_synthetic-order',status:'SUCCESS'});
+  const bank=trace.find(row=>row[0]==='post'&&row[1].includes('/BankResponse'));
+  assert.deepEqual(bank[2].form,{MID:'synthetic-mid',ENC_DATA:'synthetic-final',CHECKSUMHASH:'synthetic-checksum'});
 });
 test('synthetic PayTM chain exposes QR before settlement and uses gateway-specific form',async()=>{
   const {result,trace}=await run(true);assert.deepEqual(result,{success:true});

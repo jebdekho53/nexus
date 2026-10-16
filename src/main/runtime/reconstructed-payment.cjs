@@ -27,7 +27,7 @@ const {hiddenFormValue,formAction,paymentRedirect,paytmRedirectForm,paytmRedirec
 const {appConfig,qrAmount,commandStatus}=require('../payment/qr-response.cjs');
 const {createProviderQr}=require('../payment/provider-qr-request.cjs');
 const {fetchProviderEncdata,pollProviderQr}=require('../payment/provider-qr-poll.cjs');
-const {interstitialDelay,bankResponse}=require('../payment/bank-response.cjs');
+const {interstitialDelay,bankResponse,paytmBankResponse}=require('../payment/bank-response.cjs');
 const {gatewayRequest}=require('../payment/gateway-routing.cjs');
 const {sendViaWebTlsGateway}=require('../payment/gateway-tls.cjs');
 const {recordHttp}=require('../payment/http-record.cjs');
@@ -48,6 +48,7 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
       throw new Error('Reconstructed payment contract changed for '+id+'. Review the recovered definition and comparison tests before enabling this candidate.');
   }
   return {
+    f1717:({readBinding})=>function(input){return paytmBankResponse(this,input,{parseDelay:html=>readBinding(785,undefined,1)(html)});},
     f1689:({readBinding})=>function(mid,orderId,stopped,onWait,maxAttempts){return pollPaytmStatus(this,mid,orderId,stopped,onWait,maxAttempts,{getField:(html,name)=>readBinding(783,undefined,1)(html,name)});},
     f1704:()=>function(){return paytmOriginPage(this,dependencies.globals);},
     f1708:()=>function(path,options){return paytmPageRequest(this,path,options);},

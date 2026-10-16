@@ -14,7 +14,7 @@ test('bank interstitial parser matches recovered grammar, case, zero and large d
   for(const value of [delay(45000),delay(0),'setTimeout(()=>form.submit(),1234)','SETTIMEOUT(()=>form.SUBMIT(), 2500)',delay('00100'),'setTimeout(()=>form.submit(), -1)',delay('9'.repeat(400)),delay(1.5),'',null,undefined,0])
     assert.equal(fixture(true,'f1611')(value),fixture(false,'f1611')(value));
 });
-async function run(native,options={}){
+async function run(native,options={},paytm=false){
   const trace=[],sequence=options.sequence??[{url:'https://example.invalid/booking-confirm'}];let calls=0,headers=0;
   const actor={hosts:{wps:'https://example.invalid'},stopped:!!options.stopped,
     bankResponseOrigin(){trace.push(['origin']);if(options.originThrow)throw Error('synthetic origin');return options.origin;},
@@ -32,7 +32,7 @@ async function run(native,options={}){
     log(...args){trace.push(['log',...args]);if(options.logThrow)throw Error('synthetic log');},
   };
   if(options.noHosts)delete actor.hosts;
-  try{return{value:await fixture(native,'f1681').call(actor,'fixture-encrypted-bank-response',options.key),trace,calls};}
+  try{return{value:await fixture(native,paytm?'f1717':'f1681').call(actor,paytm?{mid:'synthetic-mid',encData:'synthetic-enc',checksum:'synthetic-checksum'}:'fixture-encrypted-bank-response',options.key),trace,calls};}
   catch(error){return{error:error.name,...(error.message.startsWith('synthetic')?{message:error.message}:{}),trace,calls};}
 }
 const confirm={url:'https://example.invalid/booking-confirm'};
@@ -52,4 +52,13 @@ test('bank response submits encrypted form once and honors full provider delay o
   assert.deepEqual(posts[0][2].form,{encdata:'fixture-encrypted-bank-response'});assert.equal('form' in posts[1][2],false);assert.equal(posts[0][2].timeout,0);
   assert.deepEqual(result.trace.filter(row=>row[0]==='sleep'),[['sleep',45000]]);
   const errors=await run(true,cases.networkExhaustion);assert.equal(errors.calls,4);assert.equal(errors.value,false);
+});
+
+for(const[name,options]of Object.entries(cases))test('PayTM bank response matches recovered settlement behavior: '+name,async()=>assert.deepEqual(await run(true,options,true),await run(false,options,true)));
+
+test('PayTM bank form is sent once and browser-close errors retain ordinary retry behavior',async()=>{
+  const result=await run(true,cases.interstitial,true),posts=result.trace.filter(row=>row[0]==='post');
+  assert.equal(result.value,true);assert.deepEqual(posts[0][2].form,{MID:'synthetic-mid',ENC_DATA:'synthetic-enc',CHECKSUMHASH:'synthetic-checksum'});assert.equal('form' in posts[1][2],false);
+  assert.deepEqual(result.trace.filter(row=>row[0]==='sleep'),[['sleep',45000]]);
+  const closed=await run(true,cases.closedBrowser,true);assert.equal(closed.calls,4);assert.equal(closed.value,false);
 });

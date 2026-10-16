@@ -55,4 +55,48 @@ async function bankResponse(actor, payload, responseKey='encdata', {isBrowserClo
   return false;
 }
 
-module.exports={interstitialDelay,bankResponse};
+async function paytmBankResponse(actor, input, {parseDelay}) {
+  const url=actor.hosts.wps+'/eticketing/BankResponse';
+  let withForm=true,emptyResponses=0,networkErrors=0;
+  const origin=actor.bankResponseOrigin();
+  while (true) {
+    let response;
+    try {
+      response=await actor.req.post(url,{
+        headers:await actor.gwHeaders('wps',{navigate:true,...(origin??{}),...(origin?{secFetchSite:'cross-site'}:{})}),
+        timeout:0,
+        ...(withForm?{form:{MID:input.mid,ENC_DATA:input.encData,CHECKSUMHASH:input.checksum}}:{}),
+      });
+    } catch (error) {
+      if (++networkErrors>3) { actor.log('PayTM BankResponse network errors exhausted');return false; }
+      actor.log('PayTM BankResponse network error ('+error.message+') — retry '+networkErrors+'/3');
+      withForm=false;
+      await actor.sleep(3000);
+      continue;
+    }
+    if (/booking-confirm/i.test(response.url())) { actor.log('PayTM BankResponse → booking-confirm');return true; }
+    const html=await response.text().catch(()=>'');
+    if (/booking-confirm/i.test(html)) { actor.log('PayTM BankResponse → booking-confirm (body)');return true; }
+    const delay=parseDelay(html);
+    if (delay) {
+      actor.log('PayTM BankResponse interstitial → waiting the full '+delay+'ms then re-submitting bodiless');
+      withForm=false;emptyResponses=0;
+      await actor.sleep(delay);
+      continue;
+    }
+    if (response.status()!==200) {
+      actor.log('PayTM BankResponse non-200 ('+response.status()+') — chain still in flight, keep following');
+      withForm=false;
+      await actor.sleep(3500);
+      continue;
+    }
+    if (++emptyResponses>2) break;
+    actor.log('PayTM BankResponse: 200 no interstitial/redirect — retry '+emptyResponses+'/2');
+    withForm=false;
+    await actor.sleep(7000);
+  }
+  actor.log('PayTM BankResponse exhausted without booking-confirm');
+  return false;
+}
+
+module.exports={interstitialDelay,bankResponse,paytmBankResponse};
