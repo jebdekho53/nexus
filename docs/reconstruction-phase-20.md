@@ -17,3 +17,8 @@ Seven-plus-seventeen new comparison groups: 21 final-status and 34 WebSocket che
 
 ## Remaining
 Composed chain with the native watcher and final-status in place of the synthetic stubs; PhonePe/Razorpay transports; session/cookie helpers; controllers and bootstrap (f1614/f1616 need engine review).
+
+## Chain milestone (composed PayTM flow)
+test/paytm-qr-chain.test.cjs now runs actual recovered/native f1693 and f1712 (with f1704/f1708/f1710/f1689/f1717/f1684/f1687) over synthetic pages, sockets and fetch: WebSocket wins, status poll wins, both, and operator cancel, plus concurrent independent actors. Native equals recovered traces. Remaining synthetic edges: HTTP `req`, `pollBookingData`/`finishBooking`, provider clock.
+
+Legacy finding (preserved, not fixed): after the winner disposes the owned status page, a poll attempt already sleeping reopens one more page and never closes it; the cancel path never disposes it. Record as a candidate correction for a deliberate reviewed change.
