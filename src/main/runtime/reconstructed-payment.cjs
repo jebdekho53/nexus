@@ -37,6 +37,7 @@ const {pollPaytmStatus}=require('../payment/paytm-status.cjs');
 const {waitForPaytmWs}=require('../payment/paytm-websocket.cjs');
 const {razorpayLocation,parseRazorpayCheckoutPage,razorpayCheckout,razorpaySessionToken,razorpayPollUrl,razorpayCreate,pollRazorpay}=require('../payment/razorpay-transport.cjs');
 const {walletVerify}=require('../payment/wallet-verify.cjs');
+const rules=require('../booking/rules.cjs');
 const providerPage=require('../booking/provider-page.cjs');
 const serverTime=require('../booking/server-time.cjs');
 const timeHelpers=require('../booking/time-helpers.cjs');
@@ -114,6 +115,25 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     f2255:()=>providerPage.providerOriginOk,
     f2256:({readBinding})=>function(){return providerPage.onProviderPage(this,{originCheck:url=>readBinding(51,undefined,0).providerOriginOk(url)});},
     f2257:()=>function(action){return providerPage.ensureOnProviderPage(this,action);},
+    f425:()=>rules.proxySettings,
+    f426:()=>rules.proxyLabel,
+    f427:()=>rules.isSeniorCitizen,
+    f428:({readBinding})=>function(passenger){return rules.countsAsLowerBerth(passenger,{isSenior:(gender,age)=>readBinding(268)(gender,age)});},
+    f429:({readBinding})=>function(passengers){return rules.countLowerBerths(passengers,{counts:passenger=>readBinding(269)(passenger)});},
+    f431:({readBinding})=>function(passengers){return rules.lowerBerthWarning(passengers,{countLower:list=>readBinding(270)(list),limit:()=>readBinding(267)});},
+    f432:()=>require('../booking/time-helpers.cjs').parseClockTime,
+    f433:({readBinding})=>function(stored){return rules.openingTimes(stored,{parse:value=>readBinding(273)(value),defaults:()=>readBinding(272)});},
+    f435:()=>rules.withAvailabilityEpoch,
+    f436:()=>rules.storedAvailabilityTime,
+    f437:({readBinding})=>function(flag,minuteOfDay){return rules.beforeCutoff(flag,minuteOfDay,{cutoff:()=>readBinding(278)});},
+    f438:({readBinding})=>function(stored,current,family,special){return rules.availabilityTime(stored,current,family,special,{parse:value=>readBinding(273)(value),lookup:(a,b,c)=>readBinding(277)(a,b,c)});},
+    f439:()=>rules.joinLabel,
+    f440:({readBinding})=>function(list){return rules.listIncludes(list,readBinding(283));},
+    f441:({readBinding})=>function(config,list){return rules.railBrahmosKind(config,list,{includes:value=>readBinding(286)(value)});},
+    f444:({readBinding})=>function(options){return rules.loginMode(options,{brahmosMode:()=>readBinding(283)});},
+    f445:({readBinding})=>function(mode){return rules.loginFlags(mode,{brahmosMode:()=>readBinding(283)});},
+    f446:({readBinding})=>function(mode,list){return rules.allowedMode(mode,list,{defaults:()=>readBinding(282)});},
+    f447:({readBinding})=>function(mode,config,args){return rules.modeDispatch(mode,config,args,{railKind:(a,b)=>readBinding(287)(a,b),loginModeOf:value=>readBinding(289)(value),allowedModeOf:(mode,list)=>readBinding(291)(mode,list)});},
     f1704:()=>function(){return paytmOriginPage(this,dependencies.globals);},
     f1708:()=>function(path,options){return paytmPageRequest(this,path,options);},
     f1710:()=>function(){return disposePaytmPage(this);},
