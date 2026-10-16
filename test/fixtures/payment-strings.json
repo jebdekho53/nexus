@@ -128,6 +128,29 @@
     "10193|jg)a": "confirmed"
   },
   "f554": {},
+  "f1609": {
+    "7028|b!6h": "<input[^>]*name=[\"']",
+    "2271|0vo)": "[\"'][^>]*>",
+    "7809|1kPD": "exec",
+    "16050|7u]a": "exec"
+  },
+  "f1610": {
+    "7152|]TXZ": "exec"
+  },
+  "f1621": {
+    "23410|k([I": "survivorReq",
+    "1764|7u]a": "survivorReq",
+    "16491|k([I": "dispose",
+    "3043|ou5S": "catch"
+  },
+  "f1622": {},
+  "f1630": {
+    "14601|%I%T": "directCtx",
+    "14312|@Yk*": "directCtx",
+    "2060|S)Et": "dispose",
+    "14257|NqM3": "catch"
+  },
+  "f1631": {},
   "f1659": {
     "3584|0vo)": "page",
     "19051|QgKz": "url",
@@ -228,6 +251,32 @@
     "17719|b!6h": "platform",
     "17759|zBnB": "platform",
     "9007|o^v]": "extra"
+  },
+  "f1667": {
+    "827|b!6h": "username",
+    "16989|bTc%": "clientTxnId",
+    "21245|d[0N": "accessToken",
+    "1668|G]71": "rand8",
+    "22690|7u]a": "csrf",
+    "15742|]K13": "req",
+    "17828|Cbvh": "post",
+    "14908|v%&5": "hosts",
+    "20526|a3QL": "wps",
+    "17493|QgKz": "/eticketing/PaymentRedirect",
+    "15051|Y(mF": "gwHeaders",
+    "10251|*VhR": "wps",
+    "8170|qP]&": "text",
+    "6771|NqM3": "encdata",
+    "5428|3W8e": "test",
+    "10431|zBnB": "log",
+    "21923|k([I": "paymentRedirect \u2192 ",
+    "21817|C)Ez": "status",
+    "7217|ZYwv": " action=",
+    "7041|A@un": " encdata=",
+    "18398|OpDQ": " BLOCKED",
+    "2422|RuQs": " (try ",
+    "23682|Cbvh": "sleep",
+    "7073|4dr8": "noteGatewayPage"
   },
   "f1719": {
     "3206|9urW": "reqRetry",

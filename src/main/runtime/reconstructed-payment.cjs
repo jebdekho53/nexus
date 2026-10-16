@@ -21,6 +21,8 @@ const {attachPrintTicket}=require('../payment/print-ticket.cjs');
 const {requestBookingData,requestPrintTicket}=require('../payment/gateway-requests.cjs');
 const {gatewayHeaders}=require('../payment/gateway-headers.cjs');
 const {retryGatewayRequest}=require('../payment/gateway-retry.cjs');
+const {clientHints,gatewayHints,liveProviderOrigin,setGatewayPageOrigin,gatewayPageReferrer,originFor}=require('../payment/gateway-session.cjs');
+const {disposeSurvivor,disposeDirectContext}=require('../payment/gateway-lifecycle.cjs');
 const {createHash}=require('node:crypto');
 const contracts=require('../payment/recovered-contract.json');
 
@@ -35,6 +37,14 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
       throw new Error('Reconstructed payment contract changed for '+id+'. Review the recovered definition and comparison tests before enabling this candidate.');
   }
   return {
+    f1621:()=>function(){return disposeSurvivor(this);},
+    f1630:()=>function(){return disposeDirectContext(this);},
+    f1659:()=>function(){return liveProviderOrigin(this);},
+    f1660:()=>function(){return clientHints(this);},
+    f1662:()=>function(){return gatewayHints(this);},
+    f1663:()=>function(url){return setGatewayPageOrigin(this,url);},
+    f1664:()=>function(){return gatewayPageReferrer(this);},
+    f1665:()=>function(host){return originFor(this,host);},
     f152:()=>isBrowserClosedError,
     f1666:()=>function(host,options){return gatewayHeaders(this,host,options);},
     f1756:({readBinding})=>function(label,operation,maxAttempts,stopRetry){return retryGatewayRequest(this,label,operation,maxAttempts,stopRetry,{isBrowserClosed:error=>readBinding(139,undefined,1)(error),timers:dependencies.timers});},
