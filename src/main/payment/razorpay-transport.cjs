@@ -188,4 +188,67 @@ async function razorpayCreate(actor,order,{pollUrl=razorpayPollUrl,limits,clock=
   return{paymentId,intentUrl,pollUrl:poll};
 }
 
-module.exports={razorpayLocation,parseRazorpayCheckoutPage,razorpayCheckout,razorpaySessionToken,razorpayPollUrl,razorpayCreate};
+// Recovered f1771 with callbacks f1772–f1775. Polls the Razorpay payment status every `interval`
+// milliseconds (RAZORPAY_POLL_MS or 5000; default budget is 20 minutes of polling). On a captured/return
+// result it posts the signed data to the booking callback once and reports the confirmation encdata.
+// Diagnostics omit provider error text, signatures and addresses; those values are only returned.
+async function pollRazorpay(actor,payment,stopped,onWait,interval,maxAttempts,{getField,environment=process.env}) {
+  if(interval===undefined)interval=Number(environment.RAZORPAY_POLL_MS)||5000;
+  if(maxAttempts===undefined)maxAttempts=Math.floor(1200000/interval);
+  const host=actor.hosts.razorpay??'';
+  const statusUrl=payment.pollUrl||host+'/pg_router/v1/payments/'+encodeURIComponent(payment.paymentId)+'/status';
+  for(let attempt=0;attempt<maxAttempts;attempt++) {
+    if(stopped())return{kind:'stopped'};
+    await actor.sleep(interval);
+    onWait?.();
+    const response=await actor.req.get(statusUrl,{headers:await actor.gwHeaders('razorpay')}).catch(()=>null);
+    if(!response)continue;
+    const body=await response.json().catch(()=>({}));
+    const state=String(body.status??'');
+    const error=body.error;
+    const description=String(error?.description??body.error_description??'').trim();
+    if(response.status()===400&&error) {
+      const reason=description||'Payment declined or cancelled';
+      actor.log('razorpay → declined (400)');
+      return{kind:'declined',reason};
+    }
+    if(state==='failed') {
+      const reason=description||'Payment failed or rejected';
+      actor.log('razorpay → failed');
+      return{kind:'failed',reason};
+    }
+    if(body.type==='error'||error) {
+      const reason=description||'Payment cancelled or failed';
+      actor.log('razorpay → error/cancelled');
+      return{kind:'declined',reason};
+    }
+    if(!response.ok())continue;
+    const request=body.request??{};
+    const returned=body.type==='return'&&request.content;
+    const settled=state==='captured'||state==='authorized'||body.razorpay_payment_id;
+    if(!(returned||settled))continue;
+    const content=request.content??body;
+    const signed={
+      razorpay_order_id:String(content.razorpay_order_id??payment.order.orderId),
+      razorpay_payment_id:String(content.razorpay_payment_id??payment.paymentId),
+      razorpay_signature:String(content.razorpay_signature??''),
+    };
+    if(payment.order.hostedId)signed.razorpay_hosted_id=payment.order.hostedId;
+    let callback=String(request.url??payment.callbackUrl);
+    try {callback=new URL(callback,actor.hosts.wps).toString();} catch {}
+    actor.log('razorpay status → return/captured (poll '+(attempt+1)+'); completing');
+    const result=await actor.req.post(callback,{
+      headers:await actor.gwHeaders('razorpay',{extra:{'Content-Type':'application/x-www-form-urlencoded'}}),
+      form:signed,
+    }).catch(()=>null);
+    const text=await(result==null?undefined:result.text().catch(()=>''));
+    const page=text??'';
+    const encdata=getField(page,'encdata');
+    const confirmed=/booking-confirm/i.test(page)||/booking-confirm/i.test(String(result?.url()??''));
+    actor.log('razorpay callback → '+(result?.status()??'-')+' encdata='+(encdata?'y':'-')+' confirmed='+confirmed);
+    return{kind:'paid',encdata:encdata||''};
+  }
+  return{kind:'timeout'};
+}
+
+module.exports={pollRazorpay,razorpayLocation,parseRazorpayCheckoutPage,razorpayCheckout,razorpaySessionToken,razorpayPollUrl,razorpayCreate};

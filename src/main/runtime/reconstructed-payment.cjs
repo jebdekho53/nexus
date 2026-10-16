@@ -35,7 +35,7 @@ const {paytmAppData,paytmQrImage,paytmOrderFromUrl,paytmOrderFromData,fetchPaytm
 const {paytmOriginPage,paytmPageRequest,disposePaytmPage}=require('../payment/paytm-page.cjs');
 const {pollPaytmStatus}=require('../payment/paytm-status.cjs');
 const {waitForPaytmWs}=require('../payment/paytm-websocket.cjs');
-const {razorpayLocation,parseRazorpayCheckoutPage,razorpayCheckout,razorpaySessionToken,razorpayPollUrl,razorpayCreate}=require('../payment/razorpay-transport.cjs');
+const {razorpayLocation,parseRazorpayCheckoutPage,razorpayCheckout,razorpaySessionToken,razorpayPollUrl,razorpayCreate,pollRazorpay}=require('../payment/razorpay-transport.cjs');
 const {getFinalPaytmStatus}=require('../payment/paytm-final-status.cjs');
 const {fingerprint,phonePeHeaders,phonePeRedirect,razorpayRedirect,phonePeQr,pollPhonePe}=require('../payment/phonepe-transport.cjs');
 const {definitionFingerprint}=require('./recovered-contract.cjs');
@@ -71,6 +71,7 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
       const slot=number=>()=>readBinding(number,undefined,1);
       return razorpayCreate(this,order,{pollUrl:(url,base)=>readBinding(138,undefined,1)(url,base),limits:{rateLimitAttempts:slot(787),errorAttempts:slot(788),rateLimitDelay:slot(789)},clock:dependencies.clock,random:dependencies.random,timers:dependencies.timers});
     },
+    f1771:({readBinding})=>function(payment,stopped,onWait,interval,maxAttempts){return pollRazorpay(this,payment,stopped,onWait,interval,maxAttempts,{getField:(html,name)=>readBinding(783,undefined,1)(html,name),environment:dependencies.environment});},
     f1704:()=>function(){return paytmOriginPage(this,dependencies.globals);},
     f1708:()=>function(path,options){return paytmPageRequest(this,path,options);},
     f1710:()=>function(){return disposePaytmPage(this);},
