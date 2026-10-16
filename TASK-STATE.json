@@ -107,8 +107,8 @@
     ],
     "published": false,
     "quotaHandoffThresholdRemainingPercent": 5,
-    "lastObservedPrimaryRemainingPercent": 10,
-    "lastObservedWeeklyRemainingPercent": 19,
+    "lastObservedPrimaryRemainingPercent": 5,
+    "lastObservedWeeklyRemainingPercent": 18,
     "testsPassed": 341,
     "smoke": {
       "windows": 8,
@@ -118,11 +118,12 @@
       "pid": 10828,
       "complete": true
     },
-    "codeCheckpoint": "phase4 commit immediately after this state file",
-    "handoffReady": false,
+    "codeCheckpoint": "52c32fd",
+    "handoffReady": true,
     "phaseTwoReport": "docs/reconstruction-phase-2.md",
     "pinnedDefinitions": 76,
-    "phaseFourReport": "docs/reconstruction-phase-4.md"
+    "phaseFourReport": "docs/reconstruction-phase-4.md",
+    "nextReview": "docs/finalization-core-review.md"
   },
   "continuationSchedule": "Hourly at minute41 IST; resumed directly on16Oct2026after13:41 quota reset."
 }

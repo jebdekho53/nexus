@@ -27,3 +27,5 @@ Latest checkpoint: 341 full application tests pass. The opt-in adapter checks sr
 Phase4 checkpoint: 341 tests passed, eight offline smoke screens passed with all 25 factories (PID 10828). Use git log for the latest reconstruction commit. The prior handoff was prepared at 8% remaining; work resumed after the 16 October 13:41 IST reset. TASK-STATE.json remains in_progress because reconstruction is incomplete.
 
 Current native entry/local-closure fingerprint count: 76. The complete offline chain includes synthetic settlement, normalized booking and finalization cleanup; finalization core/transport are mocked. No live QR speed improvement has been established.
+
+Handoff threshold reached: 5% primary quota remaining. Verified source commit: 52c32fd. Read docs/finalization-core-review.md before implementing f2233; it records the redundant post-race await and the exact existing f2009 retired-vendor guard. Hourly minute-41 continuation remains configured for the latest unfinished task; do not duplicate an active main turn.
