@@ -3,6 +3,7 @@ const {buildCfg,Unsupported}=require('./cfg.cjs');
 const {Lowering}=require('./lower.cjs');
 const {structure}=require('./structure.cjs');
 const {print}=require('./print.cjs');
+const {optimizeBlock,liveness}=require('./optimize.cjs');
 
 const SUPPORTED_KINDS=/^(DerivedConstructor|ClassMembersInitializerFunction(PrecededByStatic)?|ClassStaticInitializerFunction(PrecededByMember)?|NormalFunction|ArrowFunction|AsyncFunction|AsyncArrowFunction|AsyncConciseMethod|ConciseMethod|StaticConciseMethod|GetterFunction|SetterFunction|BaseConstructor|DefaultBaseConstructor)$/;
 
@@ -54,14 +55,54 @@ function compileDefinition(definition,options={}) {
   const working=isAsync?{...definition,code:rewriteAsync(definition.code)}:definition;
   const cfg=buildCfg(working);
   const lowering=new Lowering(working,options);
-  const emit=block=>{
+  const lowerBlock=block=>{
     const rows=block.rows;
     const term=block.term;
     const keepLast=term.kind==='fallOff'||(term.kind==='jump'&&term.implicit);
     const body=keepLast?rows:rows.slice(0,-1);
     const lines=body.flatMap(row=>lowering.instruction(row));
-    if(term.kind==='cond'&&term.row)return{lines,term:{...term,test:lowering.forInDone(term.row)}};
-    return{lines,term};
+    const resolved=term.kind==='cond'&&term.row?{...term,test:lowering.forInDone(term.row)}:term;
+    const termText=resolved.kind==='cond'?resolved.test:['return','throw','switch'].includes(resolved.kind)?'acc':null;
+    return{lines,term:resolved,termText};
+  };
+  // lower every block reachable from the entry or a handler, so liveness and register statistics are exact
+  const lowered=new Map();
+  if(options.optimize!==false) {
+    const roots=[cfg.entry,...(working.handlers??[]).map(handler=>cfg.blocks.find(block=>block.pc===handler[2])).filter(Boolean)];
+    const pending=[...roots];
+    while(pending.length) {
+      const block=pending.pop();
+      if(lowered.has(block))continue;
+      lowered.set(block,lowerBlock(block));
+      pending.push(...block.succ);
+    }
+  }
+  const optimized=new Map();
+  if(options.optimize!==false) {
+    const exceptionalSuccessors=new Map(),entryReads=new Map();
+    for(const[start,end,target,,contextRegister]of working.handlers??[]) {
+      const handlerBlock=cfg.blocks.find(block=>block.pc===target);
+      if(!handlerBlock)continue;
+      if(Number.isInteger(contextRegister))entryReads.set(handlerBlock,[...(entryReads.get(handlerBlock)??[]),'r'+contextRegister]);
+      for(const block of cfg.blocks)if(block.pc>=start&&block.pc<end)exceptionalSuccessors.set(block,[...(exceptionalSuccessors.get(block)??[]),handlerBlock]);
+    }
+    const info=liveness([...lowered.keys()],lowered,exceptionalSuccessors,entryReads);
+    for(const[block,entry]of lowered) {
+      const state=info.get(block);
+      const result=optimizeBlock(entry.lines,entry.termText,{liveOut:state.liveOut,exceptional:state.exceptional});
+      optimized.set(block,{lines:result.lines,term:entry.term,expr:result.term});
+    }
+  }
+  const emit=block=>{
+    const entry=optimized.get(block);
+    if(entry) {
+      const term=entry.term;
+      if(term.kind==='cond')return{lines:entry.lines,term:{...term,test:entry.expr}};
+      if(entry.expr!==null&&['return','throw','switch'].includes(term.kind))return{lines:entry.lines,term:{...term,expr:entry.expr}};
+      return{lines:entry.lines,term};
+    }
+    const plain=lowerBlock(block);
+    return{lines:plain.lines,term:plain.term};
   };
   const tree=structure(cfg,working.handlers??[],emit,{isPlainRejection:isAsync?plainRejection:undefined});
   const source=print(tree,options);

@@ -56,7 +56,8 @@ async function compare(definition,body,seeds) {
     const actual=await runOnce(definition,seed*7919+definition.code.length,body);
     if(expected.outcome==='loop'||actual.outcome==='loop')continue;
     const normalize=text=>text.replace(/exceeded instruction limit.*/,'').replace(/^throw:TypeError:.*(apply was called on|is not a function|is not iterable|is not a constructor).*$/,'throw:TypeError:call');
-    if(normalize(expected.outcome)!==normalize(actual.outcome)||expected.log!==actual.log)mismatches.push({seed,expected,actual});
+    const normalizeLog=text=>text.replace(/err:TypeError:[^\n]*(apply was called on|is not a function|is not iterable|is not a constructor)[^\n]*/g,'err:TypeError:call');
+    if(normalize(expected.outcome)!==normalize(actual.outcome)||normalizeLog(expected.log)!==normalizeLog(actual.log))mismatches.push({seed,expected,actual});
   }
   return mismatches;
 }

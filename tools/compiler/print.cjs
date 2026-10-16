@@ -16,7 +16,7 @@ function print(tree,options={},indent='  ') {
           out.push(pad+'}');
           break;
         case 'switch':
-          out.push(pad+'switch(acc){');
+          out.push(pad+'switch('+(item.expr??'acc')+'){');
           for(const[key,body]of item.cases){out.push(pad+indent+'case '+key+':{');emit(body,level+2);out.push(pad+indent+'}');}
           out.push(pad+indent+'default:{');emit(item.otherwise,level+2);out.push(pad+indent+'}');
           out.push(pad+'}');
@@ -30,9 +30,9 @@ function print(tree,options={},indent='  ') {
           break;
         case 'break': out.push(pad+'break '+item.label+';'); break;
         case 'continue': out.push(pad+'continue '+item.label+';'); break;
-        case 'return': out.push(pad+'return acc;'); break;
+        case 'return': out.push(pad+'return '+(item.expr??'acc')+';'); break;
         case 'return-undefined': out.push(pad+'return undefined;'); break;
-        case 'throw': out.push(pad+'throw acc;'); break;
+        case 'throw': out.push(pad+'throw '+(item.expr??'acc')+';'); break;
         default: throw new Error('Unknown node '+item.k);
       }
     }
