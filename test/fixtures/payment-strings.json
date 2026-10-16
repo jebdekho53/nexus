@@ -128,6 +128,19 @@
     "10193|jg)a": "confirmed"
   },
   "f554": {},
+  "f1599": {
+    "14990|UMn*": "encData",
+    "5101|P3P7": "ENC_DATA",
+    "20368|Cbvh": "encdata",
+    "5583|iz(z": "enc_data",
+    "16649|JT7O": "mid",
+    "16781|rkuw": "MID",
+    "20414|4dr8": "checksum",
+    "23801|3W8e": "CHECKSUMHASH",
+    "3444|OpDQ": "checksumhash",
+    "16609|9urW": "checkSum"
+  },
+  "f1600": {},
   "f1602": {
     "23254|S)Et": "exec",
     "22026|b!6h": "replace",

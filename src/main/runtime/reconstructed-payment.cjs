@@ -23,7 +23,7 @@ const {gatewayHeaders}=require('../payment/gateway-headers.cjs');
 const {retryGatewayRequest}=require('../payment/gateway-retry.cjs');
 const {clientHints,gatewayHints,liveProviderOrigin,setGatewayPageOrigin,gatewayPageReferrer,originFor}=require('../payment/gateway-session.cjs');
 const {disposeSurvivor,disposeDirectContext,useProxiedRequest,useSurvivorProxy,setProxyFallback,armSurvivor,ensureDirectContext,sleep}=require('../payment/gateway-lifecycle.cjs');
-const {hiddenFormValue,formAction,paymentRedirect}=require('../payment/gateway-redirect.cjs');
+const {hiddenFormValue,formAction,paymentRedirect,paytmRedirectForm,paytmRedirect}=require('../payment/gateway-redirect.cjs');
 const {appConfig,qrAmount,commandStatus}=require('../payment/qr-response.cjs');
 const {createProviderQr}=require('../payment/provider-qr-request.cjs');
 const {fetchProviderEncdata,pollProviderQr}=require('../payment/provider-qr-poll.cjs');
@@ -68,6 +68,8 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     f1602:()=>function(html){return appConfig(html,dependencies.globals);},
     f1608:()=>qrAmount,
     f1668:({readBinding})=>function(action,encdata){return createProviderQr(this,action,encdata,{parseConfig:html=>readBinding(777,undefined,1)(html),parseAmount:payload=>readBinding(782,undefined,1)(payload)});},
+    f1684:({readBinding})=>function(input){return paytmRedirect(this,input,{parseForm:html=>readBinding(775,undefined,1)(html)});},
+    f1599:({readBinding})=>function(html){return paytmRedirectForm(html,{getAction:value=>readBinding(784)(value),getField:(value,name)=>readBinding(783)(value,name)});},
     f1609:()=>hiddenFormValue,
     f1610:()=>formAction,
     f1667:({readBinding})=>function(input){return paymentRedirect(this,input,{getAction:html=>readBinding(784,undefined,1)(html),getField:(html,name)=>readBinding(783,undefined,1)(html,name)});},

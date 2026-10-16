@@ -1,6 +1,6 @@
-# Matrix source reconstruction — phases1–15
+# Matrix source reconstruction — phases1–16
 
-Verified16October2026: **60 native entry replacements**, **168 pinned recovered definitions**, **864 passing application tests**. Eight isolated source smoke screens rendered complete DOMs with all60 factories(PID8396). Public1.0.11 is unchanged; this candidate has not been built or deployed.
+Verified16October2026: **62 native entry replacements**, **173 pinned recovered definitions**, **903 passing application tests**. Eight isolated source smoke screens rendered complete DOMs with all62 factories(PID11908). Public1.0.11 is unchanged; this candidate has not been built or deployed.
 
 ## Readable modules
 
@@ -19,11 +19,11 @@ Files below are under src/main/payment/. Local callbacks are included in the nat
 | f152,f1666,f1756 | payment-error.cjs,gateway-headers.cjs,gateway-retry.cjs | Closed-browser detection, headers and bounded retries |
 | f1659,f1660,f1662–f1665 | gateway-session.cjs | Browser hints/cache, origins and referrers |
 | f1617–f1619,f1621,f1624,f1625,f1628,f1630 | gateway-lifecycle.cjs | Request/proxy references, context arming/disposal and sleep |
-| f1609,f1610,f1667 | gateway-redirect.cjs | PaymentRedirect payload, HTML parsing and bounded retries |
+| f1599,f1609,f1610,f1667,f1684 | gateway-redirect.cjs | PaymentRedirect payload, HTML parsing and bounded retries |
 | f1602,f1603,f1608,f1668,f1673,f1678 | qr-response.cjs,provider-qr-request.cjs,provider-qr-poll.cjs | Provider QR config/amount/status parsing, generation, polling and encdata |
 | f1611,f1681 | bank-response.cjs | Full provider interstitial waits and one-form bank settlement |
 
-These are ordinary JavaScript, not wrappers executing the same instruction definitions. runtime/reconstructed-payment.cjs bridges remaining recovered callers through engine functionFactories/readBinding. Existing invocation tracing/interceptors remain. All168 entry/local-callback contracts validate before enabling the candidate.
+These are ordinary JavaScript, not wrappers executing the same instruction definitions. runtime/reconstructed-payment.cjs bridges remaining recovered callers through engine functionFactories/readBinding. Existing invocation tracing/interceptors remain. All173 entry/local-callback contracts validate before enabling the candidate.
 
 ## Candidate use and limits
 
@@ -38,7 +38,7 @@ Most of the application still uses the recovered engine. No generated definition
 
 ## Evidence
 
-The864-test suite includes actual recovered-versus-native comparisons of requests/order, return values, errors, cancellation, timers, state changes and reference identity using synthetic fixtures. The complete Provider-QR chain now runs native initialization→redirect→QR creation→status polling→encdata→bank response→PNR→ticket/finalization. Seven complete-chain checks cover ordinary results, parallel actors, transient network failure, pending→paid polling a virtual45000ms bank interstitial with bodiless continuation and a browser-close survivor settlement.
+The903-test suite includes actual recovered-versus-native comparisons of requests/order, return values, errors, cancellation, timers, state changes and reference identity using synthetic fixtures. The complete Provider-QR chain now runs native initialization→redirect→QR creation→status polling→encdata→bank response→PNR→ticket/finalization. Seven complete-chain checks cover ordinary results, parallel actors, transient network failure, pending→paid polling a virtual45000ms bank interstitial with bodiless continuation and a browser-close survivor settlement.
 
 Low-level HTTP, browser navigator/session and timing effects are synthetic. No real credentials, account/passenger records, cookies or provider responses were used as fixtures; no live login, booking, payment or QR requests occurred. No live QR speed improvement is established. The historical38–42second payment-stage gap remains unverified.
 
@@ -53,10 +53,12 @@ tools/export_payment_fixture.py exports static program strings from the locally 
 3. Broader passenger submission, browser/session/controller logic and remaining application functions.
 4. Full source migration before removing the execution engine; service validation requires appropriate authorization and cannot be inferred from mocks.
 
-Read the numbered reconstruction phase reports for historical checkpoints and detailed compatibility findings. Current next step is in reconstruction-phase-15.md. A prior authenticated automated launch was rejected by automatic approval review; do not use an alternate route to retry it. Current continuation remains offline.
+Read the numbered reconstruction phase reports for historical checkpoints and detailed compatibility findings. Current next step is in reconstruction-phase-16.md. A prior authenticated automated launch was rejected by automatic approval review; do not use an alternate route to retry it. Current continuation remains offline.
 
 Request getter/routing f1652 and its closures are native; see phase13 report. Candidate now pins execution metadata, handlers and instructions via runtime/recovered-contract.cjs.
 
 Configured TLS transport/response facade f1633 is native; the full synthetic chain also covers the explicitly configured TLS route. No new default transport was enabled.
 
 Optional HTTP recorder f1649 is now native, with its callback guard and existing field/limit contract retained; no callback or destination was enabled.
+
+PayTM form parser and redirect are now native; see phase16. The redirect retains retry/header/form semantics and helper error ordering, but logs only action presence and omits raw HTML. Current quota handoff: weekly5%, primary24%; docs/ANTIGRAVITY-HANDOFF.md is ready.
