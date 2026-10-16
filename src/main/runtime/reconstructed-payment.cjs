@@ -36,6 +36,7 @@ const {paytmOriginPage,paytmPageRequest,disposePaytmPage}=require('../payment/pa
 const {pollPaytmStatus}=require('../payment/paytm-status.cjs');
 const {waitForPaytmWs}=require('../payment/paytm-websocket.cjs');
 const {getFinalPaytmStatus}=require('../payment/paytm-final-status.cjs');
+const {fingerprint,phonePeHeaders,phonePeRedirect,phonePeQr}=require('../payment/phonepe-transport.cjs');
 const {definitionFingerprint}=require('./recovered-contract.cjs');
 const contracts=require('../payment/recovered-contract.json');
 
@@ -54,6 +55,10 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     f1689:({readBinding})=>function(mid,orderId,stopped,onWait,maxAttempts){return pollPaytmStatus(this,mid,orderId,stopped,onWait,maxAttempts,{getField:(html,name)=>readBinding(783,undefined,1)(html,name)});},
     f1693:()=>function(mid,orderId,timeoutMs,stopped){return waitForPaytmWs(this,mid,orderId,timeoutMs,stopped,{timers:dependencies.timers});},
     f1712:({readBinding})=>function(payment){return getFinalPaytmStatus(this,payment,{parseForm:html=>readBinding(775,undefined,1)(html),globals:dependencies.globals});},
+    f1730:()=>function(){return fingerprint(this,{globals:dependencies.globals,random:dependencies.random});},
+    f1733:()=>function(token,options){return phonePeHeaders(this,token,options);},
+    f1734:({readBinding})=>function(input){return phonePeRedirect(this,input,{getAction:html=>readBinding(784,undefined,1)(html),getField:(html,name)=>readBinding(783,undefined,1)(html,name)});},
+    f1736:()=>function(action,token){return phonePeQr(this,action,token);},
     f1704:()=>function(){return paytmOriginPage(this,dependencies.globals);},
     f1708:()=>function(path,options){return paytmPageRequest(this,path,options);},
     f1710:()=>function(){return disposePaytmPage(this);},
