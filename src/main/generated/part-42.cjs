@@ -8751,7 +8751,7 @@ exports.f212 = {
     [220, "Star8", []],
     [221, "CallProperty1", [{"r": 6}, {"r": 7}, {"r": 8}, 40]],
     [226, "Star2", []],
-    [227, "CreateRegExpLiteral", [{"c": 12}]],
+    [227, "CreateRegExpLiteral", [{"c": 12}, 42, 0]],
     [232, "Star7", []],
     [233, "LdaImmutableCurrentContextSlot", [2]],
     [235, "Star8", []],

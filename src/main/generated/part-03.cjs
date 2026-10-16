@@ -5298,7 +5298,7 @@ exports.f2764 = {
   "registerCounts": {},
   "id": "f2764",
   code: [
-    [0, "CreateRegExpLiteral", [{"c": 0}]],
+    [0, "CreateRegExpLiteral", [{"c": 0}, 0, 2]],
     [5, "Star2", []],
     [6, "LdaImmutableCurrentContextSlot", [5]],
     [8, "Star3", []],
@@ -9837,7 +9837,7 @@ exports.f2700 = {
     [19, "Star0", []],
     [20, "CallProperty0", [{"r": 0}, {"a": 0}, 4]],
     [24, "JumpIfToBooleanFalse", [53], 77],
-    [26, "CreateRegExpLiteral", [{"c": 1}]],
+    [26, "CreateRegExpLiteral", [{"c": 1}, 6, 0]],
     [31, "Star1", []],
     [32, "LdaImmutableCurrentContextSlot", [5]],
     [34, "Star2", []],

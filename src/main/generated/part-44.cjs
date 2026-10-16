@@ -2633,7 +2633,7 @@ exports.f42 = {
     [236, "JumpIfToBooleanFalse", [4], 240],
     [238, "LdaZero", []],
     [239, "Return", []],
-    [240, "CreateRegExpLiteral", [{"c": 16}]],
+    [240, "CreateRegExpLiteral", [{"c": 16}, 44, 0]],
     [245, "Star8", []],
     [246, "LdaImmutableCurrentContextSlot", [2]],
     [248, "Star9", []],

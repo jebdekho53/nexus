@@ -6301,7 +6301,7 @@ exports.f460 = {
     [231, "JumpIfToBooleanTrue", [6], 237],
     [233, "PopContext", [{"r": 16}]],
     [235, "Jump", [211], 446],
-    [237, "CreateRegExpLiteral", [{"c": 14}]],
+    [237, "CreateRegExpLiteral", [{"c": 14}, 42, 0]],
     [242, "Star", [{"r": 18}]],
     [244, "LdaImmutableContextSlot", [{"r": 16}, 2, 0]],
     [248, "Star", [{"r": 19}]],

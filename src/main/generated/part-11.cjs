@@ -1862,7 +1862,7 @@ exports.f1689 = {
     [1394, "CallUndefinedReceiver2", [{"r": 9}, {"r": 24}, {"r": 25}, 197]],
     [1399, "GetKeyedProperty", [{"r": 14}, 199]],
     [1402, "Star", [{"r": 21}]],
-    [1404, "CreateRegExpLiteral", [{"c": 56}, {"table": {}}]],
+    [1404, "CreateRegExpLiteral", [{"c": 56}]],
     [1409, "Star", [{"r": 23}]],
     [1411, "CallProperty1", [{"r": 21}, {"r": 14}, {"r": 23}, 202]],
     [1416, "JumpIfToBooleanTrue", [4], 1420],

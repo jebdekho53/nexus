@@ -1,7 +1,7 @@
 'use strict';
 
 function interstitialDelay(html) {
-  const full=/setTimeout\s*\(\s*function\s*\(\s*\)\s*\{[\s\S]*?\.submit\(\s*\)\s*;?[\s\S]*?\}\s*,\s*(\d+)\s*\)/.exec(html);
+  const full=/setTimeout\s*\(\s*function\s*\(\s*\)\s*\{[\s\S]*?\.submit\(\s*\)\s*;?[\s\S]*?\}\s*,\s*(\d+)\s*\)/i.exec(html);
   if (full) return Number.parseInt(full[1],10);
   const compact=/setTimeout\s*\([\s\S]*?\.submit\(\s*\)[\s\S]*?,\s*(\d+)\s*\)/i.exec(html);
   return compact?Number.parseInt(compact[1],10):0;

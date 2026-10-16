@@ -70,7 +70,7 @@ def parse_listing(path):
                 pc, op, text = int(m[1]), m[2].split('.')[0], m[3].strip()
                 target = re.search(r'\(0x[0-9a-f]+\s*@\s*(\d+)\)', text)
                 text = re.sub(r'\s*\(0x[0-9a-f]+\s*@\s*\d+\)', '', text)
-                table = re.search(r'\{.*\}', text)
+                table = re.search(r'\{.*\}', text) if op.startswith('Switch') else None  # patterns such as {64} are not jump tables
                 if table:
                     text = text[:table.start()].rstrip().rstrip(',') + ', ' + table[0]
                 row = [pc, op, [operand(x) for x in split_operands(text)]]

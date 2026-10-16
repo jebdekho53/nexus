@@ -6164,7 +6164,7 @@ exports.f1764 = {
     [286, "Ldar", [{"r": 6}]],
     [288, "ReThrow", []],
     [289, "Mov", [{"r": 6}, {"r": 2}]],
-    [292, "CreateRegExpLiteral", [{"c": 12}]],
+    [292, "CreateRegExpLiteral", [{"c": 12}, 33, 2]],
     [297, "Star7", []],
     [298, "LdaImmutableCurrentContextSlot", [3]],
     [300, "Star8", []],

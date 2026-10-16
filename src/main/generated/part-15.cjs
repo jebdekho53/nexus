@@ -6864,7 +6864,7 @@ exports.f153 = {
   "registerCounts": {},
   "id": "f153",
   code: [
-    [0, "CreateRegExpLiteral", [{"c": 0}]],
+    [0, "CreateRegExpLiteral", [{"c": 0}, 0, 2]],
     [5, "Star1", []],
     [6, "LdaImmutableCurrentContextSlot", [5]],
     [8, "Star2", []],
@@ -7229,7 +7229,7 @@ exports.f37 = {
   "registerCounts": {},
   "id": "f37",
   code: [
-    [0, "CreateRegExpLiteral", [{"c": 0}]],
+    [0, "CreateRegExpLiteral", [{"c": 0}, 0, 0]],
     [5, "Star1", []],
     [6, "LdaImmutableCurrentContextSlot", [5]],
     [8, "Star2", []],

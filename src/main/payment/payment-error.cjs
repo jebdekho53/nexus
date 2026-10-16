@@ -15,6 +15,6 @@ function paymentResponseError(response) {
 }
 function isBrowserClosedError(error) {
   const message=error instanceof Error?error.message:String(error??'');
-  return !!message&&/Request context disposed|Target (?:page|context|browser)[\s\S]{0,40}has been closed|Target closed|browser has been closed|has been closed|Execution context was destroyed|Protocol error[\s\S]{0,30}(?:Target closed|Session closed)/.test(message);
+  return !!message&&/Request context disposed|Target (?:page|context|browser)[\s\S]{0,40}has been closed|Target closed|browser has been closed|has been closed|Execution context was destroyed|Protocol error[\s\S]{0,30}(?:Target closed|Session closed)/i.test(message);
 }
 module.exports={isBankProcessingError,paymentResponseError,isBrowserClosedError};

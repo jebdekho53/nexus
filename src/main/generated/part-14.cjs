@@ -4190,7 +4190,7 @@ exports.f624 = {
     [11, "CallUndefinedReceiver2", [{"r": 2}, {"r": 3}, {"r": 4}, 0]],
     [16, "GetKeyedProperty", [{"a": 0}, 2]],
     [19, "Star0", []],
-    [20, "CreateRegExpLiteral", [{"c": 1}]],
+    [20, "CreateRegExpLiteral", [{"c": 1}, 4, 1]],
     [25, "Star2", []],
     [26, "LdaImmutableCurrentContextSlot", [5]],
     [28, "Star3", []],

@@ -212,7 +212,7 @@ exports.f1465 = {
     [13, "CallUndefinedReceiver2", [{"r": 0}, {"r": 4}, {"r": 5}, 0]],
     [18, "GetKeyedProperty", [{"a": 0}, 2]],
     [21, "Star1", []],
-    [22, "CreateRegExpLiteral", [{"c": 2}]],
+    [22, "CreateRegExpLiteral", [{"c": 2}, 4, 1]],
     [27, "Star3", []],
     [28, "LdaSmi", [21253]],
     [32, "Star5", []],

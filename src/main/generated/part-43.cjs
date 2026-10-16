@@ -2704,7 +2704,7 @@ exports.f152 = {
     [44, "CallUndefinedReceiver1", [{"r": 2}, {"r": 3}, 9]],
     [48, "Star1", []],
     [49, "JumpIfToBooleanFalse", [32], 81],
-    [51, "CreateRegExpLiteral", [{"c": 5}]],
+    [51, "CreateRegExpLiteral", [{"c": 5}, 11, 2]],
     [56, "Star3", []],
     [57, "LdaSmi", [11124]],
     [61, "Star5", []],

@@ -5979,7 +5979,7 @@ exports.f2344 = {
     [1506, "Star", [{"r": 18}]],
     [1508, "CallProperty0", [{"r": 18}, {"r": 19}, 234]],
     [1512, "Star12", []],
-    [1513, "CreateRegExpLiteral", [{"c": 54}]],
+    [1513, "CreateRegExpLiteral", [{"c": 54}, 236, 0]],
     [1518, "Star", [{"r": 19}]],
     [1520, "LdaSmi", [16385]],
     [1524, "Star", [{"r": 21}]],

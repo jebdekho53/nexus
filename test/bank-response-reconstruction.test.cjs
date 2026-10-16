@@ -11,7 +11,7 @@ function fixture(native,id){
 }
 const delay=ms=>'<script>setTimeout(function(){ document.forms[0].submit(); }, '+ms+');</script>';
 test('bank interstitial parser matches recovered grammar, case, zero and large delays',()=>{
-  for(const value of [delay(45000),delay(0),'setTimeout(()=>form.submit(),1234)','SETTIMEOUT(()=>form.SUBMIT(), 2500)',delay('00100'),'setTimeout(()=>form.submit(), -1)',delay('9'.repeat(400)),delay(1.5),'',null,undefined,0])
+  for(const value of [delay(45000),delay(0),'setTimeout(()=>form.submit(),1234)','SETTIMEOUT(()=>form.SUBMIT(), 2500)','SETTIMEOUT(FUNCTION(){ FORM.SUBMIT(); }, 3100)',delay('00100'),'setTimeout(()=>form.submit(), -1)',delay('9'.repeat(400)),delay(1.5),'',null,undefined,0])
     assert.equal(fixture(true,'f1611')(value),fixture(false,'f1611')(value));
 });
 async function run(native,options={},paytm=false){
