@@ -220,9 +220,18 @@ class Lowering {
       case 'CreateRestParameter': this.usesArgs=true; return ['acc=args.slice('+(this.definition.parameterCount-1)+');'];
       case 'SetPendingMessage': return ['{const previous=pending;pending=acc;acc=previous;}'];
       case 'SwitchOnGeneratorState': return [];
+      case 'FindNonDefaultConstructorOrConstruct': return['r'+c.range[0]+'=false;r'+(c.range[0]+1)+'=Object.getPrototypeOf('+O(a)+');'];
+      case 'ForInEnumerate': return['{const keys=[];for(const key in '+O(a)+')keys.push(key);acc=keys;}'];
+      case 'ForInPrepare': return['r'+a.range[0]+'=acc;r'+(a.range[0]+1)+'=acc;r'+(a.range[0]+2)+'=acc.length;'];
+      case 'ForInNext': return['{const key=r'+c.range[0]+'['+O(b)+'];acc=key!==undefined&&key in '+O(a)+'?key:undefined;}'];
+      case 'ForInStep': return[this.assign(a,O(a)+'+1')];
       case 'AwaitPseudo': return ['r'+args[1]+'=await r'+args[0]+';','r'+args[2]+'=0;','acc=true;'];
       default: throw new Unsupported('opcode '+op);
     }
+  }
+
+  forInDone(row) {
+    return this.operand(row[2][1])+'==='+this.operand(row[2][2]);
   }
 
   keyed(object,key,assigned) {
@@ -245,7 +254,7 @@ class Lowering {
     }
     const list=args[1]===undefined?[]:this.range(args[1],offset);
     switch(name) {
-      case '_CopyDataProperties': case '_CopyDataPropertiesWithExcludedPropertiesOnStack': case 'ThrowIteratorResultNotAnObject': case 'ThrowStaticPrototypeError': case 'LoadKeyedFromSuper': case 'DefineAccessorPropertyUnchecked': case 'DynamicImportCall':
+      case 'DefineClass': case '_CopyDataProperties': case '_CopyDataPropertiesWithExcludedPropertiesOnStack': case 'ThrowIteratorResultNotAnObject': case 'ThrowStaticPrototypeError': case 'LoadKeyedFromSuper': case 'DefineAccessorPropertyUnchecked': case 'DynamicImportCall':
         return ['acc=rt.runtime('+JSON.stringify(name)+',['+list.join(',')+'],{});'];
       default: throw new Unsupported('runtime '+name);
     }

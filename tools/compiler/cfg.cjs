@@ -6,6 +6,7 @@
 // turn them into structured JavaScript control flow.
 
 const UNCONDITIONAL=new Set(['Jump','JumpConstant','JumpLoop']);
+const DYNAMIC_CONDITION='JumpIfForInDone';
 const CONDITIONAL=new Map([
   ['JumpIfTrue','acc===true'],['JumpIfTrueConstant','acc===true'],
   ['JumpIfFalse','acc===false'],['JumpIfFalseConstant','acc===false'],
@@ -27,7 +28,7 @@ function buildCfg(definition) {
   for(let index=0;index<code.length;index++) {
     const[,op,args,target]=code[index];
     const next=index+1<code.length?index+1:null;
-    if(UNCONDITIONAL.has(op)||CONDITIONAL.has(op)) {
+    if(UNCONDITIONAL.has(op)||CONDITIONAL.has(op)||op===DYNAMIC_CONDITION) {
       if(target===undefined||!indexOf.has(target))throw new Unsupported('jump without target at '+code[index][0]);
       leaders.add(indexOf.get(target));
       if(next!==null)leaders.add(next);
@@ -56,8 +57,8 @@ function buildCfg(definition) {
     const fall=byIndex.get(block.end);
     if(UNCONDITIONAL.has(op)) {
       block.term={kind:'jump',to:byIndex.get(indexOf.get(target))};
-    } else if(CONDITIONAL.has(op)) {
-      block.term={kind:'cond',test:CONDITIONAL.get(op),then:byIndex.get(indexOf.get(target)),otherwise:fall};
+    } else if(CONDITIONAL.has(op)||op===DYNAMIC_CONDITION) {
+      block.term={kind:'cond',test:CONDITIONAL.get(op),row:op===DYNAMIC_CONDITION?last:undefined,then:byIndex.get(indexOf.get(target)),otherwise:fall};
     } else if(op==='Return') {
       block.term={kind:'return'};
     } else if(op==='Throw'||op==='ReThrow') {
