@@ -7,8 +7,10 @@ const definitions=require('../../src/main/generated/index.cjs');
 const{compileDefinition,Unsupported}=require('./compile.cjs');
 const{createWorld}=require('./world.cjs');
 const names=require('./names.cjs').loadNames();
+const{splitDefinition,loadSplit,SPLIT_IDS}=require('./split.cjs');
 
 function loadCompiled(definition) {
+  if(SPLIT_IDS.has(definition.id))return loadSplit(splitDefinition(definition,{tick:true,names}));
   const source=compileDefinition(definition,{tick:true,names});
   const exports={};
   new Function('exports','"use strict";'+source)(exports);

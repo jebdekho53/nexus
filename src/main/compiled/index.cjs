@@ -5,5 +5,6 @@ module.exports=Object.assign({},
   require("./part-03.cjs"),
   require("./part-04.cjs"),
   require("./part-05.cjs"),
-  require("./part-06.cjs")
+  require("./part-06.cjs"),
+  {f1: require("./bootstrap/f1.cjs")}
 );

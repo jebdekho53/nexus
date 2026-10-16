@@ -50,7 +50,7 @@ function plainRejection(handlerBlock) {
 
 // Compiles one recovered definition to JavaScript source: `exports.<id>=function(rt,fn,self,args,newTarget,ctx,K){...}`.
 // Throws Unsupported for shapes that are not translated yet; those functions keep running in the interpreter.
-function compileDefinition(definition,options={}) {
+function compileTree(definition,options={}) {
   if(!SUPPORTED_KINDS.test(definition.kind))throw new Unsupported('kind '+definition.kind);
   const isAsync=definition.kind.includes('Async');
   const working=isAsync?{...definition,code:rewriteAsync(definition.code)}:definition;
@@ -106,10 +106,14 @@ function compileDefinition(definition,options={}) {
     return{lines:plain.lines,term:plain.term};
   };
   const tree=structure(cfg,working.handlers??[],emit,{isPlainRejection:isAsync?plainRejection:undefined});
+  return{tree,isAsync,incoming:Number.isInteger(definition.incoming)&&definition.incoming>=0&&definition.incoming<definition.registerCount?definition.incoming:null};
+}
+
+function compileDefinition(definition,options={}) {
+  const{tree,isAsync,incoming}=compileTree(definition,options);
   const source=print(tree,options);
   const registers=new Set();
   for(const match of source.matchAll(/\br(\d+)\b/g))registers.add(Number(match[1]));
-  const incoming=Number.isInteger(definition.incoming)&&definition.incoming>=0&&definition.incoming<definition.registerCount?definition.incoming:null;
   if(incoming!==null)registers.add(incoming);
   const declarations=['acc','pending=HOLE',...[...registers].sort((a,b)=>a-b).map(index=>'r'+index+(index===incoming?'=newTarget':''))];
   const label=options.names?.get(definition.id);
@@ -126,4 +130,4 @@ function compileDefinition(definition,options={}) {
   ].join('\n');
 }
 
-module.exports={compileDefinition,Unsupported};
+module.exports={compileDefinition,compileTree,Unsupported};

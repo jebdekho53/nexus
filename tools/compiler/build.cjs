@@ -5,6 +5,7 @@ const fs=require('node:fs'),path=require('node:path');
 const definitions=require('../../src/main/generated/index.cjs');
 const{compileDefinition,Unsupported}=require('./compile.cjs');
 const{loadNames}=require('./names.cjs');
+const{splitDefinition,SPLIT_IDS}=require('./split.cjs');
 const names=loadNames();
 const excludeArgument=process.argv.indexOf('--exclude');
 const excluded=new Set(excludeArgument>=0?process.argv[excludeArgument+1].split(','):[]);
@@ -22,8 +23,19 @@ const flush=()=>{
   fs.writeFileSync(path.join(outputDirectory,name),"'use strict';\n// Compiled from recovered definitions by tools/compiler (do not edit; rebuild instead).\n"+chunk.join('\n')+'\n');
   parts.push(name);chunk=[];size=0;
 };
+const bootstrapDirectory=path.join(outputDirectory,'bootstrap');
+fs.rmSync(bootstrapDirectory,{recursive:true,force:true});
+const splitModules=[];
 for(const id of ids) {
   if(excluded.has(id))continue;
+  if(SPLIT_IDS.has(id)) {
+    const result=splitDefinition(definitions[id],{names});
+    fs.mkdirSync(bootstrapDirectory,{recursive:true});
+    fs.writeFileSync(path.join(bootstrapDirectory,id+'.cjs'),result.main);
+    for(const part of result.parts)fs.writeFileSync(path.join(bootstrapDirectory,part.name),part.source);
+    splitModules.push(id);compiled++;
+    continue;
+  }
   try {
     const source=compileDefinition(definitions[id],{names});
     chunk.push(source);size+=source.length;compiled++;
@@ -34,7 +46,7 @@ for(const id of ids) {
   }
 }
 flush();
-fs.writeFileSync(path.join(outputDirectory,'index.cjs'),"'use strict';\nmodule.exports=Object.assign({},\n"+parts.map(name=>'  require("./'+name+'")').join(',\n')+'\n);\n');
+fs.writeFileSync(path.join(outputDirectory,'index.cjs'),"'use strict';\nmodule.exports=Object.assign({},\n"+[...parts.map(name=>'  require("./'+name+'")'),...splitModules.map(id=>'  {'+id+': require("./bootstrap/'+id+'.cjs")}')].join(',\n')+'\n);\n');
 fs.writeFileSync(path.join(outputDirectory,'unsupported.txt'),unsupported.join('\n')+'\n');
 console.log('Compiled '+compiled+' definitions into '+parts.length+' files; '+unsupported.length+' remain interpreted');
 
