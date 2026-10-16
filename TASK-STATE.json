@@ -1,6 +1,6 @@
 {
   "status": "in_progress",
-  "progress": "Phases 1–4: 25 native payment entries. Booking normalization, retry parsing, session/referrer/request-ID helpers and ordered finalization wrapper added. 341 full tests pass; 76 recovered definition fingerprints pinned. Offline complete-chain parity through synthetic QR/settlement/normalized booking/cleanup passes. Developer-only --reconstructed-payment; public 1.0.11 unchanged. Next f2233 finalization core and gateway transports; full app reconstruction incomplete.",
+  "progress": "Phases 1–6: 32 native payment/gateway entries, 499 full application tests passed, 98 pinned recovered definitions. Finalization core, ticket attachment, booking-data/print-ticket transport, shared headers/retry and closed-browser classifier complete. Full offline chain and one transient transport failure match original; eight smoke screens pass with 32 factories (PID 21904). No live booking/payment/QR, build or deployment; public 1.0.11 unchanged. Next remaining gateway/browser session helpers and provider transports. Full application still partly uses recovered engine.",
   "task": "Reconstruct recovered Matrix payment logic into maintainable JavaScript",
   "completedLatestTask": {
     "task": "Fix WebLogin Chrome selection closing another independent pair panel",
@@ -74,7 +74,7 @@
     }
   },
   "reconstruction": {
-    "phase": "booking normalization, session context and finalization wrapper",
+    "phase": "finalization core and shared gateway request transport",
     "report": "docs/reconstruction-progress.md",
     "handoff": "docs/ANTIGRAVITY-HANDOFF.md",
     "flag": "--reconstructed-payment",
@@ -103,27 +103,35 @@
       "f2230",
       "f2231",
       "f2232",
-      "f2243"
+      "f2243",
+      "f2233",
+      "f2247",
+      "f1719",
+      "f1727",
+      "f152",
+      "f1666",
+      "f1756"
     ],
     "published": false,
     "quotaHandoffThresholdRemainingPercent": 5,
-    "lastObservedPrimaryRemainingPercent": 5,
-    "lastObservedWeeklyRemainingPercent": 18,
-    "testsPassed": 341,
+    "lastObservedPrimaryRemainingPercent": 92,
+    "lastObservedWeeklyRemainingPercent": 16,
+    "testsPassed": 499,
     "smoke": {
       "windows": 8,
       "completeDom": true,
-      "factoriesEnabled": 25,
+      "factoriesEnabled": 32,
       "offline": true,
-      "pid": 10828,
+      "pid": 21904,
       "complete": true
     },
-    "codeCheckpoint": "52c32fd",
-    "handoffReady": true,
+    "codeCheckpoint": "phase5/6 commit immediately after this state file",
+    "handoffReady": false,
     "phaseTwoReport": "docs/reconstruction-phase-2.md",
-    "pinnedDefinitions": 76,
+    "pinnedDefinitions": 98,
     "phaseFourReport": "docs/reconstruction-phase-4.md",
-    "nextReview": "docs/finalization-core-review.md"
+    "nextReview": "Gateway origin/client hints, disposal, redirect and polling transports; see docs/reconstruction-phases-5-6.md",
+    "phasesFiveSixReport": "docs/reconstruction-phases-5-6.md"
   },
-  "continuationSchedule": "Hourly at minute41 IST; resumed directly on16Oct2026after13:41 quota reset."
+  "continuationSchedule": "First16Oct2026at18:42IST, then every5h30m (330min). Existing general unfinished-task fallback remains active."
 }

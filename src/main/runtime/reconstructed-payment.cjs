@@ -5,7 +5,7 @@ const {startPaytmWatch}=require('../payment/paytm-watch.cjs');
 const {runPaytm}=require('../payment/paytm.cjs');
 const {runPhonePe}=require('../payment/phonepe.cjs');
 const {bookingPaymentBody}=require('../payment/request-body.cjs');
-const {isBankProcessingError,paymentResponseError}=require('../payment/payment-error.cjs');
+const {isBankProcessingError,paymentResponseError,isBrowserClosedError}=require('../payment/payment-error.cjs');
 const {paymentCandidates,choosePaymentBank}=require('../payment/gateway-selection.cjs');
 const {runRazorpay}=require('../payment/razorpay.cjs');
 const {initializePayment}=require('../payment/payment-init.cjs');
@@ -16,7 +16,11 @@ const {pollBookingData}=require('../payment/booking-data.cjs');
 const {emptyBooking,normalizeBooking}=require('../payment/booking-result.cjs');
 const {bookingRetryDelay}=require('../payment/retry-delay.cjs');
 const {sessionTokens,paymentPageReferrer,paymentRequestId}=require('../payment/session-context.cjs');
-const {finishBooking}=require('../payment/finish-booking.cjs');
+const {finishBooking,finishBookingCore}=require('../payment/finish-booking.cjs');
+const {attachPrintTicket}=require('../payment/print-ticket.cjs');
+const {requestBookingData,requestPrintTicket}=require('../payment/gateway-requests.cjs');
+const {gatewayHeaders}=require('../payment/gateway-headers.cjs');
+const {retryGatewayRequest}=require('../payment/gateway-retry.cjs');
 const {createHash}=require('node:crypto');
 const contracts=require('../payment/recovered-contract.json');
 
@@ -31,10 +35,17 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
       throw new Error('Reconstructed payment contract changed for '+id+'. Review the recovered definition and comparison tests before enabling this candidate.');
   }
   return {
+    f152:()=>isBrowserClosedError,
+    f1666:()=>function(host,options){return gatewayHeaders(this,host,options);},
+    f1756:({readBinding})=>function(label,operation,maxAttempts,stopRetry){return retryGatewayRequest(this,label,operation,maxAttempts,stopRetry,{isBrowserClosed:error=>readBinding(139,undefined,1)(error),timers:dependencies.timers});},
+    f1719:()=>function(input){return requestBookingData(this,input);},
+    f1727:()=>function(input){return requestPrintTicket(this,input);},
     f2230:()=>function(){return sessionTokens(this);},
     f2231:()=>function(){return paymentPageReferrer(this);},
     f2232:()=>function(){return paymentRequestId(this,dependencies);},
     f2243:()=>function(booking){return finishBooking(this,booking);},
+    f2233:()=>function(booking){return finishBookingCore(this,booking,dependencies);},
+    f2247:()=>function(booking){return attachPrintTicket(this,booking);},
     f510:({readBinding})=>function(transactionId,insuranceApplicable){
       return bookingPaymentUrl(readBinding(345,'rt'),transactionId,insuranceApplicable);
     },

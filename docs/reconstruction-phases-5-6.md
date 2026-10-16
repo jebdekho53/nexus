@@ -1,0 +1,17 @@
+# Reconstruction phases 5–6 — 16 October 2026
+
+Current source-only developer candidate: **32 native entries**, **98 pinned recovered definitions**, **499 passing application tests**. Public 1.0.11 is unchanged. No real login, booking, payment or QR requests were sent.
+
+Finalization core f2233 and its ten-function scope now use readable JavaScript in payment/finish-booking.cjs. Forty-four cases compare actual recovered behavior: cancellation, disposal, amount overrides, ticket race, callback failures, reporting delays/rejections, error results and ordered wrapper cleanup. The recovered second await after the 5-second reporting race is deliberately retained; migration does not silently change timing. Existing f2009 vendor-reporting overrides remain installed and are tested in the complete chain.
+
+Ticket attachment f2247/f2248 uses payment/print-ticket.cjs. Nineteen tests cover configuration gates, single session-token snapshot, CSRF precedence, detail reference identity, primitive/empty responses and synchronous/asynchronous errors. Existing progress/log messages remain semantically equivalent and flow through existing application diagnostics; the tests contain only synthetic fields. This is not a new telemetry transport.
+
+Gateway booking-data f1719/f1720/f1721 and print-ticket f1727/f1728/f1729 use payment/gateway-requests.cjs. Forty-five tests compare exact URLs, header inputs, request receiver capture across asynchronous header resolution, default language, token getters, bounded/default retry arguments and parse/error behavior. Booking-data JSON parse rejection returns a fresh object; print-ticket JSON parse rejection returns null. Synchronous parse failure still rejects.
+
+Shared headers f1666, request retries f1756/f1757 and closed-browser classifier f152 use gateway-headers.cjs, gateway-retry.cjs and payment-error.cjs. Forty-nine tests cover option/hint precedence, origin omission, extra-header merges, failures, case-sensitive closed-browser recognition, retry bounds/coercion, cancellation checks before and after backoff, original error identity and 800ms/1600ms waits. Header generation continues using the actor's existing browser hints; no new browser-fingerprint or access-denied bypass was added.
+
+The complete-chain test now executes actual recovered versus native initialization → Provider QR → synthetic payment result → settlement → booking-data transport and retries/headers → normalization → finalization → print-ticket transport → disabled vendor-report guard → cleanup. A third case injects one network failure; parallel actors retain separate QR/PNR ownership. Browser hints, low-level HTTP, gateway QR/payment responses and disposal effects remain synthetic. These tests establish offline compatibility, not live service success or speed.
+
+tools/review_recovered_function.cjs writes compact decoded instruction listings with original branch targets; tools/export_payment_fixture.py reads Node JSON explicitly as UTF-8 and exports 1,228 static decoder lookups for 115 selected functions. The larger fixture includes future code and does not mean all selected functions are migrated.
+
+Next inspect gateway origin/client-hint helpers, resource lifetime/disposal, redirect and provider-specific polling transports. Most of the application still executes recovered definitions; none have been deleted. Preserve release activation, private browser/pair ownership, provider waits, disabled legacy destinations and the developer-only opt-in migration switch.
