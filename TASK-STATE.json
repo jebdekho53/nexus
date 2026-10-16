@@ -1,6 +1,6 @@
 {
   "status": "in_progress",
-  "progress": "Phases1–20:74 native entries,1124 full-suite tests passed,209 execution-metadata/code pins; PayTM WebSocket f1693 and final status f1712 native. PayTM redirect/QR/page/status/bank settlement native; composed synthetic flow matches original. Eight offline smoke screens complete with72 factories(PID2308). Public1.0.11 unchanged; no live service/build/deployment.",
+  "progress": "Phases1–20:74 native entries,1124 full-suite tests passed,209 execution-metadata/code pins; PayTM WebSocket f1693 and final status f1712 native. PayTM redirect/QR/page/status/bank settlement native; composed synthetic flow matches original. Eight offline smoke screens complete with74 factories(PID7344), enabled count independently confirmed. Public1.0.11 unchanged; no live service/build/deployment.",
   "task": "Reconstruct recovered Matrix payment logic into maintainable JavaScript",
   "completedLatestTask": {
     "task": "Fix WebLogin Chrome selection closing another independent pair panel",
@@ -160,9 +160,9 @@
     "smoke": {
       "windows": 8,
       "completeDom": true,
-      "factoriesEnabled": 72,
+      "factoriesEnabled": 74,
       "offline": true,
-      "pid": 2308,
+      "pid": 7344,
       "complete": true
     },
     "codeCheckpoint": "b056da7",
@@ -170,7 +170,7 @@
     "phaseTwoReport": "docs/reconstruction-phase-2.md",
     "pinnedDefinitions": 193,
     "phaseFourReport": "docs/reconstruction-phase-4.md",
-    "nextReview": "PayTM WebSocket watcher f1693–f1703 and final status f1712–f1716 remain recovered; redirect, QR request/parsers, page lifecycle, polling and bank settlement are native.",
+    "nextReview": "Integrate native f1693 WebSocket watcher and f1712 final status into composed synthetic PayTM chain; then PhonePe/Razorpay transports, session/cookie helpers, controllers and bootstrap.",
     "phasesFiveSixReport": "docs/reconstruction-phases-5-6.md",
     "phaseSevenReport": "docs/reconstruction-phase-7.md",
     "phaseEightReport": "docs/reconstruction-phase-8.md",
@@ -197,7 +197,9 @@
       "nativeEntryInstructionPercent": 4.05,
       "pinnedSupportInstructionPercent": 0.78,
       "limitation": "Static instruction volume and review-load heuristic, not remaining effort or delivery-time percentage."
-    }
+    },
+    "fullProjectPrompt": "docs/FULL-RECONSTRUCTION-PROMPT.md",
+    "handoffVerification": "Read-only verification confirmed current74 factories and same-PID7344 factory list plus8-window smoke-complete.1124 tests are phase20 recorded evidence, not rerun during handoff update."
   },
   "continuationSchedule": "First16Oct2026at18:42IST, then every5h30m (330min). Existing general unfinished-task fallback remains active."
 }

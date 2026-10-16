@@ -19,21 +19,21 @@ The immediate authorized task is SOURCE RECONSTRUCTION. Keep it separate from ne
 1. Applicable `AGENTS.md` instructions.
 2. `TASK-STATE.json`.
 3. `docs/ANTIGRAVITY-HANDOFF.md`.
-4. `docs/reconstruction-progress.md` and numbered reconstruction reports, especially phases16–19.
+4. `docs/reconstruction-progress.md` and numbered reconstruction reports, especially phases16–20.
 5. `docs/reconstruction-inventory/README.md`, `functions.csv` and `functions.json`.
 6. `git status`, recent commits and the relevant existing source/tests.
 
-A later user request or newer actual changes take precedence over stale state documentation. Preserve uncommitted work. At preparation of this handoff, `src/main/payment/paytm-final-status.cjs` existed as an UNTRACKED file created after the saved checkpoint. Review it before implementing final-status logic; do not overwrite, delete or assume it has been verified. Check for another active worker before starting duplicate implementation.
+A later user request or newer actual changes take precedence over stale state documentation. Preserve uncommitted work. The previously untracked `src/main/payment/paytm-final-status.cjs` was reviewed, tested and committed in phase20. It is no longer pending reconstruction; do not recreate it. Check for another active worker before starting duplicate implementation.
 
 ## Verified baseline
 
 - 4,354 recovered definitions, containing512,857 original instructions.
-- 72 native main-entry replacements, with193 pinned definitions including supporting callbacks/dependencies.
-- 1,069 full-suite application tests passed.
-- Offline source smoke PID2308 completed8 DOM-ready screens with all72 factories and no native bytecode loaded.
-- Code checkpoint `b056da7`; checkpoint documentation `b149d5a`; static inventory `6448ef9`.
+- 74 native main-entry replacements, with209 pinned definitions including supporting callbacks/dependencies.
+- 1,124 full-suite application tests passed according to the phase20 report; rerun relevant tests after your own changes.
+- Offline source smoke PID7344 completed8 DOM-ready screens with all74 factories and no native bytecode loaded.
+- Latest code checkpoint `ea63219`; earlier bank checkpoint `b056da7`; static inventory baseline `6448ef9`.
 - Public release1.0.11 remains unchanged by reconstruction. The candidate has not been built or deployed.
-- Native entries cover4.05% of original instruction volume; separately pinned support covers0.78%. Neither value is an actual effort-completion percentage. Do not repeat the misleading claim that precisely98.3% of engineering work remains.
+- At the phase19 inventory baseline, native entries covered4.05% of original instruction volume and separately pinned support covered0.78%. These percentages are historical; regenerate the inventory for current coverage. Neither value is an actual effort-completion percentage. Do not repeat the misleading claim that precisely98.3% of engineering work remains.
 
 The size inventory has1711 tiny,1555 small,741 medium,288 large and59 very-large functions. Its structural review-load groups contain3128 low,862 moderate,305 high,53 very-high and6 extreme definitions. These are planning heuristics. Tiny callbacks are often part of their parent migration rather than separate engineering tasks. The largest59 definitions contain about29% of instructions.
 
@@ -53,6 +53,22 @@ The size inventory has1711 tiny,1555 small,741 medium,288 large and59 very-large
 
 Approximate readable-reference material can have incorrect branches. The generated instructions plus engine behavior, not approximate pseudocode, are the compatibility oracle.
 
+
+## Immediate continuation: do this first, then keep progressing
+
+The latest human instruction is to continue the FULL reconstruction autonomously across coherent milestones, not stop after one module with another list of suggestions. Keep working while you have useful authorized work and available context/quota. End a work session with a verified checkpoint and a concrete handoff when necessary; never claim completion or ongoing background execution that has not happened.
+
+Phase20 code is committed as ea63219. The actual registry contains74 factories and209 pins. Existing startup.jsonl confirms PID7344 enabled74 factories and reached smoke-complete with8 windows. Phase20 reports1124 full-suite tests and no native bytecode loaded. This handoff update independently verified registry/factory-log/completion counts; it did not rerun all1124 tests.
+
+1. Read test/paytm-qr-chain.test.cjs and the new paytm-websocket/final-status source and oracle tests.
+2. Extend the composed chain to call actual engine-wrapped f1693 and f1712 in both recovered/native runs, replacing the current watcher/final-status stubs. Supply synthetic browser pages, fake WebSocket/fetch effects, controlled clocks and synthetic provider responses. Preserve actual ordinary helper execution inside those boundaries.
+3. Cover the WebSocket winner and polling winner, incomplete in-page final form followed by request fallback, malformed/timeout/cancel behavior, correct timer/page cleanup and isolation between two actors. Model long timers virtually; do not wait30 real minutes or contact live providers. Confirm which lower-level effects remain synthetic in the report.
+4. Preserve the recovered room id mid + '_' + orderId, second bg.url() evaluation for wrong-origin diagnostics and status-before-snip evaluation order. Room ids, URLs, frames, payloads and supplier snippets stay out of native logs. Normalize only documented diagnostic differences in comparison tests.
+5. Once focused comparisons and the broader suite pass, run a new isolated offline smoke when warranted; verify that new PID rather than stale artifacts. Update state/progress/inventory and commit the integrated milestone.
+6. Move directly to the next remaining dependency group in the roadmap: PhonePe/Razorpay transports and remaining session/cookie helpers, then controllers and bootstrap. Do not ask the human to select every next function. Base the order on call/dependency analysis and the size/review-load inventory.
+
+Account availability from another agent/account is independent. Check limits only if supported; do not inherit stale percentages as current. Do not modify original Codex automation or send messages to other chats without human authorization. The human will provide this prompt to the destination assistant.
+
 ## Complete execution roadmap
 
 ### A. Establish an accurate baseline
@@ -61,7 +77,7 @@ Reconcile new/untracked work, run relevant existing tests, map the migration ada
 
 ### B. Finish the payment subsystem
 
-Continue PayTM WebSocket watcher `f1693–f1703` and final-status `f1712–f1716`, reviewing the untracked final-status file first. Redirect, QR request/response parsing, browser-page lifecycle, status polling and bank response are already native. Then reconstruct remaining PhonePe/Razorpay transports and other reachable payment dependencies. Use composed synthetic flows that exercise actual reconstructed methods, not only mocks of the method under test. Explicitly identify any remaining mocked edges.
+PayTM WebSocket watcher `f1693–f1703` and final-status `f1712–f1716` are now native, along with redirect, QR request/response parsing, browser-page lifecycle, status polling and bank response. First integrate the new watcher and final-status into the composed synthetic chain, which still stubs those two boundaries. Do not repeat their standalone migration. Then reconstruct remaining PhonePe/Razorpay transports and other reachable payment dependencies. Use composed synthetic flows that exercise actual reconstructed methods, not only mocks of the method under test. Explicitly identify any remaining mocked edges.
 
 ### C. Reconstruct browser/session and booking controllers
 
@@ -118,4 +134,4 @@ Use UTF-8 LF files. Do not overwrite unrelated work or create noisy whole-file f
 
 If context/quota is near exhaustion, save verified code, exact test commands/results, current commit, dirty files, unresolved failures and the next concrete action. Do not claim background work or automatic restart unless the destination environment actually supports and has configured it. The existing Codex fallback belongs to the original environment; another account/Claude must not assume it will resume their session.
 
-Completion means a reproducible, documented ordinary-source application with all required reachable behavior migrated and meaningfully verified, with remaining external-service limitations disclosed. It does not mean reproducing unavailable original source text byte-for-byte. Start by reconciling the current checkout and final-status file, then carry this roadmap forward through verified milestones.
+Completion means a reproducible, documented ordinary-source application with all required reachable behavior migrated and meaningfully verified, with remaining external-service limitations disclosed. It does not mean reproducing unavailable original source text byte-for-byte. Start by reconciling the current checkout and phase20 report, then carry this roadmap forward through verified milestones.
