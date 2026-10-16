@@ -4,6 +4,8 @@
 const fs=require('node:fs'),path=require('node:path');
 const definitions=require('../../src/main/generated/index.cjs');
 const{compileDefinition,Unsupported}=require('./compile.cjs');
+const{loadNames}=require('./names.cjs');
+const names=loadNames();
 const excludeArgument=process.argv.indexOf('--exclude');
 const excluded=new Set(excludeArgument>=0?process.argv[excludeArgument+1].split(','):[]);
 const outputDirectory=path.resolve(__dirname,'../../src/main/compiled');
@@ -23,7 +25,7 @@ const flush=()=>{
 for(const id of ids) {
   if(excluded.has(id))continue;
   try {
-    const source=compileDefinition(definitions[id]);
+    const source=compileDefinition(definitions[id],{names});
     chunk.push(source);size+=source.length;compiled++;
     if(size>1500000)flush();
   } catch(error) {

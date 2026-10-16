@@ -6,9 +6,10 @@ const {createEngine,HOLE}=require('../../src/main/runtime/engine.cjs');
 const definitions=require('../../src/main/generated/index.cjs');
 const{compileDefinition,Unsupported}=require('./compile.cjs');
 const{createWorld}=require('./world.cjs');
+const names=require('./names.cjs').loadNames();
 
 function loadCompiled(definition) {
-  const source=compileDefinition(definition,{tick:true});
+  const source=compileDefinition(definition,{tick:true,names});
   const exports={};
   new Function('exports','"use strict";'+source)(exports);
   return exports[definition.id];

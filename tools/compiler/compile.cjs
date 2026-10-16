@@ -4,6 +4,7 @@ const {Lowering}=require('./lower.cjs');
 const {structure}=require('./structure.cjs');
 const {print}=require('./print.cjs');
 const {optimizeBlock,liveness}=require('./optimize.cjs');
+const {identifierOf}=require('./names.cjs');
 
 const SUPPORTED_KINDS=/^(DerivedConstructor|ClassMembersInitializerFunction(PrecededByStatic)?|ClassStaticInitializerFunction(PrecededByMember)?|NormalFunction|ArrowFunction|AsyncFunction|AsyncArrowFunction|AsyncConciseMethod|ConciseMethod|StaticConciseMethod|GetterFunction|SetterFunction|BaseConstructor|DefaultBaseConstructor)$/;
 
@@ -111,8 +112,13 @@ function compileDefinition(definition,options={}) {
   const incoming=Number.isInteger(definition.incoming)&&definition.incoming>=0&&definition.incoming<definition.registerCount?definition.incoming:null;
   if(incoming!==null)registers.add(incoming);
   const declarations=['acc','pending=HOLE',...[...registers].sort((a,b)=>a-b).map(index=>'r'+index+(index===incoming?'=newTarget':''))];
+  const label=options.names?.get(definition.id);
+  const own=definition.name&&/^[A-Za-z_$][\w$]*$/.test(definition.name)?definition.name:'';
+  const readable=identifierOf(own||label?.hint||'');
+  const header=['// '+definition.id+(own?' '+own:'')+(label?.parent?' (created in '+label.parent+(label.hint?', hint: '+label.hint:'')+')':'')];
   return[
-    'exports.'+definition.id+'='+(isAsync?'async ':'')+'function(rt,fn,self,args,newTarget,ctx,K){',
+    ...(options.names?header:[]),
+    'exports.'+definition.id+'='+(isAsync?'async ':'')+'function'+(options.names&&readable?' '+readable+'_'+definition.id:'')+'(rt,fn,self,args,newTarget,ctx,K){',
     '  const{HOLE}=rt;',
     '  let '+declarations.join(',')+';',
     source,
