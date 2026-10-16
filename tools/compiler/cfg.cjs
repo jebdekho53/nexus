@@ -47,7 +47,7 @@ function buildCfg(definition) {
     for(const offset of[start,end,handler])if(indexOf.has(offset))leaders.add(indexOf.get(offset));
   }
   const starts=[...leaders].sort((a,b)=>a-b);
-  const blocks=starts.map((start,order)=>({id:order,start,end:(starts[order+1]??code.length),rows:null,succ:[],pred:[]}));
+  const blocks=starts.map((start,order)=>({id:order,start,pc:code[start][0],end:(starts[order+1]??code.length),rows:null,succ:[],pred:[]}));
   const byIndex=new Map(blocks.map(block=>[block.start,block]));
   for(const block of blocks) {
     block.rows=code.slice(block.start,block.end);

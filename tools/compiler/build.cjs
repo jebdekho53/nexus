@@ -1,0 +1,37 @@
+'use strict';
+// Compiles every translatable recovered definition into src/main/compiled/part-NN.cjs plus an index.
+// Usage: node tools/compiler/build.cjs [--exclude fNN,fMM]   (generated files are UTF-8, LF)
+const fs=require('node:fs'),path=require('node:path');
+const definitions=require('../../src/main/generated/index.cjs');
+const{compileDefinition,Unsupported}=require('./compile.cjs');
+const excludeArgument=process.argv.indexOf('--exclude');
+const excluded=new Set(excludeArgument>=0?process.argv[excludeArgument+1].split(','):[]);
+const outputDirectory=path.resolve(__dirname,'../../src/main/compiled');
+fs.mkdirSync(outputDirectory,{recursive:true});
+for(const name of fs.readdirSync(outputDirectory))if(/^part-\d+\.cjs$/.test(name))fs.unlinkSync(path.join(outputDirectory,name));
+
+const ids=Object.keys(definitions).sort((a,b)=>Number(a.slice(1))-Number(b.slice(1)));
+const unsupported=[];
+let chunk=[],size=0,partNumber=0,compiled=0;
+const parts=[];
+const flush=()=>{
+  if(!chunk.length)return;
+  const name='part-'+String(++partNumber).padStart(2,'0')+'.cjs';
+  fs.writeFileSync(path.join(outputDirectory,name),"'use strict';\n// Compiled from recovered definitions by tools/compiler (do not edit; rebuild instead).\n"+chunk.join('\n')+'\n');
+  parts.push(name);chunk=[];size=0;
+};
+for(const id of ids) {
+  if(excluded.has(id))continue;
+  try {
+    const source=compileDefinition(definitions[id]);
+    chunk.push(source);size+=source.length;compiled++;
+    if(size>1500000)flush();
+  } catch(error) {
+    if(!(error instanceof Unsupported))throw new Error(id+': '+error.stack);
+    unsupported.push(id+' '+error.message);
+  }
+}
+flush();
+fs.writeFileSync(path.join(outputDirectory,'index.cjs'),"'use strict';\nmodule.exports=Object.assign({},\n"+parts.map(name=>'  require("./'+name+'")').join(',\n')+'\n);\n');
+fs.writeFileSync(path.join(outputDirectory,'unsupported.txt'),unsupported.join('\n')+'\n');
+console.log('Compiled '+compiled+' definitions into '+parts.length+' files; '+unsupported.length+' remain interpreted');

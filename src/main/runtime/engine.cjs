@@ -12,6 +12,9 @@ const own = (target, key, value) => Object.defineProperty(target, key, {value, w
 
 function createEngine(definitions, options = {}) {
   const globals = options.globals || globalThis;
+  // Compiled bodies (tools/compiler) replace the instruction interpreter per function. MATRIX_COMPILED=1 enables them
+  // for every engine, which is how the full test suite is also run against the compiled code.
+  const compiledBodies = options.compiledBodies ?? (process.env.MATRIX_COMPILED === '1' ? require('../compiled/index.cjs') : undefined);
   const symbols = new Map();
   const maps = new WeakMap();
   const context = (length, parent) => {
@@ -59,6 +62,17 @@ function createEngine(definitions, options = {}) {
     if (value.type === 'tuple') return literal(value.values);
     return constant(value);
   }
+  // Helpers used by compiled function bodies (see tools/compiler). They mirror the interpreter's semantics.
+  const rt={
+    HOLE, globals, constant, literal, context, own, receiver,
+    numeric,
+    makeFunction: (...args) => makeFunction(...args),
+    outer(ctx, depth) { while (depth-- > 0) ctx = ctx[CONTEXT] || ctx[1]; if (!ctx) throw new Error('Missing lexical context'); return ctx; },
+    call: (fn, thisValue, args) => Reflect.apply(fn, thisValue, args),
+    global(name) { if (!(name in globals)) throw new ReferenceError(name + ' is not defined'); return globals[name]; },
+    runtime: (name, args, frame) => runtime(name, args, frame),
+    tick: () => { if (options.tick) options.tick(); },
+  };
   function makeFunction(id, captured = context(2, null), lexical = {}) {
     const definition = definitions[id];
     if (!definition) throw new Error('Missing recovered function ' + id);
@@ -86,6 +100,13 @@ function createEngine(definitions, options = {}) {
     };
     const invokeOriginal = (that,args,newTarget) => {
       if(nativeImplementation)return Reflect.apply(nativeImplementation,that,args);
+      const compiled = compiledBodies?.[id];
+      if (compiled) {
+        let self = that;
+        if (definition.kind.includes('Derived')) self = HOLE;
+        else if (definition.language === 'sloppy') self = that == null ? globals : Object(that);
+        return compiled(rt, fn, self, args, newTarget, captured, definition.constants);
+      }
       const frame = {
         definition, fn, args, regs: new Array(definition.registerCount), ctx: captured,
         thisValue: definition.kind.includes('Derived') ? HOLE : that,

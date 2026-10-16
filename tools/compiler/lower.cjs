@@ -17,7 +17,7 @@ function literalOf(value) {
 }
 
 function property(object,key) {
-  return typeof key==='string'&&IDENTIFIER.test(key)&&!RESERVED.has(key)?object+'.'+key:object+'['+key+']';
+  return typeof key==='string'&&IDENTIFIER.test(key)?object+'.'+key:object+'['+JSON.stringify(key)+']';
 }
 
 class Lowering {
@@ -220,6 +220,7 @@ class Lowering {
       case 'CreateRestParameter': this.usesArgs=true; return ['acc=args.slice('+(this.definition.parameterCount-1)+');'];
       case 'SetPendingMessage': return ['{const previous=pending;pending=acc;acc=previous;}'];
       case 'SwitchOnGeneratorState': return [];
+      case 'AwaitPseudo': return ['r'+args[1]+'=await r'+args[0]+';','r'+args[2]+'=0;','acc=true;'];
       default: throw new Unsupported('opcode '+op);
     }
   }
@@ -233,6 +234,15 @@ class Lowering {
   runtime(row) {
     const[offset,,args]=row;
     const name=args[0];
+    if(this.async&&name.startsWith('_AsyncFunction')) {
+      const first=args[1]?.range?.[0];
+      switch(name) {
+        case '_AsyncFunctionEnter': return['acc={};'];
+        case '_AsyncFunctionResolve': return['acc=r'+(first+1)+';'];
+        case '_AsyncFunctionReject': return['throw r'+(first+1)+';'];
+        default: throw new Unsupported('async intrinsic '+name);
+      }
+    }
     const list=args[1]===undefined?[]:this.range(args[1],offset);
     switch(name) {
       case '_CopyDataProperties': case '_CopyDataPropertiesWithExcludedPropertiesOnStack': case 'ThrowIteratorResultNotAnObject': case 'ThrowStaticPrototypeError': case 'LoadKeyedFromSuper': case 'DefineAccessorPropertyUnchecked': case 'DynamicImportCall':
