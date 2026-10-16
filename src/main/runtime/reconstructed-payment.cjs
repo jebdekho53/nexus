@@ -37,6 +37,7 @@ const {pollPaytmStatus}=require('../payment/paytm-status.cjs');
 const {waitForPaytmWs}=require('../payment/paytm-websocket.cjs');
 const {razorpayLocation,parseRazorpayCheckoutPage,razorpayCheckout,razorpaySessionToken,razorpayPollUrl,razorpayCreate,pollRazorpay}=require('../payment/razorpay-transport.cjs');
 const {walletVerify}=require('../payment/wallet-verify.cjs');
+const providerPage=require('../booking/provider-page.cjs');
 const serverTime=require('../booking/server-time.cjs');
 const timeHelpers=require('../booking/time-helpers.cjs');
 const {attachDuplicateLoginWatch,aiResolve,ensureAuthToken,relaunchIfLoggedOut,dumpAuthState,printTicketInBrowser,stopWith,updateLiveForm,controlProxyContext,routeGatewayThroughFormProxy,cancelPayment,stoppedResult,highLoadDelay,focusBrowser,hideBrowser,minimizeBrowser}=require('../booking/controls.cjs');
@@ -110,6 +111,9 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     f2274:({readBinding})=>function(stamp,t0,t1,label){return serverTime.applyServerTimeStamp(this,stamp,t0,t1,label,{parseStamp:value=>readBinding(937,undefined,1)(value),formatClock:value=>readBinding(936,undefined,1)(value)});},
     f2276:({readBinding})=>function(){return serverTime.syncServerTime(this,{basePath:()=>readBinding(345,'rt',1)});},
     f2278:({readBinding})=>function(){return serverTime.ensureServerTimeSynced(this,{basePath:()=>readBinding(345,'rt',1),formatClock:value=>readBinding(936,undefined,1)(value)});},
+    f2255:()=>providerPage.providerOriginOk,
+    f2256:({readBinding})=>function(){return providerPage.onProviderPage(this,{originCheck:url=>readBinding(51,undefined,0).providerOriginOk(url)});},
+    f2257:()=>function(action){return providerPage.ensureOnProviderPage(this,action);},
     f1704:()=>function(){return paytmOriginPage(this,dependencies.globals);},
     f1708:()=>function(path,options){return paytmPageRequest(this,path,options);},
     f1710:()=>function(){return disposePaytmPage(this);},

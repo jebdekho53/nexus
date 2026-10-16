@@ -31,5 +31,9 @@ for(const id of process.argv.slice(2)) {
   const lines=block=>block.split('\n').length;
   matches.sort((a,b)=>Math.abs(lines(a)-definition.code.length/1.7)-Math.abs(lines(b)-definition.code.length/1.7));
   if(!matches.length){console.log('// '+id+': no block contains at least 70% of '+wanted.length+' strings');continue;}
+  // Drop decoder loads, register shuffles and generator boilerplate that only add noise.
+  const noise=/^\t*r\d+ = ("[^"]{0,5}"|r0|<this>|<closure>|<context>|ACCU|Scope\[[^\]]+\](\[\d+\])?)$/;
+  const clean=text=>text.split('\n').filter(line=>!noise.test(line)&&!/_GeneratorGetResumeMode|^\t*ACCU = r\d+ === 0$/.test(line)).join('\n');
+  if(!process.argv.includes('--raw'))matches[0]=clean(matches[0]);
   console.log('// '+id+': '+matches.length+' candidate block(s); showing the closest\n'+matches[0]+'\n');
 }

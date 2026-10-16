@@ -11,7 +11,7 @@ const BUILTINS={Promise,String,Number,Object,Array,JSON,RegExp,URL,Math,Date,Err
 
 // slots: root-scope values. A string like 'f150' becomes that recovered function created in the root scope;
 // a function receives the engine and root and returns the value.
-function harness({native=false,slots={},globals={},dependencies={}}={}) {
+function harness({native=false,slots={},scope={},globals={},dependencies={}}={}) {
   const engine=createEngine(definitions,{
     functionFactories:native?reconstructedPayment({development:true,enabled:true,dependencies}):{},
     globals:{...BUILTINS,...globals},
@@ -20,7 +20,8 @@ function harness({native=false,slots={},globals={},dependencies={}}={}) {
   root[5]=root[1841]=(n,key)=>{assert.notEqual(strings[n+'|'+key],undefined,'missing string fixture '+n+'|'+key);return strings[n+'|'+key];};
   for(const[slot,value]of Object.entries(slots))
     root[slot]=typeof value==='string'&&/^f\d+$/.test(value)?engine.makeFunction(value,root):typeof value==='function'&&value.length===2&&value.needsEngine?value(engine,root):value;
-  const context=engine.context(2,root);
+  const context=engine.context(Math.max(2,...Object.keys(scope).map(Number))+1,root);
+  for(const[slot,value]of Object.entries(scope))context[slot]=value;
   // Closure whose enclosing function context holds the string decoder in slot 2 (nested helper functions).
   const nested=engine.context(3,root);nested[2]=root[5];
   return{engine,root,context,method:id=>engine.makeFunction(id,context),rootFunction:id=>engine.makeFunction(id,root),nestedFunction:id=>engine.makeFunction(id,nested)};
