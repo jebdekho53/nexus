@@ -23,3 +23,5 @@ No live login, booking/payment submission, QR generation, new build or deploymen
 Keep TASK-STATE.json and the reconstruction report current after each verified module. Report precisely which parts still use the recovered engine. Preserve a reversible original fallback and do not delete generated definitions while remaining callers or tests need them.
 
 Latest checkpoint: 177 full application tests pass. The opt-in adapter checks src/main/payment/recovered-contract.json fingerprints before installing replacements. Do not regenerate these fingerprints merely to silence a mismatch; inspect and compare the changed semantics.
+
+Code checkpoint: commit 7ab017c. Latest usage check showed 8% of the five-hour window remaining; handoff prepared before exhaustion. TASK-STATE.json remains in_progress because reconstruction is incomplete.

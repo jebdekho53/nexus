@@ -93,14 +93,16 @@
     ],
     "published": false,
     "quotaHandoffThresholdRemainingPercent": 5,
-    "lastObservedPrimaryRemainingPercent": 13,
-    "lastObservedWeeklyRemainingPercent": 35,
+    "lastObservedPrimaryRemainingPercent": 8,
+    "lastObservedWeeklyRemainingPercent": 34,
     "testsPassed": 177,
     "smoke": {
       "windows": 8,
       "completeDom": true,
       "allElevenFactoriesEnabled": true,
       "offline": true
-    }
+    },
+    "codeCheckpoint": "7ab017c",
+    "handoffReady": true
   }
 }
