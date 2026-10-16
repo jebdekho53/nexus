@@ -88,4 +88,104 @@ async function razorpaySessionToken(actor,keyId,newSession) {
   actor.log('razorpaySessionToken → '+response.status()+' token='+(token?'y':'-'));
   return token;
 }
-module.exports={razorpayLocation,parseRazorpayCheckoutPage,razorpayCheckout,razorpaySessionToken};
+// Recovered f151. Poll addresses are kept on razorpay.com hosts and otherwise moved onto the checkout host.
+function razorpayPollUrl(url,base) {
+  if(!url)return '';
+  try {
+    const parsed=new URL(url);
+    if(/(?:^|\.)razorpay\.com$/i.test(parsed.hostname))return parsed.toString();
+    return 'https://'+new URL(base).host+parsed.pathname+parsed.search;
+  } catch {return '';}
+}
+
+const presence=value=>value?'y':'-';
+
+// Recovered f1766 with callbacks f1767–f1770. Builds the standard-checkout form for a UPI QR/intent
+// payment and retries rate-limited (429) or server-side failures with the provider-required waits
+// (limits come from the bootstrap constants: 100 rate-limit attempts, 3 error attempts, 3000 ms wait,
+// plus a fixed 1500 ms pause between error retries). Diagnostics report only status codes and presence
+// flags; payment identifiers, poll/intent addresses and provider error text are never logged although
+// the snip helper still runs for its effects.
+async function razorpayCreate(actor,order,{pollUrl=razorpayPollUrl,limits,clock=Date,random=Math.random,timers=globalThis}) {
+  const host=actor.hosts.razorpay??'';
+  const userAgent=(await actor.clientHints()).ua;
+  const os=/Windows/i.test(userAgent)?'windows':'macos';
+  const fingerprintHash=actor.fingerprint();
+  const deviceId='1.'+fingerprintHash+'.'+clock.now()+'.'+Math.floor(1000+random()*9000);
+  const intent=order.flow==='intent';
+
+  const body={};
+  for(const[key,value]of Object.entries(order.order.notes??{}))body['notes['+key+']']=value;
+  body.key_id=order.keyId;
+  body.callback_url=order.order.callbackUrl;
+  body.currency='INR';
+  body.amount=String(order.order.amount||'');
+  body.order_id=order.order.orderId;
+  body.method='upi';
+  if(intent) {
+    body['_[flow]']='intent';body['upi[flow]']='intent';body['_[upiqr]']='1';
+  } else {
+    body.vpa=order.vpa??'';body['upi[flow]']='collect';
+  }
+  body.fee='0';
+  body['_[checkout_id]']=random().toString(36).slice(2);
+  body['_[device.id]']=deviceId;
+  body['_[library]']='hosted';
+  if(intent) {body['_[library_src]']='no-src';body['_[current_script_src]']='no-src';}
+  body['_[platform]']='browser';
+  if(intent) {body['_[env]']='';body['_[is_magic_script]']='false';}
+  body['_[os]']=os;
+  body['_[referer]']=actor.hosts.wps+'/';
+  body['_[shield][fhash]']=fingerprintHash;
+  body['_[shield][tz]']='330';
+  if(intent) {body['_[device_id]']=deviceId;body['_[request_index]']='0';}
+
+  const url=host+'/v1/standard_checkout/payments/create/ajax?key_id='+encodeURIComponent(order.keyId)+'&session_token='+encodeURIComponent(order.sessionToken);
+  const headers=await actor.gwHeaders('razorpay',{extra:{'Content-Type':'application/x-www-form-urlencoded','X-Session-Token':order.sessionToken}});
+
+  let paymentId='',intentUrl='',poll='',shape='';
+  for(let attempt=0;attempt<limits.rateLimitAttempts();attempt++) {
+    const response=await actor.req.post(url,{headers,form:body}).catch(()=>null);
+    const data=response?await response.json().catch(()=>({})):{};
+    paymentId=String(data.payment_id??'');
+    const payload=data.data??{};
+    const upi=payload.upi??{};
+    intentUrl=String(payload.intent_url??payload.upi_intent_url??upi.intent_url??payload.link??payload.qr_code_url??payload.qr_code??data.link??data.qr_code_url??'');
+    const requested=String((data.request??{}).url??'');
+    poll=pollUrl(requested,host);
+
+    let line='razorpayCreate('+order.flow+') → '+(response?.status()??'ERR')+' (try '+(attempt+1)+'/'+limits.rateLimitAttempts()+') payId='+presence(paymentId)
+      +' intent='+presence(intentUrl)+' poll=';
+    if(poll)actor.snip(poll);
+    line+=presence(poll);
+    if(requested&&poll!==requested) {actor.snip(requested);line+=' (rewritten)';}
+    line+=' err=';
+    if(data.error)actor.snip(JSON.stringify(data.error));
+    line+=presence(data.error);
+    actor.log(line);
+
+    if(intent&&!intentUrl&&response&&response.status()<400) {
+      const top=Object.keys(data).join(','),inner=Object.keys(payload).join(',');
+      actor.snip(JSON.stringify(data.next??payload.next??''));
+      shape='top=['+top+'] data=['+inner+']';
+    }
+    if(intent?intentUrl:paymentId)break;
+    if((response?.status())===429) {
+      if(attempt>=limits.rateLimitAttempts()-1) {
+        actor.log('razorpayCreate rate-limited (429) on all '+limits.rateLimitAttempts()+' attempts — falling back to another gateway (the browser stays open)','warn');
+        break;
+      }
+      const delay=limits.rateLimitDelay();
+      actor.log('razorpayCreate rate-limited (429) — retry '+(attempt+2)+'/'+limits.rateLimitAttempts()+' in '+delay+'ms','warn');
+      await new Promise(resolve=>timers.setTimeout(resolve,delay));
+      continue;
+    }
+    if(response&&response.status()>=400&&response.status()<500)break;
+    if(attempt>=limits.errorAttempts()-1)break;
+    await new Promise(resolve=>timers.setTimeout(resolve,1500));
+  }
+  if(intent&&!intentUrl&&shape)actor.log('razorpayCreate intent returned NO QR url — response shape: '+shape);
+  return{paymentId,intentUrl,pollUrl:poll};
+}
+
+module.exports={razorpayLocation,parseRazorpayCheckoutPage,razorpayCheckout,razorpaySessionToken,razorpayPollUrl,razorpayCreate};
