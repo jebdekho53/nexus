@@ -10,5 +10,6 @@ module.exports=Object.assign({},
   require("./part-08.cjs"),
   require("./part-09.cjs"),
   require("./part-10.cjs"),
-  require("./part-11.cjs")
+  require("./part-11.cjs"),
+  require("./part-12.cjs")
 );
