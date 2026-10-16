@@ -24,6 +24,8 @@ const {retryGatewayRequest}=require('../payment/gateway-retry.cjs');
 const {clientHints,gatewayHints,liveProviderOrigin,setGatewayPageOrigin,gatewayPageReferrer,originFor}=require('../payment/gateway-session.cjs');
 const {disposeSurvivor,disposeDirectContext}=require('../payment/gateway-lifecycle.cjs');
 const {hiddenFormValue,formAction,paymentRedirect}=require('../payment/gateway-redirect.cjs');
+const {appConfig,qrAmount}=require('../payment/qr-response.cjs');
+const {createProviderQr}=require('../payment/provider-qr-request.cjs');
 const {createHash}=require('node:crypto');
 const contracts=require('../payment/recovered-contract.json');
 
@@ -38,6 +40,9 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
       throw new Error('Reconstructed payment contract changed for '+id+'. Review the recovered definition and comparison tests before enabling this candidate.');
   }
   return {
+    f1602:()=>function(html){return appConfig(html,dependencies.globals);},
+    f1608:()=>qrAmount,
+    f1668:({readBinding})=>function(action,encdata){return createProviderQr(this,action,encdata,{parseConfig:html=>readBinding(777,undefined,1)(html),parseAmount:payload=>readBinding(782,undefined,1)(payload)});},
     f1609:()=>hiddenFormValue,
     f1610:()=>formAction,
     f1667:({readBinding})=>function(input){return paymentRedirect(this,input,{getAction:html=>readBinding(784,undefined,1)(html),getField:(html,name)=>readBinding(783,undefined,1)(html,name)});},

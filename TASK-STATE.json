@@ -1,6 +1,6 @@
 {
   "status": "in_progress",
-  "progress": "Phases1–8:43 native entries,575 full tests,112 pinned definitions. PaymentRedirect/form parsers and full synthetic chain verified. Eight smoke screens passed with43 factories(PID816). Source-only developer candidate, no live service/build/deployment. Next provider QR creation/polling and related parsers; full app still partly recovered.",
+  "progress": "Phases1–9:46 native entries,610 full tests,119 pinned definitions. Provider QR creation/config+amount parsers now native; full low-level synthetic chain matches. Authentication HTML removed from missing-ID diagnostic only. No real service/build/deployment; public1.0.11 unchanged. Next provider polling f1673 with classifier/encdata helpers; full app reconstruction incomplete.",
   "task": "Reconstruct recovered Matrix payment logic into maintainable JavaScript",
   "completedLatestTask": {
     "task": "Fix WebLogin Chrome selection closing another independent pair panel",
@@ -74,11 +74,14 @@
     }
   },
   "reconstruction": {
-    "phase": "payment redirect and form parsing",
+    "phase": "provider QR creation and response parsing",
     "report": "docs/reconstruction-progress.md",
     "handoff": "docs/ANTIGRAVITY-HANDOFF.md",
     "flag": "--reconstructed-payment",
     "nativeEntries": [
+      "f1602",
+      "f1608",
+      "f1668",
       "f1609",
       "f1610",
       "f1667",
@@ -125,26 +128,27 @@
     ],
     "published": false,
     "quotaHandoffThresholdRemainingPercent": 5,
-    "lastObservedPrimaryRemainingPercent": 82,
-    "lastObservedWeeklyRemainingPercent": 14,
-    "testsPassed": 575,
+    "lastObservedPrimaryRemainingPercent": 72,
+    "lastObservedWeeklyRemainingPercent": 13,
+    "testsPassed": 610,
     "smoke": {
       "windows": 8,
       "completeDom": true,
-      "factoriesEnabled": 43,
+      "factoriesEnabled": 46,
       "offline": true,
-      "pid": 816,
+      "pid": 18260,
       "complete": true
     },
-    "codeCheckpoint": "phases1–8 checkpoint; consult git log",
+    "codeCheckpoint": "phases1–9 checkpoint; consult git log",
     "handoffReady": false,
     "phaseTwoReport": "docs/reconstruction-phase-2.md",
-    "pinnedDefinitions": 112,
+    "pinnedDefinitions": 119,
     "phaseFourReport": "docs/reconstruction-phase-4.md",
-    "nextReview": "f1668 with f1602/f1608; decoded f1668 and f1669–1672 reviewed, f1673 polling remains recovered",
+    "nextReview": "f1673 polling instructions fully reviewed; next f1603/f1604 classifier and f1678/f1679/f1680 encdata helper. See phase9 report.",
     "phasesFiveSixReport": "docs/reconstruction-phases-5-6.md",
     "phaseSevenReport": "docs/reconstruction-phase-7.md",
-    "phaseEightReport": "docs/reconstruction-phase-8.md"
+    "phaseEightReport": "docs/reconstruction-phase-8.md",
+    "phaseNineReport": "docs/reconstruction-phase-9.md"
   },
   "continuationSchedule": "First16Oct2026at18:42IST, then every5h30m (330min). Existing general unfinished-task fallback remains active."
 }

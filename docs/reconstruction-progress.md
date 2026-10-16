@@ -1,4 +1,4 @@
-# Matrix source reconstruction — phases 1–8
+# Matrix source reconstruction — phases 1–9
 
 Date: 16 October 2026. This is source work after the published 1.0.11 diagnostics release. It has not been built or deployed.
 
@@ -33,7 +33,7 @@ These implementations are ordinary JavaScript, not wrappers that execute the sam
 
 ## Activation and fallback
 
-`runtime/reconstructed-payment.cjs` installs forty-three entry replacements only with **all** of: developer mode, unmanaged checkout, and `--reconstructed-payment`. Without this flag the original functions remain active; managed releases ignore it. The General API candidate is a different, independent flag.
+`runtime/reconstructed-payment.cjs` installs forty-six entry replacements only with **all** of: developer mode, unmanaged checkout, and `--reconstructed-payment`. Without this flag the original functions remain active; managed releases ignore it. The General API candidate is a different, independent flag.
 
 Local opt-in launch, with no automatic login or booking:
 
@@ -46,13 +46,13 @@ Do not describe the whole app as fully reconstructed. No generated definitions h
 
 ## Evidence
 
-Final full application suite: **575 tests passed**. No test failures remain. The opt-in adapter also validates pinned native IDs and definition SHA-256 contracts before installing replacements; changed recovery output must be reviewed and retested, not blindly accepted.
+Final full application suite: **610 tests passed**. No test failures remain. The opt-in adapter also validates pinned native IDs and definition SHA-256 contracts before installing replacements; changed recovery output must be reviewed and retested, not blindly accepted.
 
 - Tests execute actual recovered functions with a static decoded-string fixture and synthetic transports, then compare request data, call order, callbacks, results, errors, cancellation and state changes against the native implementation.
 - Payment payload tests cover 875 combinations of method, amount and bank override. Gateway candidate tests cover 90 combinations and bank lookup tests cover 20.
 - Thirty-nine scenarios compare the actual recovered f2172 with the complete native orchestrator. Twenty-seven compare gateway dispatch including the wallet branch. Two complete chain tests cover payment-init → dispatch → PayTM QR with mocked transport and parallel actor isolation.
 - A native-factory test runs f2186 with no decoder/captured actor and verifies its local recovered callbacks are not invoked. Factories preserve `this` and existing duration instrumentation.
-- Eight source smoke screens rendered with all forty-three entry factories enabled with complete DOMs and no native bytecode loaded with reconstruction enabled (PID 816). This is boot/UI evidence, not a service or QR speed measurement.
+- Eight source smoke screens rendered with all forty-six entry factories enabled with complete DOMs and no native bytecode loaded with reconstruction enabled (PID 18260). This is boot/UI evidence, not a service or QR speed measurement.
 - The decoder fixture is static program data, not a captured HTTP response. `tools/export_payment_fixture.py` can regenerate it from the local original string table using the recovery decoder. No credentials or passenger records are involved.
 
 Required passenger wait, authentication/session checks, request ordering, gateway validation, existing release activation, pair ownership and retired-vendor restrictions are preserved. No live login, booking, payment or QR requests were made during reconstruction.
@@ -76,3 +76,5 @@ Phases 5–6 complete the finalization core, print-ticket attachment, booking-da
 Phase7 reconstructs gateway session/origin/hint helpers f1659–f1665 and disposal f1621/f1630 with original-versus-native tests. Current total:40 entries,109 fingerprints,554 tests,eight smoke windows(PID10540). See docs/reconstruction-phase-7.md. Payment redirect and provider transports still need migration.
 
 Phase8 adds PaymentRedirect f1667 and form parsers f1609/f1610; current43 entries,112 fingerprints,575 tests. See docs/reconstruction-phase-8.md. Provider QR generation/polling still needs migration; no live timing claim.
+
+Phase9 adds provider QR creation f1668 and config/amount parsing f1602/f1608. Current46 entries,119 fingerprints,610 tests. Missing-ID logs intentionally omit auth-page HTML; request/result behavior matches. See docs/reconstruction-phase-9.md. Polling/encdata helpers still recovered.
