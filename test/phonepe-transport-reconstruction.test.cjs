@@ -142,3 +142,53 @@ test('PhonePe QR request sequence, headers and private diagnostics',async()=>{
   assert.equal(details[2].extra['X-Client-Version'],'131.0.0.0');assert.equal(details[2].extra['X-Merchant-Domain'],'https://provider.invalid/');
   assert.doesNotMatch(value.rawLogs.join(' '),/synthetic-(key|session|token)|SYNTHETICIMAGE|invalid/);
 });
+
+async function poll(native,options={}) {
+  const{engine,context,trace}=harness(native),logs=[];
+  let calls=0;
+  const queue=[...(options.states??['COMPLETED'])];
+  const response=(body,ok=true,json)=>({ok(){trace.push(['ok']);return ok;},json(){trace.push(['json']);return json?json():Promise.resolve(body);}});
+  const actor={hosts:{phonepeApi:options.api??'https://api.invalid'},
+    async sleep(ms){trace.push(['sleep',ms]);if(options.fail==='sleep')throw Error('synthetic sleep');},
+    async phonePeHeaders(token){trace.push(['headers',token]);if(options.fail==='headers')throw Error('synthetic headers');return{synthetic:'header'};},
+    log(value){trace.push(['log']);logs.push(value);},
+    req:{get(url,settings){trace.push(['get',url,settings]);assert.equal(this,actor.req);calls++;
+      if(options.fail==='getSync')throw Error('synthetic get');
+      if(url.endsWith('/status')) {
+        const next=queue.length>1?queue.shift():queue[0];
+        if(next==='reject')return Promise.reject(Error('synthetic status rejection'));
+        if(next==='missing')return Promise.resolve(undefined);
+        if(next==='notOk')return Promise.resolve(response({},false));
+        if(next==='badJson')return Promise.resolve(response(undefined,true,()=>Promise.reject(Error('synthetic json'))));
+        if(next==='noState')return Promise.resolve(response({}));
+        if(next==='lower')return Promise.resolve(response({state:'completed'}));
+        return Promise.resolve(response({state:next}));
+      }
+      if(options.redirect==='reject')return Promise.reject(Error('synthetic redirect'));
+      if(options.redirect==='missing')return Promise.resolve(undefined);
+      if(options.redirect==='badJson')return Promise.resolve(response(undefined,true,()=>Promise.reject(Error('synthetic json'))));
+      return Promise.resolve(response(options.redirectBody??{notificationResponse:{response:'synthetic-encdata'}}));}}};
+  let stopCount=0;
+  const stopped=options.noStop?(()=>false):()=>{stopCount++;trace.push(['stopped?']);return options.stopAt!==undefined&&stopCount>options.stopAt;};
+  const onWait=options.noWait?undefined:()=>{trace.push(['wait']);if(options.fail==='wait')throw Error('synthetic wait');};
+  return{...await outcome(engine.makeFunction('f1751',context).call(actor,'synthetic-token',stopped,onWait,options.useDefault?undefined:options.max)),trace,logs:logs.map(v=>v.replace(/\(poll \d+\)/,'(poll n)')),rawLogs:logs};
+}
+const pollCases={
+  completed:{max:3},completedLower:{states:['lower'],max:3},pendingThenPaid:{states:['PENDING','PENDING','COMPLETED'],max:5},failed:{states:['FAILED'],max:2},declined:{states:['DECLINED'],max:2},cancelled:{states:['CANCELLED'],max:2},expired:{states:['EXPIRED'],max:2},
+  timeout:{states:['PENDING'],max:3},zeroMax:{max:0},nullMax:{max:null},defaultMax:{useDefault:true,stopAt:1,states:['PENDING']},stoppedFirst:{stopAt:0,max:3},stoppedLater:{stopAt:2,states:['PENDING'],max:5},
+  missingStatus:{states:['missing','COMPLETED'],max:3},notOk:{states:['notOk','COMPLETED'],max:3},rejected:{states:['reject','COMPLETED'],max:3},badJson:{states:['badJson','COMPLETED'],max:3},noState:{states:['noState','COMPLETED'],max:3},
+  noWait:{noWait:true,max:2},noRedirect:{redirect:'missing',max:2},redirectRejects:{redirect:'reject',max:2},redirectBadJson:{redirect:'badJson',max:2},noNotification:{redirectBody:{},max:2},nullNotification:{redirectBody:{notificationResponse:null},max:2},
+  numericResponse:{redirectBody:{notificationResponse:{response:12}},max:2},noApiHost:{api:null,max:2},
+  sleepFails:{fail:'sleep',max:2},headersFails:{fail:'headers',max:2},getFails:{fail:'getSync',max:2},waitFails:{fail:'wait',max:2},
+};
+for(const[name,options]of Object.entries(pollCases))test('PhonePe payment polling matches recovered waits, states and results: '+name,async()=>{
+  const actual=await poll(true,options),expected=await poll(false,options);
+  const normalize=value=>JSON.parse(JSON.stringify({...value,rawLogs:undefined}));
+  assert.deepEqual(normalize(actual),normalize(expected));
+});
+test('PhonePe polling retains the 2000ms wait before every request',async()=>{
+  const value=await poll(true,{states:['PENDING','PENDING','COMPLETED'],max:5});
+  assert.deepEqual(value.trace.filter(row=>row[0]==='sleep').map(row=>row[1]),[2000,2000,2000]);
+  assert.deepEqual(value.value,{kind:'paid',encdata:'synthetic-encdata'});
+  assert.doesNotMatch(value.rawLogs.join(' '),/synthetic/);
+});

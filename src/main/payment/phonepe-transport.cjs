@@ -126,4 +126,32 @@ async function phonePeQr(actor,action,token) {
   return{qrBase64,phonePeToken:sessionToken};
 }
 
-module.exports={fingerprint,phonePeHeaders,phonePeRedirect,phonePeQr};
+const TERMINAL_STATES=['FAILED','CANCELLED','DECLINED','EXPIRED'];
+
+// Recovered f1751 with callbacks f1752–f1755. Polls every 2000 ms (default 800 attempts); the wait
+// happens before every status request, including the first, and is never shortened.
+async function pollPhonePe(actor,token,stopped,onWait,maxAttempts=800) {
+  const api=actor.hosts.phonepeApi??'';
+  for(let attempt=0;attempt<maxAttempts;attempt++) {
+    if(stopped())return{kind:'stopped'};
+    await actor.sleep(2000);
+    onWait?.();
+    const status=await actor.req.get(api+CHECKOUT+'/status',{headers:await actor.phonePeHeaders(token)}).catch(()=>null);
+    if(!status||!status.ok())continue;
+    const body=await status.json().catch(()=>({}));
+    const state=String(body.state??'').toUpperCase();
+    if(state==='COMPLETED') {
+      actor.log('phonePe status → COMPLETED (poll '+(attempt+1)+')');
+      const redirect=await actor.req.get(api+CHECKOUT+'/redirect-url',{headers:await actor.phonePeHeaders(token)}).catch(()=>null);
+      const data=await(redirect==null?undefined:redirect.json().catch(()=>({})));
+      return{kind:'paid',encdata:String((data?.notificationResponse??{}).response??'')};
+    }
+    if(TERMINAL_STATES.includes(state)) {
+      actor.log('phonePe status → '+state);
+      return{kind:state==='FAILED'?'failed':'declined',reason:'PhonePe payment '+state.toLowerCase()};
+    }
+  }
+  return{kind:'timeout'};
+}
+
+module.exports={fingerprint,phonePeHeaders,phonePeRedirect,phonePeQr,pollPhonePe};
