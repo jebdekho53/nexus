@@ -1,6 +1,7 @@
 'use strict';
 // Differential execution: recovered interpreter vs compiled body in identical seeded synthetic worlds.
-// Usage: node tools/compiler/differential.cjs [--seeds N] [--first K] [--show N] [fNNN ...]
+// Usage: node tools/compiler/differential.cjs [--seeds N] [--first K] [--show N] [--shard I/N] [fNNN ...]
+// (tools/compiler/differential-parallel.cjs runs all shards at once and merges the verdict.)
 const {createEngine,HOLE}=require('../../src/main/runtime/engine.cjs');
 const definitions=require('../../src/main/generated/index.cjs');
 const{compileDefinition,Unsupported}=require('./compile.cjs');
@@ -67,7 +68,9 @@ async function main() {
   const option=(name,fallback)=>{const index=args.indexOf(name);return index>=0?Number(args.splice(index,2)[1]):fallback;};
   const seeds=option('--seeds',6),first=option('--first',Infinity),show=option('--show',5);
   const ids=args.filter(arg=>/^f\d+$/.test(arg));
-  const targets=(ids.length?ids:Object.keys(definitions)).map(id=>definitions[id]).filter(Boolean);
+  const shardIndex=args.indexOf('--shard');
+  const[shard,shards]=shardIndex>=0?args[shardIndex+1].split('/').map(Number):[0,1];
+  const targets=(ids.length?ids:Object.keys(definitions)).map(id=>definitions[id]).filter((definition,index)=>definition&&index%shards===shard);
   let compiled=0,unsupported=0,bad=0,shown=0,checked=0;
   const failures=[];
   for(const definition of targets) {
