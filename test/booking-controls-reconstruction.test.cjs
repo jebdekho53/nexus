@@ -115,3 +115,71 @@ for(const[name,scenario]of Object.entries({
   const value=await outcome(async()=>method('f2052').call(actor));
   return{value,trace,logs:logTrace,state:actor.gatewayReqCtx};
 }));
+
+// Missing session objects fail the same way (outer failures are rejections, not swallowed)
+for(const id of ['f2049','f2052','f2055','f2057','f2059'])
+  test('missing session rejects like the recovered method: '+id,async()=>compare(async native=>{
+    const{method}=harness({native,slots:{123:()=>Promise.resolve(),122:()=>Promise.resolve()}});
+    const{actor}=recorder({});delete actor.session;actor.gateway={};
+    return outcome(async()=>method(id).call(actor));
+  }));
+
+// printTicketInBrowser (f2059)
+for(const[name,scenario]of Object.entries({
+  clicked:{},notUiLogin:{mode:'api'},noPage:{noPage:true},noControl:{count:0},clickRejects:{clickRejects:true},clickThrows:{clickThrows:true},
+  frontFails:{frontFails:true},popupFails:{popupFails:true},countFails:{countFails:true},locatorFails:{locatorFails:true},
+}))test('printTicketInBrowser matches recovered print flow: '+name,async()=>compare(async native=>{
+  const trace=[];
+  const{method}=harness({native,slots:{123:page=>{trace.push(['front']);if(scenario.frontFails)throw Error('synthetic front');return Promise.resolve();}}});
+  const{actor,trace:logs}=recorder({});
+  const control={count(){trace.push(['count']);if(scenario.countFails)throw Error('synthetic count');return Promise.resolve(scenario.count??1);},
+    click(options){trace.push(['click',options]);if(scenario.clickThrows)throw Error('synthetic click');return scenario.clickRejects?Promise.reject(Error('synthetic click rejection')):Promise.resolve();}};
+  const page={locator(selector){trace.push(['locator',selector]);if(scenario.locatorFails)throw Error('synthetic locator');return{filter(options){trace.push(['filter',options]);return{first(){trace.push(['first']);return control;}};}};}};
+  actor.session={mode:scenario.mode??'uilogin',page:scenario.noPage?undefined:page};
+  actor.dismissPostBookingPopup=function(p){assert.equal(this,actor);trace.push(['popup',p===page]);if(scenario.popupFails)return Promise.reject(Error('synthetic popup'));return Promise.resolve();};
+  return{value:await outcome(async()=>method('f2059').call(actor)),trace,logs};
+}));
+
+// dumpAuthState (f2061): the page-side collector is executed in a sandbox with fake storage
+const storage=entries=>({get length(){return Object.keys(entries).length;},key(index){return Object.keys(entries)[index];},getItem(key){return entries[key];}});
+for(const[name,scenario]of Object.entries({
+  mixed:{local:{accessToken:'abcdefghijklmnopqrstuvwxyz',theme:'dark',id:'0a1b2c3d-1111-2222-3333-444455556666',empty:''},session:{csrf_Token:'1234567890123456789012345'},win:{accessToken:'abcdefghijklmnopqrstuvwxyz',greq:'g',other:'x',token:5}},
+  empty:{local:{},session:{},win:{}},evaluateFails:{fail:true},storageBlocked:{blocked:true},
+}))test('dumpAuthState matches recovered storage summary and logs: '+name,async()=>compare(async native=>{
+  const{method}=harness({native,slots:{2132:source=>require('node:vm').runInNewContext('('+source+')',{
+    localStorage:scenario.blocked?{get length(){throw Error('blocked');}}:storage(scenario.local),sessionStorage:storage(scenario.session??{}),window:scenario.win??{}})}});
+  const{actor,trace}=recorder({});
+  const page={evaluate(fn){if(scenario.fail)return Promise.reject(Error('synthetic evaluate'));return Promise.resolve(require('node:vm').runInNewContext('('+fn.toString()+')',{
+    localStorage:scenario.blocked?{get length(){throw Error('blocked');}}:storage(scenario.local),sessionStorage:storage(scenario.session??{}),window:scenario.win??{}})());}};
+  return{value:await outcome(async()=>method('f2061').call(actor,page)),trace};
+}));
+
+// stopWith (f2079)
+for(const[name,scenario]of Object.entries({
+  plain:{},stuck:{stuck:true},alreadyStopped:{stopped:true},recoverRelaunch:{recover:true,relaunch:true},recoverNoRelaunch:{recover:true},aiPresent:{ai:{}, recover:true},noRelaunchOption:{options:{noRelaunch:true}},
+  nullOptions:{options:null},keepBrowser:{opts:{hideBrowser:false}},hideUndefined:{opts:{}},hideZero:{opts:{hideBrowser:0}},focusRejects:{focus:'reject'},focusThrows:{focus:'throw'},
+  recoverFails:{recover:true,aiFails:true},endSettlingFails:{endFails:true},
+}))test('stopWith matches recovered recovery and stop handling: '+name,async()=>compare(async native=>{
+  const calls=[];
+  const{method}=harness({native,slots:{619:(reason,hasAi,noRelaunch)=>{calls.push(['recover?',reason,hasAi,noRelaunch]);return !!scenario.recover;}}});
+  const{actor,trace}=recorder({opts:scenario.opts??{}});
+  actor.stuck=scenario.stuck;actor.stopped=scenario.stopped;actor.ai=scenario.ai;actor.relaunch=scenario.relaunch;
+  if(scenario.endFails)actor.endSettling=()=>{throw Error('synthetic end');};
+  actor.aiResolve=function(goal,reason){assert.equal(this,actor);trace.push(['aiResolve',goal,reason]);return scenario.aiFails?Promise.reject(Error('synthetic ai')):Promise.resolve();};
+  actor.focusBrowser=function(){assert.equal(this,actor);trace.push(['focus']);if(scenario.focus==='throw')throw Error('synthetic focus');return scenario.focus==='reject'?Promise.reject(Error('synthetic focus rejection')):Promise.resolve();};
+  const value=await outcome(async()=>method('f2079').call(actor,'dead session',Object.hasOwn(scenario,'options')?scenario.options:undefined));
+  return{value,trace,calls};
+}));
+
+// updateLiveForm (f2081)
+for(const[name,scenario]of Object.entries({
+  noLiveForm:{noForm:true,patch:{date:'2026-10-20'}},date:{patch:{date:'2026-10-20'}},sameDate:{patch:{date:'2026-10-16'}},allFields:{patch:{date:'d',classCode:'3A',quota:'TQ',paymentMethod:'upi',paymentMethodDisplay:'UPI QR',upiId:'x@upi'}},
+  nullValues:{patch:{date:null,classCode:null}},emptyPatch:{patch:{}},displayOnly:{patch:{paymentMethodDisplay:'Card'}},methodOnly:{patch:{paymentMethod:'wallet'}},upiOnly:{patch:{upiId:'a@b'}},
+  clearDisplay:{patch:{paymentMethodDisplay:'',paymentMethod:undefined},form:{paymentMethod:'wallet'}},nullPatch:{patch:null},
+}))test('updateLiveForm matches recovered change tracking: '+name,async()=>compare(async native=>{
+  const{method}=harness({native});
+  const{actor,trace}=recorder({});
+  actor.liveForm=scenario.noForm?undefined:{date:'2026-10-16',classCode:'SL',quota:'GN',paymentMethod:'card',paymentMethodDisplay:'Card',upiId:'',...scenario.form};
+  const value=await outcome(async()=>method('f2081').call(actor,scenario.patch));
+  return{value,trace,form:actor.liveForm,chosen:actor.chosenPaymentMethod};
+}));
