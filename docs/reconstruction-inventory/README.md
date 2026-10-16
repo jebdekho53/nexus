@@ -10,10 +10,10 @@ Bands: tiny1–20 instructions; small21–100; medium101–300; large301–1000;
 
 | Band | Functions | Original instructions | Instruction share | Native entries | Pinned support |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| tiny | 1711 | 11873 | 2.32% | 7 | 109 |
+| tiny | 1711 | 11873 | 2.32% | 7 | 113 |
 | small | 1555 | 77741 | 15.16% | 30 | 45 |
 | medium | 741 | 127291 | 24.82% | 20 | 13 |
-| large | 288 | 146373 | 28.54% | 24 | 2 |
+| large | 288 | 146373 | 28.54% | 25 | 2 |
 | very_large | 59 | 149579 | 29.17% | 6 | 0 |
 
 ## Structural review load
@@ -22,9 +22,9 @@ Score = 1 + conditional jumps + loop jumps + switch alternatives + 2*exception h
 
 | Band | Functions | Original instructions | Instruction share | Native entries | Pinned support |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| low | 3128 | 88772 | 17.31% | 25 | 161 |
+| low | 3128 | 88772 | 17.31% | 25 | 165 |
 | moderate | 862 | 137049 | 26.72% | 34 | 7 |
-| high | 305 | 142330 | 27.75% | 21 | 1 |
+| high | 305 | 142330 | 27.75% | 22 | 1 |
 | very_high | 53 | 81107 | 15.81% | 7 | 0 |
 | extreme | 6 | 63599 | 12.4% | 0 | 0 |
 
@@ -32,9 +32,9 @@ Score = 1 + conditional jumps + loop jumps + switch alternatives + 2*exception h
 
 | Band | Functions | Original instructions | Instruction share | Native entries | Pinned support |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| native_entry | 87 | 29145 | 5.68% | 87 | 0 |
-| pinned_support | 169 | 5513 | 1.07% | 0 | 169 |
-| recovered_other | 4098 | 478199 | 93.24% | 0 | 0 |
+| native_entry | 88 | 29939 | 5.84% | 88 | 0 |
+| pinned_support | 173 | 5521 | 1.08% | 0 | 173 |
+| recovered_other | 4093 | 477397 | 93.09% | 0 | 0 |
 
 Native entry is an active development-only replacement. Pinned support is a reviewed callback/dependency; do not count every pin as a completed standalone migration. Original instruction share is a size proxy, not completed effort or tested feature coverage. Main-function count alone substantially misrepresents progress.
 

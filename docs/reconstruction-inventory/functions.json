@@ -23,7 +23,7 @@
         "instructions": 11873,
         "instructionPercent": 2.32,
         "nativeEntries": 7,
-        "pinnedSupport": 109
+        "pinnedSupport": 113
       },
       "small": {
         "functions": 1555,
@@ -43,7 +43,7 @@
         "functions": 288,
         "instructions": 146373,
         "instructionPercent": 28.54,
-        "nativeEntries": 24,
+        "nativeEntries": 25,
         "pinnedSupport": 2
       },
       "very_large": {
@@ -60,7 +60,7 @@
         "instructions": 88772,
         "instructionPercent": 17.31,
         "nativeEntries": 25,
-        "pinnedSupport": 161
+        "pinnedSupport": 165
       },
       "moderate": {
         "functions": 862,
@@ -73,7 +73,7 @@
         "functions": 305,
         "instructions": 142330,
         "instructionPercent": 27.75,
-        "nativeEntries": 21,
+        "nativeEntries": 22,
         "pinnedSupport": 1
       },
       "very_high": {
@@ -93,23 +93,23 @@
     },
     "byStatus": {
       "native_entry": {
-        "functions": 87,
-        "instructions": 29145,
-        "instructionPercent": 5.68,
-        "nativeEntries": 87,
+        "functions": 88,
+        "instructions": 29939,
+        "instructionPercent": 5.84,
+        "nativeEntries": 88,
         "pinnedSupport": 0
       },
       "pinned_support": {
-        "functions": 169,
-        "instructions": 5513,
-        "instructionPercent": 1.07,
+        "functions": 173,
+        "instructions": 5521,
+        "instructionPercent": 1.08,
         "nativeEntries": 0,
-        "pinnedSupport": 169
+        "pinnedSupport": 173
       },
       "recovered_other": {
-        "functions": 4098,
-        "instructions": 478199,
-        "instructionPercent": 93.24,
+        "functions": 4093,
+        "instructions": 477397,
+        "instructionPercent": 93.09,
         "nativeEntries": 0,
         "pinnedSupport": 0
       }
@@ -28683,7 +28683,7 @@
       "suspensions": 6,
       "closures": 4,
       "calls": 95,
-      "status": "recovered_other"
+      "status": "native_entry"
     },
     {
       "id": "f1723",
@@ -28699,7 +28699,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f1724",
@@ -28715,7 +28715,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f1725",
@@ -28731,7 +28731,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f1726",
@@ -28747,7 +28747,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f1727",

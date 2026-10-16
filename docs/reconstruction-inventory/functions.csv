@@ -1721,11 +1721,11 @@ f1718,2,tiny,1,low,0,0,0,0,0,0,0,0,pinned_support
 f1719,97,small,7,moderate,1,0,0,0,1,1,2,8,native_entry
 f1720,187,medium,6,moderate,2,0,0,0,1,1,0,16,pinned_support
 f1721,2,tiny,1,low,0,0,0,0,0,0,0,0,pinned_support
-f1722,794,large,53,high,36,2,0,0,2,6,4,95,recovered_other
-f1723,2,tiny,1,low,0,0,0,0,0,0,0,0,recovered_other
-f1724,2,tiny,1,low,0,0,0,0,0,0,0,0,recovered_other
-f1725,2,tiny,1,low,0,0,0,0,0,0,0,0,recovered_other
-f1726,2,tiny,1,low,0,0,0,0,0,0,0,0,recovered_other
+f1722,794,large,53,high,36,2,0,0,2,6,4,95,native_entry
+f1723,2,tiny,1,low,0,0,0,0,0,0,0,0,pinned_support
+f1724,2,tiny,1,low,0,0,0,0,0,0,0,0,pinned_support
+f1725,2,tiny,1,low,0,0,0,0,0,0,0,0,pinned_support
+f1726,2,tiny,1,low,0,0,0,0,0,0,0,0,pinned_support
 f1727,152,medium,9,moderate,2,0,0,0,1,2,2,14,native_entry
 f1728,212,medium,7,moderate,3,0,0,0,1,1,0,18,pinned_support
 f1729,2,tiny,1,low,0,0,0,0,0,0,0,0,pinned_support
