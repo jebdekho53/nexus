@@ -1,6 +1,6 @@
 {
   "status": "in_progress",
-  "progress": "Phases1–7:40 native payment/gateway entries,554 full tests,109 pinned definitions,eight smoke screens with40 factories(PID10540). Browser hints/origins and actor-owned disposal migrated; complete synthetic chain matches original including a transient network failure. Source-only developer candidate; public1.0.11 unchanged. Next paymentRedirect f1667/form parsers, then provider QR/polling transports. Full app reconstruction incomplete.",
+  "progress": "Phases1–8:43 native entries,575 full tests,112 pinned definitions. PaymentRedirect/form parsers and full synthetic chain verified. Eight smoke screens passed with43 factories(PID816). Source-only developer candidate, no live service/build/deployment. Next provider QR creation/polling and related parsers; full app still partly recovered.",
   "task": "Reconstruct recovered Matrix payment logic into maintainable JavaScript",
   "completedLatestTask": {
     "task": "Fix WebLogin Chrome selection closing another independent pair panel",
@@ -74,11 +74,14 @@
     }
   },
   "reconstruction": {
-    "phase": "gateway browser session and actor-owned disposal",
+    "phase": "payment redirect and form parsing",
     "report": "docs/reconstruction-progress.md",
     "handoff": "docs/ANTIGRAVITY-HANDOFF.md",
     "flag": "--reconstructed-payment",
     "nativeEntries": [
+      "f1609",
+      "f1610",
+      "f1667",
       "f1621",
       "f1630",
       "f1659",
@@ -124,23 +127,24 @@
     "quotaHandoffThresholdRemainingPercent": 5,
     "lastObservedPrimaryRemainingPercent": 82,
     "lastObservedWeeklyRemainingPercent": 14,
-    "testsPassed": 554,
+    "testsPassed": 575,
     "smoke": {
       "windows": 8,
       "completeDom": true,
-      "factoriesEnabled": 40,
+      "factoriesEnabled": 43,
       "offline": true,
-      "pid": 10540,
+      "pid": 816,
       "complete": true
     },
-    "codeCheckpoint": "phases1–7 checkpoint; consult git log",
+    "codeCheckpoint": "phases1–8 checkpoint; consult git log",
     "handoffReady": false,
     "phaseTwoReport": "docs/reconstruction-phase-2.md",
-    "pinnedDefinitions": 109,
+    "pinnedDefinitions": 112,
     "phaseFourReport": "docs/reconstruction-phase-4.md",
-    "nextReview": "f1667 and f1609/f1610 decoded instructions in diagnostics, then provider-specific transports",
+    "nextReview": "f1668 with f1602/f1608; decoded f1668 and f1669–1672 reviewed, f1673 polling remains recovered",
     "phasesFiveSixReport": "docs/reconstruction-phases-5-6.md",
-    "phaseSevenReport": "docs/reconstruction-phase-7.md"
+    "phaseSevenReport": "docs/reconstruction-phase-7.md",
+    "phaseEightReport": "docs/reconstruction-phase-8.md"
   },
   "continuationSchedule": "First16Oct2026at18:42IST, then every5h30m (330min). Existing general unfinished-task fallback remains active."
 }

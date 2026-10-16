@@ -23,6 +23,7 @@ const {gatewayHeaders}=require('../payment/gateway-headers.cjs');
 const {retryGatewayRequest}=require('../payment/gateway-retry.cjs');
 const {clientHints,gatewayHints,liveProviderOrigin,setGatewayPageOrigin,gatewayPageReferrer,originFor}=require('../payment/gateway-session.cjs');
 const {disposeSurvivor,disposeDirectContext}=require('../payment/gateway-lifecycle.cjs');
+const {hiddenFormValue,formAction,paymentRedirect}=require('../payment/gateway-redirect.cjs');
 const {createHash}=require('node:crypto');
 const contracts=require('../payment/recovered-contract.json');
 
@@ -37,6 +38,9 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
       throw new Error('Reconstructed payment contract changed for '+id+'. Review the recovered definition and comparison tests before enabling this candidate.');
   }
   return {
+    f1609:()=>hiddenFormValue,
+    f1610:()=>formAction,
+    f1667:({readBinding})=>function(input){return paymentRedirect(this,input,{getAction:html=>readBinding(784,undefined,1)(html),getField:(html,name)=>readBinding(783,undefined,1)(html,name)});},
     f1621:()=>function(){return disposeSurvivor(this);},
     f1630:()=>function(){return disposeDirectContext(this);},
     f1659:()=>function(){return liveProviderOrigin(this);},
