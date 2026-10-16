@@ -30,6 +30,10 @@ test('bootstrap (split f1 modules) behaves like the interpreter and the unsplit 
   const report = JSON.parse(result.stdout);
   assert.equal(report.compiledMatchesInterpreter, true);
   assert.equal(report.unsplitMatchesInterpreter, true);
-  assert.ok(report.interpreterLog > 100, 'bootstrap should execute deeply');
-  assert.equal(report.interpreterError, null);
+  assert.ok(report.bootstrapLog > 100, 'bootstrap should execute deeply');
+  assert.equal(report.errors.interpreter, null);
+  assert.equal(report.classShapesMatch, true, 'class prototypes, statics and parents');
+  assert.equal(report.instancesMatch, true, 'constructed instances and their effects');
+  // payment gateway constructor + field initializer (f1614/f1616) and the derived constructors
+  for (const id of ['f1614', 'f325', 'f577', 'f578', 'f579', 'f2533']) assert.ok(report.constructedIds.includes(id), id + ' was constructed');
 });

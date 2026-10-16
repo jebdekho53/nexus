@@ -1,74 +1,83 @@
 'use strict';
 // Runs the real application bootstrap (f0 -> CommonJS wrapper -> f1) in three runtimes against a recording stub
-// environment and compares what the bootstrap did: the instruction interpreter, the compiled bundle (split f1 modules)
-// and an in-memory unsplit compile of f1. Nothing here touches the network, the filesystem or Electron.
-// Usage: node tools/compiler/bootstrap-check.cjs [--show N]
-const{createEngine}=require('../../src/main/runtime/engine.cjs');
-const{createCompiledRuntime}=require('../../src/main/runtime/compiled-runtime.cjs');
-const definitions=require('../../src/main/generated/index.cjs');
-const{compileDefinition}=require('./compile.cjs');
-const names=require('./names.cjs').loadNames();
+// environment and compares what the bootstrap did and what it built: the instruction interpreter, the compiled bundle
+// (split f1 modules) and an in-memory unsplit compile of f1. Classes defined by the bootstrap (DefineClass, base and
+// derived constructors, class field initialisers) are compared by shape and by constructing instances.
+// Nothing here touches the network, the filesystem or Electron.
+// Usage: node tools/compiler/bootstrap-check.cjs [--instances]
+const{seedRandom,summarise,runtimeFactories,runBootstrap,normaliseText,META}=require('./check-support.cjs');
 
-function createStubs(log) {
-  let counter=0;
-  const describe=value=>typeof value==='function'?'fn':typeof value==='string'?'s:'+value.slice(0,60):value&&typeof value==='object'?(value.__stub?'stub#'+value.__stub:'obj'):String(value);
-  function stub(label) {
-    const id=++counter;
-    const children=new Map();
-    const target=function(){};
-    const proxy=new Proxy(target,{
-      get(_t,key) {
-        if(key==='__stub')return id;
-        if(key===Symbol.toPrimitive)return()=>'stub#'+id;
-        if(typeof key==='symbol')return key===Symbol.iterator?function*(){}:undefined;
-        log.push('get '+label+'.'+key);
-        if(!children.has(key))children.set(key,stub(label+'.'+key));
-        return children.get(key);
-      },
-      set(_t,key,value){log.push('set '+label+'.'+String(key)+'='+describe(value));return true;},
-      has(){return true;},
-      apply(_t,that,args){log.push('call '+label+'('+args.map(describe).join(',')+')');return stub(label+'()');},
-      construct(_t,args){log.push('new '+label+'('+args.map(describe).join(',')+')');return stub('new '+label);},
-    });
-    return proxy;
-  }
-  return{stub};
+const CLASS_KIND=/Constructor/;
+
+function describeDescriptors(target) {
+  return Reflect.ownKeys(target).filter(key=>key!==META).sort((a,b)=>String(a).localeCompare(String(b))).map(key=>{
+    const descriptor=Object.getOwnPropertyDescriptor(target,key);
+    const kind=descriptor.get||descriptor.set?'accessor:'+!!descriptor.get+!!descriptor.set:'value:'+summarise(descriptor.value);
+    return String(key)+'['+['writable','enumerable','configurable'].map(flag=>descriptor[flag]?flag[0]:'-').join('')+']='+kind;
+  });
 }
 
-function runBootstrap(makeRuntime) {
-  const log=[];
-  const{stub}=createStubs(log);
-  const runtime=makeRuntime();
-  let error=null;
-  try {
-    const wrapper=runtime.makeFunction('f0')();
-    const exports={};
-    const moduleObject={exports,filename:'main.js',id:'main.js',paths:[]};
-    const required=new Map();
-    const require=request=>{log.push('require '+request);if(!required.has(request))required.set(request,stub('module('+request+')'));return required.get(request);};
-    wrapper.call(exports,exports,require,moduleObject,'main.js','.');
-    log.push('exports '+Object.keys(moduleObject.exports).join(','));
-  } catch(caught) {
-    error=caught instanceof Error?caught.name+': '+String(caught.message).replace(/\s+/g,' ').slice(0,100):String(caught);
+function classesOf(run) {
+  const list=[];
+  if(!run.root)return list;
+  for(let slot=2;slot<run.root.length;slot++) {
+    const value=run.root[slot];
+    if(typeof value==='function'&&value[META]&&CLASS_KIND.test(value[META].kind))list.push(value);
   }
-  return{log,error};
+  return list;
+}
+
+function inspectClasses(run) {
+  return classesOf(run).map(value=>value[META].id+':'+value[META].kind+':'+value.name+'/'+value.length+' proto='+describeDescriptors(value.prototype||{}).join(';')+' static='+describeDescriptors(value).join(';')+' parent='+(Object.getPrototypeOf(value)?.[META]?.id??'-'));
+}
+
+function constructInstances(run) {
+  seedRandom(777);
+  const results=[];
+  for(const value of classesOf(run)) {
+    for(const[label,args]of[['none',[]],['mixed',['a',1,true,{k:1},()=>0,'f',run.stub('arg')]]]) {
+      const before=run.log.length;
+      let outcome;
+      try {
+        const instance=Reflect.construct(value,args);
+        outcome='ok:'+summarise(instance)+' instanceof='+(instance instanceof value);
+      } catch(error) {outcome='throw:'+(error instanceof Error?error.name+':'+String(error.message).replace(/\s+/g,' ').slice(0,60):summarise(error));}
+      results.push(value[META].id+'/'+label+' '+outcome+' effects='+run.log.slice(before).join('|'));
+    }
+  }
+  return results;
+}
+
+const equal=(a,b)=>a.length===b.length&&a.every((line,index)=>normaliseText(line)===normaliseText(b[index]));
+function firstDifference(label,a,b) {
+  const index=a.findIndex((line,at)=>normaliseText(line)!==normaliseText(b[at]??''));
+  if(index>=0)console.error(label+' differs at '+index+':\n  interpreter: '+a[index]+'\n  other:       '+(b[index]??'(missing)'));
 }
 
 function main() {
-  const interpreter=runBootstrap(()=>createEngine(definitions,{}));
-  const compiled=runBootstrap(()=>createCompiledRuntime({}));
-  const bundle=require('../../src/main/compiled/index.cjs');
-  const unsplitSource=compileDefinition(definitions.f1,{names});
-  const exportsObject={};
-  new Function('exports','"use strict";'+unsplitSource)(exportsObject);
-  const unsplit=runBootstrap(()=>createCompiledRuntime({compiledBodies:{...bundle,f1:exportsObject.f1}}));
-  const same=(a,b)=>a.error===b.error&&a.log.length===b.log.length&&a.log.every((line,index)=>line===b.log[index]);
-  const report={interpreterLog:interpreter.log.length,compiledLog:compiled.log.length,unsplitLog:unsplit.log.length,
-    interpreterError:interpreter.error,compiledError:compiled.error,unsplitError:unsplit.error,
-    compiledMatchesInterpreter:same(interpreter,compiled),unsplitMatchesInterpreter:same(interpreter,unsplit)};
+  const factories=runtimeFactories();
+  const runs={};
+  for(const[name,factory]of Object.entries(factories))runs[name]=runBootstrap(factory);
+  const shapes={},instances={};
+  for(const name of Object.keys(runs)){shapes[name]=inspectClasses(runs[name]);instances[name]=constructInstances(runs[name]);}
+  const report={
+    bootstrapLog:runs.interpreter.log.length,
+    errors:Object.fromEntries(Object.entries(runs).map(([name,run])=>[name,run.error])),
+    compiledMatchesInterpreter:false,unsplitMatchesInterpreter:false,
+    classes:shapes.interpreter.length,instances:instances.interpreter.length,
+    constructedIds:[...new Set(instances.interpreter.map(line=>line.split('/')[0]))],
+  };
+  const logsMatch=name=>equal(runs.interpreter.log,runs[name].log)&&runs.interpreter.error===runs[name].error;
+  report.compiledMatchesInterpreter=logsMatch('compiled');
+  report.unsplitMatchesInterpreter=logsMatch('unsplit');
+  report.classShapesMatch=equal(shapes.interpreter,shapes.compiled)&&equal(shapes.interpreter,shapes.unsplit);
+  report.instancesMatch=equal(instances.interpreter,instances.compiled)&&equal(instances.interpreter,instances.unsplit);
   console.log(JSON.stringify(report,null,1));
-  const show=Number(process.argv[process.argv.indexOf('--show')+1])||0;
-  if(show)console.log(interpreter.log.slice(0,show).join('\n'));
-  if(!report.compiledMatchesInterpreter||!report.unsplitMatchesInterpreter)process.exitCode=1;
+  firstDifference('bootstrap log',runs.interpreter.log,runs.compiled.log);
+  firstDifference('class shape',shapes.interpreter,shapes.compiled);
+  firstDifference('instance',instances.interpreter,instances.compiled);
+  firstDifference('instance (unsplit)',instances.interpreter,instances.unsplit);
+  if(process.argv.includes('--instances'))console.log(instances.interpreter.join('\n'));
+  if(!(report.compiledMatchesInterpreter&&report.unsplitMatchesInterpreter&&report.classShapesMatch&&report.instancesMatch))process.exitCode=1;
 }
 main();
