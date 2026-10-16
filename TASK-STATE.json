@@ -1,6 +1,6 @@
 {
   "status": "in_progress",
-  "progress": "Phases1–9:46 native entries,610 full tests,119 pinned definitions. Provider QR creation/config+amount parsers now native; full low-level synthetic chain matches. Authentication HTML removed from missing-ID diagnostic only. No real service/build/deployment; public1.0.11 unchanged. Next provider polling f1673 with classifier/encdata helpers; full app reconstruction incomplete.",
+  "progress": "Phases1–10:49 native entries,663 full tests,129 pinned definitions. Provider QR command polling/classifier/encdata fetch now native; full synthetic pending→paid chain matches requested10s wait. No live service/build/deployment; public1.0.11 unchanged. Next bankResponse f1681 with interstitial parser f1611; full app still partly recovered.",
   "task": "Reconstruct recovered Matrix payment logic into maintainable JavaScript",
   "completedLatestTask": {
     "task": "Fix WebLogin Chrome selection closing another independent pair panel",
@@ -74,11 +74,14 @@
     }
   },
   "reconstruction": {
-    "phase": "provider QR creation and response parsing",
+    "phase": "provider QR status polling and encdata extraction",
     "report": "docs/reconstruction-progress.md",
     "handoff": "docs/ANTIGRAVITY-HANDOFF.md",
     "flag": "--reconstructed-payment",
     "nativeEntries": [
+      "f1603",
+      "f1678",
+      "f1673",
       "f1602",
       "f1608",
       "f1668",
@@ -130,25 +133,26 @@
     "quotaHandoffThresholdRemainingPercent": 5,
     "lastObservedPrimaryRemainingPercent": 72,
     "lastObservedWeeklyRemainingPercent": 13,
-    "testsPassed": 610,
+    "testsPassed": 663,
     "smoke": {
       "windows": 8,
       "completeDom": true,
-      "factoriesEnabled": 46,
+      "factoriesEnabled": 49,
       "offline": true,
-      "pid": 18260,
+      "pid": 4132,
       "complete": true
     },
-    "codeCheckpoint": "phases1–9 checkpoint; consult git log",
+    "codeCheckpoint": "phases1–10 checkpoint; consult git log",
     "handoffReady": false,
     "phaseTwoReport": "docs/reconstruction-phase-2.md",
-    "pinnedDefinitions": 119,
+    "pinnedDefinitions": 129,
     "phaseFourReport": "docs/reconstruction-phase-4.md",
-    "nextReview": "f1673 polling instructions fully reviewed; next f1603/f1604 classifier and f1678/f1679/f1680 encdata helper. See phase9 report.",
+    "nextReview": "f1681 instructions fully reviewed; f1611 interstitial delay parser next. See phase10 report.",
     "phasesFiveSixReport": "docs/reconstruction-phases-5-6.md",
     "phaseSevenReport": "docs/reconstruction-phase-7.md",
     "phaseEightReport": "docs/reconstruction-phase-8.md",
-    "phaseNineReport": "docs/reconstruction-phase-9.md"
+    "phaseNineReport": "docs/reconstruction-phase-9.md",
+    "phaseTenReport": "docs/reconstruction-phase-10.md"
   },
   "continuationSchedule": "First16Oct2026at18:42IST, then every5h30m (330min). Existing general unfinished-task fallback remains active."
 }

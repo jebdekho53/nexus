@@ -4,10 +4,11 @@ const {createEngine}=require('../src/main/runtime/engine.cjs'),definitions=requi
 const {reconstructedPayment}=require('../src/main/runtime/reconstructed-payment.cjs');
 const {hooks}=require('../src/main/runtime/legacy-services.cjs');
 const vm=require('node:vm');
-async function complete(native,id,{failFirst=false}={}){
+async function complete(native,id,{failFirst=false,pendingPoll=false}={}){
   const trace=[],random=()=>0.25,math=Object.create(Math);math.random=random;
   const timers={setTimeout(fn,ms){trace.push(['timer',ms]);if(ms<3000)queueMicrotask(fn);return 0;}};
-  const engine=createEngine(definitions,{functionFactories:native?reconstructedPayment({development:true,enabled:true,dependencies:{random,timers}}):{},functionOverrides:hooks(event=>trace.push(['legacy',event])).overrides,globals:{...globalThis,Math:math,String,Number,JSON,Array,Boolean,Promise,Error,URL,RegExp,Buffer,atob,setTimeout:timers.setTimeout}}),root=engine.context(1842,null);
+  let clockMs=0,commandPolls=0;const clock={now:()=>clockMs};
+  const engine=createEngine(definitions,{functionFactories:native?reconstructedPayment({development:true,enabled:true,dependencies:{random,timers,clock}}):{},functionOverrides:hooks(event=>trace.push(['legacy',event])).overrides,globals:{...globalThis,Math:math,String,Number,JSON,Array,Boolean,Promise,Error,URL,RegExp,Buffer,atob,Date:clock,setTimeout:timers.setTimeout}}),root=engine.context(1842,null);
   const table=Object.assign({},...Object.values(strings));root[5]=root[1841]=(n,key)=>{const value=table[n+'|'+key];assert.notEqual(value,undefined,'Missing fixture '+n+'|'+key);return value;};
   root[345]='https://example.invalid/mapps1';root[386]=()=>30;root[388]={irctcqr:[30]};root[389]=['irctcqr'];root[391]=()=>true;root[392]=()=>true;
   root[561]=value=>'http://'+value;
@@ -15,6 +16,7 @@ async function complete(native,id,{failFirst=false}={}){
   root[2132]=source=>new Function('return ('+source+')')();
   root[783]=engine.makeFunction('f1609',root);root[784]=engine.makeFunction('f1610',root);
   root[777]=engine.makeFunction('f1602',root);root[782]=engine.makeFunction('f1608',root);
+  root[778]=engine.makeFunction('f1603',root);
   for(const[slot,name]of [[362,'f510'],[387,'f535'],[393,'f542'],[394,'f544'],[395,'f545'],[396,'f546'],[397,'f547'],[398,'f548'],[399,'f549'],[400,'f554'],[940,'f2382']])root[slot]=engine.makeFunction(name,root);
   let settling=false,booked,failedOnce=false;
   const actor={bankDetail:[{bankId:30}],stopped:false,terminal:false,securityQuarantined:false,pnrSeen:false,lastAvail:null,
@@ -24,21 +26,23 @@ async function complete(native,id,{failFirst=false}={}){
     beginSettling(){settling=true;trace.push(['settling']);},endSettling(){settling=false;trace.push(['end-settling']);},beginFinalPnrRequest(){trace.push(['begin-pnr']);},endFinalPnrRequest(){trace.push(['end-pnr']);},
     log(...args){if(/^bookingData \(txn /.test(args[1]))args[1]='bookingData response received';trace.push(['log',...args]);},onProgress(...args){trace.push(['progress',...args]);},
     async safeCall(...args){trace.push(['init-request',...args]);return{ok:true,status:200,body:{transationId:'fixture-txn'}};},
-    async routeGatewayThroughFormProxy(){trace.push(['proxy-route']);},checkNowSleep(ms){trace.push(['check-now',ms]);return Promise.resolve(true);},
+    async routeGatewayThroughFormProxy(){trace.push(['proxy-route']);},checkNowSleep(ms){trace.push(['check-now',ms]);clockMs+=ms;return Promise.resolve(true);},
     gateway:{
       hosts:{wps:'https://example.invalid',providerOrigin:'https://example.invalid',qrGateway:'https://gateway.invalid'},
       page:{url(){return'https://example.invalid/nget/train-search';},async evaluate(fn){trace.push(['client-hints']);return vm.runInNewContext('('+fn.toString()+')()',{navigator:{userAgent:'fixture-ua',language:'en-IN',userAgentData:{brands:[],mobile:false,platform:'Windows'}}});}},
       req:{async get(url,options){trace.push(['transport-get',url,options]);if(failFirst&&!failedOnce&&url.includes('/bookingData/')){failedOnce=true;throw Error('synthetic network failure');}return{status:()=>200,json:async()=>url.includes('/bookingData/')?{bookingResponseDTO:[{pnrNumber:'synthetic-'+id,trainNumber:'00000',fromStn:'AAA',resvnUptoStn:'BBB',psgnDtlList:[{passengerName:'Synthetic',bookingStatusDetails:'CNF'}]}]}:{synthetic:'print-detail'},
           text:async()=>'<textarea id="app-config-data">'+Buffer.from(JSON.stringify({responseParams:{rid:'fixture-rid',merchantId:'fixture-merchant',merchantTxnNo:'fixture-transaction'}})).toString('base64')+'</textarea>'};},
-        async post(url,options){trace.push(['transport-post',url,options]);return{status:()=>200,headers:()=>({location:'/auth?tranCtx=fixture-rid'}),json:async()=>({upiQR:'upi://pay?am=99',errorcode:'fixture-code'}),text:async()=>'<form action="https://gateway.invalid/start"><input name="encdata" value="fixture-redirect"></form>'};}},
+        async post(url,options){trace.push(['transport-post',url,options]);
+          if(url.includes('/command?')){commandPolls++;const status=pendingPoll&&commandPolls===1?'PENDING':'SUC';return{status:()=>200,ok:()=>true,text:async()=>JSON.stringify({txnStatus:status})};}
+          if(url.endsWith('/statusCheckRedirect'))return{status:()=>200,text:async()=>'<textarea id="app-config-data">'+Buffer.from(JSON.stringify({status:'SUC',responseParams:{encdata:'synthetic-bank-response'}})).toString('base64')+'</textarea>'};
+          return{status:()=>200,headers:()=>({location:'/auth?tranCtx=fixture-rid'}),json:async()=>({upiQR:'upi://pay?am=99',errorcode:'fixture-code'}),text:async()=>'<form action="https://gateway.invalid/start"><input name="encdata" value="fixture-redirect"></form>'};}},
       log(...args){trace.push(['transport-log',...args]);},
       survivorReq:{dispose(){trace.push(['dispose-survivor']);return Promise.resolve();}},directCtx:{dispose(){trace.push(['dispose-direct']);return Promise.resolve();}},
-      async pollProviderQr(qr,stop,onWait,max,interval,sleep){trace.push(['poll-provider',stop(),max,interval]);onWait();await sleep(1);return{kind:'paid',encdata:'synthetic-bank-response'};},
       useSurvivorProxy(value){trace.push(['survivor-proxy',value]);},async armSurvivor(){trace.push(['arm-survivor']);},
       async bankResponse(...args){trace.push(['bank-response',...args]);return true;},
     },
   };
-  for(const[name,fid]of [['bookingData','f1719'],['printTicket','f1727'],['reqRetry','f1756'],['gwHeaders','f1666'],['clientHints','f1660'],['gatewayHints','f1662'],['liveProviderOrigin','f1659'],['originFor','f1665'],['disposeSurvivor','f1621'],['disposeDirectContext','f1630'],['paymentRedirect','f1667'],['noteGatewayPage','f1663'],['providerQr','f1668']])actor.gateway[name]=engine.makeFunction(fid,engine.context(2,root));
+  for(const[name,fid]of [['bookingData','f1719'],['printTicket','f1727'],['reqRetry','f1756'],['gwHeaders','f1666'],['clientHints','f1660'],['gatewayHints','f1662'],['liveProviderOrigin','f1659'],['originFor','f1665'],['disposeSurvivor','f1621'],['disposeDirectContext','f1630'],['paymentRedirect','f1667'],['noteGatewayPage','f1663'],['providerQr','f1668'],['pollProviderQr','f1673'],['irctcQrFetchEncdata','f1678']])actor.gateway[name]=engine.makeFunction(fid,engine.context(2,root));
   for(const[name,fid]of [['dispatchGateway','f2176'],['runProviderQr','f2186'],['settlePayment','f2181'],['pollBookingData','f2226'],['canRequestPnr','f2220'],['waitForPnrRetry','f2221'],['tok','f2230'],['paymentPageReferrer','f2231'],['finishBooking','f2243'],['finishBookingCore','f2233'],['attachPrintTicket','f2247'],['reportClientUpdate','f2009']])actor[name]=engine.makeFunction(fid,engine.context(2,root));
   const result=await engine.makeFunction('f2172',engine.context(2,root)).call(actor,{paymentMethod:'irctcqr',origin:'AAA',destination:'BBB',username:'synthetic'},'fixture-txn',99,new Set());
   return{result,trace,pnrSeen:actor.pnrSeen,booking:booked,contextsDisposed:actor.gateway.survivorReq===undefined&&actor.gateway.directCtx===undefined};
@@ -63,4 +67,10 @@ test('complete payment chain retains original transport recovery after one synth
   const before=await complete(false,'retry',{failFirst:true}),after=await complete(true,'retry',{failFirst:true});assert.deepEqual(after,before);
   assert.equal(after.result.success,true);assert.equal(after.trace.filter(row=>row[0]==='transport-get'&&row[1].includes('/bookingData/')).length,2);
   assert.equal(after.trace.filter(row=>row[0]==='timer'&&row[1]===800).length,1);
+});
+test('complete payment chain polls pending then synthetic paid status with the original wait',async()=>{
+  const before=await complete(false,'poll',{pendingPoll:true}),after=await complete(true,'poll',{pendingPoll:true});assert.deepEqual(after,before);
+  assert.equal(after.result.success,true);assert.deepEqual(after.trace.filter(row=>row[0]==='check-now'),[['check-now',10000]]);
+  assert.equal(after.trace.filter(row=>row[0]==='transport-post'&&row[1].includes('/command?')).length,2);
+  assert.equal(after.trace.filter(row=>row[0]==='transport-post'&&row[1].endsWith('/statusCheckRedirect')).length,1);
 });

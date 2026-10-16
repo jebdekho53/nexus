@@ -18,4 +18,14 @@ function qrAmount(payload) {
   return Number.isFinite(value) && value > 0 ? value : undefined;
 }
 
-module.exports = {appConfig,qrAmount};
+function commandStatus(body) {
+  const upper=value=>String(value??'').toUpperCase();
+  const status=upper(body.txnStatus),transactionCode=upper(body.txnResponseCode),responseCode=upper(body.responseCode);
+  const description=upper(body.respDescription)+' '+upper(body.txnRespDescription);
+  if (status==='SUC'||status==='SUCCESS'||transactionCode==='0000') return 'paid';
+  if (responseCode==='P0030'||/AWAIT|PENDING|PROCESS|INITIAT|IN[_ ]?PROGRESS/.test(status+' '+description)) return 'pending';
+  if (/FAIL|DECLIN|CANCEL|REJECT|EXPIR|ABORT|TIMED?[_ ]?OUT|UNSUCCESS/.test(status+' '+description)) return 'declined';
+  return 'unknown';
+}
+
+module.exports = {appConfig,qrAmount,commandStatus};
