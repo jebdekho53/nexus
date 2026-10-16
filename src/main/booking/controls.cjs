@@ -191,4 +191,64 @@ function updateLiveForm(actor,patch) {
   return undefined;
 }
 
-module.exports={dumpAuthState,printTicketInBrowser,stopWith,updateLiveForm,collectAuthState,controlProxyContext,routeGatewayThroughFormProxy,cancelPayment,stoppedResult,highLoadDelay,focusBrowser,hideBrowser,minimizeBrowser};
+// Recovered f2083 (+f2084–f2086). Refuses to continue without an access token; waits up to 90 s (checking
+// every 500 ms, reporting every 10 s) for the operator to finish signing in, then stops the run.
+async function ensureAuthToken(actor,{bringToFront,terminalClosed,terminalNoToken}) {
+  const page=actor.session.page;
+  if(!page)return true;
+  const hasToken=()=>(actor.session.tokens?.accessToken??'').trim();
+  if(hasToken())return true;
+  const waitMs=90000;
+  const started=actor.now();
+  actor.log('login','NO access token — refusing to fire protected calls; waiting for the sign-in to complete','warn');
+  actor.onProgress('booking:login','Waiting for sign-in to complete…');
+  let reported=0;
+  while(!actor.stopped&&actor.now()-started<waitMs) {
+    if(page.isClosed()) {
+      actor.terminal=terminalClosed();
+      return false;
+    }
+    await page.waitForTimeout(500).catch(()=>undefined);
+    if(hasToken()) {
+      actor.log('login','access token captured after '+((actor.now()-started)/1000).toFixed(1)+'s — continuing');
+      return true;
+    }
+    const tick=Math.floor((actor.now()-started)/10000);
+    if(tick>reported) {
+      reported=tick;
+      actor.log('login','still waiting for the sign-in ('+(tick*10)+'s) — finish the login in the browser window','warn');
+    }
+  }
+  if(!actor.stopped) {
+    actor.log('login','no access token after the wait — stopping instead of booking an unauthenticated session','error');
+    await bringToFront(page).catch(()=>undefined);
+    actor.terminal=terminalNoToken();
+  }
+  return false;
+}
+
+// Recovered f2087 (+f2088–f2093). When the login form reappears the session was dropped: the run stops and
+// asks to be relaunched on a fresh browser, unless the page is positively logged in.
+async function relaunchIfLoggedOut(actor,{loginButtonVisible,positivelyLoggedIn,waitForHydration}) {
+  const page=actor.session.page;
+  if(!(page&&await loginButtonVisible(page).catch(()=>false)))return false;
+  if(await positivelyLoggedIn(page).catch(()=>false)) {
+    actor.log('login','LOGIN button present but the page is positively logged in (MY ACCOUNT / search form) — NOT relaunching');
+    return false;
+  }
+  if(actor.session.tokens?.accessToken) {
+    await page.waitForTimeout(2500).catch(()=>undefined);
+    await waitForHydration(page).catch(()=>undefined);
+    if((await positivelyLoggedIn(page).catch(()=>false))||!(await loginButtonVisible(page).catch(()=>false))) {
+      actor.log('login','login button showed transiently after login but the SPA hydrated logged-in — NOT relaunching');
+      return false;
+    }
+  }
+  actor.log('login','login form reappeared (session dropped) — relaunching on a fresh browser to re-login','warn');
+  actor.onProgress('booking:error','Session dropped (login form reappeared) — re-logging in on a fresh browser');
+  actor.relaunch=true;
+  actor.stopped=true;
+  return true;
+}
+
+module.exports={ensureAuthToken,relaunchIfLoggedOut,dumpAuthState,printTicketInBrowser,stopWith,updateLiveForm,collectAuthState,controlProxyContext,routeGatewayThroughFormProxy,cancelPayment,stoppedResult,highLoadDelay,focusBrowser,hideBrowser,minimizeBrowser};

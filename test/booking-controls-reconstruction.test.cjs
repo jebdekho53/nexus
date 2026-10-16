@@ -183,3 +183,38 @@ for(const[name,scenario]of Object.entries({
   const value=await outcome(async()=>method('f2081').call(actor,scenario.patch));
   return{value,trace,form:actor.liveForm,chosen:actor.chosenPaymentMethod};
 }));
+
+// ensureAuthToken (f2083)
+for(const[name,scenario]of Object.entries({
+  hasToken:{token:'abc'},blankToken:{token:'   ',tokenAfter:3},noPage:{noPage:true},tokenAfter1:{tokenAfter:1},tokenAfter25:{tokenAfter:25},neverWithTimeout:{},closedImmediately:{closedAfter:0},closedLater:{closedAfter:5},
+  stoppedDuringWait:{stopAfter:4},stoppedBeforeLoop:{alreadyStopped:true},waitRejects:{tokenAfter:2,waitRejects:true},frontRejects:{frontRejects:true},frontThrows:{frontThrows:true},tokensObjectMissing:{noTokens:true,tokenAfter:2},
+}))test('ensureAuthToken matches recovered wait loop: '+name,async()=>compare(async native=>{
+  const trace=[];let clock=1000000,waits=0;
+  const{method}=harness({native,slots:{123:page=>{trace.push(['front']);if(scenario.frontThrows)throw Error('synthetic front');return scenario.frontRejects?Promise.reject(Error('synthetic rejection')):Promise.resolve();},603:'closed-terminal',604:'no-token-terminal'}});
+  const{actor,trace:logs}=recorder({});
+  actor.stopped=scenario.alreadyStopped;
+  actor.now=()=>clock;
+  actor.session={tokens:scenario.noTokens?undefined:{accessToken:scenario.token},page:scenario.noPage?undefined:{
+    isClosed(){trace.push(['closed?',waits]);return scenario.closedAfter!==undefined&&waits>=scenario.closedAfter;},
+    waitForTimeout(ms){waits++;clock+=ms;trace.push(['wait',ms]);if(scenario.tokenAfter!==undefined&&waits>=scenario.tokenAfter){(actor.session.tokens??(actor.session.tokens={})).accessToken='captured';}
+      if(scenario.stopAfter!==undefined&&waits>=scenario.stopAfter)actor.stopped=true;return scenario.waitRejects?Promise.reject(Error('synthetic wait')):Promise.resolve();},
+  }};
+  const value=await outcome(async()=>method('f2083').call(actor));
+  return{value,trace:trace.slice(0,400),logs:logs.slice(0,40),terminal:actor.terminal,waits,logCount:logs.length};
+}));
+
+// relaunchIfLoggedOut (f2087)
+for(const[name,scenario]of Object.entries({
+  noPage:{noPage:true},noLoginButton:{button:[false]},loginButtonFails:{button:['reject']},positive:{button:[true],positive:[true]},positiveFails:{button:[true],positive:['reject'],token:false},
+  noToken:{button:[true],positive:[false]},tokenTransient:{token:true,button:[true,false],positive:[false,false]},tokenPositiveAfterWait:{token:true,button:[true,true],positive:[false,true]},
+  tokenStillLoggedOut:{token:true,button:[true,true],positive:[false,false]},hydrateFails:{token:true,hydrateFails:true,button:[true,true],positive:[false,false]},waitRejects:{token:true,waitRejects:true,button:[true,true],positive:[false,false]},
+  buttonFailsSecond:{token:true,button:[true,'reject'],positive:[false,false]},
+}))test('relaunchIfLoggedOut matches recovered login-state decisions: '+name,async()=>compare(async native=>{
+  const trace=[];
+  const queue=(name,values)=>{const list=[...(values??[false])];return page=>{trace.push([name]);const next=list.length>1?list.shift():list[0];if(next==='reject')return Promise.reject(Error('synthetic '+name));return Promise.resolve(next);};};
+  const{method}=harness({native,slots:{431:queue('button',scenario.button),755:queue('positive',scenario.positive),474:page=>{trace.push(['hydrate']);if(scenario.hydrateFails)throw Error('synthetic hydrate');return Promise.resolve();}}});
+  const{actor,trace:logs}=recorder({});
+  actor.session={tokens:scenario.token?{accessToken:'abc'}:undefined,page:scenario.noPage?undefined:{waitForTimeout(ms){trace.push(['wait',ms]);return scenario.waitRejects?Promise.reject(Error('synthetic wait')):Promise.resolve();}}};
+  const value=await outcome(async()=>method('f2087').call(actor));
+  return{value,trace,logs,relaunch:actor.relaunch,stopped:actor.stopped};
+}));
