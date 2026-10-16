@@ -251,4 +251,47 @@ async function relaunchIfLoggedOut(actor,{loginButtonVisible,positivelyLoggedIn,
   return true;
 }
 
-module.exports={ensureAuthToken,relaunchIfLoggedOut,dumpAuthState,printTicketInBrowser,stopWith,updateLiveForm,collectAuthState,controlProxyContext,routeGatewayThroughFormProxy,cancelPayment,stoppedResult,highLoadDelay,focusBrowser,hideBrowser,minimizeBrowser};
+// Recovered f2094 (+f2095). Watches page responses once per run: notices the page's own journey-context
+// request and a 409 from the protected API, which means the same IRCTC ID signed in elsewhere.
+function attachDuplicateLoginWatch(actor,page,{isJourneyContextUrl}) {
+  if(actor.duplicateWatchAttached)return undefined;
+  actor.duplicateWatchAttached=true;
+  page.on('response',response=>{
+    try {
+      if(!actor.spaFiredTc&&isJourneyContextUrl(response.url(),actor.tcPrimed)) {
+        actor.spaFiredTc=true;
+        actor.log('search','SPA fired its own altAvlEnq/TC ('+response.status()+') — journey context primed by the page');
+      }
+      if(actor.duplicateLogin)return undefined;
+      if(response.status()===409&&/\/eticketing\/protected\//.test(response.url())) {
+        actor.duplicateLogin=true;
+        actor.log('browser','Duplicate IRCTC ID login detected (409 '+response.url().split('?')[0].split('/').pop()+') — stopping this pair','warn');
+      }
+    } catch {}
+    return undefined;
+  });
+  return undefined;
+}
+
+// Recovered f2128 (+f2129–f2131). Hands a stuck page to the AI helper. The helper may ask to relaunch the
+// browser or to switch to another profile; both requests are recorded on the run.
+async function aiResolve(actor,goal,extra,{createSnapshot}) {
+  if(!(actor.ai&&actor.session.page))return false;
+  actor.onProgress('booking:ai','🤖 AI fallback: '+goal);
+  const snapshot=createSnapshot(actor.session.page);
+  const resolved=await actor.ai.resolve(actor.session.page,snapshot,goal,extra??'',{
+    onRelogin:()=>{
+      actor.relaunch=true;
+      actor.stop();
+      return Promise.resolve(false);
+    },
+    onSwitchBrowser:()=>{
+      actor.opts.onSwitchBrowser?.();
+      actor.terminal='Session lost — use a different browser profile (this one is flagged for today)';
+    },
+  }).catch(()=>false);
+  actor.log('ai',resolved?'AI resolved: '+goal:'AI could not resolve: '+goal,resolved?'info':'warn');
+  return resolved;
+}
+
+module.exports={attachDuplicateLoginWatch,aiResolve,ensureAuthToken,relaunchIfLoggedOut,dumpAuthState,printTicketInBrowser,stopWith,updateLiveForm,collectAuthState,controlProxyContext,routeGatewayThroughFormProxy,cancelPayment,stoppedResult,highLoadDelay,focusBrowser,hideBrowser,minimizeBrowser};

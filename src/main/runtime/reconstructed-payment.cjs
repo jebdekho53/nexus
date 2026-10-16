@@ -37,7 +37,7 @@ const {pollPaytmStatus}=require('../payment/paytm-status.cjs');
 const {waitForPaytmWs}=require('../payment/paytm-websocket.cjs');
 const {razorpayLocation,parseRazorpayCheckoutPage,razorpayCheckout,razorpaySessionToken,razorpayPollUrl,razorpayCreate,pollRazorpay}=require('../payment/razorpay-transport.cjs');
 const {walletVerify}=require('../payment/wallet-verify.cjs');
-const {ensureAuthToken,relaunchIfLoggedOut,dumpAuthState,printTicketInBrowser,stopWith,updateLiveForm,controlProxyContext,routeGatewayThroughFormProxy,cancelPayment,stoppedResult,highLoadDelay,focusBrowser,hideBrowser,minimizeBrowser}=require('../booking/controls.cjs');
+const {attachDuplicateLoginWatch,aiResolve,ensureAuthToken,relaunchIfLoggedOut,dumpAuthState,printTicketInBrowser,stopWith,updateLiveForm,controlProxyContext,routeGatewayThroughFormProxy,cancelPayment,stoppedResult,highLoadDelay,focusBrowser,hideBrowser,minimizeBrowser}=require('../booking/controls.cjs');
 const {getFinalPaytmStatus}=require('../payment/paytm-final-status.cjs');
 const {fingerprint,phonePeHeaders,phonePeRedirect,razorpayRedirect,phonePeQr,pollPhonePe}=require('../payment/phonepe-transport.cjs');
 const {definitionFingerprint}=require('./recovered-contract.cjs');
@@ -89,6 +89,8 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     f2081:()=>function(patch){return updateLiveForm(this,patch);},
     f2083:({readBinding})=>function(){return ensureAuthToken(this,{bringToFront:page=>readBinding(123,undefined,1)(page),terminalClosed:()=>readBinding(603,undefined,1),terminalNoToken:()=>readBinding(604,undefined,1)});},
     f2087:({readBinding})=>function(){return relaunchIfLoggedOut(this,{loginButtonVisible:page=>readBinding(431,undefined,1)(page),positivelyLoggedIn:page=>readBinding(755,undefined,1)(page),waitForHydration:page=>readBinding(474,undefined,1)(page)});},
+    f2094:({readBinding})=>function(page){return attachDuplicateLoginWatch(this,page,{isJourneyContextUrl:(url,primed)=>readBinding(635,undefined,1)(url,primed)});},
+    f2128:({readBinding})=>function(goal,extra){return aiResolve(this,goal,extra,{createSnapshot:page=>new(readBinding(230,undefined,1))(page)});},
     f1704:()=>function(){return paytmOriginPage(this,dependencies.globals);},
     f1708:()=>function(path,options){return paytmPageRequest(this,path,options);},
     f1710:()=>function(){return disposePaytmPage(this);},

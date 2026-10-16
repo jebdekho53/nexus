@@ -218,3 +218,47 @@ for(const[name,scenario]of Object.entries({
   const value=await outcome(async()=>method('f2087').call(actor));
   return{value,trace,logs,relaunch:actor.relaunch,stopped:actor.stopped};
 }));
+
+// attachDuplicateLoginWatch (f2094/f2095)
+const responseFor=(url,status,options={})=>({url(){if(options.urlFails)throw Error('synthetic url');return url;},status(){if(options.statusFails)throw Error('synthetic status');return status;}});
+for(const[name,scenario]of Object.entries({
+  attachedOnce:{responses:[]},alreadyAttached:{attached:true},
+  journeyContext:{responses:[['https://x.invalid/eticketing/dispatch/tc',200]],tc:true},journeyTwice:{responses:[['https://x.invalid/tc',200],['https://x.invalid/tc',200]],tc:true},
+  duplicate:{responses:[['https://x.invalid/eticketing/protected/mapps1/book?x=1',409]]},duplicateTwice:{responses:[['https://x.invalid/eticketing/protected/a',409],['https://x.invalid/eticketing/protected/b',409]]},
+  otherStatus:{responses:[['https://x.invalid/eticketing/protected/a',500]]},unprotected409:{responses:[['https://x.invalid/other/a',409]]},duplicateAlreadyFlagged:{responses:[['https://x.invalid/eticketing/protected/a',409]],flagged:true},
+  statusFails:{responses:[['https://x.invalid/tc',200,{statusFails:true}]],tc:true},urlFails:{responses:[['u',409,{urlFails:true}]]},
+}))test('attachDuplicateLoginWatch matches recovered response handling: '+name,async()=>compare(async native=>{
+  const calls=[];
+  const{method}=harness({native,slots:{635:(url,primed)=>{calls.push(['isTc',url,primed]);return !!scenario.tc;}}});
+  const{actor,trace}=recorder({});
+  actor.duplicateWatchAttached=scenario.attached;actor.duplicateLogin=scenario.flagged;actor.tcPrimed='primed-marker';
+  const handlers=[];
+  const page={on(event,handler){handlers.push([event,handler]);}};
+  const first=await outcome(async()=>method('f2094').call(actor,page));
+  const second=await outcome(async()=>method('f2094').call(actor,page));
+  const results=[];
+  for(const[url,status,options]of scenario.responses??[])for(const[,handler]of handlers)results.push(await outcome(async()=>handler(responseFor(url,status,options))));
+  return{first,second,events:handlers.map(row=>row[0]),results,calls,trace,state:{spa:actor.spaFiredTc,dup:actor.duplicateLogin,attached:actor.duplicateWatchAttached}};
+}));
+
+// aiResolve (f2128)
+for(const[name,scenario]of Object.entries({
+  resolved:{result:true},unresolved:{result:false},rejects:{rejects:true},noAi:{noAi:true},noPage:{noPage:true},extra:{extra:'context-text',result:true},
+  relogin:{callback:'relogin',result:false},switchBrowser:{callback:'switch',result:false},switchWithoutHook:{callback:'switch',noHook:true},resolveThrows:{throws:true},
+}))test('aiResolve matches recovered AI fallback flow: '+name,async()=>compare(async native=>{
+  const calls=[];
+  class Snapshot{constructor(page){calls.push(['snapshot',page]);this.page=page;}}
+  const{method}=harness({native,slots:{230:Snapshot}});
+  const{actor,trace}=recorder({opts:scenario.noHook?{}:{onSwitchBrowser(){calls.push(['switch-hook']);}}});
+  actor.session={page:scenario.noPage?undefined:'page-a'};
+  actor.stop=function(){assert.equal(this,actor);calls.push(['stop']);};
+  actor.ai=scenario.noAi?undefined:{resolve(page,snapshot,goal,extra,hooks){
+    calls.push(['resolve',page,snapshot instanceof Snapshot,goal,extra,Object.keys(hooks)]);
+    if(scenario.throws)throw Error('synthetic resolve');
+    const pending=[];
+    if(scenario.callback==='relogin')pending.push(hooks.onRelogin());
+    if(scenario.callback==='switch')hooks.onSwitchBrowser();
+    return Promise.all(pending).then(values=>{calls.push(['relogin-result',values]);if(scenario.rejects)throw Error('synthetic rejection');return scenario.result;});}};
+  const value=await outcome(async()=>method('f2128').call(actor,'fix the form',scenario.extra));
+  return{value,trace,calls,state:{relaunch:actor.relaunch,terminal:actor.terminal}};
+}));
