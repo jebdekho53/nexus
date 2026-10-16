@@ -1,0 +1,11 @@
+# Reconstruction phase18 —16October2026
+
+PayTM origin page f1704/f1705–1707, browser request f1708/f1709, disposal f1710/f1711 and status polling f1689/f1690–1692 are native in payment/paytm-page.cjs and paytm-status.cjs. Total71 native entries,191 pins,1038 verified tests. Offline smoke PID25436 completed8 screens with71 factories and no native bytecode.
+
+Origin-page creation retains cached page behavior and validates the new page origin against configured hosts.paytm before reuse. Cached-page isClosed errors propagate as before; failures inside creation return null. Navigation/evaluate promise rejections are swallowed in their original positions. Browser request serializes an ordinary async function, retains credentials include, referrer and exact uppercase POST body/header rules. Fetch/text errors return status0/empty text; evaluate rejection returns null, while synchronous errors follow recovered propagation. Disposal clears actor ownership before awaiting closure; a replacement arriving during closure is retained.
+
+Status polling retains default800 attempts, first2500ms then2000ms delays, existing stop boundary and optional onWait. It tries the existing browser-page request before configured request fallback, preserving response status bounds and success object field/default extraction. The historical broad SUCCESS regex is retained exactly, including its substring behavior; this migration does not strengthen payment verification. Existing downstream finalization is still required. Pending diagnostics retain cadence/helper evaluation but omit raw response HTML/status snippets.
+
+New comparisons:36 page/fetch/lifecycle tests,34 status tests and2 additional composed-chain checks. Full suite1036 passed before the last2 added chain checks; the focused6-test composed chain also passed afterward. Chain uses actual recovered/native orchestration, redirect, QR parsing, page creation/browser fetch, polling and disposal. Fetch/WebSocket/final-status/bank/PNR effects remain synthetic; no real payment or QR success was verified. Public1.0.11 unchanged; no build or deployment.
+
+Next: remaining WebSocket watcher f1693, final-status f1712 and bank response f1717. Other providers, session/cookie helpers and broader app remain recovered. All generated definitions retained.

@@ -24,7 +24,7 @@ selected_ids = [
     *[f'f{n}' for n in range(547, 555)],
     'f1599', 'f1600', 'f1601', 'f1602', 'f1603', 'f1604', 'f1605', 'f1606', 'f1607', 'f1608', 'f1609', 'f1610', 'f1611',
     *[f'f{n}' for n in range(1617, 1652)],
-    *[f'f{n}' for n in range(1652, 1689)],
+    *[f'f{n}' for n in range(1652, 1719)],
     *[f'f{n}' for n in range(1719, 1730)],
     'f1756', 'f1757', 'f2382',
     *[f'f{n}' for n in range(2172, 2186)],
