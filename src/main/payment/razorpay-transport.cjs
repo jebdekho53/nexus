@@ -77,4 +77,15 @@ async function razorpayCheckout(actor,action,encdata,{resolveLocation,parseCheck
   return checkout;
 }
 
-module.exports={razorpayLocation,parseRazorpayCheckoutPage,razorpayCheckout};
+// Recovered f1764/f1765. The token may appear in an uppercase hex literal or as a window assignment.
+// Only the status code and a presence flag are logged.
+async function razorpaySessionToken(actor,keyId,newSession) {
+  const url=(actor.hosts.razorpay??'')+'/v1/checkout/public?key_id='+encodeURIComponent(keyId)+(newSession?'&checkout_v2=1&new_session=1':'');
+  const response=await actor.reqRetry('razorpaySessionToken',async()=>actor.req.get(url,{headers:await actor.gwHeaders('razorpay')}));
+  const text=await response.text();
+  const token=/session_token\s*[:=]\s*["']([A-F0-9]{40,})["']/i.exec(text)?.[1]
+    ??/window\.session_token\s*=\s*["']([^"']+)["']/.exec(text)?.[1]??'';
+  actor.log('razorpaySessionToken → '+response.status()+' token='+(token?'y':'-'));
+  return token;
+}
+module.exports={razorpayLocation,parseRazorpayCheckoutPage,razorpayCheckout,razorpaySessionToken};

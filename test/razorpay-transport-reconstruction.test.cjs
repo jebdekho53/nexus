@@ -6,7 +6,7 @@ const {reconstructedPayment}=require('../src/main/runtime/reconstructed-payment.
 
 function harness(native) {
   const trace=[];
-  const globals={Promise,String,Number,Object,JSON,URL,RegExp};
+  const globals={Promise,String,Number,Object,JSON,URL,RegExp,encodeURIComponent};
   const engine=createEngine(definitions,{functionFactories:native?reconstructedPayment({development:true,enabled:true}):{},globals});
   const root=engine.context(1842,null);
   root[5]=root[1841]=(n,key)=>{assert.notEqual(table[n+'|'+key],undefined,'missing fixture '+n+'|'+key);return table[n+'|'+key];};
@@ -85,4 +85,29 @@ test('Razorpay checkout form, headers and private diagnostics',async()=>{
   assert.doesNotMatch(value.rawLogs.join(' '),/synthetic|invalid|razorpay\.com/);
   const hosted=await checkout(true,{action:'https://checkout-hosted.example.invalid/p',razorHost:'https://checkout-hosted.example.invalid'});
   assert.equal(hosted.trace.find(row=>row[0]==='gw')[2].origin,'https://checkout-hosted.example.invalid');
+});
+
+async function sessionToken(native,options={}) {
+  const{engine,context,trace}=harness(native),logs=[];
+  const actor={hosts:{razorpay:options.host===undefined?'https://checkout.razorpay.com':options.host},
+    async reqRetry(label,operation){trace.push(['retry',label]);if(options.fail==='retry')throw Error('synthetic retry');return operation();},
+    async gwHeaders(host){trace.push(['gw',host]);if(options.fail==='gw')throw Error('synthetic gw');return{synthetic:'gw'};},
+    req:{get(url,settings){trace.push(['get',url,settings]);assert.equal(this,actor.req);if(options.fail==='get')throw Error('synthetic get');
+      return Promise.resolve({status(){trace.push(['status']);return 200;},text(){trace.push(['text']);if(options.fail==='text')return Promise.reject(Error('synthetic text'));return Promise.resolve(options.body??'');}});}},
+    log(value){trace.push(['log']);logs.push(value);}};
+  return{...await outcome(engine.makeFunction('f1764',context).call(actor,options.keyId??'key/id',options.newSession)),trace,logs:logs.map(v=>v),rawLogs:logs};
+}
+const hex40='A'.repeat(40);
+for(const[name,options]of Object.entries({
+  upperHex:{body:'session_token: "'+hex40+'"'},lowerHexCaseInsensitive:{body:"SESSION_TOKEN='"+'a'.repeat(45)+"'"},shortHex:{body:'session_token: "'+'A'.repeat(39)+'"'},windowAssignment:{body:'window.session_token = "abc-123"'},
+  windowUpperCase:{body:'WINDOW.SESSION_TOKEN = "abc"'},hexWins:{body:'window.session_token = "w"; session_token="'+hex40+'"'},none:{body:'nothing'},empty:{body:''},newSession:{newSession:true,body:'x'},noHost:{host:null,body:'x'},
+  retryFails:{fail:'retry'},gwFails:{fail:'gw'},getFails:{fail:'get'},textFails:{fail:'text'},escapedKey:{keyId:'a b&c'},
+}))test('Razorpay session token matches recovered URL, regex and result flow: '+name,async()=>{
+  const actual=await sessionToken(true,options),expected=await sessionToken(false,options);
+  assert.deepEqual(plain({...actual,rawLogs:undefined}),plain({...expected,rawLogs:undefined}));
+});
+test('Razorpay session token log is private',async()=>{
+  const value=await sessionToken(true,{body:'session_token: "'+hex40+'"',newSession:true});
+  assert.equal(value.value,hex40);assert.equal(value.rawLogs[0],'razorpaySessionToken → 200 token=y');
+  assert.match(value.trace.find(row=>row[0]==='get')[1],/key_id=key%2Fid&checkout_v2=1&new_session=1$/);
 });
