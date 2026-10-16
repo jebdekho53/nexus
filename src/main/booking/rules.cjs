@@ -131,4 +131,72 @@ function modeDispatch(mode,config,args,{railKind,loginModeOf,allowedModeOf}) {
   return allowedModeOf(loginModeOf(config),[...args]);
 }
 
-module.exports={proxySettings,proxyLabel,isSeniorCitizen,countsAsLowerBerth,countLowerBerths,lowerBerthWarning,openingTimes,withAvailabilityEpoch,storedAvailabilityTime,beforeCutoff,availabilityTime,joinLabel,listIncludes,railBrahmosKind,loginMode,loginFlags,allowedMode,modeDispatch};
+// Recovered f448: proxy settings from the saved proxy form (disabled or host-less configurations give nothing).
+function proxyFromConfig(config) {
+  if(!(config?.enabled&&config.host?.trim()))return undefined;
+  const host=config.host.trim();
+  const port=config.port?.trim();
+  return{
+    server:port?host+':'+port:host,
+    username:config.username||undefined,
+    password:config.password||undefined,
+  };
+}
+
+// Recovered f449.
+function isPlainObject(value) {
+  return Boolean(value)&&typeof value=='object'&&!Array.isArray(value);
+}
+
+// Recovered f450: the value when it is a string, else the fallback (default empty text).
+function stringOr(value,fallback='') {
+  return typeof value=='string'?value:fallback;
+}
+
+// Recovered f451: the candidate when it is a member of the allowed text, else the fallback.
+function memberOr(allowed,candidate,fallback) {
+  return typeof candidate=='string'&&allowed.includes(candidate)?candidate:fallback;
+}
+
+// Recovered f452: a positive amount from a number or text such as "₹1,234.50" (anything else: undefined).
+function positiveAmount(value) {
+  const number=typeof value=='number'?value:typeof value=='string'?Number(value.replace(/[^\d.]/g,'')):NaN;
+  return Number.isFinite(number)&&number>0?number:undefined;
+}
+
+// Recovered f453: passenger count from a number or text, kept within 1–4 (invalid input: 1).
+function passengerCount(value) {
+  const number=typeof value=='number'?value:typeof value=='string'?parseInt(value,10):NaN;
+  return Number.isFinite(number)?Math.max(1,Math.min(4,Math.floor(number))):1;
+}
+
+// Recovered f454: quota family with case-insensitive input.
+function quotaFamilyCaseless(quota,classCode,{acClasses}) {
+  const code=(quota||'').toUpperCase();
+  if(code==='8AM'||code==='LD'||code==='SS')return 'eightAm';
+  if(code==='TQ'||code==='PT')return acClasses().has((classCode||'').toUpperCase())?'acTatkal':'slTatkal';
+  return null;
+}
+
+// Recovered f455: whether the booking window of a quota is open at `now` (IST opening time of the same day).
+function bookingWindow(quota,classCode,now,{family,openingTimes}) {
+  const name=family(quota,classCode);
+  if(!name)return{open:true};
+  const opening=openingTimes()[name];
+  const hour=opening.h,minute=opening.m,label=opening.label;
+  const day=new Date(now+19800000);
+  const opensAt=Date.UTC(day.getUTCFullYear(),day.getUTCMonth(),day.getUTCDate(),hour,minute,0)-19800000;
+  return now>=opensAt?{open:true}:{open:false,opensAtLabel:label};
+}
+
+const PREMIUM_NAMES=['vande','shatabdi','rajdhani','gatimaan','tejas'];
+
+// Recovered f456 (+f457): premium trains by name or by (trimmed) train number.
+function isPremiumTrain(number,name,{premiumNumbers}) {
+  const lowered=(name??'').toLowerCase();
+  if(lowered&&PREMIUM_NAMES.some(part=>lowered.includes(part)))return true;
+  const trimmed=(number??'').trim();
+  return Boolean(trimmed)&&premiumNumbers().has(trimmed);
+}
+
+module.exports={proxyFromConfig,isPlainObject,stringOr,memberOr,positiveAmount,passengerCount,quotaFamilyCaseless,bookingWindow,isPremiumTrain,proxySettings,proxyLabel,isSeniorCitizen,countsAsLowerBerth,countLowerBerths,lowerBerthWarning,openingTimes,withAvailabilityEpoch,storedAvailabilityTime,beforeCutoff,availabilityTime,joinLabel,listIncludes,railBrahmosKind,loginMode,loginFlags,allowedMode,modeDispatch};

@@ -7,7 +7,7 @@ const definitions=require('../../src/main/generated/index.cjs');
 const strings=Object.assign({},...Object.values(require('../fixtures/payment-strings.json')));
 const {reconstructedPayment}=require('../../src/main/runtime/reconstructed-payment.cjs');
 
-const BUILTINS={Promise,String,Number,Object,Array,JSON,RegExp,URL,Math,Date,Error,Set,Map,encodeURIComponent,decodeURIComponent,parseInt,parseFloat,isNaN,Boolean,Symbol};
+const BUILTINS={NaN,Infinity,Promise,String,Number,Object,Array,JSON,RegExp,URL,Math,Date,Error,Set,Map,encodeURIComponent,decodeURIComponent,parseInt,parseFloat,isNaN,Boolean,Symbol};
 
 // slots: root-scope values. A string like 'f150' becomes that recovered function created in the root scope;
 // a function receives the engine and root and returns the value.

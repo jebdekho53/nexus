@@ -39,3 +39,17 @@ test('loginMode (f444)',()=>check('f444',[[{manualLogin:true}],[{brahmosLogin:tr
 test('loginFlags (f445)',()=>check('f445',[['manual'],['direct'],['brahmos'],['auto'],[undefined]]));
 test('allowedMode (f446)',()=>check('f446',[['manual',['auto','manual']],['x',['auto','manual']],['manual',[]],['x',[]],['direct',[]],['x',undefined]]));
 test('modeDispatch (f447)',()=>check('f447',[['railone',{railBrahmos:true},['brahmos']],['railone',undefined,['x']],['uilogin',{manualLogin:true},[['a']]],['other',{manualLogin:true},[['manual','auto']]],['other',{directLogin:true},[['manual']]],['other',{},[[]]],['other',{brahmosLogin:true},[['brahmos']]],['other',{},[]]]));
+
+const more={302:new Set(['3A','CC','2A']),303:{eightAm:{h:8,m:0,label:'8:00 AM'},acTatkal:{h:10,m:30,label:'10:30 AM'},slTatkal:{h:11,m:15,label:'11:15 AM'}},304:'f454',306:new Set(['12951','20901'])};
+test('proxyFromConfig (f448)',()=>check('f448',[[{enabled:true,host:' h ',port:' 8 ',username:'u',password:'p'}],[{enabled:true,host:'h'}],[{enabled:false,host:'h'}],[{enabled:true,host:'  '}],[{enabled:true}],[undefined],[null],[{enabled:true,host:'h',port:'  '}],[{enabled:true,host:'h',port:80}],[{enabled:1,host:'h',username:'',password:''}]],more));
+test('isPlainObject (f449)',()=>check('f449',[[{}],[[]],[null],[undefined],[0],['x'],[()=>1],[new Date()],[1],[true]],more));
+test('stringOr (f450)',()=>check('f450',[['x'],['x','y'],[5,'y'],[5],[undefined],[null,'z'],['', 'y'],[{},undefined]],more));
+test('memberOr (f451)',()=>check('f451',[['abcdef','cd','z'],['abcdef','xy','z'],['abc',5,'z'],['abc','', 'z'],[['a','b'],'a','z'],['abc',undefined,'z'],[undefined,'a','z']],more));
+test('positiveAmount (f452)',()=>check('f452',[[5],[0],[-3],['₹1,234.50'],['abc'],[''],['12.3.4'],[Infinity],[NaN],[null],[undefined],['0'],['  7 '],[{}]],more));
+test('passengerCount (f453)',()=>check('f453',[[2],[0],[9],[3.9],[-1],['3'],['abc'],['2x'],[''],[undefined],[NaN],[Infinity],[null]],more));
+test('quotaFamilyCaseless (f454)',()=>check('f454',[['8am','SL'],['ld','SL'],['SS',''],['tq','3a'],['PT','sl'],['pt',undefined],['GN','SL'],[undefined,'3A'],['tQ','cc'],[null,null]],more));
+test('bookingWindow (f455)',()=>check('f455',[
+  ['GN','SL',Date.parse('2026-10-16T09:00:00+05:30')],['8AM','SL',Date.parse('2026-10-16T07:59:59+05:30')],['8AM','SL',Date.parse('2026-10-16T08:00:00+05:30')],['TQ','3A',Date.parse('2026-10-16T10:29:59+05:30')],['TQ','3A',Date.parse('2026-10-16T10:30:00+05:30')],
+  ['TQ','SL',Date.parse('2026-10-16T11:14:59+05:30')],['PT','SL',Date.parse('2026-10-16T23:59:59+05:30')],['PT','SL',Date.parse('2026-10-15T20:00:00Z')],['TQ','SL',NaN],['tq','cc',Date.parse('2026-10-16T05:00:00Z')],
+],more));
+test('isPremiumTrain (f456)',()=>check('f456',[['12951','Mumbai Rajdhani'],['00000','Vande Bharat Express'],['12951',''],['12951',undefined],['20901','Local'],['99999','Local'],['',' x '],[undefined,'tejas'],[undefined,undefined],['  ','shatabdi'],[' 12951 ','x'],[12951,'x']],more));
