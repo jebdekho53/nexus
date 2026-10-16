@@ -1,6 +1,6 @@
 {
   "status": "in_progress",
-  "progress": "Phases1\u20133:17 native payment entries includingf2172init,f2176dispatch,f2181commonsettlement,f2220eligibility,f2221cancellablewait,f2226bookingdatapoll.292 fulltests pass; actual recovered comparison incl25settlement,13PNRlifecycle,20bookingdata scenarios. Bookingdata diagnostics deliberately omit rawresponses/transactionIDs/suppliererrortext.64 entry/localclosure fingerprints pinned. Source-only developer candidate --reconstructed-payment; published1.0.11unchanged; no livebooking/payment. Next bookingresult normalization and gateway transport; fullappstill uses recoveredengine.",
+  "progress": "Phases 1–4: 25 native payment entries. Booking normalization, retry parsing, session/referrer/request-ID helpers and ordered finalization wrapper added. 341 full tests pass; 76 recovered definition fingerprints pinned. Offline complete-chain parity through synthetic QR/settlement/normalized booking/cleanup passes. Developer-only --reconstructed-payment; public 1.0.11 unchanged. Next f2233 finalization core and gateway transports; full app reconstruction incomplete.",
   "task": "Reconstruct recovered Matrix payment logic into maintainable JavaScript",
   "completedLatestTask": {
     "task": "Fix WebLogin Chrome selection closing another independent pair panel",
@@ -74,7 +74,7 @@
     }
   },
   "reconstruction": {
-    "phase": "payment settlement and PNR lifecycle",
+    "phase": "booking normalization, session context and finalization wrapper",
     "report": "docs/reconstruction-progress.md",
     "handoff": "docs/ANTIGRAVITY-HANDOFF.md",
     "flag": "--reconstructed-payment",
@@ -85,33 +85,44 @@
       "f544",
       "f545",
       "f546",
+      "f547",
+      "f548",
+      "f549",
+      "f554",
+      "f2172",
+      "f2176",
+      "f2181",
       "f2186",
       "f2193",
       "f2196",
       "f2208",
       "f2213",
-      "f2172",
-      "f2176",
-      "f2181",
       "f2220",
       "f2221",
-      "f2226"
+      "f2226",
+      "f2230",
+      "f2231",
+      "f2232",
+      "f2243"
     ],
     "published": false,
     "quotaHandoffThresholdRemainingPercent": 5,
-    "lastObservedPrimaryRemainingPercent": 8,
-    "lastObservedWeeklyRemainingPercent": 34,
-    "testsPassed": 292,
+    "lastObservedPrimaryRemainingPercent": 10,
+    "lastObservedWeeklyRemainingPercent": 19,
+    "testsPassed": 341,
     "smoke": {
       "windows": 8,
       "completeDom": true,
-      "allElevenFactoriesEnabled": true,
-      "offline": true
+      "factoriesEnabled": 25,
+      "offline": true,
+      "pid": 10828,
+      "complete": true
     },
-    "codeCheckpoint": "7ab017c",
+    "codeCheckpoint": "phase4 commit immediately after this state file",
     "handoffReady": false,
     "phaseTwoReport": "docs/reconstruction-phase-2.md",
-    "pinnedDefinitions": 64
+    "pinnedDefinitions": 76,
+    "phaseFourReport": "docs/reconstruction-phase-4.md"
   },
   "continuationSchedule": "Hourly at minute41 IST; resumed directly on16Oct2026after13:41 quota reset."
 }

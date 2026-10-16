@@ -1,6 +1,6 @@
 'use strict';
 const {runProviderQr}=require('../payment/provider-qr.cjs');
-const {bookingPaymentUrl}=require('../payment/request-url.cjs');
+const {bookingPaymentUrl,bookingDataUrl}=require('../payment/request-url.cjs');
 const {startPaytmWatch}=require('../payment/paytm-watch.cjs');
 const {runPaytm}=require('../payment/paytm.cjs');
 const {runPhonePe}=require('../payment/phonepe.cjs');
@@ -13,6 +13,10 @@ const {dispatchPayment}=require('../payment/gateway-dispatch.cjs');
 const {settlePayment}=require('../payment/settlement.cjs');
 const {canRequestPnr,waitForPnrRetry}=require('../payment/pnr-lifecycle.cjs');
 const {pollBookingData}=require('../payment/booking-data.cjs');
+const {emptyBooking,normalizeBooking}=require('../payment/booking-result.cjs');
+const {bookingRetryDelay}=require('../payment/retry-delay.cjs');
+const {sessionTokens,paymentPageReferrer,paymentRequestId}=require('../payment/session-context.cjs');
+const {finishBooking}=require('../payment/finish-booking.cjs');
 const {createHash}=require('node:crypto');
 const contracts=require('../payment/recovered-contract.json');
 
@@ -27,6 +31,10 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
       throw new Error('Reconstructed payment contract changed for '+id+'. Review the recovered definition and comparison tests before enabling this candidate.');
   }
   return {
+    f2230:()=>function(){return sessionTokens(this);},
+    f2231:()=>function(){return paymentPageReferrer(this);},
+    f2232:()=>function(){return paymentRequestId(this,dependencies);},
+    f2243:()=>function(booking){return finishBooking(this,booking);},
     f510:({readBinding})=>function(transactionId,insuranceApplicable){
       return bookingPaymentUrl(readBinding(345,'rt'),transactionId,insuranceApplicable);
     },
@@ -34,6 +42,12 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
       return bookingPaymentBody(method,amount,bankOverride,key=>readBinding(386)(key));
     },
     f545:()=>isBankProcessingError,
+    f554:()=>emptyBooking,
+    f547:({readBinding})=>function(transactionId){return bookingDataUrl(readBinding(345,'rt'),transactionId);},
+    f548:()=>bookingRetryDelay,
+    f549:({readBinding})=>function(response){
+      return normalizeBooking(response,{extractError:value=>readBinding(396)(value),empty:()=>readBinding(400)()});
+    },
     f2220:()=>function(){return canRequestPnr(this);},
     f2221:()=>function(ms){return waitForPnrRetry(this,ms,dependencies.timers);},
     f2226:({readBinding})=>function(transactionId,journey,maxAttempts){

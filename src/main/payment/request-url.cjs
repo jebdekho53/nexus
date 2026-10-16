@@ -5,4 +5,5 @@
 function bookingPaymentUrl(apiBase,transactionId,insuranceApplicable) {
   return apiBase+'/bookingInitPayment/'+transactionId+'?insurenceApplicable='+(insuranceApplicable?'':'NA');
 }
-module.exports={bookingPaymentUrl};
+function bookingDataUrl(apiBase,transactionId){return apiBase+'/bookingData/'+transactionId;}
+module.exports={bookingPaymentUrl,bookingDataUrl};
