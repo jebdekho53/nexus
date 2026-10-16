@@ -73,3 +73,5 @@ Phase18: PayTM origin page f1704, browser fetch f1708, disposal f1710 and status
 Phase19: PayTM bank response f1717/f1718 is native; see phase19 report. Current code commit b056da7; full1069-test suite passed. Most recent quota primary12%, weekly3%. Remaining PayTM boundaries include WebSocket f1693 and final status f1712.
 
 Phase20: PayTM WebSocket watcher f1693 and final status f1712 are native; see docs/reconstruction-phase-20.md. 209 pins, 74 native entries, 1124 tests passed.
+
+Phase21: PhonePe, Razorpay and wallet verification transports are native, PayTM watcher/final status composed into the chain, and dropped regex flags were restored in the recovered definitions; see docs/reconstruction-phase-21.md. 88 native entries, 261 pins, 1406 tests passed.
