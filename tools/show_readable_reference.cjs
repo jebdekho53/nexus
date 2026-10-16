@@ -25,8 +25,11 @@ for(const id of process.argv.slice(2)) {
     .filter(s=>s&&s.length>=3).map(s=>'"'+s.replace(/"/g,'\\"')+'"');
   if(!wanted.length||!fixture[id]){console.log('// '+id+': function not in the string fixture; add it to tools/export_payment_fixture.py');continue;}
   const reference=block=>block.replace(/ConstPool\[(\d+):"([^"]*)"\]/g,'"$2"');
-  const matches=blocks.map(block=>reference(block)).filter(block=>wanted.every(s=>block.includes(s)));
-  matches.sort((a,b)=>Math.abs(a.split('\n').length-definition.code.length/1.7)-Math.abs(b.split('\n').length-definition.code.length/1.7));
-  if(!matches.length){console.log('// '+id+': no block contains all '+wanted.length+' strings');continue;}
+  const scored=blocks.map(block=>{const body=reference(block);return{body,score:wanted.filter(s=>body.includes(s)).length};});
+  const best=Math.max(...scored.map(item=>item.score));
+  const matches=scored.filter(item=>item.score===best&&best>=Math.ceil(wanted.length*0.7)).map(item=>item.body);
+  const lines=block=>block.split('\n').length;
+  matches.sort((a,b)=>Math.abs(lines(a)-definition.code.length/1.7)-Math.abs(lines(b)-definition.code.length/1.7));
+  if(!matches.length){console.log('// '+id+': no block contains at least 70% of '+wanted.length+' strings');continue;}
   console.log('// '+id+': '+matches.length+' candidate block(s); showing the closest\n'+matches[0]+'\n');
 }

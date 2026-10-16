@@ -74,3 +74,44 @@ test('highLoadDelay returns 2000-3999 ms without a configured callback',async()=
   const{method}=harness({native:true,dependencies:{random:()=>0.9999}});
   assert.equal(method('f2063').call({opts:{}}),3999);
 });
+
+// controlProxyContext (f2051)
+for(const[name,scenario]of Object.entries({
+  noProxy:{proxy:undefined},blankServer:{proxy:{server:'   '}},ordinary:{proxy:{server:'host:1',username:'u',password:'p'}},noCredentials:{proxy:{server:'host:1'}},
+  cachedSame:{proxy:{server:'host:1',username:'u',password:'p'},cached:{key:'host:1|u|p',value:'ctx'}},cachedOther:{proxy:{server:'host:2'},cached:{key:'host:1||',value:'ctx'}},
+  createFails:{proxy:{server:'host:1'},fail:true},createRejects:{proxy:{server:'host:1'},reject:true},paddedServer:{proxy:{server:' host:1 '}},
+}))test('controlProxyContext matches recovered caching and failure rules: '+name,async()=>compare(async native=>{
+  const calls=[];
+  const{method}=harness({native,slots:{562:value=>{calls.push(['create',value]);if(scenario.fail)throw Error('synthetic create');return scenario.reject?Promise.reject(Error('synthetic rejection')):Promise.resolve('new-context');}}});
+  const{actor}=recorder({});
+  if(scenario.cached){actor.controlReqCtx=scenario.cached.value;actor.controlReqCtxKey=scenario.cached.key;}
+  const value=await outcome(async()=>method('f2051').call(actor,scenario.proxy));
+  return{value,calls,state:{ctx:actor.controlReqCtx,key:actor.controlReqCtxKey}};
+}));
+
+// routeGatewayThroughFormProxy (f2052)
+const proxySlots=(trace,options={})=>({
+  247:name=>{trace.push(['filtered?',name]);return name.startsWith('f5_');},
+  561:server=>{trace.push(['normalize',server]);return 'http://'+server;},
+  133:'*.invalid',
+  2132:source=>require('node:vm').runInNewContext('('+source+')',{navigator:{userAgent:'synthetic-agent'}}),
+  15:{request:{async newContext(settings){trace.push(['newContext',settings]);if(options.contextFails)throw Error('synthetic context failure');return{synthetic:'request-context'};}}},
+});
+for(const[name,scenario]of Object.entries({
+  gologin:{provider:'gologin'},cdp:{cdpAttached:true,provider:'other'},notProxied:{provider:'other'},noPage:{provider:'gologin',noPage:true},blankProxy:{provider:'gologin',proxy:{server:' '}},noProxy:{provider:'gologin',proxy:null},
+  alreadyRouted:{provider:'gologin',routed:true},noGateway:{provider:'gologin',noGateway:true},cookieFilter:{provider:'gologin',cookieF5:true},withCredentials:{provider:'gologin',proxy:{server:'h:1',username:'u',password:'p'}},
+  noAgent:{provider:'gologin',agent:''},agentFails:{provider:'gologin',agentFails:true},cookiesFail:{provider:'gologin',cookiesFail:true},contextFails:{provider:'gologin',contextFails:true},useProxyFails:{provider:'gologin',useProxyFails:true},
+}))test('routeGatewayThroughFormProxy matches recovered routing rules: '+name,async()=>compare(async native=>{
+  const trace=[];
+  const{method}=harness({native,slots:proxySlots(trace,scenario)});
+  const{actor,trace:logTrace}=recorder({opts:{cookieF5:scenario.cookieF5}});
+  actor.session={provider:scenario.provider,cdpAttached:scenario.cdpAttached,proxy:scenario.proxy===undefined?{server:'h:1'}:scenario.proxy,
+    page:scenario.noPage?undefined:{
+      context(){return{async cookies(){trace.push(['cookies']);if(scenario.cookiesFail)throw Error('synthetic cookies');return[{name:'f5_a'},{name:'sid'}];}};},
+      evaluate(fn){const agent=require('node:vm').runInNewContext('('+fn.toString()+')',{navigator:{userAgent:'synthetic-agent'}})();trace.push(['evaluate',agent]);if(scenario.agentFails)return Promise.reject(Error('synthetic agent'));return Promise.resolve(scenario.agent===undefined?agent:scenario.agent);},
+    }};
+  actor.gateway=scenario.noGateway?undefined:{useProxiedRequest(context){trace.push(['use',context]);if(scenario.useProxyFails)throw Error('synthetic use');}};
+  actor.gatewayReqCtx=scenario.routed?'existing':undefined;
+  const value=await outcome(async()=>method('f2052').call(actor));
+  return{value,trace,logs:logTrace,state:actor.gatewayReqCtx};
+}));

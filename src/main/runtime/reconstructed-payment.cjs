@@ -37,7 +37,7 @@ const {pollPaytmStatus}=require('../payment/paytm-status.cjs');
 const {waitForPaytmWs}=require('../payment/paytm-websocket.cjs');
 const {razorpayLocation,parseRazorpayCheckoutPage,razorpayCheckout,razorpaySessionToken,razorpayPollUrl,razorpayCreate,pollRazorpay}=require('../payment/razorpay-transport.cjs');
 const {walletVerify}=require('../payment/wallet-verify.cjs');
-const {cancelPayment,stoppedResult,highLoadDelay,focusBrowser,hideBrowser,minimizeBrowser}=require('../booking/controls.cjs');
+const {controlProxyContext,routeGatewayThroughFormProxy,cancelPayment,stoppedResult,highLoadDelay,focusBrowser,hideBrowser,minimizeBrowser}=require('../booking/controls.cjs');
 const {getFinalPaytmStatus}=require('../payment/paytm-final-status.cjs');
 const {fingerprint,phonePeHeaders,phonePeRedirect,razorpayRedirect,phonePeQr,pollPhonePe}=require('../payment/phonepe-transport.cjs');
 const {definitionFingerprint}=require('./recovered-contract.cjs');
@@ -81,6 +81,8 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     f2055:({readBinding})=>function(){return focusBrowser(this,{bringToFront:page=>readBinding(123,undefined,1)(page)});},
     f2057:({readBinding})=>function(){return hideBrowser(this,{moveOffScreen:(page,hidden)=>readBinding(122,undefined,1)(page,hidden)});},
     f2063:()=>function(){return highLoadDelay(this,{random:dependencies.random});},
+    f2051:({readBinding})=>function(proxy){return controlProxyContext(this,proxy,{createContext:value=>readBinding(562,undefined,1)(value)});},
+    f2052:({readBinding})=>function(){return routeGatewayThroughFormProxy(this,{isFilteredCookie:name=>readBinding(247,undefined,1)(name),normalizeProxy:value=>readBinding(561,undefined,1)(value),bypass:()=>readBinding(133,undefined,1),playwright:()=>readBinding(15,undefined,1)});},
     f1704:()=>function(){return paytmOriginPage(this,dependencies.globals);},
     f1708:()=>function(path,options){return paytmPageRequest(this,path,options);},
     f1710:()=>function(){return disposePaytmPage(this);},
