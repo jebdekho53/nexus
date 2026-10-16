@@ -1,6 +1,6 @@
 {
   "status": "in_progress",
-  "progress": "Phases1–13:58 native entries,787 tests,149 execution-metadata/code pins. Native request getter/routing verified inclconfigured fallback and full synthetic browser-close survivor settlement. No live service/build/deployment; public1.0.11 unchanged. Next backing TLS transport f1633 and optional HTTP recorder f1649, then other providers/broader app.",
+  "progress": "Phases1–14:59 native entries,832 tests,165 execution-metadata/code pins. Configured TLS transport/response facade now native with a seventh full synthetic chain case. Public1.0.11 unchanged; no live service/build/deployment. Next optional HTTP recorder f1649 and remaining providers/session helpers. Full app remains partly recovered.",
   "task": "Reconstruct recovered Matrix payment logic into maintainable JavaScript",
   "completedLatestTask": {
     "task": "Fix WebLogin Chrome selection closing another independent pair panel",
@@ -74,11 +74,12 @@
     }
   },
   "reconstruction": {
-    "phase": "gateway request routing and browser-close survivor continuation",
+    "phase": "configured TLS transport and response facade",
     "report": "docs/reconstruction-progress.md",
     "handoff": "docs/ANTIGRAVITY-HANDOFF.md",
     "flag": "--reconstructed-payment",
     "nativeEntries": [
+      "f1633",
       "f1652",
       "f1617",
       "f1618",
@@ -142,21 +143,21 @@
     "quotaHandoffThresholdRemainingPercent": 5,
     "lastObservedPrimaryRemainingPercent": 45,
     "lastObservedWeeklyRemainingPercent": 9,
-    "testsPassed": 787,
+    "testsPassed": 832,
     "smoke": {
       "windows": 8,
       "completeDom": true,
-      "factoriesEnabled": 58,
+      "factoriesEnabled": 59,
       "offline": true,
-      "pid": 8428,
+      "pid": 21432,
       "complete": true
     },
-    "codeCheckpoint": "phases1–13 checkpoint; consult git log",
+    "codeCheckpoint": "phases1–14 checkpoint; consult git log",
     "handoffReady": false,
     "phaseTwoReport": "docs/reconstruction-phase-2.md",
-    "pinnedDefinitions": 149,
+    "pinnedDefinitions": 165,
     "phaseFourReport": "docs/reconstruction-phase-4.md",
-    "nextReview": "f1633 backing TLS transport and f1649 HTTP recorder decoded. Actual getter fallback classifier receives fullURL; callback/native HTTP effects still synthetic.",
+    "nextReview": "f1649 HTTP recorder: guard onHttpRecord, form/data/body limits, callback not awaited, swallow internal diagnostic errors. Then remaining providers/session helpers.",
     "phasesFiveSixReport": "docs/reconstruction-phases-5-6.md",
     "phaseSevenReport": "docs/reconstruction-phase-7.md",
     "phaseEightReport": "docs/reconstruction-phase-8.md",
@@ -165,7 +166,8 @@
     "phaseElevenReport": "docs/reconstruction-phase-11.md",
     "phaseTwelveReport": "docs/reconstruction-phase-12.md",
     "contractScope": "execution-metadata-and-code",
-    "phaseThirteenReport": "docs/reconstruction-phase-13.md"
+    "phaseThirteenReport": "docs/reconstruction-phase-13.md",
+    "phaseFourteenReport": "docs/reconstruction-phase-14.md"
   },
   "continuationSchedule": "First16Oct2026at18:42IST, then every5h30m (330min). Existing general unfinished-task fallback remains active."
 }

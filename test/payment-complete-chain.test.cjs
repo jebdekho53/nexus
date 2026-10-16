@@ -4,11 +4,11 @@ const {createEngine}=require('../src/main/runtime/engine.cjs'),definitions=requi
 const {reconstructedPayment}=require('../src/main/runtime/reconstructed-payment.cjs');
 const {hooks}=require('../src/main/runtime/legacy-services.cjs');
 const vm=require('node:vm');
-async function complete(native,id,{failFirst=false,pendingPoll=false,bankInterstitial=false,closeBrowserAtBank=false}={}){
+async function complete(native,id,{failFirst=false,pendingPoll=false,bankInterstitial=false,closeBrowserAtBank=false,configuredTls=false}={}){
   const trace=[],random=()=>0.25,math=Object.create(Math);math.random=random;
   const timers={setTimeout(fn,ms){trace.push(['timer',ms]);if(ms!==3000&&ms!==5000)queueMicrotask(()=>{clockMs+=ms;fn();});return 0;}};
   let clockMs=0,commandPolls=0,bankCalls=0,browserClosedOnce=false;const clock={now:()=>clockMs};
-  const engine=createEngine(definitions,{functionFactories:native?reconstructedPayment({development:true,enabled:true,dependencies:{random,timers,clock}}):{},functionOverrides:hooks(event=>trace.push(['legacy',event])).overrides,globals:{...globalThis,Math:math,String,Number,JSON,Array,Boolean,Promise,Error,URL,RegExp,Buffer,atob,Date:clock,setTimeout:timers.setTimeout}}),root=engine.context(1842,null);
+  const engine=createEngine(definitions,{functionFactories:native?reconstructedPayment({development:true,enabled:true,dependencies:{random,timers,clock}}):{},functionOverrides:hooks(event=>trace.push(['legacy',event])).overrides,globals:{...globalThis,Math:math,String,Number,JSON,Array,Object,Boolean,Promise,Error,URL,URLSearchParams,RegExp,Buffer,atob,Date:clock,setTimeout:timers.setTimeout}}),root=engine.context(1842,null);
   const table=Object.assign({},...Object.values(strings));root[5]=root[1841]=(n,key)=>{const value=table[n+'|'+key];assert.notEqual(value,undefined,'Missing fixture '+n+'|'+key);return value;};
   root[345]='https://example.invalid/mapps1';root[386]=()=>30;root[388]={irctcqr:[30]};root[389]=['irctcqr'];root[391]=()=>true;root[392]=()=>true;
   root[561]=value=>'http://'+value;
@@ -18,6 +18,8 @@ async function complete(native,id,{failFirst=false,pendingPoll=false,bankInterst
   root[777]=engine.makeFunction('f1602',root);root[782]=engine.makeFunction('f1608',root);
   root[778]=engine.makeFunction('f1603',root);
   root[785]=engine.makeFunction('f1611',root);
+  root[790]=host=>host==='example.invalid'||host==='gateway.invalid';
+  root[764]=async(_context,url)=>{trace.push(['tls-cookie-header',url]);return '';};
   root[15]={request:{async newContext(options){trace.push(['new-context',options]);return{
     get(url,settings){trace.push(['survivor-request','get',url]);return rawRequest.get(url,settings);},post(url,settings){trace.push(['survivor-request','post',url]);return rawRequest.post(url,settings);},
     async dispose(){trace.push(['dispose-survivor']);},
@@ -50,9 +52,16 @@ async function complete(native,id,{failFirst=false,pendingPoll=false,bankInterst
     },
   };
   const rawRequest=actor.gateway.req;actor.gateway.page.request=rawRequest;
+  if(configuredTls)actor.gateway.webTlsGateway=async(url,settings)=>{
+    trace.push(['tls-effect',url,settings]);
+    const response=await rawRequest[settings.method==='POST'?'post':'get'](url,{headers:settings.headers,data:settings.data});
+    const headers=Object.fromEntries(Object.entries(response.headers?.()??{}).map(([key,value])=>[key,[value]]));
+    const json=url.includes('/bookingData/')||url.includes('/printTicket/')||url.endsWith('/generateAndShowQR');
+    return{status:response.status(),url:response.url?.()??url,headers,body:json?JSON.stringify(await response.json()):await response.text()};
+  };
   const requestContext=engine.context(19,root);requestContext[18]={FALLBACK_AFTER:3};
   Object.defineProperty(actor.gateway,'req',{get:engine.makeFunction('f1652',requestContext),configurable:true});
-  for(const[name,fid]of [['bookingData','f1719'],['printTicket','f1727'],['reqRetry','f1756'],['gwHeaders','f1666'],['clientHints','f1660'],['gatewayHints','f1662'],['liveProviderOrigin','f1659'],['originFor','f1665'],['disposeSurvivor','f1621'],['disposeDirectContext','f1630'],['paymentRedirect','f1667'],['noteGatewayPage','f1663'],['providerQr','f1668'],['pollProviderQr','f1673'],['irctcQrFetchEncdata','f1678'],['bankResponse','f1681'],['bankResponseOrigin','f1664'],['useSurvivorProxy','f1618'],['armSurvivor','f1619'],['sleep','f1628']])actor.gateway[name]=engine.makeFunction(fid,engine.context(2,root));
+  for(const[name,fid]of [['bookingData','f1719'],['printTicket','f1727'],['reqRetry','f1756'],['gwHeaders','f1666'],['clientHints','f1660'],['gatewayHints','f1662'],['liveProviderOrigin','f1659'],['originFor','f1665'],['disposeSurvivor','f1621'],['disposeDirectContext','f1630'],['paymentRedirect','f1667'],['noteGatewayPage','f1663'],['providerQr','f1668'],['pollProviderQr','f1673'],['irctcQrFetchEncdata','f1678'],['bankResponse','f1681'],['bankResponseOrigin','f1664'],['useSurvivorProxy','f1618'],['armSurvivor','f1619'],['sleep','f1628'],['sendViaWebTlsGateway','f1633']])actor.gateway[name]=engine.makeFunction(fid,engine.context(2,root));
   for(const[name,fid]of [['dispatchGateway','f2176'],['runProviderQr','f2186'],['settlePayment','f2181'],['pollBookingData','f2226'],['canRequestPnr','f2220'],['waitForPnrRetry','f2221'],['tok','f2230'],['paymentPageReferrer','f2231'],['finishBooking','f2243'],['finishBookingCore','f2233'],['attachPrintTicket','f2247'],['reportClientUpdate','f2009']])actor[name]=engine.makeFunction(fid,engine.context(2,root));
   const result=await engine.makeFunction('f2172',engine.context(2,root)).call(actor,{paymentMethod:'irctcqr',origin:'AAA',destination:'BBB',username:'synthetic'},'fixture-txn',99,new Set());
   return{result,trace,pnrSeen:actor.pnrSeen,booking:booked,browserGone:actor.gateway.browserGone,contextsDisposed:actor.gateway.survivorReq===undefined&&actor.gateway.directCtx===undefined};
@@ -96,4 +105,9 @@ test('complete synthetic settlement survives a mid-call browser close using its 
   assert.equal(after.result.success,true);assert.equal(after.browserGone,true);assert.equal(after.contextsDisposed,true);
   assert.ok(after.trace.some(row=>row[0]==='survivor-request'&&row[2].includes('/BankResponse')));
   assert.ok(after.trace.some(row=>row[0]==='survivor-request'&&row[2].includes('/bookingData/')));
+});
+test('complete configured-TLS synthetic chain uses native transport facade through booking result',async()=>{
+  const before=await complete(false,'tls',{configuredTls:true}),after=await complete(true,'tls',{configuredTls:true});assert.deepEqual(after,before);
+  assert.equal(after.result.success,true);assert.ok(after.trace.some(row=>row[0]==='tls-effect'));
+  assert.ok(after.trace.some(row=>row[0]==='request-record'&&row[1].endsWith('*+tls')));
 });

@@ -29,6 +29,7 @@ const {createProviderQr}=require('../payment/provider-qr-request.cjs');
 const {fetchProviderEncdata,pollProviderQr}=require('../payment/provider-qr-poll.cjs');
 const {interstitialDelay,bankResponse}=require('../payment/bank-response.cjs');
 const {gatewayRequest}=require('../payment/gateway-routing.cjs');
+const {sendViaWebTlsGateway}=require('../payment/gateway-tls.cjs');
 const {definitionFingerprint}=require('./recovered-contract.cjs');
 const contracts=require('../payment/recovered-contract.json');
 
@@ -43,6 +44,10 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
       throw new Error('Reconstructed payment contract changed for '+id+'. Review the recovered definition and comparison tests before enabling this candidate.');
   }
   return {
+    f1633:({readBinding})=>function(method,url,options){
+      const root=slot=>(...args)=>readBinding(slot,undefined,1)(...args);
+      return sendViaWebTlsGateway(this,method,url,options,{cookieHeader:root(764),filterCookieHeader:root(250),filterSetCookies:root(252),applySetCookies:root(768)});
+    },
     f1652:({readBinding})=>function(){
       const root=slot=>(...args)=>readBinding(slot,undefined,1)(...args);
       return gatewayRequest(this,{prepareCookies:root(468),isTlsHost:root(790),isBrowserClosed:root(139),isProxyNetworkError:root(136),canFallbackRequest:root(135),getConfig:()=>readBinding(18,'xw')});
