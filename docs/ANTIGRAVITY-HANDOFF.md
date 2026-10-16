@@ -1,3 +1,7 @@
+# Latest checkpoint — phase22
+
+All 4354 recovered definitions are compiled to ordinary JavaScript (src/main/compiled, tools/compiler) and verified by differential execution plus the full suite (1686 tests, also with MATRIX_COMPILED=1). src/main/runtime/compiled-runtime.cjs runs them without the instruction definitions (index.cjs --compiled-runtime; offline smoke passes). Exact next action: soak the compiled runtime offline, make it the default, then readability passes (inline temps, names from function-names.csv, promote context slots to lexical variables, split the f1 bootstrap) per docs/reconstruction-phase-22.md. The sections below are earlier history.
+
 # Latest continuation checkpoint — phase20
 
 Code 755c16a (phase21): 88 native entries, 261 pins, 1406 full-suite tests passed in this checkout; offline smoke PID18112 completed 8 DOM-ready screens with 88 factories and no native bytecode. See docs/reconstruction-phase-21.md. Next: payment class constructor/field initializers (engine review), session/cookie helpers, booking controllers (f2161, f2102, f3149), IPC/UI/backend boundaries, then the f1 bootstrap.

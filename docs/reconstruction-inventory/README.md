@@ -10,10 +10,10 @@ Bands: tiny1–20 instructions; small21–100; medium101–300; large301–1000;
 
 | Band | Functions | Original instructions | Instruction share | Native entries | Pinned support |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| tiny | 1711 | 11873 | 2.32% | 7 | 132 |
-| small | 1555 | 77741 | 15.16% | 48 | 49 |
-| medium | 741 | 127291 | 24.82% | 30 | 14 |
-| large | 288 | 146373 | 28.54% | 30 | 2 |
+| tiny | 1711 | 11873 | 2.32% | 11 | 137 |
+| small | 1555 | 77741 | 15.16% | 70 | 50 |
+| medium | 741 | 127291 | 24.82% | 34 | 14 |
+| large | 288 | 146373 | 28.54% | 31 | 2 |
 | very_large | 59 | 149579 | 29.17% | 6 | 0 |
 
 ## Structural review load
@@ -22,8 +22,8 @@ Score = 1 + conditional jumps + loop jumps + switch alternatives + 2*exception h
 
 | Band | Functions | Original instructions | Instruction share | Native entries | Pinned support |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| low | 3128 | 88772 | 17.31% | 39 | 188 |
-| moderate | 862 | 137049 | 26.72% | 51 | 8 |
+| low | 3128 | 88772 | 17.31% | 59 | 194 |
+| moderate | 862 | 137049 | 26.72% | 62 | 8 |
 | high | 305 | 142330 | 27.75% | 24 | 1 |
 | very_high | 53 | 81107 | 15.81% | 7 | 0 |
 | extreme | 6 | 63599 | 12.4% | 0 | 0 |
@@ -32,9 +32,9 @@ Score = 1 + conditional jumps + loop jumps + switch alternatives + 2*exception h
 
 | Band | Functions | Original instructions | Instruction share | Native entries | Pinned support |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| native_entry | 121 | 35278 | 6.88% | 121 | 0 |
-| pinned_support | 197 | 5950 | 1.16% | 0 | 197 |
-| recovered_other | 4036 | 471629 | 91.96% | 0 | 0 |
+| native_entry | 152 | 37393 | 7.29% | 152 | 0 |
+| pinned_support | 203 | 6023 | 1.17% | 0 | 203 |
+| recovered_other | 3999 | 469441 | 91.53% | 0 | 0 |
 
 Native entry is an active development-only replacement. Pinned support is a reviewed callback/dependency; do not count every pin as a completed standalone migration. Original instruction share is a size proxy, not completed effort or tested feature coverage. Main-function count alone substantially misrepresents progress.
 

@@ -5,6 +5,7 @@ const {createRequire} = require('node:module');
 const {pathToFileURL} = require('node:url');
 const electron = require('electron');
 const {createEngine} = require('./runtime/engine.cjs');
+const {createCompiledRuntime} = require('./runtime/compiled-runtime.cjs');
 
 const projectRoot = path.resolve(__dirname, '../..');
 require('./runtime/matrix-brand.cjs').install(electron,projectRoot);
@@ -81,8 +82,10 @@ const matrixUpdates=require('./runtime/updates.cjs').install(appElectron,project
 const appRequire = new Proxy(vendorRequire,{apply(target,that,args){return args[0]==='electron'?appElectron:Reflect.apply(target,that,args);}});
 
 function bootRecovered(){try {
-  const definitions = require('./generated/index.cjs');
-  log('definitions-loaded',{functions:Object.keys(definitions).length});
+  // --compiled-runtime runs the compiled bundle without loading the archived instruction definitions.
+  const compiledRuntime = process.argv.includes('--compiled-runtime');
+  const definitions = compiledRuntime ? null : require('./generated/index.cjs');
+  log('definitions-loaded',{functions:compiledRuntime ? Object.keys(require('./compiled/meta.cjs')).length : Object.keys(definitions).length,compiledRuntime});
   const matrixServices=require('./runtime/matrix-services.cjs').create({log});
   require('./runtime/matrix-services.cjs').install(appElectron,projectRoot,matrixServices);
   if(!isSmoke)void matrixServices.refresh();
@@ -94,7 +97,7 @@ function bootRecovered(){try {
   const privateOptions=process.argv.includes('--private-access-probe')||process.argv.includes('--private-flow-probe')?{onCreated:session=>require(path.join(projectRoot,'test/private-access-probe.cjs')).run(session,projectRoot,code=>developmentPolicy.finishSmoke(code))}:{};
   const functionInterceptors={...legacyServices.interceptors,...require('./runtime/general-api-candidate.cjs').interceptors(),...require('./runtime/private-browser.cjs').privateBrowser(log,privateOptions),...require('./runtime/login-performance.cjs').loginPerformance(log),...require('./runtime/booking-timing.cjs').bookingTiming(),...require('./runtime/qr-delivery.cjs').qrDelivery(appElectron,projectRoot,log)};
   Object.assign(functionInterceptors,require('./runtime/payment-timing.cjs').paymentTiming(log));
-  const engine = createEngine(definitions, {functionOverrides,functionInterceptors,functionFactories,onInvoke:(id,args,captured)=>{
+  const engineOptions = {functionOverrides,functionInterceptors,functionFactories,onInvoke:(id,args,captured)=>{
     if(id==='f3740'&&process.argv.includes('--isolated-live-test'))log('e2e-qr-publisher',{keys:Object.keys(args[0]||{}),imageBase64Length:args[0]?.imageBase64?.length||0,payloadLength:typeof args[0]?.payload==='string'?args[0].payload.length:0});
     if(actionTrace.active)actionTrace.calls.set(id,(actionTrace.calls.get(id)||0)+1);
     if(id==='f3720') {
@@ -113,7 +116,8 @@ function bootRecovered(){try {
       const page=args.find(value=>value&&typeof value.url==='function'&&typeof value.screenshot==='function'&&typeof value.evaluate==='function');
       if(page)globalThis.__matrixDiagnosticPage=page;
     }
-  }});
+  }};
+  const engine = compiledRuntime ? createCompiledRuntime(engineOptions) : createEngine(definitions, engineOptions);
   const wrapper = engine.makeFunction('f0')();
   const appModule = {exports:{},filename:__filename,id:__filename,paths:[path.join(projectRoot,'vendor/node_modules')]};
   wrapper.call(appModule.exports,appModule.exports,appRequire,appModule,__filename,__dirname);

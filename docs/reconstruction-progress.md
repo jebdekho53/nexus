@@ -75,3 +75,5 @@ Phase19: PayTM bank response f1717/f1718 is native; see phase19 report. Current 
 Phase20: PayTM WebSocket watcher f1693 and final status f1712 are native; see docs/reconstruction-phase-20.md. 209 pins, 74 native entries, 1124 tests passed.
 
 Phase21: PhonePe, Razorpay and wallet verification transports are native, PayTM watcher/final status composed into the chain, and dropped regex flags were restored in the recovered definitions; see docs/reconstruction-phase-21.md. 88 native entries, 261 pins, 1406 tests passed.
+
+Phase22: booking helpers native and a verified compiler produces src/main/compiled for all 4354 definitions; a standalone compiled runtime (--compiled-runtime) runs the offline smoke without the instruction definitions. See docs/reconstruction-phase-22.md. 1686 tests passed.
