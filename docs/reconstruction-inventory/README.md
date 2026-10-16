@@ -10,10 +10,10 @@ Bands: tiny1–20 instructions; small21–100; medium101–300; large301–1000;
 
 | Band | Functions | Original instructions | Instruction share | Native entries | Pinned support |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| tiny | 1711 | 11873 | 2.32% | 7 | 78 |
-| small | 1555 | 77741 | 15.16% | 28 | 34 |
+| tiny | 1711 | 11873 | 2.32% | 7 | 89 |
+| small | 1555 | 77741 | 15.16% | 28 | 37 |
 | medium | 741 | 127291 | 24.82% | 15 | 7 |
-| large | 288 | 146373 | 28.54% | 19 | 2 |
+| large | 288 | 146373 | 28.54% | 21 | 2 |
 | very_large | 59 | 149579 | 29.17% | 3 | 0 |
 
 ## Structural review load
@@ -22,9 +22,9 @@ Score = 1 + conditional jumps + loop jumps + switch alternatives + 2*exception h
 
 | Band | Functions | Original instructions | Instruction share | Native entries | Pinned support |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| low | 3128 | 88772 | 17.31% | 23 | 113 |
+| low | 3128 | 88772 | 17.31% | 23 | 127 |
 | moderate | 862 | 137049 | 26.72% | 29 | 7 |
-| high | 305 | 142330 | 27.75% | 16 | 1 |
+| high | 305 | 142330 | 27.75% | 18 | 1 |
 | very_high | 53 | 81107 | 15.81% | 4 | 0 |
 | extreme | 6 | 63599 | 12.4% | 0 | 0 |
 
@@ -32,9 +32,9 @@ Score = 1 + conditional jumps + loop jumps + switch alternatives + 2*exception h
 
 | Band | Functions | Original instructions | Instruction share | Native entries | Pinned support |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| native_entry | 72 | 20773 | 4.05% | 72 | 0 |
-| pinned_support | 121 | 4003 | 0.78% | 0 | 121 |
-| recovered_other | 4161 | 488081 | 95.17% | 0 | 0 |
+| native_entry | 74 | 22397 | 4.37% | 74 | 0 |
+| pinned_support | 135 | 4187 | 0.82% | 0 | 135 |
+| recovered_other | 4145 | 486273 | 94.82% | 0 | 0 |
 
 Native entry is an active development-only replacement. Pinned support is a reviewed callback/dependency; do not count every pin as a completed standalone migration. Original instruction share is a size proxy, not completed effort or tested feature coverage. Main-function count alone substantially misrepresents progress.
 

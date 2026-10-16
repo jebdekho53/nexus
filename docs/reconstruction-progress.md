@@ -71,3 +71,5 @@ Phase17: PayTM QR request/response parsing is native;63 new checks include actua
 Phase18: PayTM origin page f1704, browser fetch f1708, disposal f1710 and status polling f1689 are native. See docs/reconstruction-phase-18.md. Next remaining PayTM WebSocket f1693 and final-status/bank methods f1712/f1717.
 
 Phase19: PayTM bank response f1717/f1718 is native; see phase19 report. Current code commit b056da7; full1069-test suite passed. Most recent quota primary12%, weekly3%. Remaining PayTM boundaries include WebSocket f1693 and final status f1712.
+
+Phase20: PayTM WebSocket watcher f1693 and final status f1712 are native; see docs/reconstruction-phase-20.md. 209 pins, 74 native entries, 1124 tests passed.

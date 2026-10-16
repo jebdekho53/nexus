@@ -34,6 +34,8 @@ const {recordHttp}=require('../payment/http-record.cjs');
 const {paytmAppData,paytmQrImage,paytmOrderFromUrl,paytmOrderFromData,fetchPaytmQr}=require('../payment/paytm-qr-request.cjs');
 const {paytmOriginPage,paytmPageRequest,disposePaytmPage}=require('../payment/paytm-page.cjs');
 const {pollPaytmStatus}=require('../payment/paytm-status.cjs');
+const {waitForPaytmWs}=require('../payment/paytm-websocket.cjs');
+const {getFinalPaytmStatus}=require('../payment/paytm-final-status.cjs');
 const {definitionFingerprint}=require('./recovered-contract.cjs');
 const contracts=require('../payment/recovered-contract.json');
 
@@ -50,6 +52,8 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
   return {
     f1717:({readBinding})=>function(input){return paytmBankResponse(this,input,{parseDelay:html=>readBinding(785,undefined,1)(html)});},
     f1689:({readBinding})=>function(mid,orderId,stopped,onWait,maxAttempts){return pollPaytmStatus(this,mid,orderId,stopped,onWait,maxAttempts,{getField:(html,name)=>readBinding(783,undefined,1)(html,name)});},
+    f1693:()=>function(mid,orderId,timeoutMs,stopped){return waitForPaytmWs(this,mid,orderId,timeoutMs,stopped,{timers:dependencies.timers});},
+    f1712:({readBinding})=>function(payment){return getFinalPaytmStatus(this,payment,{parseForm:html=>readBinding(775,undefined,1)(html),globals:dependencies.globals});},
     f1704:()=>function(){return paytmOriginPage(this,dependencies.globals);},
     f1708:()=>function(path,options){return paytmPageRequest(this,path,options);},
     f1710:()=>function(){return disposePaytmPage(this);},
