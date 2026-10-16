@@ -1,6 +1,6 @@
-# Matrix source reconstruction — phases1–12
+# Matrix source reconstruction — phases1–13
 
-Verified16October2026: **57 native entry replacements**, **142 pinned recovered definitions**, **741 passing application tests**. Eight isolated source smoke screens rendered complete DOMs with all57 factories(PID25428). Public1.0.11 is unchanged; this candidate has not been built or deployed.
+Verified16October2026: **58 native entry replacements**, **149 pinned recovered definitions**, **787 passing application tests**. Eight isolated source smoke screens rendered complete DOMs with all58 factories(PID8428). Public1.0.11 is unchanged; this candidate has not been built or deployed.
 
 ## Readable modules
 
@@ -23,7 +23,7 @@ Files below are under src/main/payment/. Local callbacks are included in the nat
 | f1602,f1603,f1608,f1668,f1673,f1678 | qr-response.cjs,provider-qr-request.cjs,provider-qr-poll.cjs | Provider QR config/amount/status parsing, generation, polling and encdata |
 | f1611,f1681 | bank-response.cjs | Full provider interstitial waits and one-form bank settlement |
 
-These are ordinary JavaScript, not wrappers executing the same instruction definitions. runtime/reconstructed-payment.cjs bridges remaining recovered callers through engine functionFactories/readBinding. Existing invocation tracing/interceptors remain. All142 entry/local-callback contracts validate before enabling the candidate.
+These are ordinary JavaScript, not wrappers executing the same instruction definitions. runtime/reconstructed-payment.cjs bridges remaining recovered callers through engine functionFactories/readBinding. Existing invocation tracing/interceptors remain. All149 entry/local-callback contracts validate before enabling the candidate.
 
 ## Candidate use and limits
 
@@ -38,7 +38,7 @@ Most of the application still uses the recovered engine. No generated definition
 
 ## Evidence
 
-The741-test suite includes actual recovered-versus-native comparisons of requests/order, return values, errors, cancellation, timers, state changes and reference identity using synthetic fixtures. The complete Provider-QR chain now runs native initialization→redirect→QR creation→status polling→encdata→bank response→PNR→ticket/finalization. Five complete-chain checks cover ordinary results, parallel actors, transient network failure, pending→paid polling and a virtual45000ms bank interstitial with bodiless continuation.
+The787-test suite includes actual recovered-versus-native comparisons of requests/order, return values, errors, cancellation, timers, state changes and reference identity using synthetic fixtures. The complete Provider-QR chain now runs native initialization→redirect→QR creation→status polling→encdata→bank response→PNR→ticket/finalization. Six complete-chain checks cover ordinary results, parallel actors, transient network failure, pending→paid polling a virtual45000ms bank interstitial with bodiless continuation and a browser-close survivor settlement.
 
 Low-level HTTP, browser navigator/session and timing effects are synthetic. No real credentials, account/passenger records, cookies or provider responses were used as fixtures; no live login, booking, payment or QR requests occurred. No live QR speed improvement is established. The historical38–42second payment-stage gap remains unverified.
 
@@ -48,9 +48,11 @@ tools/export_payment_fixture.py exports static program strings from the locally 
 
 ## Remaining work
 
-1. Actual browser/HTTP request routing getter f1652 and backing transports f1633/f1649.
+1. Backing TLS transport f1633 and optional HTTP recorder f1649; the request getter/routing is now native.
 2. Remaining PayTM/PhonePe/Razorpay-specific gateway transports.
 3. Broader passenger submission, browser/session/controller logic and remaining application functions.
 4. Full source migration before removing the execution engine; service validation requires appropriate authorization and cannot be inferred from mocks.
 
-Read the numbered reconstruction phase reports for historical checkpoints and detailed compatibility findings. Current next step is in reconstruction-phase-12.md. A prior authenticated automated launch was rejected by automatic approval review; do not use an alternate route to retry it. Current continuation remains offline.
+Read the numbered reconstruction phase reports for historical checkpoints and detailed compatibility findings. Current next step is in reconstruction-phase-13.md. A prior authenticated automated launch was rejected by automatic approval review; do not use an alternate route to retry it. Current continuation remains offline.
+
+Request getter/routing f1652 and its closures are native; see phase13 report. Candidate now pins execution metadata, handlers and instructions via runtime/recovered-contract.cjs.

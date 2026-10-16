@@ -4,10 +4,10 @@ const {createEngine}=require('../src/main/runtime/engine.cjs'),definitions=requi
 const {reconstructedPayment}=require('../src/main/runtime/reconstructed-payment.cjs');
 const {hooks}=require('../src/main/runtime/legacy-services.cjs');
 const vm=require('node:vm');
-async function complete(native,id,{failFirst=false,pendingPoll=false,bankInterstitial=false}={}){
+async function complete(native,id,{failFirst=false,pendingPoll=false,bankInterstitial=false,closeBrowserAtBank=false}={}){
   const trace=[],random=()=>0.25,math=Object.create(Math);math.random=random;
   const timers={setTimeout(fn,ms){trace.push(['timer',ms]);if(ms!==3000&&ms!==5000)queueMicrotask(()=>{clockMs+=ms;fn();});return 0;}};
-  let clockMs=0,commandPolls=0,bankCalls=0;const clock={now:()=>clockMs};
+  let clockMs=0,commandPolls=0,bankCalls=0,browserClosedOnce=false;const clock={now:()=>clockMs};
   const engine=createEngine(definitions,{functionFactories:native?reconstructedPayment({development:true,enabled:true,dependencies:{random,timers,clock}}):{},functionOverrides:hooks(event=>trace.push(['legacy',event])).overrides,globals:{...globalThis,Math:math,String,Number,JSON,Array,Boolean,Promise,Error,URL,RegExp,Buffer,atob,Date:clock,setTimeout:timers.setTimeout}}),root=engine.context(1842,null);
   const table=Object.assign({},...Object.values(strings));root[5]=root[1841]=(n,key)=>{const value=table[n+'|'+key];assert.notEqual(value,undefined,'Missing fixture '+n+'|'+key);return value;};
   root[345]='https://example.invalid/mapps1';root[386]=()=>30;root[388]={irctcqr:[30]};root[389]=['irctcqr'];root[391]=()=>true;root[392]=()=>true;
@@ -18,7 +18,10 @@ async function complete(native,id,{failFirst=false,pendingPoll=false,bankInterst
   root[777]=engine.makeFunction('f1602',root);root[782]=engine.makeFunction('f1608',root);
   root[778]=engine.makeFunction('f1603',root);
   root[785]=engine.makeFunction('f1611',root);
-  root[15]={request:{async newContext(options){trace.push(['new-context',options]);return{async dispose(){trace.push(['dispose-survivor']);}};}}};
+  root[15]={request:{async newContext(options){trace.push(['new-context',options]);return{
+    get(url,settings){trace.push(['survivor-request','get',url]);return rawRequest.get(url,settings);},post(url,settings){trace.push(['survivor-request','post',url]);return rawRequest.post(url,settings);},
+    async dispose(){trace.push(['dispose-survivor']);},
+  };}}};
   for(const[slot,name]of [[362,'f510'],[387,'f535'],[393,'f542'],[394,'f544'],[395,'f545'],[396,'f546'],[397,'f547'],[398,'f548'],[399,'f549'],[400,'f554'],[940,'f2382']])root[slot]=engine.makeFunction(name,root);
   let settling=false,booked,failedOnce=false;
   const actor={bankDetail:[{bankId:30}],stopped:false,terminal:false,securityQuarantined:false,pnrSeen:false,lastAvail:null,
@@ -30,23 +33,29 @@ async function complete(native,id,{failFirst=false,pendingPoll=false,bankInterst
     async safeCall(...args){trace.push(['init-request',...args]);return{ok:true,status:200,body:{transationId:'fixture-txn'}};},
     async routeGatewayThroughFormProxy(){trace.push(['proxy-route']);},checkNowSleep(ms){trace.push(['check-now',ms]);clockMs+=ms;return Promise.resolve(true);},
     gateway:{
+      directHosts:new Set(),failStreak:new Map(),browserGone:false,
       hosts:{wps:'https://example.invalid',providerOrigin:'https://example.invalid',qrGateway:'https://gateway.invalid'},
       page:{url(){return'https://example.invalid/nget/train-search';},context(){return{async cookies(){trace.push(['cookie-snapshot',id]);return[{name:'fixture-session',value:'fixture-'+id}];}};},async evaluate(fn){trace.push(['client-hints']);return vm.runInNewContext('('+fn.toString()+')()',{navigator:{userAgent:'fixture-ua',language:'en-IN',userAgentData:{brands:[],mobile:false,platform:'Windows'}}});}},
       req:{async get(url,options){trace.push(['transport-get',url,options]);if(failFirst&&!failedOnce&&url.includes('/bookingData/')){failedOnce=true;throw Error('synthetic network failure');}return{status:()=>200,json:async()=>url.includes('/bookingData/')?{bookingResponseDTO:[{pnrNumber:'synthetic-'+id,trainNumber:'00000',fromStn:'AAA',resvnUptoStn:'BBB',psgnDtlList:[{passengerName:'Synthetic',bookingStatusDetails:'CNF'}]}]}:{synthetic:'print-detail'},
           text:async()=>'<textarea id="app-config-data">'+Buffer.from(JSON.stringify({responseParams:{rid:'fixture-rid',merchantId:'fixture-merchant',merchantTxnNo:'fixture-transaction'}})).toString('base64')+'</textarea>'};},
         async post(url,options){trace.push(['transport-post',url,options]);
-          if(url.endsWith('/BankResponse')){bankCalls++;return{status:()=>200,url:()=>bankInterstitial&&bankCalls===1?'https://example.invalid/intermediate':'https://example.invalid/booking-confirm',text:async()=>'<script>setTimeout(function(){ form.submit(); },45000)</script>'};}
+          if(url.endsWith('/BankResponse')){if(closeBrowserAtBank&&!browserClosedOnce){browserClosedOnce=true;throw Error('Target closed');}bankCalls++;return{status:()=>200,url:()=>bankInterstitial&&bankCalls===1?'https://example.invalid/intermediate':'https://example.invalid/booking-confirm',text:async()=>'<script>setTimeout(function(){ form.submit(); },45000)</script>'};}
           if(url.includes('/command?')){commandPolls++;const status=pendingPoll&&commandPolls===1?'PENDING':'SUC';return{status:()=>200,ok:()=>true,text:async()=>JSON.stringify({txnStatus:status})};}
           if(url.endsWith('/statusCheckRedirect'))return{status:()=>200,text:async()=>'<textarea id="app-config-data">'+Buffer.from(JSON.stringify({status:'SUC',responseParams:{encdata:'synthetic-bank-response'}})).toString('base64')+'</textarea>'};
           return{status:()=>200,headers:()=>({location:'/auth?tranCtx=fixture-rid'}),json:async()=>({upiQR:'upi://pay?am=99',errorcode:'fixture-code'}),text:async()=>'<form action="https://gateway.invalid/start"><input name="encdata" value="fixture-redirect"></form>'};}},
       log(...args){trace.push(['transport-log',...args]);},
+      logSetCookies(host,url){trace.push(['response-cookies',host,url]);},
+      async record(method,url,settings,response,error){trace.push(['request-record',method,url,settings,!!response,error?.message]);},
       directCtx:{dispose(){trace.push(['dispose-direct']);return Promise.resolve();}},
     },
   };
+  const rawRequest=actor.gateway.req;actor.gateway.page.request=rawRequest;
+  const requestContext=engine.context(19,root);requestContext[18]={FALLBACK_AFTER:3};
+  Object.defineProperty(actor.gateway,'req',{get:engine.makeFunction('f1652',requestContext),configurable:true});
   for(const[name,fid]of [['bookingData','f1719'],['printTicket','f1727'],['reqRetry','f1756'],['gwHeaders','f1666'],['clientHints','f1660'],['gatewayHints','f1662'],['liveProviderOrigin','f1659'],['originFor','f1665'],['disposeSurvivor','f1621'],['disposeDirectContext','f1630'],['paymentRedirect','f1667'],['noteGatewayPage','f1663'],['providerQr','f1668'],['pollProviderQr','f1673'],['irctcQrFetchEncdata','f1678'],['bankResponse','f1681'],['bankResponseOrigin','f1664'],['useSurvivorProxy','f1618'],['armSurvivor','f1619'],['sleep','f1628']])actor.gateway[name]=engine.makeFunction(fid,engine.context(2,root));
   for(const[name,fid]of [['dispatchGateway','f2176'],['runProviderQr','f2186'],['settlePayment','f2181'],['pollBookingData','f2226'],['canRequestPnr','f2220'],['waitForPnrRetry','f2221'],['tok','f2230'],['paymentPageReferrer','f2231'],['finishBooking','f2243'],['finishBookingCore','f2233'],['attachPrintTicket','f2247'],['reportClientUpdate','f2009']])actor[name]=engine.makeFunction(fid,engine.context(2,root));
   const result=await engine.makeFunction('f2172',engine.context(2,root)).call(actor,{paymentMethod:'irctcqr',origin:'AAA',destination:'BBB',username:'synthetic'},'fixture-txn',99,new Set());
-  return{result,trace,pnrSeen:actor.pnrSeen,booking:booked,contextsDisposed:actor.gateway.survivorReq===undefined&&actor.gateway.directCtx===undefined};
+  return{result,trace,pnrSeen:actor.pnrSeen,booking:booked,browserGone:actor.gateway.browserGone,contextsDisposed:actor.gateway.survivorReq===undefined&&actor.gateway.directCtx===undefined};
 }
 test('complete payment-init → QR → synthetic settlement → normalized booking matches recovered chain',async()=>{
   const before=await complete(false,'one'),after=await complete(true,'one');assert.deepEqual(after,before);
@@ -81,4 +90,10 @@ test('complete synthetic settlement honors bank interstitial before bodiless con
   const posts=after.trace.filter(row=>row[0]==='transport-post'&&row[1].endsWith('/BankResponse'));
   assert.equal(posts.length,2);assert.deepEqual(posts[0][2].form,{encdata:'synthetic-bank-response'});assert.equal('form'in posts[1][2],false);
   assert.deepEqual(after.trace.filter(row=>row[0]==='timer'&&row[1]===45000),[['timer',45000]]);assert.equal(after.result.success,true);
+});
+test('complete synthetic settlement survives a mid-call browser close using its own armed context',async()=>{
+  const before=await complete(false,'closed',{closeBrowserAtBank:true}),after=await complete(true,'closed',{closeBrowserAtBank:true});assert.deepEqual(after,before);
+  assert.equal(after.result.success,true);assert.equal(after.browserGone,true);assert.equal(after.contextsDisposed,true);
+  assert.ok(after.trace.some(row=>row[0]==='survivor-request'&&row[2].includes('/BankResponse')));
+  assert.ok(after.trace.some(row=>row[0]==='survivor-request'&&row[2].includes('/bookingData/')));
 });

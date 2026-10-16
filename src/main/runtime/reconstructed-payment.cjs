@@ -28,6 +28,7 @@ const {appConfig,qrAmount,commandStatus}=require('../payment/qr-response.cjs');
 const {createProviderQr}=require('../payment/provider-qr-request.cjs');
 const {fetchProviderEncdata,pollProviderQr}=require('../payment/provider-qr-poll.cjs');
 const {interstitialDelay,bankResponse}=require('../payment/bank-response.cjs');
+const {gatewayRequest}=require('../payment/gateway-routing.cjs');
 const {definitionFingerprint}=require('./recovered-contract.cjs');
 const contracts=require('../payment/recovered-contract.json');
 
@@ -42,6 +43,10 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
       throw new Error('Reconstructed payment contract changed for '+id+'. Review the recovered definition and comparison tests before enabling this candidate.');
   }
   return {
+    f1652:({readBinding})=>function(){
+      const root=slot=>(...args)=>readBinding(slot,undefined,1)(...args);
+      return gatewayRequest(this,{prepareCookies:root(468),isTlsHost:root(790),isBrowserClosed:root(139),isProxyNetworkError:root(136),canFallbackRequest:root(135),getConfig:()=>readBinding(18,'xw')});
+    },
     f1617:()=>function(request){return useProxiedRequest(this,request);},
     f1618:()=>function(proxy){return useSurvivorProxy(this,proxy);},
     f1619:({readBinding})=>function(){return armSurvivor(this,{getRequest:()=>readBinding(15,undefined,1).request,isFilteredCookie:name=>readBinding(247,undefined,1)(name)});},

@@ -1,6 +1,6 @@
 {
   "status": "in_progress",
-  "progress": "Phases1–12:57 native entries,741 tests,142 execution-metadata/code pins;8 smoke screens with57 factories(PID25428). Native survivor/direct context arming/setters/sleep added; full synthetic chain creates/disposes its settlement context. Public1.0.11 unchanged; no live service/build/deployment. Next request getter f1652 and routing closures, backing HTTP helpers, other providers and broader app.",
+  "progress": "Phases1–13:58 native entries,787 tests,149 execution-metadata/code pins. Native request getter/routing verified inclconfigured fallback and full synthetic browser-close survivor settlement. No live service/build/deployment; public1.0.11 unchanged. Next backing TLS transport f1633 and optional HTTP recorder f1649, then other providers/broader app.",
   "task": "Reconstruct recovered Matrix payment logic into maintainable JavaScript",
   "completedLatestTask": {
     "task": "Fix WebLogin Chrome selection closing another independent pair panel",
@@ -74,11 +74,12 @@
     }
   },
   "reconstruction": {
-    "phase": "settlement context arming and stronger migration contracts",
+    "phase": "gateway request routing and browser-close survivor continuation",
     "report": "docs/reconstruction-progress.md",
     "handoff": "docs/ANTIGRAVITY-HANDOFF.md",
     "flag": "--reconstructed-payment",
     "nativeEntries": [
+      "f1652",
       "f1617",
       "f1618",
       "f1619",
@@ -139,23 +140,23 @@
     ],
     "published": false,
     "quotaHandoffThresholdRemainingPercent": 5,
-    "lastObservedPrimaryRemainingPercent": 52,
-    "lastObservedWeeklyRemainingPercent": 10,
-    "testsPassed": 741,
+    "lastObservedPrimaryRemainingPercent": 45,
+    "lastObservedWeeklyRemainingPercent": 9,
+    "testsPassed": 787,
     "smoke": {
       "windows": 8,
       "completeDom": true,
-      "factoriesEnabled": 57,
+      "factoriesEnabled": 58,
       "offline": true,
-      "pid": 25428,
+      "pid": 8428,
       "complete": true
     },
-    "codeCheckpoint": "phases1–12 checkpoint; consult git log",
+    "codeCheckpoint": "phases1–13 checkpoint; consult git log",
     "handoffReady": false,
     "phaseTwoReport": "docs/reconstruction-phase-2.md",
-    "pinnedDefinitions": 142,
+    "pinnedDefinitions": 149,
     "phaseFourReport": "docs/reconstruction-phase-4.md",
-    "nextReview": "f1652/f1653–f1658 decoded and reviewed. Snapshot/prehook/timeout/direct/survivor/TLS/normal/error/proxy threshold semantics in phase12 report.",
+    "nextReview": "f1633 backing TLS transport and f1649 HTTP recorder decoded. Actual getter fallback classifier receives fullURL; callback/native HTTP effects still synthetic.",
     "phasesFiveSixReport": "docs/reconstruction-phases-5-6.md",
     "phaseSevenReport": "docs/reconstruction-phase-7.md",
     "phaseEightReport": "docs/reconstruction-phase-8.md",
@@ -163,7 +164,8 @@
     "phaseTenReport": "docs/reconstruction-phase-10.md",
     "phaseElevenReport": "docs/reconstruction-phase-11.md",
     "phaseTwelveReport": "docs/reconstruction-phase-12.md",
-    "contractScope": "execution-metadata-and-code"
+    "contractScope": "execution-metadata-and-code",
+    "phaseThirteenReport": "docs/reconstruction-phase-13.md"
   },
   "continuationSchedule": "First16Oct2026at18:42IST, then every5h30m (330min). Existing general unfinished-task fallback remains active."
 }
