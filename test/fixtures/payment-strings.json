@@ -176,6 +176,43 @@
     "22257|RuQs": "parseInt",
     "11081|%I%T": "parseInt"
   },
+  "f1617": {
+    "7086|C)Ez": "proxiedReq"
+  },
+  "f1618": {
+    "9228|NqM3": "survivorProxy"
+  },
+  "f1619": {
+    "19496|WyZ@": "survivorReq",
+    "3836|iz(z": "clientHints",
+    "11168|Y(mF": "page",
+    "18440|RuQs": "context",
+    "10842|zBnB": "cookies",
+    "946|lhKE": "stripF5",
+    "16578|hm$n": "filter",
+    "20009|%I%T": "survivorReq",
+    "14826|3W8e": "request",
+    "1569|7u]a": "newContext",
+    "636|Y(mF": "survivorProxy",
+    "992|C)Ez": "server",
+    "22461|57pP": "survivorProxy",
+    "3829|@Yk*": "server",
+    "6723|qP]&": "survivorProxy",
+    "12871|7u]a": "username",
+    "22241|rMir": "survivorProxy",
+    "1808|Y(mF": "password",
+    "3691|ou5S": "log",
+    "10688|RuQs": "settlement transport armed (",
+    "12708|OpDQ": "length",
+    "10538|S)Et": " cookies) \u2014 the PNR fetch now survives a browser close",
+    "5415|o^v]": "log",
+    "2769|bTc%": "could not arm the settlement transport: ",
+    "2322|PLJe": "message",
+    "8197|jg)a": "warn"
+  },
+  "f1620": {
+    "23310|iz(z": "name"
+  },
   "f1621": {
     "23410|k([I": "survivorReq",
     "1764|7u]a": "survivorReq",
@@ -183,6 +220,31 @@
     "3043|ou5S": "catch"
   },
   "f1622": {},
+  "f1623": {},
+  "f1624": {
+    "13830|9urW": "proxyActive",
+    "16678|3W8e": "onFallback"
+  },
+  "f1625": {
+    "5351|PLJe": "directCtx",
+    "21496|zBnB": "directCtx",
+    "7991|jg)a": "page",
+    "8023|MnWs": "context",
+    "21947|S)Et": "cookies",
+    "9078|P3P7": "catch",
+    "9639|PLJe": "stripF5",
+    "14767|57pP": "filter",
+    "21829|]TXZ": "directCtx",
+    "21052|8#8#": "request",
+    "6153|QgKz": "newContext",
+    "517|hm$n": "directCtx"
+  },
+  "f1626": {},
+  "f1627": {
+    "13279|jg)a": "name"
+  },
+  "f1628": {},
+  "f1629": {},
   "f1630": {
     "14601|%I%T": "directCtx",
     "14312|@Yk*": "directCtx",
@@ -190,6 +252,76 @@
     "14257|NqM3": "catch"
   },
   "f1631": {},
+  "f1632": {},
+  "f1652": {
+    "16750|Cbvh": "proxiedReq",
+    "16684|sA1s": "page",
+    "4529|0vo)": "request"
+  },
+  "f1653": {
+    "12256|rMir": "stripF5",
+    "5950|rMir": "proxiedReq",
+    "11627|%I%T": "page",
+    "20577|s[W0": "context",
+    "16721|G]71": "catch"
+  },
+  "f1654": {},
+  "f1655": {
+    "20898|s[W0": "timeout",
+    "14901|%I%T": "directHosts",
+    "14034|%I%T": "has",
+    "2855|UaF#": "directContext",
+    "15813|zBnB": "browserGone",
+    "1764|7u]a": "survivorReq",
+    "2656|*VhR": "survivorReq",
+    "19516|JT7O": "webTlsGateway",
+    "10022|WyZ@": "browserGone",
+    "11266|iz(z": "sendViaWebTlsGateway",
+    "7937|PLJe": "record",
+    "4853|zBnB": "*+tls",
+    "14109|a3QL": "log",
+    "1996|lhKE": "gateway transport unavailable for ",
+    "20743|UMn*": " \u2014 using the normal path (",
+    "16981|ou5S": "message",
+    "7460|o^v]": "slice",
+    "15495|o^v]": "warn",
+    "20627|C)Ez": "failStreak",
+    "11850|ZYwv": "delete",
+    "7482|*VhR": "logSetCookies",
+    "20379|k([I": "record",
+    "23367|9urW": "record",
+    "1339|UaF#": "browserGone",
+    "17597|lhKE": "survivorReq",
+    "15260|]TXZ": "log",
+    "4559|UaF#": "the browser closed mid-call \u2014 continuing ",
+    "12064|P3P7": " on the settlement transport",
+    "388|S)Et": "warn",
+    "23410|k([I": "survivorReq",
+    "15770|Cbvh": "proxyActive",
+    "6648|QgKz": "failStreak",
+    "13422|0vo)": "get",
+    "16111|3W8e": "failStreak",
+    "22898|rMir": "set",
+    "14247|k([I": "FALLBACK_AFTER",
+    "6858|nWFp": "directHosts",
+    "9812|MnWs": "add",
+    "3691|ou5S": "log",
+    "10527|]K13": "PROXY FALLBACK: ",
+    "10433|57pP": " is unreachable through your proxy \u2014 that host is going direct for this run",
+    "3869|ou5S": "error",
+    "1408|7u]a": "onFallback",
+    "16248|]K13": "directContext"
+  },
+  "f1656": {
+    "9901|d[0N": "hostname",
+    "2538|Cbvh": "toLowerCase"
+  },
+  "f1657": {
+    "7740|4dr8": "get"
+  },
+  "f1658": {
+    "13752|UaF#": "post"
+  },
   "f1659": {
     "3584|0vo)": "page",
     "19051|QgKz": "url",

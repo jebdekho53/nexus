@@ -91,3 +91,11 @@ test('migration refuses changed recovered identities or instructions before inst
   assert.throws(()=>reconstructedPayment({development:true,enabled:true,definitions:modified}),/contract changed for f510/);
   assert.deepEqual(reconstructedPayment({development:true,enabled:true,managedRelease:true,definitions:modified}),{});
 });
+test('migration pins exception handlers and execution metadata, including local callbacks',()=>{
+  const changes={kind:'NormalFunction',language:'sloppy',parameterCount:99,length:99,incoming:42,registerCount:999,registerCounts:{999:1},handlers:[[0,1,2,3,4]],nativeId:'changed'};
+  for(const id of ['f510','f1620'])for(const[field,value]of Object.entries(changes)){
+    const changed=field==='kind'?(definitions[id].kind==='NormalFunction'?'ArrowFunction':'NormalFunction'):value;
+    const modified={...definitions,[id]:{...definitions[id],[field]:changed}};
+    assert.throws(()=>reconstructedPayment({development:true,enabled:true,definitions:modified}),new RegExp('contract changed for '+id));
+  }
+});

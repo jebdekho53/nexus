@@ -19,7 +19,22 @@ spec = importlib.util.spec_from_file_location('payment_fixture_decoder', args.de
 decoder = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(decoder)
 table = decoder.StringTable(args.string_table)
-code = "const d=require('./src/main/generated/index.cjs');console.log(JSON.stringify(Object.fromEntries(['f152','f510','f535','f542','f543','f544','f545','f546',...Array.from({length:8},(_,i)=>'f'+(547+i)),'f1602','f1603','f1604','f1608','f1609','f1610','f1611','f1621','f1622','f1630','f1631',...Array.from({length:25},(_,i)=>'f'+(1659+i)),...Array.from({length:11},(_,i)=>'f'+(1719+i)),'f1756','f1757','f2382',...Array.from({length:14},(_,i)=>'f'+(2172+i)),...Array.from({length:63},(_,i)=>'f'+(2186+i))].map(id=>[id,d[id]]))));"
+selected_ids = [
+    'f152', 'f510', 'f535', 'f542', 'f543', 'f544', 'f545', 'f546',
+    *[f'f{n}' for n in range(547, 555)],
+    'f1602', 'f1603', 'f1604', 'f1608', 'f1609', 'f1610', 'f1611',
+    *[f'f{n}' for n in range(1617, 1633)],
+    *[f'f{n}' for n in range(1652, 1684)],
+    *[f'f{n}' for n in range(1719, 1730)],
+    'f1756', 'f1757', 'f2382',
+    *[f'f{n}' for n in range(2172, 2186)],
+    *[f'f{n}' for n in range(2186, 2249)],
+]
+code = (
+    "const d=require('./src/main/generated/index.cjs');const ids="
+    + json.dumps(selected_ids)
+    + ";console.log(JSON.stringify(Object.fromEntries(ids.map(id=>[id,d[id]]))));"
+)
 definitions = json.loads(subprocess.run([args.node, '-e', code], cwd=root, check=True, capture_output=True, text=True, encoding='utf-8').stdout)
 output = {}
 for name, definition in definitions.items():

@@ -22,13 +22,13 @@ const {requestBookingData,requestPrintTicket}=require('../payment/gateway-reques
 const {gatewayHeaders}=require('../payment/gateway-headers.cjs');
 const {retryGatewayRequest}=require('../payment/gateway-retry.cjs');
 const {clientHints,gatewayHints,liveProviderOrigin,setGatewayPageOrigin,gatewayPageReferrer,originFor}=require('../payment/gateway-session.cjs');
-const {disposeSurvivor,disposeDirectContext}=require('../payment/gateway-lifecycle.cjs');
+const {disposeSurvivor,disposeDirectContext,useProxiedRequest,useSurvivorProxy,setProxyFallback,armSurvivor,ensureDirectContext,sleep}=require('../payment/gateway-lifecycle.cjs');
 const {hiddenFormValue,formAction,paymentRedirect}=require('../payment/gateway-redirect.cjs');
 const {appConfig,qrAmount,commandStatus}=require('../payment/qr-response.cjs');
 const {createProviderQr}=require('../payment/provider-qr-request.cjs');
 const {fetchProviderEncdata,pollProviderQr}=require('../payment/provider-qr-poll.cjs');
 const {interstitialDelay,bankResponse}=require('../payment/bank-response.cjs');
-const {createHash}=require('node:crypto');
+const {definitionFingerprint}=require('./recovered-contract.cjs');
 const contracts=require('../payment/recovered-contract.json');
 
 // Development-only migration switch. The installed release retains the old
@@ -38,10 +38,16 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
   definitions??=require('../generated/index.cjs');
   for(const[id,expected]of Object.entries(contracts)){
     const actual=definitions[id];
-    if(!actual||actual.nativeId!==expected.nativeId||createHash('sha256').update(JSON.stringify({kind:actual.kind,parameterCount:actual.parameterCount,constants:actual.constants,code:actual.code})).digest('hex')!==expected.sha256)
+    if(!actual||actual.nativeId!==expected.nativeId||definitionFingerprint(actual)!==expected.sha256)
       throw new Error('Reconstructed payment contract changed for '+id+'. Review the recovered definition and comparison tests before enabling this candidate.');
   }
   return {
+    f1617:()=>function(request){return useProxiedRequest(this,request);},
+    f1618:()=>function(proxy){return useSurvivorProxy(this,proxy);},
+    f1619:({readBinding})=>function(){return armSurvivor(this,{getRequest:()=>readBinding(15,undefined,1).request,isFilteredCookie:name=>readBinding(247,undefined,1)(name)});},
+    f1624:()=>function(active,onFallback){return setProxyFallback(this,active,onFallback);},
+    f1625:({readBinding})=>function(){return ensureDirectContext(this,{getRequest:()=>readBinding(15,undefined,1).request,isFilteredCookie:name=>readBinding(247,undefined,1)(name)});},
+    f1628:()=>function(ms){return sleep(ms,dependencies.timers);},
     f1611:()=>interstitialDelay,
     f1681:({readBinding})=>function(payload,responseKey){return bankResponse(this,payload,responseKey,{isBrowserClosed:error=>readBinding(139,undefined,1)(error),parseDelay:html=>readBinding(785,undefined,1)(html)});},
     f1603:()=>commandStatus,
