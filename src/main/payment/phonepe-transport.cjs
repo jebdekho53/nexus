@@ -29,15 +29,20 @@ async function phonePeHeaders(actor,token,options={}) {
   }});
 }
 
-// Recovered f1734/f1735. The form transaction field and its dynamic key both use "<username>:<transaction>".
-// Diagnostics report only presence flags; the raw action, token and page remain private
-// although the snip helper still runs.
-async function phonePeRedirect(actor,input,{getAction,getField}) {
-  const label=input.username+':'+input.clientTxnId;
-  const response=await actor.reqRetry('phonePeRedirect',async()=>actor.req.post(actor.hosts.wps+'/eticketing/PaymentRedirect',{
+// Both wallet-style gateways start with the same authenticated PaymentRedirect form post. The
+// transaction field and its dynamic key use "<username>:<transaction>".
+function postPaymentRedirect(actor,input,retryName,label) {
+  return actor.reqRetry(retryName,async()=>actor.req.post(actor.hosts.wps+'/eticketing/PaymentRedirect',{
     headers:await actor.gwHeaders('wps'),
     form:{token:input.accessToken,txn:label,[label]:input.rand8+'.'+input.csrf},
   }));
+}
+
+// Recovered f1734/f1735. Diagnostics report only presence flags; the raw action, token and page
+// remain private although the snip helper still runs.
+async function phonePeRedirect(actor,input,{getAction,getField}) {
+  const label=input.username+':'+input.clientTxnId;
+  const response=await postPaymentRedirect(actor,input,'phonePeRedirect',label);
   const html=await response.text();
   const action=getAction(html);
   const token=getField(html,'token')||getField(html,'encdata');
@@ -45,6 +50,16 @@ async function phonePeRedirect(actor,input,{getAction,getField}) {
   actor.snip(html);
   actor.log(message);
   return{action,token};
+}
+
+// Recovered f1758/f1759. Unlike PhonePe, only the encdata field is accepted and the page is not snipped.
+async function razorpayRedirect(actor,input,{getAction,getField}) {
+  const label=input.username+':'+input.clientTxnId;
+  const response=await postPaymentRedirect(actor,input,'razorpayRedirect',label);
+  const html=await response.text();
+  const action=getAction(html),encdata=getField(html,'encdata');
+  actor.log('razorpayRedirect → '+response.status()+' action='+(action?'y':'-')+' encdata='+(encdata?'y':'-'));
+  return{action,encdata};
 }
 
 const CHECKOUT='/apis/pg/checkout/ui/v2';
@@ -154,4 +169,4 @@ async function pollPhonePe(actor,token,stopped,onWait,maxAttempts=800) {
   return{kind:'timeout'};
 }
 
-module.exports={fingerprint,phonePeHeaders,phonePeRedirect,phonePeQr,pollPhonePe};
+module.exports={fingerprint,phonePeHeaders,phonePeRedirect,razorpayRedirect,phonePeQr,pollPhonePe};

@@ -35,8 +35,9 @@ const {paytmAppData,paytmQrImage,paytmOrderFromUrl,paytmOrderFromData,fetchPaytm
 const {paytmOriginPage,paytmPageRequest,disposePaytmPage}=require('../payment/paytm-page.cjs');
 const {pollPaytmStatus}=require('../payment/paytm-status.cjs');
 const {waitForPaytmWs}=require('../payment/paytm-websocket.cjs');
+const {razorpayLocation,parseRazorpayCheckoutPage,razorpayCheckout}=require('../payment/razorpay-transport.cjs');
 const {getFinalPaytmStatus}=require('../payment/paytm-final-status.cjs');
-const {fingerprint,phonePeHeaders,phonePeRedirect,phonePeQr,pollPhonePe}=require('../payment/phonepe-transport.cjs');
+const {fingerprint,phonePeHeaders,phonePeRedirect,razorpayRedirect,phonePeQr,pollPhonePe}=require('../payment/phonepe-transport.cjs');
 const {definitionFingerprint}=require('./recovered-contract.cjs');
 const contracts=require('../payment/recovered-contract.json');
 
@@ -60,6 +61,10 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     f1734:({readBinding})=>function(input){return phonePeRedirect(this,input,{getAction:html=>readBinding(784,undefined,1)(html),getField:(html,name)=>readBinding(783,undefined,1)(html,name)});},
     f1736:()=>function(action,token){return phonePeQr(this,action,token);},
     f1751:()=>function(token,stopped,onWait,maxAttempts){return pollPhonePe(this,token,stopped,onWait,maxAttempts);},
+    f1758:({readBinding})=>function(input){return razorpayRedirect(this,input,{getAction:html=>readBinding(784,undefined,1)(html),getField:(html,name)=>readBinding(783,undefined,1)(html,name)});},
+    f150:()=>razorpayLocation,
+    f1612:()=>parseRazorpayCheckoutPage,
+    f1760:({readBinding})=>function(action,encdata){return razorpayCheckout(this,action,encdata,{resolveLocation:location=>readBinding(137,undefined,1)(location),parseCheckout:html=>readBinding(786,undefined,1)(html)});},
     f1704:()=>function(){return paytmOriginPage(this,dependencies.globals);},
     f1708:()=>function(path,options){return paytmPageRequest(this,path,options);},
     f1710:()=>function(){return disposePaytmPage(this);},

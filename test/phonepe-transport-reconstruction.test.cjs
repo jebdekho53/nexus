@@ -192,3 +192,26 @@ test('PhonePe polling retains the 2000ms wait before every request',async()=>{
   assert.deepEqual(value.value,{kind:'paid',encdata:'synthetic-encdata'});
   assert.doesNotMatch(value.rawLogs.join(' '),/synthetic/);
 });
+
+async function razorRedirect(native,options={}) {
+  const{engine,context,trace}=harness(native),logs=[];
+  const page=options.html??'<form action="/pay"><input name="encdata" value="synthetic-enc"><input name="token" value="synthetic-token"></form>';
+  const actor={hosts:{wps:'https://provider.invalid'},
+    async reqRetry(label,operation){trace.push(['retry',label]);if(options.fail==='retry')throw Error('synthetic retry');return operation();},
+    async gwHeaders(host){trace.push(['headers',host]);return{synthetic:'header'};},
+    req:{post(url,settings){trace.push(['post',url,settings]);assert.equal(this,actor.req);if(options.fail==='post')throw Error('synthetic post');
+      return Promise.resolve({status(){trace.push(['status']);return 302;},text(){trace.push(['text']);if(options.fail==='text')return Promise.reject(Error('synthetic text'));return Promise.resolve(page);}});}},
+    log(value){trace.push(['log']);logs.push(value);},snip(){trace.push(['snip']);throw Error('snip must not run');}};
+  const input={username:'synthetic-user',clientTxnId:'synthetic-txn',accessToken:'synthetic-access',rand8:'12345678',csrf:'synthetic-csrf'};
+  return{...await outcome(engine.makeFunction('f1758',context).call(actor,options.input??input)),trace,logs:logs.map(v=>v.replace(/action=.*/,'')),rawLogs:logs};
+}
+for(const[name,options]of Object.entries({ordinary:{},noEncdata:{html:'<form action="/pay"><input name="token" value="t"></form>'},noAction:{html:'<input name="encdata" value="e">'},empty:{html:''},retryFail:{fail:'retry'},postFail:{fail:'post'},textFail:{fail:'text'},missingInput:{input:{}}}))
+  test('Razorpay redirect matches recovered form/result flow: '+name,async()=>{
+    const actual=await razorRedirect(true,options),expected=await razorRedirect(false,options);
+    const normalize=value=>JSON.parse(JSON.stringify({...value,rawLogs:undefined}));assert.deepEqual(normalize(actual),normalize(expected));
+  });
+test('Razorpay redirect keeps its form shape and private diagnostics',async()=>{
+  const value=await razorRedirect(true);
+  assert.deepEqual(value.trace.find(row=>row[0]==='post')[2].form,{token:'synthetic-access',txn:'synthetic-user:synthetic-txn','synthetic-user:synthetic-txn':'12345678.synthetic-csrf'});
+  assert.equal(value.rawLogs[0],'razorpayRedirect → 302 action=y encdata=y');
+});
