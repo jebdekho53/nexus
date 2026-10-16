@@ -65,8 +65,10 @@ function createEngine(definitions, options = {}) {
     // A migration adapter can replace a complete function with ordinary source
     // while callers still live in recovered lexical scopes. Resolve bindings
     // at call time, preserving late initialization and separate closures.
-    const nativeImplementation=options.functionFactories?.[id]?.({readBinding(slot,name){
-      const value=captured[slot];
+    const nativeImplementation=options.functionFactories?.[id]?.({readBinding(slot,name,depth=0){
+      let scope=captured;
+      for(let index=0;index<depth;index++)scope=scope[CONTEXT];
+      const value=scope[slot];
       if(value===HOLE)throw new ReferenceError('Cannot access '+name+' before initialization');
       return value;
     }});

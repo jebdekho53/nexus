@@ -8,12 +8,14 @@ const {bookingPaymentBody}=require('../payment/request-body.cjs');
 const {isBankProcessingError,paymentResponseError}=require('../payment/payment-error.cjs');
 const {paymentCandidates,choosePaymentBank}=require('../payment/gateway-selection.cjs');
 const {runRazorpay}=require('../payment/razorpay.cjs');
+const {initializePayment}=require('../payment/payment-init.cjs');
+const {dispatchPayment}=require('../payment/gateway-dispatch.cjs');
 const {createHash}=require('node:crypto');
 const contracts=require('../payment/recovered-contract.json');
 
 // Development-only migration switch. The installed release retains the old
 // implementation until the reconstructed path has also had service validation.
-function reconstructedPayment({development=false,managedRelease=false,enabled=false,definitions}={}) {
+function reconstructedPayment({development=false,managedRelease=false,enabled=false,definitions,dependencies={}}={}) {
   if(!development||managedRelease||!enabled)return {};
   definitions??=require('../generated/index.cjs');
   for(const[id,expected]of Object.entries(contracts)){
@@ -29,17 +31,30 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
       return bookingPaymentBody(method,amount,bankOverride,key=>readBinding(386)(key));
     },
     f545:()=>isBankProcessingError,
+    f2172:({readBinding})=>function(journey,transactionId,amount,excluded){
+      const binding=slot=>(...args)=>readBinding(slot,undefined,1)(...args);
+      return initializePayment(this,journey,transactionId,amount,excluded,{
+        getCandidates:binding(394),chooseBank:binding(393),buildPaymentBody:binding(387),
+        buildPaymentUrl:binding(362),isBankError:binding(395),extractError:binding(396),stoppedResult:binding(940),
+      },dependencies);
+    },
     f546:()=>paymentResponseError,
+    f2176:({readBinding})=>function(journey,transactionId,amount,method,initResponse){
+      const binding=slot=>(...args)=>readBinding(slot,undefined,1)(...args);
+      return dispatchPayment(this,journey,transactionId,amount,method,initResponse,{
+        extractError:binding(396),normalizeBooking:binding(399),stoppedResult:binding(940),
+      });
+    },
     f542:({readBinding})=>function(table,method){
       return choosePaymentBank(table,method,{getIds:()=>readBinding(388,'cT'),defaultBankId:key=>readBinding(386)(key),hasBank:(data,id)=>readBinding(391)(data,id)});
     },
     f544:({readBinding})=>function(selected,table){
       return paymentCandidates(selected,table,{getOrder:()=>readBinding(389,'Zu'),isAvailable:(data,key)=>readBinding(392)(data,key)});
     },
-    f2186:()=>function(...args){return runProviderQr(this,...args);},
-    f2193:()=>function(...args){return runPaytm(this,...args);},
-    f2208:()=>function(...args){return runPhonePe(this,...args);},
-    f2213:()=>function(...args){return runRazorpay(this,...args);},
+    f2186:()=>function(journey,transactionId,amount){return runProviderQr(this,journey,transactionId,amount,dependencies);},
+    f2193:()=>function(journey,transactionId,amount){return runPaytm(this,journey,transactionId,amount,dependencies);},
+    f2208:()=>function(journey,transactionId,amount){return runPhonePe(this,journey,transactionId,amount,dependencies);},
+    f2213:()=>function(journey,transactionId,amount,flow){return runRazorpay(this,journey,transactionId,amount,flow,dependencies);},
     f2196:({readBinding})=>function(resolve){
       return startPaytmWatch(resolve,readBinding(2),readBinding(4),readBinding(5),readBinding(6));
     },
