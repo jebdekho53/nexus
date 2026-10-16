@@ -199,7 +199,18 @@
       "limitation": "Static instruction volume and review-load heuristic, not remaining effort or delivery-time percentage."
     },
     "fullProjectPrompt": "docs/FULL-RECONSTRUCTION-PROMPT.md",
-    "handoffVerification": "Read-only verification confirmed current74 factories and same-PID7344 factory list plus8-window smoke-complete.1124 tests are phase20 recorded evidence, not rerun during handoff update."
+    "handoffVerification": "Read-only verification confirmed current74 factories and same-PID7344 factory list plus8-window smoke-complete.1124 tests are phase20 recorded evidence, not rerun during handoff update.",
+    "parserDiagnostic": {
+      "status": "complete",
+      "report": "docs/view8-parser-compatibility.md",
+      "upstreamFailure": "Incomplete parsing of func_unknown caused by incompatible flat-SFI dump parsing",
+      "compatibleParser": "../recovery-tools/jsc2js-main/View8/view8.py",
+      "freshParsedFunctions": 4354,
+      "freshInstructionRows": 512857,
+      "parsedAllNonempty": true,
+      "applicationChanged": false,
+      "limit": "Parser coverage only, not decompiled semantic correctness."
+    }
   },
   "continuationSchedule": "First16Oct2026at18:42IST, then every5h30m (330min). Existing general unfinished-task fallback remains active."
 }
