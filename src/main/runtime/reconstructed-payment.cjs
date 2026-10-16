@@ -31,6 +31,7 @@ const {interstitialDelay,bankResponse}=require('../payment/bank-response.cjs');
 const {gatewayRequest}=require('../payment/gateway-routing.cjs');
 const {sendViaWebTlsGateway}=require('../payment/gateway-tls.cjs');
 const {recordHttp}=require('../payment/http-record.cjs');
+const {paytmAppData,paytmQrImage,paytmOrderFromUrl,paytmOrderFromData,fetchPaytmQr}=require('../payment/paytm-qr-request.cjs');
 const {definitionFingerprint}=require('./recovered-contract.cjs');
 const contracts=require('../payment/recovered-contract.json');
 
@@ -45,6 +46,14 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
       throw new Error('Reconstructed payment contract changed for '+id+'. Review the recovered definition and comparison tests before enabling this candidate.');
   }
   return {
+    f1601:()=>function(html){return paytmAppData(html,dependencies.globals);},
+    f1605:()=>paytmQrImage,
+    f1606:()=>function(url){return paytmOrderFromUrl(url,dependencies.globals);},
+    f1607:()=>function(data,url){return paytmOrderFromData(data,url,dependencies.globals);},
+    f1687:({readBinding})=>function(input){
+      const root=slot=>(...args)=>readBinding(slot,undefined,1)(...args);
+      return fetchPaytmQr(this,input,{parseData:root(776),extractImage:root(779),orderFromUrl:root(780),orderFromData:root(781),globals:dependencies.globals});
+    },
     f1649:()=>function(method,url,options,response,error){return recordHttp(this,method,url,options,response,error,{clock:dependencies.clock});},
     f1633:({readBinding})=>function(method,url,options){
       const root=slot=>(...args)=>readBinding(slot,undefined,1)(...args);

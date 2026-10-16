@@ -1,6 +1,6 @@
 {
   "status": "in_progress",
-  "progress": "Phases1–16:62 native entries,903 tests,173 execution-metadata/code pins. PayTM form aliases and redirect/retry transport now native; logs omit raw action URL and HTML. Eight offline smoke screens complete with62 factories(PID11908). Public1.0.11 unchanged; no live service/build/deployment.",
+  "progress": "Phases1–17:67 native entries,966 tests,179 execution-metadata/code pins. PayTM redirect/QR request and response parsers now native; synthetic orchestration→redirect→QR comparisons pass. Eight offline smoke screens complete with67 factories(PID23636). Public1.0.11 unchanged; no live service/build/deployment.",
   "task": "Reconstruct recovered Matrix payment logic into maintainable JavaScript",
   "completedLatestTask": {
     "task": "Fix WebLogin Chrome selection closing another independent pair panel",
@@ -74,11 +74,16 @@
     }
   },
   "reconstruction": {
-    "phase": "PayTM redirect and form parsing",
+    "phase": "PayTM QR response parsing and request",
     "report": "docs/reconstruction-progress.md",
     "handoff": "docs/ANTIGRAVITY-HANDOFF.md",
     "flag": "--reconstructed-payment",
     "nativeEntries": [
+      "f1601",
+      "f1605",
+      "f1606",
+      "f1607",
+      "f1687",
       "f1599",
       "f1684",
       "f1649",
@@ -144,23 +149,23 @@
     ],
     "published": false,
     "quotaHandoffThresholdRemainingPercent": 5,
-    "lastObservedPrimaryRemainingPercent": 24,
+    "lastObservedPrimaryRemainingPercent": 20,
     "lastObservedWeeklyRemainingPercent": 5,
-    "testsPassed": 903,
+    "testsPassed": 966,
     "smoke": {
       "windows": 8,
       "completeDom": true,
-      "factoriesEnabled": 62,
+      "factoriesEnabled": 67,
       "offline": true,
-      "pid": 11908,
+      "pid": 23636,
       "complete": true
     },
-    "codeCheckpoint": "phases1–16; see latest git commit",
+    "codeCheckpoint": "phases1–17; see latest git commit",
     "handoffReady": true,
     "phaseTwoReport": "docs/reconstruction-phase-2.md",
-    "pinnedDefinitions": 173,
+    "pinnedDefinitions": 179,
     "phaseFourReport": "docs/reconstruction-phase-4.md",
-    "nextReview": "Remaining PayTM QR fetch/status/watch and BankResponse transports, starting f1687; f1599/f1600 and f1684/f1685/f1686 are now native and pinned.",
+    "nextReview": "Remaining PayTM page/WebSocket/status/finalization methods beginning f1689; redirect, QR request and response parsers are native.",
     "phasesFiveSixReport": "docs/reconstruction-phases-5-6.md",
     "phaseSevenReport": "docs/reconstruction-phase-7.md",
     "phaseEightReport": "docs/reconstruction-phase-8.md",
@@ -172,8 +177,9 @@
     "phaseThirteenReport": "docs/reconstruction-phase-13.md",
     "phaseFourteenReport": "docs/reconstruction-phase-14.md",
     "phaseFifteenReport": "docs/reconstruction-phase-15.md",
-    "quotaHandoffWindow": "weekly or primary; human requested handoff at5% remaining",
-    "phaseSixteenReport": "docs/reconstruction-phase-16.md"
+    "quotaHandoffWindow": "Human authorized continued work beyond weekly5%; check both windows and handoff near exhaustion.",
+    "phaseSixteenReport": "docs/reconstruction-phase-16.md",
+    "phaseSeventeenReport": "docs/reconstruction-phase-17.md"
   },
   "continuationSchedule": "First16Oct2026at18:42IST, then every5h30m (330min). Existing general unfinished-task fallback remains active."
 }

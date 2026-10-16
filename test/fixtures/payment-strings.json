@@ -141,6 +141,15 @@
     "16609|9urW": "checkSum"
   },
   "f1600": {},
+  "f1601": {
+    "1550|k([I": "exec",
+    "3434|ou5S": "function",
+    "20029|ZYwv": "from",
+    "21617|RuQs": "base64",
+    "7157|UaF#": "toString",
+    "10837|o^v]": "utf8",
+    "14296|8#8#": "parse"
+  },
   "f1602": {
     "23254|S)Et": "exec",
     "22026|b!6h": "replace",
@@ -170,6 +179,38 @@
   },
   "f1604": {
     "12621|0vo)": "toUpperCase"
+  },
+  "f1605": {
+    "13047|rkuw": "dataurl",
+    "17392|@Yk*": "dataUrl",
+    "22518|Cbvh": "image",
+    "14973|9urW": "string",
+    "22477|qP]&": "replace"
+  },
+  "f1606": {
+    "15496|ou5S": "searchParams",
+    "1975|rMir": "get",
+    "14024|o^v]": "orderid",
+    "5258|o^v]": "searchParams",
+    "18056|PLJe": "get",
+    "13633|jg)a": "orderId",
+    "6329|bTc%": "searchParams",
+    "16682|8#8#": "get",
+    "11320|iz(z": "ORDER_ID"
+  },
+  "f1607": {
+    "20672|G]71": "orderId",
+    "14252|UMn*": "orderid",
+    "3478|]K13": "ORDER_ID",
+    "17607|%I%T": "searchParams",
+    "16950|RuQs": "get",
+    "2085|UaF#": "orderid",
+    "22735|0vo)": "searchParams",
+    "5090|57pP": "get",
+    "6840|RuQs": "orderId",
+    "18565|QgKz": "searchParams",
+    "14703|UMn*": "get",
+    "9895|@Yk*": "ORDER_ID"
   },
   "f1608": {
     "6493|JT7O": "exec",
@@ -888,6 +929,39 @@
     "6937|rMir": "wps"
   },
   "f1686": {},
+  "f1687": {
+    "4538|jg)a": "action",
+    "9405|rMir": "hosts",
+    "12012|Cbvh": "paytm",
+    "17458|ZYwv": "toString",
+    "7134|@Yk*": "reqRetry",
+    "7998|d[0N": "paytmFetchQr",
+    "22340|P3P7": "text",
+    "21666|UaF#": "url",
+    "18061|4dr8": "url",
+    "5357|57pP": "log",
+    "14776|JT7O": "PayTM enc \u2192 ",
+    "13931|9urW": "status",
+    "19785|o^v]": " url=",
+    "9838|zBnB": "url",
+    "8456|k([I": " pushApp=",
+    "18569|lhKE": " qr=",
+    "18042|UaF#": "length",
+    "5635|A@un": " orderId=",
+    "8113|%I%T": " :: ",
+    "16266|A@un": "snip"
+  },
+  "f1688": {
+    "15742|]K13": "req",
+    "17846|jg)a": "post",
+    "23592|QgKz": "gwHeaders",
+    "10371|UaF#": "paytm",
+    "2597|A@un": "application/x-www-form-urlencoded",
+    "23235|@Yk*": "text/html,application/xhtml+xml",
+    "23187|OpDQ": "mid",
+    "2149|9urW": "encData",
+    "20017|qP]&": "checksum"
+  },
   "f1719": {
     "3206|9urW": "reqRetry",
     "18210|k([I": "bookingData",
