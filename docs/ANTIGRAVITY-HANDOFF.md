@@ -1,6 +1,6 @@
 # Latest continuation checkpoint — phase20
 
-Code ea63219:74 native entries,209 pins,1124 full-suite tests reported by the phase20 implementation. Local read-only verification confirmed74 current factories plus PID7344 startup event listing74 factories and smoke-complete8 windows. No suite was rerun while preparing this handoff.
+Code 755c16a (phase21): 88 native entries, 261 pins, 1406 full-suite tests passed in this checkout; offline smoke PID18112 completed 8 DOM-ready screens with 88 factories and no native bytecode. See docs/reconstruction-phase-21.md. Next: payment class constructor/field initializers (engine review), session/cookie helpers, booking controllers (f2161, f2102, f3149), IPC/UI/backend boundaries, then the f1 bootstrap.
 
 WebSocket f1693–f1703 and final-status f1712–f1716 are complete; the final-status file is committed, not untracked. First replace their stubs in test/paytm-qr-chain.test.cjs with actual recovered/native methods and synthetic browser/WebSocket/fetch effects, then continue the FULL roadmap in docs/FULL-RECONSTRUCTION-PROMPT.md. Include watcher/poll races, incomplete-form fallback, cancellation, cleanup and independent actors. Do not stop after this milestone if further authorized work is possible.
 
