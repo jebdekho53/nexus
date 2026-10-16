@@ -23,27 +23,27 @@
         "instructions": 11873,
         "instructionPercent": 2.32,
         "nativeEntries": 7,
-        "pinnedSupport": 113
+        "pinnedSupport": 129
       },
       "small": {
         "functions": 1555,
         "instructions": 77741,
         "instructionPercent": 15.16,
-        "nativeEntries": 30,
-        "pinnedSupport": 45
+        "nativeEntries": 36,
+        "pinnedSupport": 48
       },
       "medium": {
         "functions": 741,
         "instructions": 127291,
         "instructionPercent": 24.82,
-        "nativeEntries": 20,
-        "pinnedSupport": 13
+        "nativeEntries": 26,
+        "pinnedSupport": 14
       },
       "large": {
         "functions": 288,
         "instructions": 146373,
         "instructionPercent": 28.54,
-        "nativeEntries": 25,
+        "nativeEntries": 29,
         "pinnedSupport": 2
       },
       "very_large": {
@@ -59,21 +59,21 @@
         "functions": 3128,
         "instructions": 88772,
         "instructionPercent": 17.31,
-        "nativeEntries": 25,
-        "pinnedSupport": 165
+        "nativeEntries": 29,
+        "pinnedSupport": 184
       },
       "moderate": {
         "functions": 862,
         "instructions": 137049,
         "instructionPercent": 26.72,
-        "nativeEntries": 34,
-        "pinnedSupport": 7
+        "nativeEntries": 44,
+        "pinnedSupport": 8
       },
       "high": {
         "functions": 305,
         "instructions": 142330,
         "instructionPercent": 27.75,
-        "nativeEntries": 22,
+        "nativeEntries": 24,
         "pinnedSupport": 1
       },
       "very_high": {
@@ -93,23 +93,23 @@
     },
     "byStatus": {
       "native_entry": {
-        "functions": 88,
-        "instructions": 29939,
-        "instructionPercent": 5.84,
-        "nativeEntries": 88,
+        "functions": 104,
+        "instructions": 33423,
+        "instructionPercent": 6.52,
+        "nativeEntries": 104,
         "pinnedSupport": 0
       },
       "pinned_support": {
-        "functions": 173,
-        "instructions": 5521,
-        "instructionPercent": 1.08,
+        "functions": 193,
+        "instructions": 5910,
+        "instructionPercent": 1.15,
         "nativeEntries": 0,
-        "pinnedSupport": 173
+        "pinnedSupport": 193
       },
       "recovered_other": {
-        "functions": 4093,
-        "instructions": 477397,
-        "instructionPercent": 93.09,
+        "functions": 4057,
+        "instructions": 473524,
+        "instructionPercent": 92.33,
         "nativeEntries": 0,
         "pinnedSupport": 0
       }
@@ -33867,7 +33867,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 6,
-      "status": "recovered_other"
+      "status": "native_entry"
     },
     {
       "id": "f2047",
@@ -33883,7 +33883,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 11,
-      "status": "recovered_other"
+      "status": "native_entry"
     },
     {
       "id": "f2048",
@@ -33915,7 +33915,7 @@
       "suspensions": 4,
       "closures": 1,
       "calls": 28,
-      "status": "recovered_other"
+      "status": "native_entry"
     },
     {
       "id": "f2050",
@@ -33931,7 +33931,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f2051",
@@ -33947,7 +33947,7 @@
       "suspensions": 1,
       "closures": 0,
       "calls": 13,
-      "status": "recovered_other"
+      "status": "native_entry"
     },
     {
       "id": "f2052",
@@ -33963,7 +33963,7 @@
       "suspensions": 3,
       "closures": 2,
       "calls": 55,
-      "status": "recovered_other"
+      "status": "native_entry"
     },
     {
       "id": "f2053",
@@ -33979,7 +33979,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 2,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f2054",
@@ -33995,7 +33995,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f2055",
@@ -34011,7 +34011,7 @@
       "suspensions": 1,
       "closures": 1,
       "calls": 5,
-      "status": "recovered_other"
+      "status": "native_entry"
     },
     {
       "id": "f2056",
@@ -34027,7 +34027,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f2057",
@@ -34043,7 +34043,7 @@
       "suspensions": 1,
       "closures": 1,
       "calls": 11,
-      "status": "recovered_other"
+      "status": "native_entry"
     },
     {
       "id": "f2058",
@@ -34059,7 +34059,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f2059",
@@ -34075,7 +34075,7 @@
       "suspensions": 4,
       "closures": 1,
       "calls": 33,
-      "status": "recovered_other"
+      "status": "native_entry"
     },
     {
       "id": "f2060",
@@ -34091,7 +34091,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f2061",
@@ -34107,7 +34107,7 @@
       "suspensions": 1,
       "closures": 0,
       "calls": 31,
-      "status": "recovered_other"
+      "status": "native_entry"
     },
     {
       "id": "f2062",
@@ -34139,7 +34139,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 9,
-      "status": "recovered_other"
+      "status": "native_entry"
     },
     {
       "id": "f2064",
@@ -34395,7 +34395,7 @@
       "suspensions": 2,
       "closures": 1,
       "calls": 29,
-      "status": "recovered_other"
+      "status": "native_entry"
     },
     {
       "id": "f2080",
@@ -34411,7 +34411,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f2081",
@@ -34427,7 +34427,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 55,
-      "status": "recovered_other"
+      "status": "native_entry"
     },
     {
       "id": "f2082",
@@ -34459,7 +34459,7 @@
       "suspensions": 2,
       "closures": 3,
       "calls": 54,
-      "status": "recovered_other"
+      "status": "native_entry"
     },
     {
       "id": "f2084",
@@ -34475,7 +34475,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 5,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f2085",
@@ -34491,7 +34491,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f2086",
@@ -34507,7 +34507,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f2087",
@@ -34523,7 +34523,7 @@
       "suspensions": 6,
       "closures": 6,
       "calls": 43,
-      "status": "recovered_other"
+      "status": "native_entry"
     },
     {
       "id": "f2088",
@@ -34539,7 +34539,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f2089",
@@ -34555,7 +34555,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f2090",
@@ -34571,7 +34571,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f2091",
@@ -34587,7 +34587,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f2092",
@@ -34603,7 +34603,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f2093",
@@ -34619,7 +34619,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f2094",
@@ -34635,7 +34635,7 @@
       "suspensions": 0,
       "closures": 1,
       "calls": 4,
-      "status": "recovered_other"
+      "status": "native_entry"
     },
     {
       "id": "f2095",
@@ -34651,7 +34651,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 35,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f2096",
@@ -35179,7 +35179,7 @@
       "suspensions": 1,
       "closures": 3,
       "calls": 21,
-      "status": "recovered_other"
+      "status": "native_entry"
     },
     {
       "id": "f2129",
@@ -35195,7 +35195,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 5,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f2130",
@@ -35211,7 +35211,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 5,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f2131",
@@ -35227,7 +35227,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f2132",

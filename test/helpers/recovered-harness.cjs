@@ -21,7 +21,9 @@ function harness({native=false,slots={},globals={},dependencies={}}={}) {
   for(const[slot,value]of Object.entries(slots))
     root[slot]=typeof value==='string'&&/^f\d+$/.test(value)?engine.makeFunction(value,root):typeof value==='function'&&value.length===2&&value.needsEngine?value(engine,root):value;
   const context=engine.context(2,root);
-  return{engine,root,context,method:id=>engine.makeFunction(id,context),rootFunction:id=>engine.makeFunction(id,root)};
+  // Closure whose enclosing function context holds the string decoder in slot 2 (nested helper functions).
+  const nested=engine.context(3,root);nested[2]=root[5];
+  return{engine,root,context,method:id=>engine.makeFunction(id,context),rootFunction:id=>engine.makeFunction(id,root),nestedFunction:id=>engine.makeFunction(id,nested)};
 }
 
 const plain=value=>JSON.parse(JSON.stringify(value===undefined?null:value));
