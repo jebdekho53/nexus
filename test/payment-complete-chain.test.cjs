@@ -38,16 +38,21 @@ async function complete(native,id,{failFirst=false,pendingPoll=false,bankInterst
       directHosts:new Set(),failStreak:new Map(),browserGone:false,
       hosts:{wps:'https://example.invalid',providerOrigin:'https://example.invalid',qrGateway:'https://gateway.invalid'},
       page:{url(){return'https://example.invalid/nget/train-search';},context(){return{async cookies(){trace.push(['cookie-snapshot',id]);return[{name:'fixture-session',value:'fixture-'+id}];}};},async evaluate(fn){trace.push(['client-hints']);return vm.runInNewContext('('+fn.toString()+')()',{navigator:{userAgent:'fixture-ua',language:'en-IN',userAgentData:{brands:[],mobile:false,platform:'Windows'}}});}},
-      req:{async get(url,options){trace.push(['transport-get',url,options]);if(failFirst&&!failedOnce&&url.includes('/bookingData/')){failedOnce=true;throw Error('synthetic network failure');}return{status:()=>200,json:async()=>url.includes('/bookingData/')?{bookingResponseDTO:[{pnrNumber:'synthetic-'+id,trainNumber:'00000',fromStn:'AAA',resvnUptoStn:'BBB',psgnDtlList:[{passengerName:'Synthetic',bookingStatusDetails:'CNF'}]}]}:{synthetic:'print-detail'},
-          text:async()=>'<textarea id="app-config-data">'+Buffer.from(JSON.stringify({responseParams:{rid:'fixture-rid',merchantId:'fixture-merchant',merchantTxnNo:'fixture-transaction'}})).toString('base64')+'</textarea>'};},
+      req:{async get(url,options){trace.push(['transport-get',url,options]);if(failFirst&&!failedOnce&&url.includes('/bookingData/')){failedOnce=true;throw Error('synthetic network failure');}
+          const body=url.includes('/bookingData/')?{bookingResponseDTO:[{pnrNumber:'synthetic-'+id,trainNumber:'00000',fromStn:'AAA',resvnUptoStn:'BBB',psgnDtlList:[{passengerName:'Synthetic',bookingStatusDetails:'CNF'}]}]}:{synthetic:'print-detail'};
+          const auth='<textarea id="app-config-data">'+Buffer.from(JSON.stringify({responseParams:{rid:'fixture-rid',merchantId:'fixture-merchant',merchantTxnNo:'fixture-transaction'}})).toString('base64')+'</textarea>';
+          return{status:()=>200,headers:()=>({}),json:async()=>body,text:async()=>url.includes('/bookingData/')||url.includes('/printTicket/')?JSON.stringify(body):auth};},
         async post(url,options){trace.push(['transport-post',url,options]);
-          if(url.endsWith('/BankResponse')){if(closeBrowserAtBank&&!browserClosedOnce){browserClosedOnce=true;throw Error('Target closed');}bankCalls++;return{status:()=>200,url:()=>bankInterstitial&&bankCalls===1?'https://example.invalid/intermediate':'https://example.invalid/booking-confirm',text:async()=>'<script>setTimeout(function(){ form.submit(); },45000)</script>'};}
-          if(url.includes('/command?')){commandPolls++;const status=pendingPoll&&commandPolls===1?'PENDING':'SUC';return{status:()=>200,ok:()=>true,text:async()=>JSON.stringify({txnStatus:status})};}
-          if(url.endsWith('/statusCheckRedirect'))return{status:()=>200,text:async()=>'<textarea id="app-config-data">'+Buffer.from(JSON.stringify({status:'SUC',responseParams:{encdata:'synthetic-bank-response'}})).toString('base64')+'</textarea>'};
-          return{status:()=>200,headers:()=>({location:'/auth?tranCtx=fixture-rid'}),json:async()=>({upiQR:'upi://pay?am=99',errorcode:'fixture-code'}),text:async()=>'<form action="https://gateway.invalid/start"><input name="encdata" value="fixture-redirect"></form>'};}},
+          if(url.endsWith('/BankResponse')){if(closeBrowserAtBank&&!browserClosedOnce){browserClosedOnce=true;throw Error('Target closed');}bankCalls++;return{status:()=>200,headers:()=>({}),url:()=>bankInterstitial&&bankCalls===1?'https://example.invalid/intermediate':'https://example.invalid/booking-confirm',text:async()=>'<script>setTimeout(function(){ form.submit(); },45000)</script>'};}
+          if(url.includes('/command?')){commandPolls++;const status=pendingPoll&&commandPolls===1?'PENDING':'SUC';return{status:()=>200,headers:()=>({}),ok:()=>true,text:async()=>JSON.stringify({txnStatus:status})};}
+          if(url.endsWith('/statusCheckRedirect'))return{status:()=>200,headers:()=>({}),text:async()=>'<textarea id="app-config-data">'+Buffer.from(JSON.stringify({status:'SUC',responseParams:{encdata:'synthetic-bank-response'}})).toString('base64')+'</textarea>'};
+          if(url.endsWith('/generateAndShowQR')){const body={upiQR:'upi://pay?am=99',errorcode:'fixture-code'};return{status:()=>200,headers:()=>({}),json:async()=>body,text:async()=>JSON.stringify(body)};}
+          if(url==='https://gateway.invalid/start')return{status:()=>302,headers:()=>({location:'/auth?tranCtx=fixture-rid'}),text:async()=>''};
+          if(url.endsWith('/PaymentRedirect'))return{status:()=>200,headers:()=>({}),text:async()=>'<form action="https://gateway.invalid/start"><input name="encdata" value="fixture-redirect"></form>'};
+          throw Error('Unexpected synthetic POST URL');}},
       log(...args){trace.push(['transport-log',...args]);},
       logSetCookies(host,url){trace.push(['response-cookies',host,url]);},
-      async record(method,url,settings,response,error){trace.push(['request-record',method,url,settings,!!response,error?.message]);},
+      onHttpRecord(record){trace.push(['request-record',record.method,record.url,record.status]);},
       directCtx:{dispose(){trace.push(['dispose-direct']);return Promise.resolve();}},
     },
   };
@@ -61,7 +66,7 @@ async function complete(native,id,{failFirst=false,pendingPoll=false,bankInterst
   };
   const requestContext=engine.context(19,root);requestContext[18]={FALLBACK_AFTER:3};
   Object.defineProperty(actor.gateway,'req',{get:engine.makeFunction('f1652',requestContext),configurable:true});
-  for(const[name,fid]of [['bookingData','f1719'],['printTicket','f1727'],['reqRetry','f1756'],['gwHeaders','f1666'],['clientHints','f1660'],['gatewayHints','f1662'],['liveProviderOrigin','f1659'],['originFor','f1665'],['disposeSurvivor','f1621'],['disposeDirectContext','f1630'],['paymentRedirect','f1667'],['noteGatewayPage','f1663'],['providerQr','f1668'],['pollProviderQr','f1673'],['irctcQrFetchEncdata','f1678'],['bankResponse','f1681'],['bankResponseOrigin','f1664'],['useSurvivorProxy','f1618'],['armSurvivor','f1619'],['sleep','f1628'],['sendViaWebTlsGateway','f1633']])actor.gateway[name]=engine.makeFunction(fid,engine.context(2,root));
+  for(const[name,fid]of [['bookingData','f1719'],['printTicket','f1727'],['reqRetry','f1756'],['gwHeaders','f1666'],['clientHints','f1660'],['gatewayHints','f1662'],['liveProviderOrigin','f1659'],['originFor','f1665'],['disposeSurvivor','f1621'],['disposeDirectContext','f1630'],['paymentRedirect','f1667'],['noteGatewayPage','f1663'],['providerQr','f1668'],['pollProviderQr','f1673'],['irctcQrFetchEncdata','f1678'],['bankResponse','f1681'],['bankResponseOrigin','f1664'],['useSurvivorProxy','f1618'],['armSurvivor','f1619'],['sleep','f1628'],['sendViaWebTlsGateway','f1633'],['record','f1649']])actor.gateway[name]=engine.makeFunction(fid,engine.context(2,root));
   for(const[name,fid]of [['dispatchGateway','f2176'],['runProviderQr','f2186'],['settlePayment','f2181'],['pollBookingData','f2226'],['canRequestPnr','f2220'],['waitForPnrRetry','f2221'],['tok','f2230'],['paymentPageReferrer','f2231'],['finishBooking','f2243'],['finishBookingCore','f2233'],['attachPrintTicket','f2247'],['reportClientUpdate','f2009']])actor[name]=engine.makeFunction(fid,engine.context(2,root));
   const result=await engine.makeFunction('f2172',engine.context(2,root)).call(actor,{paymentMethod:'irctcqr',origin:'AAA',destination:'BBB',username:'synthetic'},'fixture-txn',99,new Set());
   return{result,trace,pnrSeen:actor.pnrSeen,booking:booked,browserGone:actor.gateway.browserGone,contextsDisposed:actor.gateway.survivorReq===undefined&&actor.gateway.directCtx===undefined};
@@ -109,5 +114,5 @@ test('complete synthetic settlement survives a mid-call browser close using its 
 test('complete configured-TLS synthetic chain uses native transport facade through booking result',async()=>{
   const before=await complete(false,'tls',{configuredTls:true}),after=await complete(true,'tls',{configuredTls:true});assert.deepEqual(after,before);
   assert.equal(after.result.success,true);assert.ok(after.trace.some(row=>row[0]==='tls-effect'));
-  assert.ok(after.trace.some(row=>row[0]==='request-record'&&row[1].endsWith('*+tls')));
+  assert.ok(after.trace.some(row=>row[0]==='request-record'&&row[1].includes('*+TLS')));
 });

@@ -30,6 +30,7 @@ const {fetchProviderEncdata,pollProviderQr}=require('../payment/provider-qr-poll
 const {interstitialDelay,bankResponse}=require('../payment/bank-response.cjs');
 const {gatewayRequest}=require('../payment/gateway-routing.cjs');
 const {sendViaWebTlsGateway}=require('../payment/gateway-tls.cjs');
+const {recordHttp}=require('../payment/http-record.cjs');
 const {definitionFingerprint}=require('./recovered-contract.cjs');
 const contracts=require('../payment/recovered-contract.json');
 
@@ -44,6 +45,7 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
       throw new Error('Reconstructed payment contract changed for '+id+'. Review the recovered definition and comparison tests before enabling this candidate.');
   }
   return {
+    f1649:()=>function(method,url,options,response,error){return recordHttp(this,method,url,options,response,error,{clock:dependencies.clock});},
     f1633:({readBinding})=>function(method,url,options){
       const root=slot=>(...args)=>readBinding(slot,undefined,1)(...args);
       return sendViaWebTlsGateway(this,method,url,options,{cookieHeader:root(764),filterCookieHeader:root(250),filterSetCookies:root(252),applySetCookies:root(768)});
