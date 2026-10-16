@@ -82,8 +82,10 @@ const matrixUpdates=require('./runtime/updates.cjs').install(appElectron,project
 const appRequire = new Proxy(vendorRequire,{apply(target,that,args){return args[0]==='electron'?appElectron:Reflect.apply(target,that,args);}});
 
 function bootRecovered(){try {
-  // --compiled-runtime runs the compiled bundle without loading the archived instruction definitions.
-  const compiledRuntime = process.argv.includes('--compiled-runtime');
+  // The compiled bundle (src/main/compiled) is the default runtime and never loads the archived instruction definitions.
+  // --interpreter-runtime selects the archived instruction interpreter (src/main/generated + runtime/engine.cjs) as a
+  // migration switch; --compiled-runtime is still accepted and is the default.
+  const compiledRuntime = !process.argv.includes('--interpreter-runtime');
   const definitions = compiledRuntime ? null : require('./generated/index.cjs');
   log('definitions-loaded',{functions:compiledRuntime ? Object.keys(require('./compiled/meta.cjs')).length : Object.keys(definitions).length,compiledRuntime});
   const matrixServices=require('./runtime/matrix-services.cjs').create({log});

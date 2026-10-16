@@ -77,3 +77,5 @@ Phase20: PayTM WebSocket watcher f1693 and final status f1712 are native; see do
 Phase21: PhonePe, Razorpay and wallet verification transports are native, PayTM watcher/final status composed into the chain, and dropped regex flags were restored in the recovered definitions; see docs/reconstruction-phase-21.md. 88 native entries, 261 pins, 1406 tests passed.
 
 Phase22: booking helpers native and a verified compiler produces src/main/compiled for all 4354 definitions; a standalone compiled runtime (--compiled-runtime) runs the offline smoke without the instruction definitions. See docs/reconstruction-phase-22.md. 1686 tests passed.
+
+Phase23: compiled output made readable (inlined temporaries, names, 12-part f1 bootstrap; context slots cannot be promoted, see report), class/derived-constructor and 797 IPC/session/event boundary invocations verified identical between interpreter and compiled runtime, and the compiled runtime is now the default (`--interpreter-runtime` switch). See docs/reconstruction-phase-23.md. Windows Electron smoke test still to be run locally.

@@ -37,3 +37,10 @@ test('bootstrap (split f1 modules) behaves like the interpreter and the unsplit 
   // payment gateway constructor + field initializer (f1614/f1616) and the derived constructors
   for (const id of ['f1614', 'f325', 'f577', 'f578', 'f579', 'f2533']) assert.ok(report.constructedIds.includes(id), id + ' was constructed');
 });
+
+test('the compiled runtime is the default and the interpreter is an explicit switch', () => {
+  const source = require('node:fs').readFileSync(path.resolve(__dirname, '../src/main/index.cjs'), 'utf8');
+  assert.match(source, /const compiledRuntime = !process\.argv\.includes\('--interpreter-runtime'\)/);
+  // the archived instruction definitions are only loaded when the interpreter is selected
+  assert.match(source, /compiledRuntime \? null : require\('\.\/generated\/index\.cjs'\)/);
+});

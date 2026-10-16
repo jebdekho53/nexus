@@ -1,6 +1,6 @@
 {
   "status": "in_progress",
-  "progress": "Phases1–22: 88 native entries, 355 contract pins, 1686 full-suite tests pass (also with MATRIX_COMPILED=1). Verified bytecode-to-JavaScript compiler: all 4354 definitions compiled into src/main/compiled; differential run matches the interpreter (only f1556 seed23 interpreter artifact). Standalone compiled runtime (--compiled-runtime) passes offline smoke with 8 windows and no interpreter definitions. Public1.0.11 unchanged; no live service/build/deployment.",
+  "progress": "Phases1–23: 88 native entries, 355 contract pins, 1688-test full suite passes except 3 Windows-path tests on Linux (also with MATRIX_COMPILED=1). Compiled runtime (src/main/compiled, readable output, split f1 bootstrap) is now the default; --interpreter-runtime keeps the archived interpreter. Differential matches (only f1556 seed23); class and 797 boundary invocations match the interpreter. Electron smoke test not run in the cloud: run locally on Windows. Public 1.0.11 unchanged; no live service/build/deployment.",
   "task": "Reconstruct recovered Matrix payment logic into maintainable JavaScript",
   "completedLatestTask": {
     "task": "Fix WebLogin Chrome selection closing another independent pair panel",
@@ -170,7 +170,7 @@
     "phaseTwoReport": "docs/reconstruction-phase-2.md",
     "pinnedDefinitions": 193,
     "phaseFourReport": "docs/reconstruction-phase-4.md",
-    "nextReview": "Integrate native f1693 WebSocket watcher and f1712 final status into composed synthetic PayTM chain; then PhonePe/Razorpay transports, session/cookie helpers, controllers and bootstrap.",
+    "nextReview": "Run the Windows smoke test; then migrate controllers f2161/f2102/f3149 to ordinary modules and fold string-decoder calls at build time (needs the local string table); remove the interpreter from packaging only after a soak.",
     "phasesFiveSixReport": "docs/reconstruction-phases-5-6.md",
     "phaseSevenReport": "docs/reconstruction-phase-7.md",
     "phaseEightReport": "docs/reconstruction-phase-8.md",
@@ -199,7 +199,10 @@
       "limitation": "Static instruction volume and review-load heuristic, not remaining effort or delivery-time percentage."
     },
     "fullProjectPrompt": "docs/FULL-RECONSTRUCTION-PROMPT.md",
-    "handoffVerification": "Read-only verification confirmed current74 factories and same-PID7344 factory list plus8-window smoke-complete.1124 tests are phase20 recorded evidence, not rerun during handoff update."
+    "handoffVerification": "Read-only verification confirmed current74 factories and same-PID7344 factory list plus8-window smoke-complete.1124 tests are phase20 recorded evidence, not rerun during handoff update.",
+    "phaseTwentyThreeReport": "docs/reconstruction-phase-23.md",
+    "defaultRuntime": "compiled (switch: --interpreter-runtime)",
+    "pendingLocalChecks": "Windows Electron offline smoke test (default and --interpreter-runtime) and the 3 Windows-path tests (development-policy x2, window-readiness)"
   },
   "continuationSchedule": "First16Oct2026at18:42IST, then every5h30m (330min). Existing general unfinished-task fallback remains active."
 }

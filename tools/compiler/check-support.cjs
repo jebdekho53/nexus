@@ -116,6 +116,8 @@ function createSandbox(log,stub,clock) {
   const guarded=name=>stub('global.'+name);
   const processProxy=new Proxy(process,{
     get(target,key){
+      if(key==='pid')return 4242;
+      if(key==='ppid')return 4241;
       if(['exit','kill','abort','reallyExit','dlopen','chdir','umask'].includes(key))return(...args)=>{log.push('process.'+key+'('+args.map(summarise).join(',')+')');};
       const value=Reflect.get(target,key,target);
       return typeof value==='function'?value.bind(target):value;
@@ -177,7 +179,12 @@ function runBootstrap(makeRuntime,options={}) {
   return{log,error,root:state.root,describe,stub,callbacks,clock,exports:moduleObject.exports,runtime};
 }
 
-// error wording differs between Reflect.apply and a direct call; everything else must match exactly
-const normaliseText=text=>String(text).replace(/(TypeError:)[^|]*(is not a function|is not a constructor|apply was called on|Reflect\.apply is not a function)[^|]*/g,'$1call');
+// Calling a non-function is worded differently by the interpreter (Reflect.apply: "Function.prototype.apply was called
+// on ...") and by compiled code (direct call: "x.y(...) is not a function", the V8 style of the original program). The
+// text can surface in {ok:false,error} IPC replies, but only for such failing calls; everything else must match exactly.
+const normaliseText=text=>String(text)
+  .replace(/Function\.prototype\.apply was called on [^}|]*?(?= effects=|[}|]|$)/g,'NOT_A_FUNCTION')
+  .replace(/[A-Za-z_$][\w$]*(?:\[[^\]]*\]|\.[\w$]+|\(\.\.\.\))* is not a function/g,'NOT_A_FUNCTION')
+  .replace(/(TypeError:)[^|]*(is not a constructor|Reflect\.apply is not a function)[^|]*/g,'$1call');
 
 module.exports={seedRandom,summarise,createStubs,createClock,createSandbox,runtimeFactories,runBootstrap,normaliseText,ROOT_CONTEXT_SLOTS,META};
