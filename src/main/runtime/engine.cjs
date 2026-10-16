@@ -62,6 +62,15 @@ function createEngine(definitions, options = {}) {
   function makeFunction(id, captured = context(2, null), lexical = {}) {
     const definition = definitions[id];
     if (!definition) throw new Error('Missing recovered function ' + id);
+    // A migration adapter can replace a complete function with ordinary source
+    // while callers still live in recovered lexical scopes. Resolve bindings
+    // at call time, preserving late initialization and separate closures.
+    const nativeImplementation=options.functionFactories?.[id]?.({readBinding(slot,name){
+      const value=captured[slot];
+      if(value===HOLE)throw new ReferenceError('Cannot access '+name+' before initialization');
+      return value;
+    }});
+    if(nativeImplementation!==undefined&&typeof nativeImplementation!=='function')throw new TypeError('Invalid native implementation for '+id);
     let fn;
     const invoke = (that, args, newTarget) => {
       if(options.onInvoke)options.onInvoke(definition.id,args,captured);
@@ -74,6 +83,7 @@ function createEngine(definitions, options = {}) {
       return invokeOriginal(that,args,newTarget);
     };
     const invokeOriginal = (that,args,newTarget) => {
+      if(nativeImplementation)return Reflect.apply(nativeImplementation,that,args);
       const frame = {
         definition, fn, args, regs: new Array(definition.registerCount), ctx: captured,
         thisValue: definition.kind.includes('Derived') ? HOLE : that,

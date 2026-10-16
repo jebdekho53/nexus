@@ -67,6 +67,7 @@ function privateBrowser(log=()=>{},dependencies={}) {
         // Browser.newContext is Chromium's off-the-record (Incognito) context.
         // Do not copy storageState, cookies, user agents or profile init scripts.
         context=await browser.newContext({viewport:null,...(options.proxy?.server?{proxy:options.proxy}:{})});
+        require('./payment-timing.cjs').observePaymentTiming(context,log);
         const page=await context.newPage();
         ownedPages.add(page);
         // Restore the private window, including when the inherited launcher

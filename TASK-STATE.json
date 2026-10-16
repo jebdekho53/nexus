@@ -1,7 +1,7 @@
 {
   "status": "in_progress",
-  "progress": "Human clarified target is BEFORE45s countdown. Read-only manual-run stages show settle->trigger13.6s/26.6s; login-confirmation5.1/4.9s, postlogin-to-countdown3.5/2.6s. Fixed own f698 interceptor readiness probe adding up to4s before full budget and synchronous handler failure being called twice: shared budget, single handler invocation, timing telemetry.63tests pass incl budgetexhaustion/errorpropagation. Source-only, installed/public1.0.10unchanged. Need next human-operated trace to measure real reduction and identify remaining settle/navigation work; no new live login/booking or rejectedQRretry initiated. Report docs/pre-countdown-login-analysis.md",
-  "task": "Reduce login preparation delay before passenger countdown",
+  "progress": "Phase1 native payment reconstruction candidate implemented eleven entry replacements: URL/payload, gateway/bank selection, error handling, providerQR, PayTM, PhonePe, Razorpay and PayTM WebSocket/poll coordinator. Actual recovered functions compared with synthetic fixtures; originalf2172 integration11scenarios matches with nativehelpers.177 full tests pass. Source-only opt-in --reconstructed-payment, unmanaged development; installed/public1.0.11 unchanged. Definition identity/hash guard prevents stale replacement mappings. Read docs/reconstruction-progress.md and docs/ANTIGRAVITY-HANDOFF.md. Next rewritef2172andf2176; gateway transport, common settlement and passenger submission remainrecovered. No live login/payment/QR or newbuild/deploy for thiscandidate; real QR speed unverified.",
+  "task": "Reconstruct recovered Matrix payment logic into maintainable JavaScript",
   "completedLatestTask": {
     "task": "Fix WebLogin Chrome selection closing another independent pair panel",
     "version": "1.0.10",
@@ -27,19 +27,19 @@
     "install": "diagnostics/local-1.0.10-update.json"
   },
   "release": {
-    "version": "1.0.10",
+    "version": "1.0.11",
     "name": "Matrix",
     "distribution": "windows-offline-installer",
-    "notes": "Fix WebLogin browser selection closing other pair panels: auxiliary cleanup now uses trusted page paths instead of window titles. Preserves independent booking/ticket/QR windows.",
+    "notes": "Add private payment-stage and request timing diagnostics; improve login readiness settle budget. Required booking waits and gateway validations are preserved. QR speed improvement is not yet verified.",
     "offlineSetup": {
-      "url": "/downloads/Matrix-Setup-1.0.10.exe",
-      "bytes": 264681985,
-      "sha256": "044e92ed0e2e31a3ab6bce4dca0183aa1e0dafebd364c0976ef3b04344f4d28d"
+      "url": "/downloads/Matrix-Setup-1.0.11.exe",
+      "bytes": 264686518,
+      "sha256": "c0f0d62407d8c5040603a278dcc1e7ae5ec4f616e4dbfd3a5ec13b5107c54607"
     },
     "updaterExe": {
-      "url": "/downloads/Matrix-Updater-1.0.10.exe",
-      "bytes": 27268885,
-      "sha256": "84c2884db044f89e10bf199e3d9ed700760a01ac9a2d06e81450d37388d1bdf9"
+      "url": "/downloads/Matrix-Updater-1.0.11.exe",
+      "bytes": 27270957,
+      "sha256": "edd642ad108fedc1b6eac07739c2564db73d56c89d9b6629a0bafdcd93a8f065"
     }
   },
   "audit": {
@@ -71,6 +71,36 @@
       ],
       "uiQrVerified": false,
       "matchedBaseline": false
+    }
+  },
+  "reconstruction": {
+    "phase": "payment modules",
+    "report": "docs/reconstruction-progress.md",
+    "handoff": "docs/ANTIGRAVITY-HANDOFF.md",
+    "flag": "--reconstructed-payment",
+    "nativeEntries": [
+      "f510",
+      "f535",
+      "f542",
+      "f544",
+      "f545",
+      "f546",
+      "f2186",
+      "f2193",
+      "f2196",
+      "f2208",
+      "f2213"
+    ],
+    "published": false,
+    "quotaHandoffThresholdRemainingPercent": 5,
+    "lastObservedPrimaryRemainingPercent": 13,
+    "lastObservedWeeklyRemainingPercent": 35,
+    "testsPassed": 177,
+    "smoke": {
+      "windows": 8,
+      "completeDom": true,
+      "allElevenFactoriesEnabled": true,
+      "offline": true
     }
   }
 }

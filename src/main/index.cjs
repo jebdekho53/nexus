@@ -88,10 +88,13 @@ function bootRecovered(){try {
   if(!isSmoke)void matrixServices.refresh();
   const legacyServices=require('./runtime/legacy-services.cjs').hooks(log);
   const functionOverrides = {...(isDevelopment ? require('./runtime/development.cjs').developmentOverrides(log) : {}),...legacyServices.overrides};
+  const functionFactories=require('./runtime/reconstructed-payment.cjs').reconstructedPayment({development:isDevelopment,managedRelease,enabled:process.argv.includes('--reconstructed-payment')});
+  if(Object.keys(functionFactories).length)log('matrix-reconstructed-payment',{functions:Object.keys(functionFactories)});
   log('development-mode', {enabled:isDevelopment, overrides:Object.keys(functionOverrides)});
   const privateOptions=process.argv.includes('--private-access-probe')||process.argv.includes('--private-flow-probe')?{onCreated:session=>require(path.join(projectRoot,'test/private-access-probe.cjs')).run(session,projectRoot,code=>developmentPolicy.finishSmoke(code))}:{};
   const functionInterceptors={...legacyServices.interceptors,...require('./runtime/general-api-candidate.cjs').interceptors(),...require('./runtime/private-browser.cjs').privateBrowser(log,privateOptions),...require('./runtime/login-performance.cjs').loginPerformance(log),...require('./runtime/booking-timing.cjs').bookingTiming(),...require('./runtime/qr-delivery.cjs').qrDelivery(appElectron,projectRoot,log)};
-  const engine = createEngine(definitions, {functionOverrides,functionInterceptors,onInvoke:(id,args,captured)=>{
+  Object.assign(functionInterceptors,require('./runtime/payment-timing.cjs').paymentTiming(log));
+  const engine = createEngine(definitions, {functionOverrides,functionInterceptors,functionFactories,onInvoke:(id,args,captured)=>{
     if(id==='f3740'&&process.argv.includes('--isolated-live-test'))log('e2e-qr-publisher',{keys:Object.keys(args[0]||{}),imageBase64Length:args[0]?.imageBase64?.length||0,payloadLength:typeof args[0]?.payload==='string'?args[0].payload.length:0});
     if(actionTrace.active)actionTrace.calls.set(id,(actionTrace.calls.get(id)||0)+1);
     if(id==='f3720') {
