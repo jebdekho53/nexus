@@ -1,0 +1,43 @@
+Continue the Matrix reconstruction and TypeScript migration autonomously.
+
+First fetch origin, inspect Git status, and read applicable AGENTS.md,
+docs/typescript-migration.md and docs/typescript-windows-verification.md.
+Continue refactor/typescript-migration and draft PR #2.
+Integrate the verification commit from origin/verify/typescript-windows
+after reviewing its diff; preserve unrelated work. Do not merge into main.
+
+Windows verification of aabf9cd passed all 2241 tests in both modes, default
+and interpreter Electron smoke, both .cmd launchers in offline smoke mode,
+and an independently installed installer payload's offline smoke. Do not
+claim normal visual UI or live-provider verification from these checks.
+Do not repeat the old claim that Windows verification is entirely missing.
+
+The migration is still incomplete. Continue substantial eligible logic in
+small coherent batches without asking whether to continue after each one.
+Follow the documented continuation inventory: examine runtime-support and
+offline-smoke, then eligible entry-point integration, renderer/preload and
+other understood logic. Preserve the interpreter fallback and generated
+definitions until their actual replacements are verified.
+
+Review excluded mixed modules by actual behavior, not keyword matches.
+Extract ordinary window, cleanup, state, scheduling and orchestration
+helpers when they can be separated safely. Do not implement or improve
+anti-bot/captcha evasion, fabricated fraud fingerprints, access-control or
+licensing bypasses, or rate-limit evasion. Document genuinely blocked
+mechanisms and continue independent work instead of stopping the project.
+
+Use strict types, readable implementations, independent synthetic
+differential fixtures and relevant existing tests. A rename or typed facade
+is not reconstructed logic. Preserve data compatibility, errors, side-effect
+order and function/IPC contracts. Avoid pervasive any or ts-nocheck.
+
+Use the local compiler and npm ci. Maintain launcher and packaging output
+compatibility. Run focused checks after batches, broad checks at material
+integration checkpoints, and reserve capacity to leave a tested final state.
+Do not waste credit on repeated unchanged suites, exhaustive trivial mutation
+sweeps, or waiting for unconfigured CI. Never invent remaining credit figures.
+
+No live bookings/payments, production changes, releases or merging main.
+Commit and push verified batches, update PR #2 and migration documentation,
+and continue until complete or session limits require a working checkpoint.
+Report exact migrated logic, actual checks, remaining work and blockers.

@@ -1,6 +1,6 @@
 {
   "status": "in_progress",
-  "progress": "Phases1–26: 88 native entries plus booking controllers f2102, f2161, f3149 (src/main/booking), 405 contract pins, 2165-test full suite passes except 3 Windows-path tests on Linux (also with MATRIX_COMPILED=1). Compiled runtime is the default; --interpreter-runtime keeps the interpreter. Differential matches (only f1556 seed23). Windows verification of c5e211c (suite + both smoke modes) passed; smoke for the phase 26 controllers still needs a local run. Public 1.0.11 unchanged; no live service/build/deployment.",
+  "progress": "TypeScript migration (branch verify/typescript-windows, draft PR #2): 71 main-process TypeScript modules and 9 renderer scripts. Since the last checkpoint: the browser, diagnostic-log, success-ticket, saved-data, settings and login/proxy import/export IPC handlers (about 70 functions) reconstructed against the recovered code, a writeBinding factory API, a tightened and tested engine-parity wording rule, composition of native replacements with interceptors, and a generated function-level inventory (about 242 functions / 7.55% of the original instructions are TypeScript business logic; about 3805 / 83.6% still run as recovered code). Windows verification of code commit 29f1036: tsc clean, 3613/3613 tests in both modes, launchers/panel/factory smoke (288 factories), and a rebuilt installer and portable ZIP in qa-29f1036 with a separate QA install smoke-tested. Remaining in f3790: forms import/export, provider-backed search and availability, backup/restore, licence/RailOne/captcha/OTP handlers (excluded). Not complete. Public 1.0.11 unchanged; no live service, release or deployment. Third checkpoint (8cc1d0e): head now includes six batches from a parallel Codex session (forms import/export, codecs, backup/restore, settings persistence; 328 reconstructed functions), plus the scaffold and mutation-check tools; smoke and a rebuilt installer/ZIP in qa-8cc1d0e verified; full suite 5090/5090 in both modes on that head.",
   "task": "Reconstruct recovered Matrix payment logic into maintainable JavaScript",
   "completedLatestTask": {
     "task": "Fix WebLogin Chrome selection closing another independent pair panel",
@@ -252,5 +252,12 @@
       "externalPushPerformed": false
     }
   },
-  "continuationSchedule": "First16Oct2026at18:42IST, then every5h30m (330min). Existing general unfinished-task fallback remains active."
+  "continuationSchedule": "First16Oct2026at18:42IST, then every5h30m (330min). Existing general unfinished-task fallback remains active.",
+  "typescriptMigration": {
+    "branch": "refactor/typescript-migration",
+    "status": "in_progress",
+    "document": "docs/typescript-migration.md",
+    "migratedModules": 53,
+    "note": "Real TypeScript reconstructions under src/ts compiled to build/ts; excluded mechanisms are listed in the document. Windows startup, smoke test and packaging are unverified."
+  }
 }

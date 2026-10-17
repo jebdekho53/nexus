@@ -1,0 +1,1 @@
+document.addEventListener('DOMContentLoaded',()=>{for(const button of document.querySelectorAll('[data-matrix-portal]'))button.addEventListener('click',()=>window.matrixPortal.open(button.dataset.matrixPortal));});

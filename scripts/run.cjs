@@ -4,6 +4,8 @@ const path=require('node:path');
 const os=require('node:os');
 const {spawn}=require('node:child_process');
 const root=path.dirname(__dirname);
+
+require('./ensure-ts-build.cjs').ensureTypeScriptBuild(root);
 const candidates=[process.env.ELECTRON_BINARY,path.join(root,'.runtime','electron.exe'),path.join(os.homedir(),'.cache','ts-v8-recovery','electron-43.6.0-ia32','electron.exe')].filter(Boolean);
 const binary=candidates.find(file=>fs.existsSync(file));
 if(!binary)throw new Error('Set ELECTRON_BINARY to Electron 43.6.0 ia32 electron.exe. See README.md.');
