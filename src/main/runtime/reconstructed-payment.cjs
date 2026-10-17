@@ -56,6 +56,7 @@ const logsIpc=require('../ipc/logs-ipc.cjs');
 const dataIpc=require('../ipc/data-ipc.cjs');
 const settingsIpc=require('../ipc/settings-ipc.cjs');
 const transferIpc=require('../ipc/transfer-ipc.cjs');
+const formsTransferIpc=require('../ipc/forms-transfer-ipc.cjs');
 const {definitionFingerprint}=require('./recovered-contract.cjs');
 const contracts=require('../payment/recovered-contract.json');
 
@@ -273,6 +274,25 @@ function transferIpcFactories(dependencies) {
     f3967:handler(transferIpc.exportUsers),f3969:handler(transferIpc.importUsers),f3970:handler(transferIpc.importUserFile),f3971:withoutEvent(transferIpc.importUsersData),
     f3986:handler(transferIpc.exportProxies),f3989:handler(transferIpc.importProxies),f3991:withoutEvent(transferIpc.importProxyPaste),f3993:handler(transferIpc.importProxyFile),
   };
+}
+
+// Development-only migration switch. The installed release retains the old
+function formsTransferFactories(dependencies) {
+  const deps=read=>({
+    windowFor:sender=>read(22,'x',1).BrowserWindow.fromWebContents(sender),
+    saveDialog:(parent,options)=>read(22,'x',1).dialog.showSaveDialog(parent,options),
+    saveDialogWithoutParent:options=>read(22,'x',1).dialog.showSaveDialog(options),
+    openDialog:(parent,options)=>read(22,'x',1).dialog.showOpenDialog(parent,options),
+    openDialogWithoutParent:options=>read(22,'x',1).dialog.showOpenDialog(options),
+    fs:()=>read(18,'y',1),basename:file=>read(14,'m',1).basename(file),
+    formsVault:()=>read(1712,undefined,1)(),parseForms:(...args)=>read(325,undefined,1)(...args),
+    normalize:(...args)=>read(320,undefined,1)(...args),serialize:model=>read(326,undefined,1)(model),
+    changed:()=>read(1720,undefined,1)(),uuid:()=>read(23,'j',1).randomUUID(),now:()=>(dependencies.now??(()=>Date.now()))(),
+  });
+  const handler=call=>({readBinding})=>async function(event,arg){return call(deps(readBinding),event,arg);};
+  return {f3949:handler(formsTransferIpc.exportForm),f3950:handler(formsTransferIpc.importForms),
+    f3951:({readBinding})=>async function(event,items){return formsTransferIpc.importFormsData(deps(readBinding),items);},
+    f3952:handler(formsTransferIpc.exportFormModel),f3953:handler(formsTransferIpc.importFormFile)};
 }
 
 // Development-only migration switch. The installed release retains the old
@@ -547,6 +567,7 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     ...dataIpcFactories(dependencies),
     ...settingsIpcFactories(),
     ...transferIpcFactories(dependencies),
+    ...formsTransferFactories(dependencies),
     f2196:({readBinding})=>function(resolve){
       return startPaytmWatch(resolve,readBinding(2),readBinding(4),readBinding(5),readBinding(6));
     },

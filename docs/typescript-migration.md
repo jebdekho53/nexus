@@ -1,8 +1,9 @@
 # TypeScript migration
 
-Status: **in progress**. 71 main-process modules and 9 browser-target renderer scripts are real TypeScript reconstructions (listed below and in "Renderer scripts"). Everything else — the generated
-definitions in `src/main/generated`, the compiled bundle, the interpreter, the engine, the exclusions listed below and
-the remaining `.cjs` modules — is unchanged. No completion percentage is claimed; the migration is **not** complete.
+Status: **in progress**. The module table and generated function inventory below distinguish TypeScript business logic,
+runtime infrastructure, renderer scripts, interceptors and remaining recovered functions. The interpreter and compiled
+runtime infrastructure are TypeScript, but most recovered business functions still run from generated definitions.
+The migration is **not** complete.
 
 ## Architecture and build decisions
 
@@ -30,6 +31,7 @@ the remaining `.cjs` modules — is unchanged. No completion percentage is claim
 ## Verified migrated modules (real reconstructions, not wrappers)
 
 | TypeScript | Purpose | Recovered functions / adapter | Differential test |
+| `src/ts/main/ipc/forms-transfer-ipc.ts` | Saved form/model JSON exports, file and pasted CSV/JSON imports | f3949-f3953 | `forms-transfer-ipc-reconstruction` |
 | --- | --- | --- | --- |
 | `src/ts/main/booking/provider-page.ts` | Wait for the operator to return to the provider site | f2255, f2256, f2257 | `ts-misc` |
 | `src/ts/main/booking/rules.ts` | Booking rules, berth limits, opening/availability times, mode routing | f425, f426, f427, f428, f429, f431, f433, f435, f436, f437, f438, f439, f440, f441, f444, f445, f446, f447, f448, f449, f450, f451, f452, f453, f454, f455, f456 | `ts-rules` |
