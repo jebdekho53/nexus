@@ -19763,5 +19763,24 @@
     "16932|C)Ez": "includes",
     "10901|Y(mF": "push",
     "7253|UMn*": "length"
+  },
+  "f3543": {
+    "8734|QgKz": "autoUpdateOffMigrated"
+  },
+  "f3544": {
+    "17605|s[W0": "availTimingResetMigrated",
+    "15619|WyZ@": "clearAvailTimingOverrides",
+    "16155|b!6h": "changed",
+    "5492|Cbvh": "forms",
+    "3469|]TXZ": "cleared stale per-form availability-time override on ",
+    "22768|QgKz": "changed",
+    "6609|S)Et": " saved form(s) \u2192 now follow the live server config"
+  },
+  "f3551": {
+    "22223|d[0N": "join",
+    "17775|WyZ@": "app",
+    "21745|rkuw": "getPath",
+    "19125|sA1s": "userData",
+    "15724|A@un": "settings.json"
   }
 }

@@ -37,7 +37,7 @@ The migration is **not** complete.
 | `src/ts/main/storage/form-normalization.ts` | Legacy/nested form schema conversion and defaults; reuses existing rules validation helpers | f472, f487 | `form-normalization-reconstruction` |
 | `src/ts/main/storage/record-codecs.ts` | Saved login/proxy text and object conversion, UPI-record validation/normalization and stored method mapping | f414-f424 | `record-codecs-reconstruction` |
 | `src/ts/main/ipc/backup-ipc.ts` | Backup selection/info and user-requested encrypted backup/restore orchestration using unchanged crypto/store helpers | f4031-f4033 | `backup-ipc-reconstruction` |
-| `src/ts/main/storage/settings-store.ts` | Settings JSON read/atomic replacement and standard Electron window pin operations; secret values remain opaque | f3552-f3556 | `settings-store-reconstruction` |
+| `src/ts/main/storage/settings-store.ts` | Settings path, JSON read/atomic replacement, one-time local settings migrations and standard Electron window pin operations; secret values remain opaque | f3543-f3544, f3551-f3556 | `settings-store-reconstruction`, `settings-migrations-reconstruction` |
 | `src/ts/main/storage/ai-key-store.ts` | Local AI key save/read, OS encryption and legacy plaintext migration; settings IPC error forwarding | f3570-f3571, f4022 | `ai-key-store-reconstruction` |
 | `src/ts/main/storage/local-catalog.ts` | Offline JSON catalog read/fallback, ranked station suggestions and capped train-name suggestions | f3495-f3497 | `local-catalog-reconstruction` |
 | --- | --- | --- | --- |
@@ -444,3 +444,17 @@ inventory 77/77; main type check clean; 10/10 mutation candidates killed.
 Tests include late exact-code priority, 11/12/13 boundaries, iterator cleanup,
 getter ordering and JSON/read/path failures. Broad suite is reserved for the
 next material integration checkpoint.
+
+## One-time settings migration batch
+
+Reconstructed f3543/f3544 (existing auto-update default and per-form availability
+timing migrations) and f3551 (settings path) in settings-store.ts. Existing
+completion markers, failure tolerance, write-before-log order and original
+form-vault calls are unchanged. No remote configuration or service waits change.
+
+Validation: related settings suites 249/249 default, compiled plus inventory
+252/252; final focused migration tests 51/51. Seven mutation candidates inside
+the migrated functions were killed. An initial wider mutation range also
+included three old accessor/window-pin candidates outside this test file's
+scope; narrowing to the changed functions left no survivors. Runtime-generated
+error wording normalization was not changed.

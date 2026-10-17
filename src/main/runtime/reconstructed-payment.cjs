@@ -638,6 +638,14 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
       writeSettings:next=>readBinding(1769)(next),safeStorage:()=>readBinding(22,'x').safeStorage,
       decodeBase64:value=>Buffer.from(value,'base64'),saveKey:value=>readBinding(1783)(value),
     });},
+    f3543:({readBinding})=>function(){return settingsStore.migrateAutoUpdate({
+      readSettings:()=>readBinding(1768)(),writeSettings:value=>readBinding(1769)(value),
+    });},
+    f3544:({readBinding})=>function(){return settingsStore.migrateAvailabilityTiming({
+      readSettings:()=>readBinding(1768)(),writeSettings:value=>readBinding(1769)(value),
+      forms:()=>readBinding(1712)(),log:(...args)=>readBinding(1885)(...args),
+    });},
+    f3551:({readBinding})=>function(){return settingsStore.settingsPath({path:()=>readBinding(14,'m'),app:()=>readBinding(22,'x').app});},
     f3552:({readBinding})=>function(){return settingsStore.autoUpdate(()=>readBinding(1768)());},
     f3553:({readBinding})=>function(){return settingsStore.readSettings({fs:()=>readBinding(18,'y'),path:()=>readBinding(1766)()});},
     f3554:({readBinding})=>function(value){return settingsStore.writeSettings(value,{

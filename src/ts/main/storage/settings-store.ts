@@ -51,6 +51,38 @@ export function writeSettings(value: unknown, deps: SettingsStoreDeps): void {
 }
 export const autoUpdate = (read: () => Settings): unknown => read().autoUpdate;
 export const windowPinned = (read: () => Settings): boolean => read().pinnedOnTop !== false;
+export interface SettingsMigrationDeps {
+  readSettings(): Settings;
+  writeSettings(settings: Settings): unknown;
+  forms(): {clearAvailTimingOverrides(): {ok?: unknown; changed?: unknown}};
+  log(category: string, message: string): unknown;
+}
+// One-time local configuration migrations (f3543/f3544). Preserve their
+// best-effort behavior and mark completion only after the relevant work succeeds.
+export function migrateAutoUpdate(deps: Pick<SettingsMigrationDeps, 'readSettings' | 'writeSettings'>): void {
+  try {
+    const settings = deps.readSettings();
+    if (!settings.autoUpdateOffMigrated)
+      deps.writeSettings({...settings, autoUpdate: false, autoUpdateOffMigrated: true});
+  } catch { /* Retry on a later startup if the migration could not be saved. */ }
+}
+export function migrateAvailabilityTiming(deps: SettingsMigrationDeps): void {
+  try {
+    const settings = deps.readSettings();
+    if (settings.availTimingResetMigrated) return;
+    const result = deps.forms().clearAvailTimingOverrides();
+    if (!result.ok) return;
+    deps.writeSettings({...settings, availTimingResetMigrated: true});
+    if (result.changed)
+      deps.log('forms', 'cleared stale per-form availability-time override on ' + result.changed + ' saved form(s) → now follow the live server config');
+  } catch { /* Original startup migration intentionally tolerates storage errors. */ }
+}
+export function settingsPath(deps: {
+  path(): {join(directory: string, name: string): string};
+  app(): {getPath(name: 'userData'): string};
+}): string {
+  return deps.path().join(deps.app().getPath('userData'), 'settings.json');
+}
 export interface PinWindow {
   isDestroyed(): boolean;
   setAlwaysOnTop(on: boolean, level?: unknown): unknown;
