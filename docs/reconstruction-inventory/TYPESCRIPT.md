@@ -10,8 +10,8 @@ Recovered functions: **4354** (512857 original instructions).
 
 | Implementation | Functions | Original instructions | Instruction share |
 | --- | ---: | ---: | ---: |
-| TypeScript business logic (replaces the recovered function) | 241 | 38686 | 7.54% |
-| TypeScript application services or runtime infrastructure that replace a function | 1 | 54 | 0.01% |
+| TypeScript business logic (replaces the recovered function) | 242 | 38740 | 7.55% |
+| TypeScript application services or runtime infrastructure that replace a function | 0 | 0 | 0.00% |
 | TypeScript interceptors and helpers that wrap or serve a function which still runs as recovered code | 11 | 7567 | 1.48% |
 | JavaScript native replacements (not TypeScript; excluded or not yet migrated) | 46 | 30676 | 5.98% |
 | Recovered, reviewed support pinned for a native caller | 250 | 7007 | 1.37% |

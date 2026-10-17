@@ -62,8 +62,12 @@ const status = new Map(rows.map(row => [row[0], row[header.indexOf('status')]]))
 const {reconstructedPayment} = require(path.join(root, 'src/main/runtime/reconstructed-payment.cjs'));
 const factories = new Set(Object.keys(reconstructedPayment({development: true, enabled: true})));
 
+// A function can be replaced by one module and wrapped by an interceptor module at the same time; the replacing module owns it.
 const owner = new Map();
-for (const module of modules) for (const id of module.ids) if (!owner.has(id)) owner.set(id, module);
+for (const module of modules) for (const id of module.ids) {
+  const current = owner.get(id);
+  if (!current || (current.category !== 'business_logic' && module.category === 'business_logic')) owner.set(id, module);
+}
 
 const functions = [];
 for (const id of instructions.keys()) {

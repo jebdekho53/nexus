@@ -528,7 +528,7 @@ f4017,54,typescript,src/ts/main/ipc/settings-ipc.ts,business_logic,"settings-ipc
 f4018,54,typescript,src/ts/main/ipc/settings-ipc.ts,business_logic,"settings-ipc-reconstruction (65 scenarios)"
 f4019,26,typescript,src/ts/main/ipc/settings-ipc.ts,business_logic,"settings-ipc-reconstruction (65 scenarios)"
 f4020,26,typescript,src/ts/main/ipc/settings-ipc.ts,business_logic,"settings-ipc-reconstruction (65 scenarios)"
-f4021,54,typescript,src/ts/main/runtime/qr-delivery.ts,application_service,"ts-runtime + qr-delivery.test"
+f4021,54,typescript,src/ts/main/ipc/settings-ipc.ts,business_logic,"settings-ipc-reconstruction (65 scenarios)"
 f4273,321,typescript,src/ts/main/windows/window-ipc.ts,business_logic,"window-ipc-reconstruction (186 scenarios)"
 f4274,39,typescript,src/ts/main/windows/window-ipc.ts,business_logic,"window-ipc-reconstruction (186 scenarios)"
 f4275,254,typescript,src/ts/main/windows/window-ipc.ts,business_logic,"window-ipc-reconstruction (186 scenarios)"
