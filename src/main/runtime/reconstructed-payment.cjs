@@ -51,6 +51,8 @@ const formsVault=require('../storage/forms-vault.cjs');
 const recordVault=require('../storage/record-vault.cjs');
 const historyVault=require('../storage/history-vault.cjs');
 const windowIpc=require('../windows/window-ipc.cjs');
+const browserIpc=require('../ipc/browser-ipc.cjs');
+const logsIpc=require('../ipc/logs-ipc.cjs');
 const {definitionFingerprint}=require('./recovered-contract.cjs');
 const contracts=require('../payment/recovered-contract.json');
 
@@ -152,6 +154,47 @@ function windowIpcFactories(dependencies) {
     f4293:({readBinding})=>async function(){return windowIpc.requestQuit(deps(readBinding));},
     f4294:({readBinding})=>async function(){return windowIpc.confirmQuit(deps(readBinding),false);},
     f4295:({readBinding})=>async function(){return windowIpc.confirmQuit(deps(readBinding),true);},
+  };
+}
+
+// Browser, log and success-ticket IPC handlers (registered by f3790). The handlers were created in f3790's scope, so its
+// settings object is context slot 3 at depth 0 and the bootstrap slots are at depth 1.
+function browserIpcDependencies(readBinding,writeBinding,dependencies) {
+  const slot=(number,name)=>()=>readBinding(number,name,1);
+  const call=number=>(...args)=>readBinding(number,undefined,1)(...args);
+  return {
+    environment:()=>readBinding(3,undefined,0),detectBrowsers:call(107),profileServiceReady:call(1786),summarizeBrowsers:call(102),log:call(1885),
+    findBrowserDownload:call(65),openExternal:url=>readBinding(22,'x',1).shell.openExternal(url),
+    brahmosBusy:slot(1965,'rc'),setBrahmosBusy:busy=>writeBinding(1965,busy,1),installBrahmos:call(176),sanitizeMessage:slot(170),
+    channels:slot(336,'v'),downloadCatalog:call(68),now:()=>(dependencies.now??(()=>Date.now()))(),
+  };
+}
+function logsIpcDependencies(readBinding,dependencies) {
+  const slot=(number,name)=>()=>readBinding(number,name,1);
+  const call=number=>(...args)=>readBinding(number,undefined,1)(...args);
+  return {
+    appLog:slot(1867,'bn'),fullLog:slot(1869,'un'),preferPlainLog:call(1881),logPairs:call(1866),config:call(61),encryptLog:call(595),afterExport:call(1886),
+    fs:slot(18,'y'),path:slot(14,'m'),windowFor:sender=>readBinding(22,'x',1).BrowserWindow.fromWebContents(sender),
+    showSaveDialog:(parent,options)=>readBinding(22,undefined,1).dialog.showSaveDialog(parent,options),
+    showSaveDialogWithoutParent:options=>readBinding(22,undefined,1).dialog.showSaveDialog(options),
+    successTickets:slot(1940,'la'),showSuccessTicket:call(1947),
+    platform:()=>(dependencies.platform??(()=>process.platform))(),pid:()=>(dependencies.pid??(()=>process.pid))(),
+    now:()=>new(dependencies.dateConstructor??Date)(),
+  };
+}
+function ordinaryIpcFactories(dependencies) {
+  const browser=(readBinding,writeBinding)=>browserIpcDependencies(readBinding,writeBinding,dependencies);
+  const logs=readBinding=>logsIpcDependencies(readBinding,dependencies);
+  return {
+    f3817:({readBinding,writeBinding})=>async function(){return browserIpc.detectBrowsers(browser(readBinding,writeBinding));},
+    f3818:({readBinding,writeBinding})=>async function(event,id){return browserIpc.openBrowserDownload(browser(readBinding,writeBinding),id);},
+    f3819:({readBinding,writeBinding})=>async function(event){return browserIpc.downloadBrahmos(browser(readBinding,writeBinding),event);},
+    f3825:({readBinding,writeBinding})=>async function(){return browserIpc.getBrowserDownloads(browser(readBinding,writeBinding));},
+    f3831:({readBinding})=>async function(){return logsIpc.getLogs(logs(readBinding));},
+    f3832:({readBinding})=>async function(){return logsIpc.getLogPairs(logs(readBinding));},
+    f3861:({readBinding})=>function(event,key,value){return logsIpc.openSuccessTicket(logs(readBinding),key,value);},
+    f3862:({readBinding})=>function(event,key){return logsIpc.getSuccessTicket(logs(readBinding),key);},
+    f3863:({readBinding})=>async function(event,formIds){return logsIpc.exportLogs(logs(readBinding),event,formIds);},
   };
 }
 
@@ -423,6 +466,7 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     ...recordVaultFactories(dependencies),
     ...historyVaultFactories(dependencies),
     ...windowIpcFactories(dependencies),
+    ...ordinaryIpcFactories(dependencies),
     f2196:({readBinding})=>function(resolve){
       return startPaytmWatch(resolve,readBinding(2),readBinding(4),readBinding(5),readBinding(6));
     },

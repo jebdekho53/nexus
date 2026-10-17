@@ -101,6 +101,12 @@ export function createEngine(
         if (value === HOLE) throw new ReferenceError('Cannot access ' + name + ' before initialization');
         return value;
       },
+      writeBinding(slot, value, depth = 0) {
+        // A plain store into a lexical slot, as the recovered code does after it has checked the binding itself.
+        let scope = captured;
+        for (let index = 0; index < depth; index++) scope = scope[CONTEXT] as Context;
+        scope[slot] = value;
+      },
     });
     if (nativeImplementation !== undefined && typeof nativeImplementation !== 'function') throw new TypeError('Invalid native implementation for ' + id);
     let fn: RecoveredFunction;

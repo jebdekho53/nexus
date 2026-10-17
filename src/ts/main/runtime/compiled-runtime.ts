@@ -43,6 +43,8 @@ type Invocable = (this: unknown, ...args: unknown[]) => unknown;
 
 export interface BindingReader {
   readBinding(slot: number, name?: string, depth?: number): unknown;
+  /** Stores into a lexical slot (no hole check: the recovered code checks on its own reads). */
+  writeBinding(slot: number, value: unknown, depth?: number): void;
 }
 
 export interface CompiledRuntimeOptions {
@@ -98,6 +100,12 @@ export function createCompiledRuntime(options: CompiledRuntimeOptions = {}): Com
         const value = scope[slot];
         if (value === HOLE) throw new ReferenceError('Cannot access ' + name + ' before initialization');
         return value;
+      },
+      writeBinding(slot, value, depth = 0) {
+        // A plain store into a lexical slot, as the recovered code does after it has checked the binding itself.
+        let scope = captured;
+        for (let index = 0; index < depth; index++) scope = scope[CONTEXT] as Context;
+        scope[slot] = value;
       },
     });
     if (nativeImplementation !== undefined && typeof nativeImplementation !== 'function') throw new TypeError('Invalid native implementation for ' + id);

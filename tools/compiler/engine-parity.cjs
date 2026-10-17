@@ -1,4 +1,5 @@
 'use strict';
+const {sameFailureWording} = require('./failure-wording.cjs');
 // Independent pre-migration parity check for the TypeScript runtimes.
 //
 // Runs every recovered function (or the ids given) in identical seeded synthetic worlds through
@@ -109,11 +110,7 @@ if(shardArg===null) {
     for(let tick=0;tick<4;tick++){await new Promise(resolve=>setImmediate(resolve));restoreIntrinsics();}
     return{outcome:scrub(outcome),log:scrub(world.log.map(entry=>entry.join(' ')).join('\n')),name:fn.name,length:fn.length,kind:Object.getOwnPropertySymbols(fn).length};
   }
-  // Calling a non-function fails with a TypeError in every engine, but the message depends on how the engine reached the call
-  // (a clobbered Reflect.apply versus the intrinsic captured at load). Only these two wordings are treated as equal, as in
-  // tools/compiler/differential.cjs; every other outcome, log and error must match exactly.
-  const CALL_WORDING=/^throw:TypeError:(Reflect\.apply is not a function|Function\.prototype\.apply was called on .*)$/;
-  const sameFailureWording=result=>CALL_WORDING.test(result.outcome)?{...result,outcome:'throw:TypeError:call'}:result;
+  // Only the two documented non-function call wordings are treated as equal (see failure-wording.cjs).
   process.on('unhandledRejection',()=>{});
   (async()=>{
     const[shard,shards]=shardArg.split('/').map(Number);
