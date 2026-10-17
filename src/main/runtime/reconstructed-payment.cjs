@@ -57,6 +57,8 @@ const dataIpc=require('../ipc/data-ipc.cjs');
 const settingsIpc=require('../ipc/settings-ipc.cjs');
 const transferIpc=require('../ipc/transfer-ipc.cjs');
 const formsTransferIpc=require('../ipc/forms-transfer-ipc.cjs');
+const formCodecs=require('../storage/form-codecs.cjs');
+const formsCsv=require('../storage/forms-csv.cjs');
 const {definitionFingerprint}=require('./recovered-contract.cjs');
 const contracts=require('../payment/recovered-contract.json');
 
@@ -568,6 +570,23 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     ...settingsIpcFactories(),
     ...transferIpcFactories(dependencies),
     ...formsTransferFactories(dependencies),
+    f484:({readBinding})=>function(name,text){return formCodecs.parseFormFile(name,text,{
+      extensions:()=>readBinding(324,'_I'),csv:text=>readBinding(323)(text),
+    });},
+    f485:({readBinding})=>function(model,date){return formCodecs.exportForm(model,date,{
+      paymentName:method=>readBinding(315)(method),foodNames:()=>readBinding(314,'bI'),
+      isoNow:()=>new (dependencies.dateConstructor??Date)().toISOString(),
+    });},
+    f486:({readBinding})=>function(passenger,index){return formCodecs.exportPassenger(passenger,index,()=>readBinding(314,'bI',1));},
+    f473:()=>formsCsv.parseCsv,
+    f474:()=>formsCsv.nonemptyCell,f475:()=>formsCsv.nonemptyCell,
+    f476:()=>formsCsv.parsePassengers,f477:()=>formsCsv.trimCell,f478:()=>formsCsv.parsePassenger,
+    f479:()=>formsCsv.trimNullableCell,f480:()=>formsCsv.passengerHasName,
+    f481:({readBinding})=>function(text){return formsCsv.parseFormsCsv(text,{
+      rows:text=>readBinding(321)(text),passengers:text=>readBinding(322)(text),
+    });},
+    f482:()=>formsCsv.normalizeHeader,
+    f483:({readBinding})=>function(...aliases){return formsCsv.aliasedCell(readBinding(2),readBinding(3,undefined,1),aliases);},
     f2196:({readBinding})=>function(resolve){
       return startPaytmWatch(resolve,readBinding(2),readBinding(4),readBinding(5),readBinding(6));
     },

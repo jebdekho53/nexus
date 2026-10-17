@@ -1,5 +1,7 @@
 module,category,functions,instructions,verification,purpose
 src/ts/main/ipc/forms-transfer-ipc.ts,business_logic,5,1806,"forms-transfer-ipc-reconstruction","Saved form/model JSON exports, file and pasted CSV/JSON imports"
+src/ts/main/storage/form-codecs.ts,business_logic,3,779,"form-codecs-reconstruction","Form file dispatch, portable form and passenger serialization"
+src/ts/main/storage/forms-csv.ts,business_logic,11,1192,"forms-csv-reconstruction","CSV tokenizer, passenger text parsing, header normalization and form alias mapping"
 src/ts/main/booking/provider-page.ts,business_logic,3,482,"ts-misc","Wait for the operator to return to the provider site"
 src/ts/main/booking/rules.ts,business_logic,27,1485,"ts-rules","Booking rules, berth limits, opening/availability times, mode routing"
 src/ts/main/booking/run-controls.ts,business_logic,12,2517,"ts-run-controls","Run controls: cancel/stop, browser window handling, live-form edits, sign-in waiting, session-drop and duplicate-login detection, AI hand-off, print control"
