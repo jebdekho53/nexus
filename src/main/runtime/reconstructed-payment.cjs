@@ -53,6 +53,7 @@ const historyVault=require('../storage/history-vault.cjs');
 const windowIpc=require('../windows/window-ipc.cjs');
 const windowHelpers=require('../windows/window-helpers.cjs');
 const windowLayout=require('../windows/window-layout.cjs');
+const windowFactory=require('../windows/window-factory.cjs');
 const browserIpc=require('../ipc/browser-ipc.cjs');
 const logsIpc=require('../ipc/logs-ipc.cjs');
 const dataIpc=require('../ipc/data-ipc.cjs');
@@ -332,6 +333,32 @@ function windowLayoutFactories(dependencies) {
     f4118:reader=>function(window){return windowLayout.focusWindow(deps(reader),window);},
     f4119:()=>function(window){return windowLayout.keepOnTopWhileFocused(window);},
     f4127:reader=>function(){return windowLayout.applyToVisibleWindows(deps(reader));},
+  };
+}
+
+// Window creators (root functions created in the bootstrap scope: bindings are read and stored at depth 0).
+function windowFactoryDependencies(readBinding,writeBinding,dependencies) {
+  const slot=(number,name)=>()=>readBinding(number,name);
+  const call=number=>(...args)=>readBinding(number)(...args);
+  const binding=(number,name)=>({get:()=>readBinding(number,name),store:value=>writeBinding(number,value),checkedStore:value=>{readBinding(number,name);writeBinding(number,value);}});
+  return {
+    electron:slot(22,'x'),path:slot(14,'m'),mainDirectory:()=>readBinding(2),devTools:slot(1972,'Pt'),edgeMargin:slot(2027,'Cn'),
+    controllerWindow:binding(2039,'tt'),confirmWindow:binding(2050,'Ni'),controllerReady:binding(2051,'go'),showWhenReady:binding(2052,'Ol'),
+    openFormWindow:binding(2061,'rn'),quitting:binding(1971,'xe'),crashTimes:binding(2041,'Hs'),crashLimit:binding(2042,'aB'),crashWindowMs:binding(2043,'MB'),
+    windowRegistry:binding(2058,'yr'),
+    controllerSize:call(2031),placement:call(2032),loadPage:call(2038),placeWindow:call(2040),keepOnTop:call(2057),applyWindowSettings:call(2056),
+    setWindowPin:call(1771),pinnedSetting:call(1770),newThemeEnabled:call(1623),splashTheme:call(1624),recreateController:call(2044),showController:call(2054),
+    now:()=>(dependencies.now??(()=>Date.now()))(),
+  };
+}
+function windowFactoryFactories(dependencies) {
+  const deps=({readBinding,writeBinding})=>windowFactoryDependencies(readBinding,writeBinding,dependencies);
+  return {
+    f4099:reader=>function(){return windowFactory.createController(deps(reader));},
+    f4105:reader=>function(){return windowFactory.createSplash(deps(reader));},
+    f4112:reader=>function(){return windowFactory.createConfirmQuit(deps(reader));},
+    f4128:reader=>function(formId,show){return windowFactory.createFormWindow(deps(reader),formId,show);},
+    f4132:reader=>function(show){return windowFactory.createOpenFormWindow(deps(reader),show);},
   };
 }
 
@@ -640,6 +667,7 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     ...windowIpcFactories(dependencies),
     ...windowHelperFactories(),
     ...windowLayoutFactories(dependencies),
+    ...windowFactoryFactories(dependencies),
     ...ordinaryIpcFactories(dependencies),
     ...dataIpcFactories(dependencies),
     ...settingsIpcFactories(),
