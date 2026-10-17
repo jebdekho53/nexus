@@ -52,6 +52,7 @@ const recordVault=require('../storage/record-vault.cjs');
 const historyVault=require('../storage/history-vault.cjs');
 const windowIpc=require('../windows/window-ipc.cjs');
 const windowHelpers=require('../windows/window-helpers.cjs');
+const windowLayout=require('../windows/window-layout.cjs');
 const browserIpc=require('../ipc/browser-ipc.cjs');
 const logsIpc=require('../ipc/logs-ipc.cjs');
 const dataIpc=require('../ipc/data-ipc.cjs');
@@ -303,6 +304,34 @@ function windowHelperFactories() {
     f4254:reader=>function(){return windowHelpers.cancelActiveUpdateDownload(deps(reader));},
     f4261:reader=>function(except){return windowHelpers.hideOtherWindows(deps(reader),except);},
     f4262:reader=>function(window,progress){return windowHelpers.publishUpdateProgress(deps(reader),window,progress);},
+  };
+}
+
+// Window layout and lifecycle helpers (root functions created in the bootstrap scope: bindings are read at depth 0).
+function windowLayoutDependencies(readBinding,writeBinding,dependencies) {
+  const slot=(number,name)=>()=>readBinding(number,name);
+  const call=number=>(...args)=>readBinding(number)(...args);
+  return {
+    electron:slot(22,'x'),edgeMargin:slot(2027,'Cn'),controllerBaseWidth:slot(2028,'wE'),controllerBaseHeight:slot(2026,'pu'),
+    customPlaced:slot(2036,'_l'),tileWidth:slot(2033,'Pl'),tileHeight:slot(2034,'sB'),onLayoutApplied:call(1936),onLayoutSettled:call(1945),
+    devServerUrl:call(191),mainDirectory:()=>readBinding(2),path:slot(14,'m'),placeWindow:call(2040),
+    controllerWindow:call(2053),controllerReady:slot(2051,'go'),showControllerWhenReady:()=>{readBinding(2052,'Ol');writeBinding(2052,true);},showController:call(2054),
+    platform:()=>(dependencies.platform??(()=>process.platform))(),windowEntries:slot(2058,'yr'),applyWindowSettings:call(2056),
+  };
+}
+function windowLayoutFactories(dependencies) {
+  const deps=({readBinding,writeBinding})=>windowLayoutDependencies(readBinding,writeBinding,dependencies);
+  return {
+    f4091:reader=>function(workArea){return windowLayout.controllerSize(deps(reader),workArea);},
+    f4092:reader=>function(width,height,alignment){return windowLayout.placement(deps(reader),width,height,alignment);},
+    f4093:reader=>function(){return windowLayout.tileBookingWindows(deps(reader));},
+    f4097:reader=>function(window,page,formId,newTheme){return windowLayout.loadRendererPage(deps(reader),window,page,formId,newTheme);},
+    f4098:()=>function(window){return windowLayout.pinOnAllWorkspaces(window);},
+    f4116:reader=>function(window){return windowLayout.revealWindow(deps(reader),window);},
+    f4117:reader=>function(){return windowLayout.activateController(deps(reader));},
+    f4118:reader=>function(window){return windowLayout.focusWindow(deps(reader),window);},
+    f4119:()=>function(window){return windowLayout.keepOnTopWhileFocused(window);},
+    f4127:reader=>function(){return windowLayout.applyToVisibleWindows(deps(reader));},
   };
 }
 
@@ -610,6 +639,7 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     ...historyVaultFactories(dependencies),
     ...windowIpcFactories(dependencies),
     ...windowHelperFactories(),
+    ...windowLayoutFactories(dependencies),
     ...ordinaryIpcFactories(dependencies),
     ...dataIpcFactories(dependencies),
     ...settingsIpcFactories(),
