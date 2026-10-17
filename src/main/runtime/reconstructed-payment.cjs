@@ -50,6 +50,7 @@ const {fingerprint,phonePeHeaders,phonePeRedirect,razorpayRedirect,phonePeQr,pol
 const formsVault=require('../storage/forms-vault.cjs');
 const recordVault=require('../storage/record-vault.cjs');
 const historyVault=require('../storage/history-vault.cjs');
+const windowIpc=require('../windows/window-ipc.cjs');
 const {definitionFingerprint}=require('./recovered-contract.cjs');
 const contracts=require('../payment/recovered-contract.json');
 
@@ -105,6 +106,52 @@ function historyVaultFactories(dependencies) {
     f961:({readBinding})=>function(entries){
       return historyVault.prune(entries,{maxAgeMs:()=>readBinding(553,'k0',1),maxEntries:()=>readBinding(552,'bA',1),now:()=>(dependencies.now??(()=>Date.now()))()});
     },
+  };
+}
+
+// Window-management IPC handlers (registered by f4272). Bootstrap helpers are read at call time; their names are inferred
+// from how the recovered handlers use them (see window-ipc.ts). The handlers receive the IPC event first.
+function windowIpcDependencies(readBinding,dependencies) {
+  const slot=(number,name)=>()=>readBinding(number,name,1);
+  const call=number=>(...args)=>readBinding(number,undefined,1)(...args);
+  return {
+    electron:slot(22,'x'),fs:slot(18,'y'),path:slot(14,'m'),os:slot(13,'ce'),
+    securityCheck:call(1247),securityState:call(1690),allowedControllerActions:slot(253,'Hy'),controllerUnlocked:call(2104),
+    openNewForm:call(2060),focusFormWindow:call(2062),openFormWindow:call(2059),openUtilityWindow:call(2070),
+    checkForUpdate:call(2110),downloadUpdate:call(2106),installUpdate:call(2123),
+    updateWindow:slot(2115,'Ve'),isUpdateDownloading:call(2118),channels:slot(336,'v'),
+    canOpenBookingBox:call(2105),bookingBoxBlocked:call(2065),openBookingBox:call(2068),noteBlockedBookingBox:call(2067),
+    blockedBookingBoxMessage:slot(331,'Vu'),validatePassengers:call(271),stageTransientForm:call(1540),
+    isSizeLocked:call(1942),reportSizeLocked:call(1945),centredWindows:slot(2036,'_l'),bottomMargin:slot(2026,'pu'),edgeMargin:slot(2027,'Cn'),
+    controllerWindow:slot(2039,'tt'),controllerSize:call(2031),expandedWidth:slot(2029,'nB'),expandedHeight:slot(2030,'rB'),
+    trackedWindows:slot(2063,'Ln'),enlargeQr:call(1929),checkPaymentNow:call(1930),renderTicketHtml:call(1911),saveTicketPdf:call(205),
+    requestQuit:call(2055),confirmQuit:call(2131),
+    platform:()=>(dependencies.platform??(()=>process.platform))(),
+    setTimer:(callback,ms)=>(dependencies.setTimeout??setTimeout)(callback,ms),
+  };
+}
+function windowIpcFactories(dependencies) {
+  const deps=readBinding=>windowIpcDependencies(readBinding,dependencies);
+  return {
+    f4273:({readBinding})=>async function(event,action){return windowIpc.controllerAction(deps(readBinding),action);},
+    f4274:({readBinding})=>async function(){return windowIpc.checkUpdateNow(deps(readBinding));},
+    f4275:({readBinding})=>async function(event,asset){return windowIpc.downloadUpdate(deps(readBinding),event,asset);},
+    f4277:({readBinding})=>function(event){return windowIpc.cancelUpdateDownload(deps(readBinding),event);},
+    f4278:({readBinding})=>async function(event,options){return windowIpc.openFormWindow(deps(readBinding),options);},
+    f4279:({readBinding})=>async function(event,id){return windowIpc.openBookingBox(deps(readBinding),id);},
+    f4280:({readBinding})=>async function(event,form){return windowIpc.openBookingBoxTransient(deps(readBinding),form);},
+    f4281:({readBinding})=>async function(event,width,height,options){return windowIpc.resizeSelf(deps(readBinding),event,width,height,options);},
+    f4282:({readBinding})=>function(event){return windowIpc.repaintSelf(deps(readBinding),event);},
+    f4284:({readBinding})=>async function(event,arg){return windowIpc.enlargeQr(deps(readBinding),arg);},
+    f4285:({readBinding})=>async function(event,arg){return windowIpc.checkNowPayment(deps(readBinding),arg);},
+    f4286:({readBinding})=>async function(event,expanded){return windowIpc.controllerMinimize(deps(readBinding),event,expanded);},
+    f4287:({readBinding})=>async function(event,link){return windowIpc.openExternal(deps(readBinding),link);},
+    f4288:({readBinding})=>async function(ticket){return windowIpc.renderTicketPdf(deps(readBinding),ticket);},
+    f4291:({readBinding})=>async function(event,ticket){return windowIpc.printTicket(deps(readBinding),ticket);},
+    f4292:({readBinding})=>async function(event){return windowIpc.closeAuxWindows(deps(readBinding),event);},
+    f4293:({readBinding})=>async function(){return windowIpc.requestQuit(deps(readBinding));},
+    f4294:({readBinding})=>async function(){return windowIpc.confirmQuit(deps(readBinding),false);},
+    f4295:({readBinding})=>async function(){return windowIpc.confirmQuit(deps(readBinding),true);},
   };
 }
 
@@ -375,6 +422,7 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     f896:()=>function(form){return formsVault.summarizeForm(form);},
     ...recordVaultFactories(dependencies),
     ...historyVaultFactories(dependencies),
+    ...windowIpcFactories(dependencies),
     f2196:({readBinding})=>function(resolve){
       return startPaytmWatch(resolve,readBinding(2),readBinding(4),readBinding(5),readBinding(6));
     },

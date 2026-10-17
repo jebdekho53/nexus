@@ -17,6 +17,7 @@ parser.add_argument('--range', action='append', default=[], metavar='LO-HI',
                     help='export only these inclusive function-id ranges (for example 962-1000); repeatable')
 parser.add_argument('--merge', action='store_true',
                     help='keep every existing fixture entry and add only functions that are missing')
+parser.add_argument('--output', type=Path, help='write here instead of test/fixtures/payment-strings.json (no merge)')
 args = parser.parse_args()
 root = Path(__file__).resolve().parent.parent
 spec = importlib.util.spec_from_file_location('payment_fixture_decoder', args.decoder)
@@ -43,11 +44,11 @@ if args.range:
         low, high = (int(part) for part in item.split('-'))
         selected_ids += [f'f{n}' for n in range(low, high + 1)]
 code = (
-    "const d=require('./src/main/generated/index.cjs');const ids="
-    + json.dumps(selected_ids)
-    + ";console.log(JSON.stringify(Object.fromEntries(ids.map(id=>[id,d[id]]))));"
+    "const d=require('./src/main/generated/index.cjs');"
+    "const ids=JSON.parse(require('fs').readFileSync(0,'utf8'));"
+    "console.log(JSON.stringify(Object.fromEntries(ids.filter(id=>d[id]).map(id=>[id,d[id]]))));"
 )
-definitions = json.loads(subprocess.run([args.node, '-e', code], cwd=root, check=True, capture_output=True, text=True, encoding='utf-8').stdout)
+definitions = json.loads(subprocess.run([args.node, '-e', code], cwd=root, input=json.dumps(selected_ids), check=True, capture_output=True, text=True, encoding='utf-8').stdout)
 output = {}
 for name, definition in definitions.items():
     registers, accumulator, strings = {}, None, {}
@@ -59,19 +60,20 @@ for name, definition in definitions.items():
         elif operation == 'Ldar':
             accumulator = registers.get(operands[0].get('r'))
         elif operation.startswith('Star'):
-            register = int(operation[4:]) if operation[4:].isdigit() else operands[0]['r']
-            registers[register] = accumulator
+            register = int(operation[4:]) if operation[4:].isdigit() else (operands[0].get('r') if operands and isinstance(operands[0], dict) else None)
+            if register is not None:
+                registers[register] = accumulator
         elif operation == 'CallUndefinedReceiver2':
-            index, key = registers.get(operands[1].get('r')), registers.get(operands[2].get('r'))
+            index, key = (registers.get(operand.get('r')) if isinstance(operand, dict) else None for operand in operands[1:3])
             if isinstance(index, int) and isinstance(key, str) and len(key) == 4:
                 strings[f'{index}|{key}'] = table.get(index, key)
             accumulator = None
         else:
             accumulator = None
     output[name] = strings
-destination = root / 'test/fixtures/payment-strings.json'
-if args.merge:
+destination = args.output or root / 'test/fixtures/payment-strings.json'
+if args.merge and not args.output:
     existing = json.loads(destination.read_text(encoding='utf-8'))
-    output = {**output, **existing}
+    output = {**existing, **{name: strings for name, strings in output.items() if name not in existing}}
 destination.write_text(json.dumps(output, indent=2, ensure_ascii=True) + '\n', encoding='utf-8', newline='\n')
 print(f'Exported {sum(map(len, output.values()))} static lookups from {len(output)} functions')
