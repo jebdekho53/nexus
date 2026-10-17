@@ -3,7 +3,7 @@
 // f1080 map
 exports.f1080=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4;
+  let acc,pending=HOLE,r0,r1,r2,r3;
     acc=ctx[2];
     r1=acc;
     acc=3502;
@@ -21,8 +21,7 @@ exports.f1080=function(rt,fn,self,args,newTarget,ctx,K){
     acc=23735;
     r3=acc;
     acc="4dr8";
-    r4=acc;
-    acc=rt.call(r2,undefined,[r3,r4]);
+    acc=rt.call(r2,undefined,[r3,acc]);
     acc=args[0][acc];
     acc=r0+acc;
     return acc;
@@ -117,7 +116,7 @@ exports.f1082=function(rt,fn,self,args,newTarget,ctx,K){
 // f1083 then
 exports.f1083=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10;
     acc=ctx[2];
     r0=acc;
     acc=rt.outer(ctx,3)[419];
@@ -173,8 +172,7 @@ exports.f1083=function(rt,fn,self,args,newTarget,ctx,K){
         acc=6917;
         r10=acc;
         acc="v%&5";
-        r11=acc;
-        acc=rt.call(r0,undefined,[r10,r11]);
+        acc=rt.call(r0,undefined,[r10,acc]);
         acc=r1[acc];
         r8=acc;
         acc=rt.call(r5,r6,[r2,r8]);
@@ -565,7 +563,7 @@ exports.f1091=function(rt,fn,self,args,newTarget,ctx,K){
 // f1092 date
 exports.f1092=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2=newTarget,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23;
+  let acc,pending=HOLE,r0,r1,r2=newTarget,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22;
     r12=fn;
     r13=self;
     acc={};
@@ -1316,8 +1314,7 @@ exports.f1092=async function(rt,fn,self,args,newTarget,ctx,K){
           acc=22802;
           r22=acc;
           acc="*VhR";
-          r23=acc;
-          acc=rt.call(r0,undefined,[r22,r23]);
+          acc=rt.call(r0,undefined,[r22,acc]);
           acc=r20[acc];
           r19=acc;
           acc=ctx[17];
@@ -1793,7 +1790,7 @@ exports.f1108=function(rt,fn,self,args,newTarget,ctx,K){
 // f1109 date
 exports.f1109=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1=newTarget,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13;
+  let acc,pending=HOLE,r0,r1=newTarget,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12;
     r7=fn;
     r8=self;
     acc={};
@@ -1861,8 +1858,7 @@ exports.f1109=async function(rt,fn,self,args,newTarget,ctx,K){
                   acc=1976;
                   r12=acc;
                   acc="WyZ@";
-                  r13=acc;
-                  acc=rt.call(r0,undefined,[r12,r13]);
+                  acc=rt.call(r0,undefined,[r12,acc]);
                   acc=r10[acc];
                   r9=acc;
                   acc=300;
@@ -1924,7 +1920,7 @@ exports.f1110=function(rt,fn,self,args,newTarget,ctx,K){
 // f1111 refreshBudgetMs
 exports.f1111=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3=newTarget,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13;
+  let acc,pending=HOLE,r0,r1,r2,r3=newTarget,r4,r5,r6,r7,r8,r9,r10,r11,r12;
     r5=fn;
     r6=self;
     acc={};
@@ -2025,8 +2021,7 @@ exports.f1111=async function(rt,fn,self,args,newTarget,ctx,K){
             acc=444;
             r12=acc;
             acc="hm$n";
-            r13=acc;
-            acc=rt.call(r0,undefined,[r12,r13]);
+            acc=rt.call(r0,undefined,[r12,acc]);
             acc=r10[acc];
             r10=acc;
             acc=rt.call(r8,r9,[r10]);
@@ -2378,7 +2373,7 @@ exports.f1130=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1131=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r7;
     B6:{
       B3:{
         acc=ctx[5];
@@ -2428,8 +2423,7 @@ exports.f1131=function(rt,fn,self,args,newTarget,ctx,K){
         acc=17715;
         r5=acc;
         acc="3W8e";
-        r6=acc;
-        acc=rt.call(r0,undefined,[r5,r6]);
+        acc=rt.call(r0,undefined,[r5,acc]);
         acc=r3[acc];
         r2=acc;
         acc=rt.global("Math");
@@ -2437,8 +2431,7 @@ exports.f1131=function(rt,fn,self,args,newTarget,ctx,K){
         acc=7353;
         r7=acc;
         acc="9urW";
-        r8=acc;
-        acc=rt.call(r0,undefined,[r7,r8]);
+        acc=rt.call(r0,undefined,[r7,acc]);
         acc=r5[acc];
         r4=acc;
         acc=rt.call(r4,r5,[]);
@@ -2455,7 +2448,7 @@ exports.f1131=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1132=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6=newTarget,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6=newTarget,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29;
     acc=rt.context(3,ctx);
     r19=ctx;
     ctx=acc;
@@ -3108,8 +3101,7 @@ exports.f1132=async function(rt,fn,self,args,newTarget,ctx,K){
                       acc=17247;
                       r29=acc;
                       acc="MnWs";
-                      r30=acc;
-                      acc=rt.call(r28,undefined,[r29,r30]);
+                      acc=rt.call(r28,undefined,[r29,acc]);
                       acc=r27[acc];
                       r26=acc;
                       acc=1;
@@ -3749,7 +3741,7 @@ exports.f1134=function(rt,fn,self,args,newTarget,ctx,K){
 // f1135 POSITIVE_INFINITY
 exports.f1135=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8;
     r1=fn;
     r2=self;
     acc={};
@@ -3762,8 +3754,7 @@ exports.f1135=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=16958;
     r8=acc;
     acc="ZYwv";
-    r9=acc;
-    acc=rt.call(r7,undefined,[r8,r9]);
+    acc=rt.call(r7,undefined,[r8,acc]);
     acc=r6[acc];
     r5=acc;
     acc=new RegExp("sorry\\s*!+","i");
@@ -3855,7 +3846,7 @@ exports.f1140=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1141=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11;
     r2=fn;
     r3=self;
     acc={};
@@ -3867,8 +3858,7 @@ exports.f1141=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=15493;
     r11=acc;
     acc="]K13";
-    r12=acc;
-    acc=rt.call(r1,undefined,[r11,r12]);
+    acc=rt.call(r1,undefined,[r11,acc]);
     acc=args[0][acc];
     r8=acc;
     acc=rt.call(r8,args[0],[args[1]]);
@@ -4417,7 +4407,7 @@ exports.f1147=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1148=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14;
     r4=fn;
     r5=self;
     acc={};
@@ -4476,8 +4466,7 @@ exports.f1148=async function(rt,fn,self,args,newTarget,ctx,K){
             acc=21271;
             r14=acc;
             acc="A@un";
-            r15=acc;
-            acc=rt.call(r1,undefined,[r14,r15]);
+            acc=rt.call(r1,undefined,[r14,acc]);
             acc=args[0][acc];
             r11=acc;
             acc=rt.call(r11,args[0],[args[1]]);
@@ -4635,7 +4624,7 @@ exports.f1150=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1151=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7=newTarget,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7=newTarget,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25;
     r16=fn;
     r17=self;
     acc={};
@@ -5081,8 +5070,7 @@ exports.f1151=async function(rt,fn,self,args,newTarget,ctx,K){
                     acc=6067;
                     r25=acc;
                     acc="%I%T";
-                    r26=acc;
-                    acc=rt.call(r8,undefined,[r25,r26]);
+                    acc=rt.call(r8,undefined,[r25,acc]);
                     acc=r23[acc];
                     r22=acc;
                     acc=rt.call(r22,r23,[]);
@@ -5234,7 +5222,7 @@ exports.f1157=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1158=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19;
     r6=fn;
     r7=self;
     acc={};
@@ -5408,8 +5396,7 @@ exports.f1158=async function(rt,fn,self,args,newTarget,ctx,K){
                 acc=12648;
                 r19=acc;
                 acc="P3P7";
-                r20=acc;
-                acc=rt.call(r1,undefined,[r19,r20]);
+                acc=rt.call(r1,undefined,[r19,acc]);
                 acc=r5[acc];
                 r16=acc;
                 acc=rt.call(r16,r5,[]);
@@ -5559,7 +5546,7 @@ exports.f1161=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1162=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16;
     r5=fn;
     r6=self;
     acc={};
@@ -5693,8 +5680,7 @@ exports.f1162=async function(rt,fn,self,args,newTarget,ctx,K){
                   acc=22972;
                   r16=acc;
                   acc="rMir";
-                  r17=acc;
-                  acc=rt.call(r1,undefined,[r16,r17]);
+                  acc=rt.call(r1,undefined,[r16,acc]);
                   acc=args[2][acc];
                   r14=acc;
                   acc=rt.call(r12,args[0],[r14]);
@@ -5988,7 +5974,7 @@ exports.f1165=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1166=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32,r33,r34;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r33;
     r21=fn;
     r22=self;
     acc={};
@@ -6578,8 +6564,7 @@ exports.f1166=async function(rt,fn,self,args,newTarget,ctx,K){
                                               acc=12233;
                                               r31=acc;
                                               acc="JT7O";
-                                              r32=acc;
-                                              acc=rt.call(r1,undefined,[r31,r32]);
+                                              acc=rt.call(r1,undefined,[r31,acc]);
                                               acc=r29[acc];
                                               r28=acc;
                                               acc=rt.global("Math");
@@ -6587,8 +6572,7 @@ exports.f1166=async function(rt,fn,self,args,newTarget,ctx,K){
                                               acc=16058;
                                               r33=acc;
                                               acc="8#8#";
-                                              r34=acc;
-                                              acc=rt.call(r1,undefined,[r33,r34]);
+                                              acc=rt.call(r1,undefined,[r33,acc]);
                                               acc=r31[acc];
                                               r30=acc;
                                               acc=rt.call(r30,r31,[]);
@@ -7492,7 +7476,7 @@ exports.f1178=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1179=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12;
     acc=rt.context(4,ctx);
     r5=ctx;
     ctx=acc;
@@ -7614,8 +7598,7 @@ exports.f1179=async function(rt,fn,self,args,newTarget,ctx,K){
             acc=10857;
             r12=acc;
             acc="NqM3";
-            r13=acc;
-            acc=rt.call(r11,undefined,[r12,r13]);
+            acc=rt.call(r11,undefined,[r12,acc]);
             r11=acc;
             r8=args[1];
             acc=rt.call(r7,r8,[r9,r10,r11]);
@@ -7740,7 +7723,7 @@ exports.f1179=async function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1180=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
     acc=new RegExp("\\/booking\\/review","i");
     r1=acc;
     acc=ctx[3];
@@ -7759,8 +7742,7 @@ exports.f1180=function(rt,fn,self,args,newTarget,ctx,K){
     acc=1869;
     r5=acc;
     acc="lhKE";
-    r6=acc;
-    acc=rt.call(r4,undefined,[r5,r6]);
+    acc=rt.call(r4,undefined,[r5,acc]);
     acc=r3[acc];
     r2=acc;
     acc=rt.call(r2,r3,[]);
@@ -7770,7 +7752,7 @@ exports.f1180=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1181=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
     acc=new RegExp("\\/payment\\b|bkgPaymentOptions|jsp\\/.*[Pp]ayment","i");
     r1=acc;
     acc=ctx[3];
@@ -7789,8 +7771,7 @@ exports.f1181=function(rt,fn,self,args,newTarget,ctx,K){
     acc=19284;
     r5=acc;
     acc="hm$n";
-    r6=acc;
-    acc=rt.call(r4,undefined,[r5,r6]);
+    acc=rt.call(r4,undefined,[r5,acc]);
     acc=r3[acc];
     r2=acc;
     acc=rt.call(r2,r3,[]);
@@ -7800,7 +7781,7 @@ exports.f1181=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1182=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
+  let acc,pending=HOLE,r0,r1,r2,r4;
     B3:{
       acc=ctx[5];
       if(acc===HOLE)throw new ReferenceError("Cannot access "+"_0x5f2623"+" before initialization");
@@ -7810,8 +7791,7 @@ exports.f1182=function(rt,fn,self,args,newTarget,ctx,K){
       acc=12988;
       r4=acc;
       acc="k([I";
-      r5=acc;
-      acc=rt.call(r0,undefined,[r4,r5]);
+      acc=rt.call(r0,undefined,[r4,acc]);
       acc=r2[acc];
       r1=acc;
       acc=args[0];
@@ -7822,8 +7802,7 @@ exports.f1182=function(rt,fn,self,args,newTarget,ctx,K){
         break B3;
       }
     }
-    r3=acc;
-    acc=rt.call(r1,r2,[r3]);
+    acc=rt.call(r1,r2,[acc]);
     return acc;
 };
 exports.f1183=async function(rt,fn,self,args,newTarget,ctx,K){
@@ -8205,7 +8184,7 @@ exports.f1184=function(rt,fn,self,args,newTarget,ctx,K){
 // f1185 catch
 exports.f1185=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r5,r6,r7;
+  let acc,pending=HOLE,r0,r1,r2,r3,r5,r6;
     B2:{
       acc=ctx[2];
       r0=acc;
@@ -8214,8 +8193,7 @@ exports.f1185=function(rt,fn,self,args,newTarget,ctx,K){
       acc=22780;
       r6=acc;
       acc="1kPD";
-      r7=acc;
-      acc=rt.call(r0,undefined,[r6,r7]);
+      acc=rt.call(r0,undefined,[r6,acc]);
       acc=args[0][acc];
       r3=acc;
       acc=new RegExp(",","g");
@@ -8257,7 +8235,7 @@ exports.f1185=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1186=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3=newTarget,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r16,r18,r19,r21,r22,r23,r25,r27,r28,r29,r30,r31,r32,r33,r34,r35,r36,r37,r38,r39,r40,r41,r42,r43,r44,r45,r46,r47,r48,r49,r50,r51,r52,r53,r54,r55,r56,r57,r58,r59,r60,r61,r62;
+  let acc,pending=HOLE,r0,r1,r2,r3=newTarget,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r16,r18,r19,r21,r22,r23,r25,r27,r28,r29,r30,r31,r32,r33,r34,r35,r36,r37,r38,r39,r40,r41,r42,r43,r44,r45,r46,r47,r48,r49,r50,r51,r52,r53,r54,r55,r56,r57,r58,r59,r60,r61;
     r30=fn;
     r31=self;
     acc={};
@@ -9106,8 +9084,7 @@ exports.f1186=async function(rt,fn,self,args,newTarget,ctx,K){
                                                                         acc=19037;
                                                                         r61=acc;
                                                                         acc="d[0N";
-                                                                        r62=acc;
-                                                                        acc=rt.call(r9,undefined,[r61,r62]);
+                                                                        acc=rt.call(r9,undefined,[r61,acc]);
                                                                         acc=r59[acc];
                                                                         r58=acc;
                                                                         acc=new RegExp(",","g");
@@ -11171,7 +11148,7 @@ exports.f1193=async function(rt,fn,self,args,newTarget,ctx,K){
 // f1194 map
 exports.f1194=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4;
+  let acc,pending=HOLE,r0,r1,r2,r3;
     acc=ctx[2];
     r1=acc;
     acc=19093;
@@ -11189,8 +11166,7 @@ exports.f1194=function(rt,fn,self,args,newTarget,ctx,K){
     acc=13615;
     r3=acc;
     acc="RuQs";
-    r4=acc;
-    acc=rt.call(r2,undefined,[r3,r4]);
+    acc=rt.call(r2,undefined,[r3,acc]);
     acc=args[0][acc];
     acc=r0+acc;
     return acc;
@@ -11605,7 +11581,7 @@ exports.f1198=function(rt,fn,self,args,newTarget,ctx,K){
 // f1199 join
 exports.f1199=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1=newTarget,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15;
+  let acc,pending=HOLE,r0,r1=newTarget,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14;
     acc=rt.context(3,ctx);
     r2=ctx;
     ctx=acc;
@@ -11722,8 +11698,7 @@ exports.f1199=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=8832;
     r14=acc;
     acc="sA1s";
-    r15=acc;
-    acc=rt.call(r13,undefined,[r14,r15]);
+    acc=rt.call(r13,undefined,[r14,acc]);
     acc=r0[acc];
     r11=acc;
     acc=rt.makeFunction("f1201",ctx,{thisValue:self,newTarget});
@@ -11795,14 +11770,13 @@ exports.f1200=function(rt,fn,self,args,newTarget,ctx,K){
 // f1201 map
 exports.f1201=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
     acc=ctx[2];
     r4=acc;
     acc=18485;
     r5=acc;
     acc="ou5S";
-    r6=acc;
-    acc=rt.call(r4,undefined,[r5,r6]);
+    acc=rt.call(r4,undefined,[r5,acc]);
     acc=args[0][acc];
     r2=acc;
     acc=new RegExp("\\s+","g");
@@ -11841,7 +11815,7 @@ exports.f1201=function(rt,fn,self,args,newTarget,ctx,K){
 // f1202 (categories)
 exports.f1202=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3=newTarget,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13;
+  let acc,pending=HOLE,r0,r1,r2,r3=newTarget,r4,r5,r6,r7,r8,r9,r10,r11,r12;
     acc=rt.context(3,ctx);
     r4=ctx;
     ctx=acc;
@@ -11912,8 +11886,7 @@ exports.f1202=async function(rt,fn,self,args,newTarget,ctx,K){
           acc=14298;
           r12=acc;
           acc="ou5S";
-          r13=acc;
-          acc=rt.call(r0,undefined,[r12,r13]);
+          acc=rt.call(r0,undefined,[r12,acc]);
           acc=r2[acc];
           acc=r9+acc;
           r9=acc;
@@ -12217,7 +12190,7 @@ exports.f1205=function(rt,fn,self,args,newTarget,ctx,K){
 // f1206 (categories)
 exports.f1206=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2=newTarget,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13;
+  let acc,pending=HOLE,r0,r1,r2=newTarget,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12;
     r3=fn;
     r4=self;
     acc={};
@@ -12374,8 +12347,7 @@ exports.f1206=async function(rt,fn,self,args,newTarget,ctx,K){
         acc=4342;
         r12=acc;
         acc="3W8e";
-        r13=acc;
-        acc=rt.call(r0,undefined,[r12,r13]);
+        acc=rt.call(r0,undefined,[r12,acc]);
         acc=r10[acc];
         acc=r9+acc;
         r9=acc;
@@ -12409,7 +12381,7 @@ exports.f1206=async function(rt,fn,self,args,newTarget,ctx,K){
 // f1207  (paymentType 
 exports.f1207=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r6;
     B2:{
       acc=ctx[2];
       r0=acc;
@@ -12418,15 +12390,13 @@ exports.f1207=function(rt,fn,self,args,newTarget,ctx,K){
       acc=22541;
       r4=acc;
       acc="ou5S";
-      r5=acc;
-      acc=rt.call(r0,undefined,[r4,r5]);
+      acc=rt.call(r0,undefined,[r4,acc]);
       acc=r2[acc];
       r1=acc;
       acc=20938;
       r6=acc;
       acc="8#8#";
-      r7=acc;
-      acc=rt.call(r0,undefined,[r6,r7]);
+      acc=rt.call(r0,undefined,[r6,acc]);
       acc=args[0][acc];
       r3=acc;
       acc=rt.call(r3,args[0],[]);
@@ -12446,7 +12416,7 @@ exports.f1207=function(rt,fn,self,args,newTarget,ctx,K){
 // f1208  (paymentType 
 exports.f1208=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
     B2:{
       acc=ctx[2];
       r0=acc;
@@ -12462,8 +12432,7 @@ exports.f1208=function(rt,fn,self,args,newTarget,ctx,K){
       acc=1418;
       r6=acc;
       acc="3W8e";
-      r7=acc;
-      acc=rt.call(r0,undefined,[r6,r7]);
+      acc=rt.call(r0,undefined,[r6,acc]);
       acc=args[0][acc];
       r3=acc;
       acc=rt.call(r3,args[0],[]);
@@ -12648,7 +12617,7 @@ exports.f1213=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1214=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15;
     acc=rt.context(3,ctx);
     r3=ctx;
     ctx=acc;
@@ -12783,8 +12752,7 @@ exports.f1214=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=5144;
     r15=acc;
     acc="s[W0";
-    r16=acc;
-    acc=rt.call(r14,undefined,[r15,r16]);
+    acc=rt.call(r14,undefined,[r15,acc]);
     acc=r1[acc];
     r12=acc;
     acc=rt.makeFunction("f1219",ctx,{thisValue:self,newTarget});
@@ -12922,7 +12890,7 @@ exports.f1215=function(rt,fn,self,args,newTarget,ctx,K){
 // f1216 flatMap
 exports.f1216=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
     acc=rt.literal(K[0]);
     r0=acc;
     acc=0;
@@ -12945,8 +12913,7 @@ exports.f1216=function(rt,fn,self,args,newTarget,ctx,K){
     acc=21827;
     r6=acc;
     acc="rMir";
-    r7=acc;
-    acc=rt.call(r5,undefined,[r6,r7]);
+    acc=rt.call(r5,undefined,[r6,acc]);
     acc=args[0][acc];
     r3=acc;
     acc=rt.call(r3,args[0],[]);
@@ -12996,23 +12963,21 @@ exports.f1216=function(rt,fn,self,args,newTarget,ctx,K){
 // f1217 map
 exports.f1217=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r2,r3,r4;
+  let acc,pending=HOLE,r2,r3;
     acc=ctx[2];
     r2=acc;
     acc=19284;
     r3=acc;
     acc="hm$n";
-    r4=acc;
-    acc=rt.call(r2,undefined,[r3,r4]);
+    acc=rt.call(r2,undefined,[r3,acc]);
     acc=args[0][acc];
-    r0=acc;
-    acc=rt.call(r0,args[0],[]);
+    acc=rt.call(acc,args[0],[]);
     return acc;
 };
 // f1218 filter
 exports.f1218=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4;
+  let acc,pending=HOLE,r1,r2,r3;
     B2:{
       acc=args[0];
       if(!acc){
@@ -13025,11 +12990,9 @@ exports.f1218=function(rt,fn,self,args,newTarget,ctx,K){
         acc=16376;
         r3=acc;
         acc="MnWs";
-        r4=acc;
-        acc=rt.call(r2,undefined,[r3,r4]);
+        acc=rt.call(r2,undefined,[r3,acc]);
         acc=r1[acc];
-        r0=acc;
-        acc=rt.call(r0,r1,[args[0]]);
+        acc=rt.call(acc,r1,[args[0]]);
         acc=!acc;
         break B2;
       }
@@ -13039,14 +13002,13 @@ exports.f1218=function(rt,fn,self,args,newTarget,ctx,K){
 // f1219 map
 exports.f1219=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
     acc=ctx[2];
     r4=acc;
     acc=17018;
     r5=acc;
     acc="s[W0";
-    r6=acc;
-    acc=rt.call(r4,undefined,[r5,r6]);
+    acc=rt.call(r4,undefined,[r5,acc]);
     acc=args[0][acc];
     r2=acc;
     acc=new RegExp("\\s+","g");
@@ -13085,14 +13047,13 @@ exports.f1219=function(rt,fn,self,args,newTarget,ctx,K){
 // f1220 map
 exports.f1220=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r2,r3,r4;
+  let acc,pending=HOLE,r0,r2,r3;
     acc=ctx[2];
     r2=acc;
     acc=10681;
     r3=acc;
     acc="NqM3";
-    r4=acc;
-    acc=rt.call(r2,undefined,[r3,r4]);
+    acc=rt.call(r2,undefined,[r3,acc]);
     acc=args[0][acc];
     r0=acc;
     acc=0;
@@ -13104,7 +13065,7 @@ exports.f1220=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1221=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r21;
     r7=fn;
     r8=self;
     acc={};
@@ -13243,8 +13204,7 @@ exports.f1221=async function(rt,fn,self,args,newTarget,ctx,K){
                         acc=19634;
                         r19=acc;
                         acc="1kPD";
-                        r20=acc;
-                        acc=rt.call(r1,undefined,[r19,r20]);
+                        acc=rt.call(r1,undefined,[r19,acc]);
                         acc=args[1][acc];
                         r16=acc;
                         acc=50;
@@ -13270,8 +13230,7 @@ exports.f1221=async function(rt,fn,self,args,newTarget,ctx,K){
                           acc=21328;
                           r21=acc;
                           acc="a3QL";
-                          r22=acc;
-                          acc=rt.call(r1,undefined,[r21,r22]);
+                          acc=rt.call(r1,undefined,[r21,acc]);
                           acc=r19[acc];
                           break B13;
                         }
@@ -13575,7 +13534,7 @@ exports.f1223=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1224=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3=newTarget,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18;
+  let acc,pending=HOLE,r0,r1,r2,r3=newTarget,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17;
     acc=rt.context(3,ctx);
     r8=ctx;
     ctx=acc;
@@ -13660,8 +13619,7 @@ exports.f1224=async function(rt,fn,self,args,newTarget,ctx,K){
                     acc=3617;
                     r17=acc;
                     acc="s[W0";
-                    r18=acc;
-                    acc=rt.call(r4,undefined,[r17,r18]);
+                    acc=rt.call(r4,undefined,[r17,acc]);
                     acc=r15[acc];
                     r14=acc;
                     acc=rt.call(r14,r15,[r1]);
@@ -13763,7 +13721,7 @@ exports.f1224=async function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1225=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r4,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29;
+  let acc,pending=HOLE,r0,r1,r2,r4,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r25,r26,r28;
     acc=rt.outer(ctx,1)[1841];
     r0=acc;
     acc=ctx[2];
@@ -13889,15 +13847,13 @@ exports.f1225=function(rt,fn,self,args,newTarget,ctx,K){
                               acc=6088;
                               r26=acc;
                               acc="qP]&";
-                              r27=acc;
-                              acc=rt.call(r0,undefined,[r26,r27]);
+                              acc=rt.call(r0,undefined,[r26,acc]);
                               acc=args[0][acc];
                               r23=acc;
                               acc=19488;
                               r28=acc;
                               acc="b!6h";
-                              r29=acc;
-                              acc=rt.call(r0,undefined,[r28,r29]);
+                              acc=rt.call(r0,undefined,[r28,acc]);
                               acc=r1[acc];
                               r25=acc;
                               acc=rt.call(r25,r1,[]);
@@ -13946,8 +13902,7 @@ exports.f1225=function(rt,fn,self,args,newTarget,ctx,K){
                             if(acc==null){
                               break B23;
                             }else{
-                              r24=acc;
-                              acc=rt.call(r24,r16,[]);
+                              acc=rt.call(acc,r16,[]);
                               if(rt.receiver(acc)){
                                 break B23;
                               }else{
@@ -14085,7 +14040,7 @@ exports.f1225=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1226=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1=newTarget,r2,r3,r5,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32;
+  let acc,pending=HOLE,r0,r1=newTarget,r2,r3,r5,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31;
     r8=fn;
     r9=self;
     acc={};
@@ -14197,8 +14152,7 @@ exports.f1226=async function(rt,fn,self,args,newTarget,ctx,K){
                             acc=4608;
                             r31=acc;
                             acc="ZYwv";
-                            r32=acc;
-                            acc=rt.call(r0,undefined,[r31,r32]);
+                            acc=rt.call(r0,undefined,[r31,acc]);
                             acc=r7[acc];
                             r28=acc;
                             acc=rt.outer(ctx,1)[681];
@@ -14428,7 +14382,7 @@ exports.f1227=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1228=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18;
+  let acc,pending=HOLE,r0,r1,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r17,r18;
     acc=rt.outer(ctx,1)[1841];
     r0=acc;
     acc=ctx[2];
@@ -14599,8 +14553,7 @@ exports.f1228=function(rt,fn,self,args,newTarget,ctx,K){
                 if(rt.receiver(acc)){
                   break B23;
                 }else{
-                  r16=acc;
-                  acc=rt.runtime("ThrowIteratorResultNotAnObject",[r16],{});
+                  acc=rt.runtime("ThrowIteratorResultNotAnObject",[acc],{});
                   break B20;
                 }
               }
@@ -14649,7 +14602,7 @@ exports.f1229=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1230=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r5,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32,r33,r34,r35;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r5,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32,r33,r34;
     r9=fn;
     r10=self;
     acc={};
@@ -14875,8 +14828,7 @@ exports.f1230=async function(rt,fn,self,args,newTarget,ctx,K){
                                       acc=5442;
                                       r34=acc;
                                       acc="RuQs";
-                                      r35=acc;
-                                      acc=rt.call(r1,undefined,[r34,r35]);
+                                      acc=rt.call(r1,undefined,[r34,acc]);
                                       acc=r7[acc];
                                       r31=acc;
                                       acc=rt.call(r31,r7,[]);
@@ -15128,7 +15080,7 @@ exports.f1231=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1232=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26;
     acc=rt.context(6,ctx);
     r11=ctx;
     ctx=acc;
@@ -15709,8 +15661,7 @@ exports.f1232=async function(rt,fn,self,args,newTarget,ctx,K){
               acc=15822;
               r26=acc;
               acc="nWFp";
-              r27=acc;
-              acc=rt.call(r25,undefined,[r26,r27]);
+              acc=rt.call(r25,undefined,[r26,acc]);
               acc=r24[acc];
               acc=r23+acc;
               r23=acc;
@@ -15791,7 +15742,7 @@ exports.f1232=async function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1233=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4;
+  let acc,pending=HOLE,r1,r2,r3;
     acc=new RegExp("irctcpayments\\.com|irctcipay","i");
     r1=acc;
     acc=ctx[2];
@@ -15799,11 +15750,9 @@ exports.f1233=function(rt,fn,self,args,newTarget,ctx,K){
     acc=8044;
     r3=acc;
     acc="57pP";
-    r4=acc;
-    acc=rt.call(r2,undefined,[r3,r4]);
+    acc=rt.call(r2,undefined,[r3,acc]);
     acc=r1[acc];
-    r0=acc;
-    acc=rt.call(r0,r1,[args[0]]);
+    acc=rt.call(acc,r1,[args[0]]);
     return acc;
 };
 exports.f1234=function(rt,fn,self,args,newTarget,ctx,K){
@@ -15888,7 +15837,7 @@ exports.f1234=function(rt,fn,self,args,newTarget,ctx,K){
 // f1235 then
 exports.f1235=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
     B3:{
       acc=ctx[2];
       r0=acc;
@@ -15971,8 +15920,7 @@ exports.f1235=function(rt,fn,self,args,newTarget,ctx,K){
             acc=18341;
             r6=acc;
             acc="ou5S";
-            r7=acc;
-            acc=rt.call(r0,undefined,[r6,r7]);
+            acc=rt.call(r0,undefined,[r6,acc]);
             r5=acc;
             acc=rt.call(r2,r3,[r4,r5]);
             acc=rt.outer(ctx,2)[4];
@@ -16012,7 +15960,7 @@ exports.f1236=function(rt,fn,self,args,newTarget,ctx,K){
 // f1237 response
 exports.f1237=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2=newTarget,r3,r4,r6,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32,r33;
+  let acc,pending=HOLE,r0,r1,r2=newTarget,r3,r4,r6,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32;
     r10=fn;
     r11=self;
     acc={};
@@ -16196,8 +16144,7 @@ exports.f1237=async function(rt,fn,self,args,newTarget,ctx,K){
                                   acc=9232;
                                   r32=acc;
                                   acc="b!6h";
-                                  r33=acc;
-                                  acc=rt.call(r0,undefined,[r32,r33]);
+                                  acc=rt.call(r0,undefined,[r32,acc]);
                                   acc=r8[acc];
                                   r29=acc;
                                   acc=rt.call(r29,r8,[args[0]]);
@@ -16718,7 +16665,7 @@ exports.f1247=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1248=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13;
     r4=fn;
     r5=self;
     acc={};
@@ -17070,8 +17017,7 @@ exports.f1248=async function(rt,fn,self,args,newTarget,ctx,K){
         acc=12645;
         r13=acc;
         acc="rkuw";
-        r14=acc;
-        acc=rt.call(r1,undefined,[r13,r14]);
+        acc=rt.call(r1,undefined,[r13,acc]);
         acc=r11[acc];
         acc=r10+acc;
         r10=acc;
@@ -18109,7 +18055,7 @@ exports.f1253=async function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1254=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r5,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30;
+  let acc,pending=HOLE,r0,r1,r2,r3,r5,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29;
     acc=ctx[3];
     r0=acc;
     acc=[];
@@ -18263,8 +18209,7 @@ exports.f1254=function(rt,fn,self,args,newTarget,ctx,K){
                               acc=13356;
                               r29=acc;
                               acc="7u]a";
-                              r30=acc;
-                              acc=rt.call(r0,undefined,[r29,r30]);
+                              acc=rt.call(r0,undefined,[r29,acc]);
                               acc=r2[acc];
                               r26=acc;
                               acc=rt.call(r26,r2,[]);
@@ -18445,14 +18390,13 @@ exports.f1255=function(rt,fn,self,args,newTarget,ctx,K){
 // f1256 map
 exports.f1256=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4;
     acc=ctx[3];
     r3=acc;
     acc=18061;
     r4=acc;
     acc="4dr8";
-    r5=acc;
-    acc=rt.call(r3,undefined,[r4,r5]);
+    acc=rt.call(r3,undefined,[r4,acc]);
     acc=args[0][acc];
     r1=acc;
     acc=rt.call(r1,args[0],[]);
@@ -19373,7 +19317,7 @@ exports.f1265=function(rt,fn,self,args,newTarget,ctx,K){
 // f1266 catch
 exports.f1266=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
     acc=rt.outer(ctx,1)[2];
     r1=acc;
     acc=ctx[2];
@@ -19400,8 +19344,7 @@ exports.f1266=function(rt,fn,self,args,newTarget,ctx,K){
     acc=904;
     r6=acc;
     acc="9urW";
-    r7=acc;
-    acc=rt.call(r5,undefined,[r6,r7]);
+    acc=rt.call(r5,undefined,[r6,acc]);
     acc=args[0][acc];
     acc=r3+acc;
     r3=acc;
@@ -19432,7 +19375,7 @@ exports.f1268=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1269=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16;
     r7=fn;
     r8=self;
     acc={};
@@ -19838,8 +19781,7 @@ exports.f1269=async function(rt,fn,self,args,newTarget,ctx,K){
         acc=13998;
         r16=acc;
         acc="JT7O";
-        r17=acc;
-        acc=rt.call(r1,undefined,[r16,r17]);
+        acc=rt.call(r1,undefined,[r16,acc]);
         acc=r14[acc];
         acc=r13+acc;
         r13=acc;
@@ -19909,7 +19851,7 @@ exports.f1275=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1276=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3=newTarget,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18;
+  let acc,pending=HOLE,r0,r1,r2,r3=newTarget,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r17;
     r6=fn;
     r7=self;
     acc={};
@@ -20035,8 +19977,7 @@ exports.f1276=async function(rt,fn,self,args,newTarget,ctx,K){
                 acc=2519;
                 r15=acc;
                 acc="UMn*";
-                r16=acc;
-                acc=rt.call(r4,undefined,[r15,r16]);
+                acc=rt.call(r4,undefined,[r15,acc]);
                 acc=r13[acc];
                 r12=acc;
                 acc=rt.global("Math");
@@ -20044,8 +19985,7 @@ exports.f1276=async function(rt,fn,self,args,newTarget,ctx,K){
                 acc=6728;
                 r17=acc;
                 acc="s[W0";
-                r18=acc;
-                acc=rt.call(r4,undefined,[r17,r18]);
+                acc=rt.call(r4,undefined,[r17,acc]);
                 acc=r15[acc];
                 r14=acc;
                 acc=rt.call(r14,r15,[]);
@@ -20189,7 +20129,7 @@ exports.f1280=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1281=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17;
     r7=fn;
     r8=self;
     acc={};
@@ -20393,8 +20333,7 @@ exports.f1281=async function(rt,fn,self,args,newTarget,ctx,K){
           acc=22575;
           r17=acc;
           acc="rMir";
-          r18=acc;
-          acc=rt.call(r1,undefined,[r17,r18]);
+          acc=rt.call(r1,undefined,[r17,acc]);
           acc=r15[acc];
           r14=acc;
           acc=rt.call(r14,r15,[]);
@@ -20501,7 +20440,7 @@ exports.f1283=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1284=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5=newTarget,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5=newTarget,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16;
     r7=fn;
     r8=self;
     acc={};
@@ -20616,8 +20555,7 @@ exports.f1284=async function(rt,fn,self,args,newTarget,ctx,K){
         acc=2322;
         r16=acc;
         acc="PLJe";
-        r17=acc;
-        acc=rt.call(r6,undefined,[r16,r17]);
+        acc=rt.call(r6,undefined,[r16,acc]);
         acc=r14[acc];
         acc=r13+acc;
         r13=acc;
@@ -20643,7 +20581,7 @@ exports.f1284=async function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1285=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r14,r15,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32,r33,r34,r35,r36,r37,r38,r39,r40,r41,r42,r43;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r14,r15,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32,r33,r34,r35,r36,r37,r38,r39,r40,r41,r42;
     r19=fn;
     r20=self;
     acc={};
@@ -20925,8 +20863,7 @@ exports.f1285=async function(rt,fn,self,args,newTarget,ctx,K){
                                                   acc=15444;
                                                   r42=acc;
                                                   acc="rkuw";
-                                                  r43=acc;
-                                                  acc=rt.call(r1,undefined,[r42,r43]);
+                                                  acc=rt.call(r1,undefined,[r42,acc]);
                                                   acc=r40[acc];
                                                   r39=acc;
                                                   acc=rt.call(r39,r40,[]);
@@ -21299,7 +21236,7 @@ exports.f1289=function(rt,fn,self,args,newTarget,ctx,K){
 // f1290 map
 exports.f1290=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11;
     acc=args[0][Symbol.iterator]();
     r4=acc;
     acc=r4.next;
@@ -21416,13 +21353,11 @@ exports.f1290=function(rt,fn,self,args,newTarget,ctx,K){
               if(acc==null){
                 break B24;
               }else{
-                r12=acc;
-                acc=rt.call(r12,r4,[]);
+                acc=rt.call(acc,r4,[]);
                 if(rt.receiver(acc)){
                   break B24;
                 }else{
-                  r13=acc;
-                  acc=rt.runtime("ThrowIteratorResultNotAnObject",[r13],{});
+                  acc=rt.runtime("ThrowIteratorResultNotAnObject",[acc],{});
                   break B21;
                 }
               }
@@ -21464,7 +21399,7 @@ exports.f1290=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1291=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32,r33,r34,r35,r36,r37,r38,r39,r40,r41,r42,r43;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32,r33,r34,r35,r36,r37,r38,r39,r40,r41,r42;
     acc=rt.context(3,ctx);
     r23=ctx;
     ctx=acc;
@@ -21853,8 +21788,7 @@ exports.f1291=async function(rt,fn,self,args,newTarget,ctx,K){
                                     acc=4542;
                                     r42=acc;
                                     acc="JT7O";
-                                    r43=acc;
-                                    acc=rt.call(r41,undefined,[r42,r43]);
+                                    acc=rt.call(r41,undefined,[r42,acc]);
                                     acc=r22[acc];
                                     r39=acc;
                                     acc=0;
@@ -22642,14 +22576,13 @@ exports.f1293=function(rt,fn,self,args,newTarget,ctx,K){
 // f1294 map
 exports.f1294=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
     acc=ctx[2];
     r4=acc;
     acc=11251;
     r5=acc;
     acc="C)Ez";
-    r6=acc;
-    acc=rt.call(r4,undefined,[r5,r6]);
+    acc=rt.call(r4,undefined,[r5,acc]);
     acc=args[0][acc];
     r2=acc;
     acc=new RegExp("\\s+","g");
@@ -22750,7 +22683,7 @@ exports.f1303=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1304=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2=newTarget,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13;
+  let acc,pending=HOLE,r0,r1,r2=newTarget,r3,r4,r5,r6,r7,r8,r9,r10,r12,r13;
     r4=fn;
     r5=self;
     acc={};
@@ -22783,8 +22716,7 @@ exports.f1304=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=14420;
     r10=acc;
     acc="bTc%";
-    r11=acc;
-    acc=rt.call(r3,undefined,[r10,r11]);
+    acc=rt.call(r3,undefined,[r10,acc]);
     r9=acc;
     acc=rt.call(r8,undefined,[r9]);
     r8=acc;
@@ -23203,7 +23135,7 @@ exports.f1312=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1313=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13;
     B2:{
       acc=ctx[5];
       if(acc===HOLE)throw new ReferenceError("Cannot access "+"_0x5f2623"+" before initialization");
@@ -23389,13 +23321,11 @@ exports.f1313=function(rt,fn,self,args,newTarget,ctx,K){
               if(acc==null){
                 break B32;
               }else{
-                r14=acc;
-                acc=rt.call(r14,r6,[]);
+                acc=rt.call(acc,r6,[]);
                 if(rt.receiver(acc)){
                   break B32;
                 }else{
-                  r15=acc;
-                  acc=rt.runtime("ThrowIteratorResultNotAnObject",[r15],{});
+                  acc=rt.runtime("ThrowIteratorResultNotAnObject",[acc],{});
                   break B29;
                 }
               }
@@ -23475,17 +23405,16 @@ exports.f1313=function(rt,fn,self,args,newTarget,ctx,K){
 // f1314 map
 exports.f1314=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r2;
+  let acc,pending=HOLE,r0;
     acc=rt.global("parseInt");
     r0=acc;
     acc=10;
-    r2=acc;
-    acc=rt.call(r0,undefined,[args[0],r2]);
+    acc=rt.call(r0,undefined,[args[0],acc]);
     return acc;
 };
 exports.f1315=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13;
     B2:{
       acc=ctx[5];
       if(acc===HOLE)throw new ReferenceError("Cannot access "+"_0x5f2623"+" before initialization");
@@ -23671,13 +23600,11 @@ exports.f1315=function(rt,fn,self,args,newTarget,ctx,K){
               if(acc==null){
                 break B32;
               }else{
-                r14=acc;
-                acc=rt.call(r14,r6,[]);
+                acc=rt.call(acc,r6,[]);
                 if(rt.receiver(acc)){
                   break B32;
                 }else{
-                  r15=acc;
-                  acc=rt.runtime("ThrowIteratorResultNotAnObject",[r15],{});
+                  acc=rt.runtime("ThrowIteratorResultNotAnObject",[acc],{});
                   break B29;
                 }
               }
@@ -23780,17 +23707,16 @@ exports.f1315=function(rt,fn,self,args,newTarget,ctx,K){
 // f1316 map
 exports.f1316=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r2;
+  let acc,pending=HOLE,r0;
     acc=rt.global("parseInt");
     r0=acc;
     acc=10;
-    r2=acc;
-    acc=rt.call(r0,undefined,[args[0],r2]);
+    acc=rt.call(r0,undefined,[args[0],acc]);
     return acc;
 };
 exports.f1317=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13;
     B2:{
       acc=ctx[5];
       if(acc===HOLE)throw new ReferenceError("Cannot access "+"_0x5f2623"+" before initialization");
@@ -23976,13 +23902,11 @@ exports.f1317=function(rt,fn,self,args,newTarget,ctx,K){
               if(acc==null){
                 break B32;
               }else{
-                r14=acc;
-                acc=rt.call(r14,r6,[]);
+                acc=rt.call(acc,r6,[]);
                 if(rt.receiver(acc)){
                   break B32;
                 }else{
-                  r15=acc;
-                  acc=rt.runtime("ThrowIteratorResultNotAnObject",[r15],{});
+                  acc=rt.runtime("ThrowIteratorResultNotAnObject",[acc],{});
                   break B29;
                 }
               }
@@ -24079,17 +24003,16 @@ exports.f1317=function(rt,fn,self,args,newTarget,ctx,K){
 // f1318 map
 exports.f1318=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r2;
+  let acc,pending=HOLE,r0;
     acc=rt.global("parseInt");
     r0=acc;
     acc=10;
-    r2=acc;
-    acc=rt.call(r0,undefined,[args[0],r2]);
+    acc=rt.call(r0,undefined,[args[0],acc]);
     return acc;
 };
 exports.f1319=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14;
     B2:{
       acc=ctx[5];
       if(acc===HOLE)throw new ReferenceError("Cannot access "+"_0x5f2623"+" before initialization");
@@ -24275,13 +24198,11 @@ exports.f1319=function(rt,fn,self,args,newTarget,ctx,K){
               if(acc==null){
                 break B32;
               }else{
-                r15=acc;
-                acc=rt.call(r15,r7,[]);
+                acc=rt.call(acc,r7,[]);
                 if(rt.receiver(acc)){
                   break B32;
                 }else{
-                  r16=acc;
-                  acc=rt.runtime("ThrowIteratorResultNotAnObject",[r16],{});
+                  acc=rt.runtime("ThrowIteratorResultNotAnObject",[acc],{});
                   break B29;
                 }
               }
@@ -24454,17 +24375,16 @@ exports.f1319=function(rt,fn,self,args,newTarget,ctx,K){
 // f1320 map
 exports.f1320=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r2;
+  let acc,pending=HOLE,r0;
     acc=rt.global("parseInt");
     r0=acc;
     acc=10;
-    r2=acc;
-    acc=rt.call(r0,undefined,[args[0],r2]);
+    acc=rt.call(r0,undefined,[args[0],acc]);
     return acc;
 };
 exports.f1321=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9=newTarget,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32,r33;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9=newTarget,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32;
     r24=fn;
     r25=self;
     acc={};
@@ -24616,8 +24536,7 @@ exports.f1321=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=6512;
     r32=acc;
     acc="iz(z";
-    r33=acc;
-    acc=rt.call(r10,undefined,[r32,r33]);
+    acc=rt.call(r10,undefined,[r32,acc]);
     acc=r15[acc];
     r29=acc;
     acc=0;
@@ -25754,7 +25673,7 @@ exports.f1324=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1325=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17;
     acc=rt.context(4,ctx);
     r6=ctx;
     ctx=acc;
@@ -25981,8 +25900,7 @@ exports.f1325=async function(rt,fn,self,args,newTarget,ctx,K){
         acc=18434;
         r17=acc;
         acc="WyZ@";
-        r18=acc;
-        acc=rt.call(r16,undefined,[r17,r18]);
+        acc=rt.call(r16,undefined,[r17,acc]);
         acc=r15[acc];
         r14=acc;
         acc=rt.outer(r6,0)[653];
@@ -26180,7 +26098,7 @@ exports.f1326=function(rt,fn,self,args,newTarget,ctx,K){
 // f1327 test
 exports.f1327=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
     acc=ctx[2];
     r3=acc;
     acc=ctx[3];
@@ -26188,8 +26106,7 @@ exports.f1327=function(rt,fn,self,args,newTarget,ctx,K){
     acc=3663;
     r5=acc;
     acc="bTc%";
-    r6=acc;
-    acc=rt.call(r4,undefined,[r5,r6]);
+    acc=rt.call(r4,undefined,[r5,acc]);
     acc=r3[acc];
     r2=acc;
     acc=rt.call(r2,r3,[args[0]]);
@@ -26229,27 +26146,25 @@ exports.f1328=function(rt,fn,self,args,newTarget,ctx,K){
 // f1329 catch
 exports.f1329=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2;
+  let acc,pending=HOLE,r0,r1;
     acc=ctx[3];
     r0=acc;
     acc=9852;
     r1=acc;
     acc="a3QL";
-    r2=acc;
-    acc=rt.call(r0,undefined,[r1,r2]);
+    acc=rt.call(r0,undefined,[r1,acc]);
     return acc;
 };
 // f1330 catch
 exports.f1330=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2;
+  let acc,pending=HOLE,r0,r1;
     acc=ctx[3];
     r0=acc;
     acc=10578;
     r1=acc;
     acc="iz(z";
-    r2=acc;
-    acc=rt.call(r0,undefined,[r1,r2]);
+    acc=rt.call(r0,undefined,[r1,acc]);
     return acc;
 };
 exports.f1331=async function(rt,fn,self,args,newTarget,ctx,K){
@@ -26485,7 +26400,7 @@ exports.f1334=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1335=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
     acc=ctx[5];
     if(acc===HOLE)throw new ReferenceError("Cannot access "+"_0x5f2623"+" before initialization");
     r0=acc;
@@ -26510,8 +26425,7 @@ exports.f1335=function(rt,fn,self,args,newTarget,ctx,K){
     acc=11725;
     r5=acc;
     acc="PLJe";
-    r6=acc;
-    acc=rt.call(r0,undefined,[r5,r6]);
+    acc=rt.call(r0,undefined,[r5,acc]);
     acc=r3[acc];
     r2=acc;
     acc=rt.call(r2,r3,[args[1]]);
@@ -26684,7 +26598,7 @@ exports.f1336=async function(rt,fn,self,args,newTarget,ctx,K){
 // f1337 url
 exports.f1337=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8;
     acc=rt.context(3,ctx);
     r0=ctx;
     ctx=acc;
@@ -26710,8 +26624,7 @@ exports.f1337=function(rt,fn,self,args,newTarget,ctx,K){
     acc=17652;
     r8=acc;
     acc="MnWs";
-    r9=acc;
-    acc=rt.call(r7,undefined,[r8,r9]);
+    acc=rt.call(r7,undefined,[r8,acc]);
     acc=args[0][acc];
     r5=acc;
     acc=rt.makeFunction("f1338",ctx,{thisValue:self,newTarget});
@@ -26740,7 +26653,7 @@ exports.f1338=function(rt,fn,self,args,newTarget,ctx,K){
 // f1339 catch
 exports.f1339=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3;
+  let acc,pending=HOLE,r0,r1,r2;
     acc=rt.context(3,ctx);
     r0=ctx;
     ctx=acc;
@@ -26751,18 +26664,16 @@ exports.f1339=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.makeFunction("f1340",ctx,{thisValue:self,newTarget});
     r2=acc;
     acc=2000;
-    r3=acc;
-    acc=rt.call(r1,undefined,[r2,r3]);
+    acc=rt.call(r1,undefined,[r2,acc]);
     return acc;
 };
 exports.f1340=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1;
+  let acc,pending=HOLE,r0;
     acc=ctx[2];
     r0=acc;
     acc=rt.outer(ctx,1)[2];
-    r1=acc;
-    acc=rt.call(r0,undefined,[r1]);
+    acc=rt.call(r0,undefined,[acc]);
     return acc;
 };
 exports.f1341=async function(rt,fn,self,args,newTarget,ctx,K){
@@ -26913,7 +26824,7 @@ exports.f1343=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1344=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3;
     r1=fn;
     r2=self;
     acc={};
@@ -26923,8 +26834,7 @@ exports.f1344=async function(rt,fn,self,args,newTarget,ctx,K){
     r2=acc;
     acc=ctx[655];
     if(acc===HOLE)throw new ReferenceError("Cannot access "+"RS"+" before initialization");
-    r4=acc;
-    acc=rt.call(r2,undefined,[args[0],r4]);
+    acc=rt.call(r2,undefined,[args[0],acc]);
     r3=acc;
     r2=r0;
     acc=r3;
@@ -26932,7 +26842,7 @@ exports.f1344=async function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1345=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3;
     r1=fn;
     r2=self;
     acc={};
@@ -26942,8 +26852,7 @@ exports.f1345=async function(rt,fn,self,args,newTarget,ctx,K){
     r2=acc;
     acc=ctx[656];
     if(acc===HOLE)throw new ReferenceError("Cannot access "+"PS"+" before initialization");
-    r4=acc;
-    acc=rt.call(r2,undefined,[args[0],r4]);
+    acc=rt.call(r2,undefined,[args[0],acc]);
     r3=acc;
     r2=r0;
     acc=r3;
@@ -27076,7 +26985,7 @@ exports.f1348=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1349=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9;
     r3=fn;
     r4=self;
     acc={};
@@ -27089,8 +26998,7 @@ exports.f1349=async function(rt,fn,self,args,newTarget,ctx,K){
       acc=390;
       r9=acc;
       acc="zBnB";
-      r10=acc;
-      acc=rt.call(r1,undefined,[r9,r10]);
+      acc=rt.call(r1,undefined,[r9,acc]);
       acc=args[0][acc];
       r6=acc;
       acc=args[1];
@@ -27563,7 +27471,7 @@ exports.f1356=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1357=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27;
     r13=fn;
     r14=self;
     acc={};
@@ -27803,8 +27711,7 @@ exports.f1357=async function(rt,fn,self,args,newTarget,ctx,K){
                             acc=15959;
                             r27=acc;
                             acc="nWFp";
-                            r28=acc;
-                            acc=rt.call(r1,undefined,[r27,r28]);
+                            acc=rt.call(r1,undefined,[r27,acc]);
                             acc=args[0][acc];
                             r24=acc;
                             acc=rt.call(r24,args[0],[r3]);
@@ -28056,7 +27963,7 @@ exports.f1360=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1361=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r4,r5;
+  let acc,pending=HOLE,r0,r1,r2,r4;
     acc=ctx[5];
     if(acc===HOLE)throw new ReferenceError("Cannot access "+"_0x5f2623"+" before initialization");
     r0=acc;
@@ -28072,8 +27979,7 @@ exports.f1361=function(rt,fn,self,args,newTarget,ctx,K){
           acc=13025;
           r4=acc;
           acc="zBnB";
-          r5=acc;
-          acc=rt.call(r0,undefined,[r4,r5]);
+          acc=rt.call(r0,undefined,[r4,acc]);
           acc=r2[acc];
           if(acc){
             break B3;
@@ -29068,7 +28974,7 @@ exports.f1366=async function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1367=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7=newTarget,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32,r33,r34,r35,r36,r37,r38,r39,r40,r41,r42,r43,r44,r45,r46,r47,r48,r49,r50,r51,r52,r53;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7=newTarget,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32,r33,r34,r35,r36,r37,r38,r39,r40,r41,r42,r43,r44,r45,r46,r47,r48,r49,r50,r51,r52;
     acc=rt.context(3,ctx);
     r38=ctx;
     ctx=acc;
@@ -31144,8 +31050,7 @@ exports.f1367=async function(rt,fn,self,args,newTarget,ctx,K){
                           acc=16058;
                           r52=acc;
                           acc="8#8#";
-                          r53=acc;
-                          acc=rt.call(r51,undefined,[r52,r53]);
+                          acc=rt.call(r51,undefined,[r52,acc]);
                           acc=r50[acc];
                           r49=acc;
                           acc=rt.call(r49,r50,[]);
@@ -31437,17 +31342,16 @@ exports.f1368=function(rt,fn,self,args,newTarget,ctx,K){
 // f1369 filter
 exports.f1369=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0;
+  let acc,pending=HOLE;
     acc=ctx[3];
-    r0=acc;
-    acc=rt.call(r0,undefined,[args[0]]);
+    acc=rt.call(acc,undefined,[args[0]]);
     acc=!acc;
     return acc;
 };
 // f1370 map
 exports.f1370=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3;
+  let acc,pending=HOLE,r0,r1,r2;
     acc=rt.literal(K[0]);
     r0=acc;
     acc=args[0];
@@ -31457,8 +31361,7 @@ exports.f1370=function(rt,fn,self,args,newTarget,ctx,K){
     acc=4325;
     r2=acc;
     acc="57pP";
-    r3=acc;
-    acc=rt.call(r1,undefined,[r2,r3]);
+    acc=rt.call(r1,undefined,[r2,acc]);
     rt.own(r0,"kind",acc);
     acc=args[1];
     rt.own(r0,"idx",acc);
@@ -31468,16 +31371,15 @@ exports.f1370=function(rt,fn,self,args,newTarget,ctx,K){
 // f1371 filter
 exports.f1371=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0;
+  let acc,pending=HOLE;
     acc=ctx[3];
-    r0=acc;
-    acc=rt.call(r0,undefined,[args[0]]);
+    acc=rt.call(acc,undefined,[args[0]]);
     return acc;
 };
 // f1372 map
 exports.f1372=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3;
+  let acc,pending=HOLE,r0,r1,r2;
     acc=rt.literal(K[0]);
     r0=acc;
     acc=args[0];
@@ -31487,8 +31389,7 @@ exports.f1372=function(rt,fn,self,args,newTarget,ctx,K){
     acc=5927;
     r2=acc;
     acc="iz(z";
-    r3=acc;
-    acc=rt.call(r1,undefined,[r2,r3]);
+    acc=rt.call(r1,undefined,[r2,acc]);
     rt.own(r0,"kind",acc);
     acc=args[1];
     rt.own(r0,"idx",acc);
@@ -31498,7 +31399,7 @@ exports.f1372=function(rt,fn,self,args,newTarget,ctx,K){
 // f1373 max
 exports.f1373=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7;
     acc=rt.global("Math");
     r1=acc;
     acc=ctx[2];
@@ -31521,8 +31422,7 @@ exports.f1373=function(rt,fn,self,args,newTarget,ctx,K){
     acc=13941;
     r7=acc;
     acc="iz(z";
-    r8=acc;
-    acc=rt.call(r6,undefined,[r7,r8]);
+    acc=rt.call(r6,undefined,[r7,acc]);
     acc=r5[acc];
     r4=acc;
     acc=rt.call(r4,r5,[]);
@@ -31659,7 +31559,7 @@ exports.f1388=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1389=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5=newTarget,r6,r7,r8,r9,r10,r11,r12,r13,r14,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5=newTarget,r6,r7,r8,r9,r10,r11,r12,r13,r14,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31;
     acc=rt.context(4,ctx);
     r19=ctx;
     ctx=acc;
@@ -32922,8 +32822,7 @@ exports.f1389=async function(rt,fn,self,args,newTarget,ctx,K){
                       if(rt.receiver(acc)){
                         break B62;
                       }else{
-                        r32=acc;
-                        acc=rt.runtime("ThrowIteratorResultNotAnObject",[r32],{});
+                        acc=rt.runtime("ThrowIteratorResultNotAnObject",[acc],{});
                         break B59;
                       }
                     }
@@ -33130,7 +33029,7 @@ exports.f1389=async function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1390=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4;
     acc=rt.outer(ctx,1)[2];
     r2=acc;
     acc=ctx[2];
@@ -33138,8 +33037,7 @@ exports.f1390=function(rt,fn,self,args,newTarget,ctx,K){
     acc=12920;
     r4=acc;
     acc="k([I";
-    r5=acc;
-    acc=rt.call(r3,undefined,[r4,r5]);
+    acc=rt.call(r3,undefined,[r4,acc]);
     acc=r2[acc];
     r1=acc;
     acc=rt.call(r1,r2,[args[0]]);
@@ -33392,7 +33290,7 @@ exports.f1414=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1415=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19;
     acc=rt.context(5,ctx);
     r6=ctx;
     ctx=acc;
@@ -33546,8 +33444,7 @@ exports.f1415=async function(rt,fn,self,args,newTarget,ctx,K){
       acc=4972;
       r19=acc;
       acc="4dr8";
-      r20=acc;
-      acc=rt.call(r18,undefined,[r19,r20]);
+      acc=rt.call(r18,undefined,[r19,acc]);
       acc=args[4][acc];
       if(acc){
         break B5;
@@ -33840,7 +33737,7 @@ exports.f1415=async function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1416=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4;
     acc=ctx[3];
     r2=acc;
     acc=ctx[4];
@@ -33848,8 +33745,7 @@ exports.f1416=function(rt,fn,self,args,newTarget,ctx,K){
     acc=5781;
     r4=acc;
     acc="hm$n";
-    r5=acc;
-    acc=rt.call(r3,undefined,[r4,r5]);
+    acc=rt.call(r3,undefined,[r4,acc]);
     acc=r2[acc];
     r1=acc;
     acc=rt.call(r1,r2,[args[0]]);
@@ -34133,7 +34029,7 @@ exports.f1426=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1427=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13;
     r6=fn;
     r7=self;
     acc={};
@@ -34230,8 +34126,7 @@ exports.f1427=async function(rt,fn,self,args,newTarget,ctx,K){
           acc=9856;
           r13=acc;
           acc="3W8e";
-          r14=acc;
-          acc=rt.call(r1,undefined,[r13,r14]);
+          acc=rt.call(r1,undefined,[r13,acc]);
           acc=args[2][acc];
           r11=acc;
           acc=rt.call(r9,args[0],[r11]);
@@ -34611,7 +34506,7 @@ exports.f1434=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1435=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1=newTarget,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32,r33;
+  let acc,pending=HOLE,r0,r1=newTarget,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32;
     acc=rt.context(7,ctx);
     r14=ctx;
     ctx=acc;
@@ -35378,8 +35273,7 @@ exports.f1435=async function(rt,fn,self,args,newTarget,ctx,K){
                                           acc=18023;
                                           r32=acc;
                                           acc="A@un";
-                                          r33=acc;
-                                          acc=rt.call(r31,undefined,[r32,r33]);
+                                          acc=rt.call(r31,undefined,[r32,acc]);
                                           rt.own(r30,"label",acc);
                                           acc=r0;
                                           rt.own(r30,"onProgress",acc);
@@ -35750,7 +35644,7 @@ exports.f1435=async function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1436=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4;
+  let acc,pending=HOLE,r1,r2,r3;
     B2:{
       acc=args[1];
       if(acc){
@@ -35763,11 +35657,9 @@ exports.f1436=function(rt,fn,self,args,newTarget,ctx,K){
         acc=17429;
         r3=acc;
         acc="ou5S";
-        r4=acc;
-        acc=rt.call(r2,undefined,[r3,r4]);
+        acc=rt.call(r2,undefined,[r3,acc]);
         acc=r1[acc];
-        r0=acc;
-        acc=rt.call(r0,r1,[args[0]]);
+        acc=rt.call(acc,r1,[args[0]]);
         break B2;
       }
     }
@@ -35777,7 +35669,7 @@ exports.f1436=function(rt,fn,self,args,newTarget,ctx,K){
 // f1437 origin
 exports.f1437=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
     acc=rt.outer(ctx,2)[750];
     r0=acc;
     acc=rt.outer(ctx,1)[2];
@@ -35802,8 +35694,7 @@ exports.f1437=function(rt,fn,self,args,newTarget,ctx,K){
     acc=9112;
     r6=acc;
     acc="rkuw";
-    r7=acc;
-    acc=rt.call(r5,undefined,[r6,r7]);
+    acc=rt.call(r5,undefined,[r6,acc]);
     acc=r4[acc];
     r4=acc;
     acc=rt.call(r0,undefined,[r1,r2,r3,r4]);
@@ -35812,7 +35703,7 @@ exports.f1437=function(rt,fn,self,args,newTarget,ctx,K){
 // f1438 origin
 exports.f1438=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
     acc=rt.outer(ctx,2)[742];
     r0=acc;
     acc=rt.outer(ctx,1)[2];
@@ -35835,8 +35726,7 @@ exports.f1438=function(rt,fn,self,args,newTarget,ctx,K){
     acc=15019;
     r5=acc;
     acc="]K13";
-    r6=acc;
-    acc=rt.call(r4,undefined,[r5,r6]);
+    acc=rt.call(r4,undefined,[r5,acc]);
     acc=r3[acc];
     r3=acc;
     acc=rt.call(r0,undefined,[r1,r2,r3]);
@@ -35845,7 +35735,7 @@ exports.f1438=function(rt,fn,self,args,newTarget,ctx,K){
 // f1439 destination
 exports.f1439=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
     acc=rt.outer(ctx,2)[750];
     r0=acc;
     acc=rt.outer(ctx,1)[2];
@@ -35863,8 +35753,7 @@ exports.f1439=function(rt,fn,self,args,newTarget,ctx,K){
     acc=1132;
     r6=acc;
     acc="o^v]";
-    r7=acc;
-    acc=rt.call(r5,undefined,[r6,r7]);
+    acc=rt.call(r5,undefined,[r6,acc]);
     acc=r4[acc];
     r4=acc;
     acc=rt.call(r0,undefined,[r1,r2,r3,r4]);
@@ -35873,7 +35762,7 @@ exports.f1439=function(rt,fn,self,args,newTarget,ctx,K){
 // f1440 destination
 exports.f1440=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
     acc=rt.outer(ctx,2)[742];
     r0=acc;
     acc=rt.outer(ctx,1)[2];
@@ -35889,8 +35778,7 @@ exports.f1440=function(rt,fn,self,args,newTarget,ctx,K){
     acc=5847;
     r5=acc;
     acc="ou5S";
-    r6=acc;
-    acc=rt.call(r4,undefined,[r5,r6]);
+    acc=rt.call(r4,undefined,[r5,acc]);
     acc=r3[acc];
     r3=acc;
     acc=rt.call(r0,undefined,[r1,r2,r3]);
@@ -35899,7 +35787,7 @@ exports.f1440=function(rt,fn,self,args,newTarget,ctx,K){
 // f1441 class 
 exports.f1441=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4;
+  let acc,pending=HOLE,r0,r1,r2,r3;
     acc=rt.outer(ctx,3)[748];
     r0=acc;
     acc=rt.outer(ctx,2)[2];
@@ -35909,14 +35797,13 @@ exports.f1441=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.outer(ctx,2)[5];
     r3=acc;
     acc=ctx[2];
-    r4=acc;
-    acc=rt.call(r0,undefined,[r1,r2,r3,r4]);
+    acc=rt.call(r0,undefined,[r1,r2,r3,acc]);
     return acc;
 };
 // f1442 class 
 exports.f1442=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4;
     acc=rt.outer(ctx,3)[746];
     r0=acc;
     acc=rt.outer(ctx,2)[2];
@@ -35928,8 +35815,7 @@ exports.f1442=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.outer(ctx,3)[745];
     r4=acc;
     acc=ctx[2];
-    r5=acc;
-    acc=rt.call(r4,undefined,[r5]);
+    acc=rt.call(r4,undefined,[acc]);
     acc=r3+acc;
     r3=acc;
     acc="\\)";
@@ -35946,7 +35832,7 @@ exports.f1442=function(rt,fn,self,args,newTarget,ctx,K){
 // f1443 quota 
 exports.f1443=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4;
+  let acc,pending=HOLE,r0,r1,r2,r3;
     acc=rt.outer(ctx,3)[749];
     r0=acc;
     acc=rt.outer(ctx,2)[2];
@@ -35956,27 +35842,25 @@ exports.f1443=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.outer(ctx,2)[5];
     r3=acc;
     acc=ctx[2];
-    r4=acc;
-    acc=rt.call(r0,undefined,[r1,r2,r3,r4]);
+    acc=rt.call(r0,undefined,[r1,r2,r3,acc]);
     return acc;
 };
 // f1444 quota 
 exports.f1444=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2;
+  let acc,pending=HOLE,r0,r1;
     acc=rt.outer(ctx,3)[744];
     r0=acc;
     acc=rt.outer(ctx,2)[2];
     r1=acc;
     acc=ctx[2];
-    r2=acc;
-    acc=rt.call(r0,undefined,[r1,r2]);
+    acc=rt.call(r0,undefined,[r1,acc]);
     return acc;
 };
 // f1445 journeyDate
 exports.f1445=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
     acc=rt.outer(ctx,2)[751];
     r0=acc;
     acc=rt.outer(ctx,1)[2];
@@ -35992,8 +35876,7 @@ exports.f1445=function(rt,fn,self,args,newTarget,ctx,K){
     acc=3026;
     r6=acc;
     acc="bTc%";
-    r7=acc;
-    acc=rt.call(r5,undefined,[r6,r7]);
+    acc=rt.call(r5,undefined,[r6,acc]);
     acc=r4[acc];
     r4=acc;
     acc=rt.outer(ctx,1)[6];
@@ -36004,7 +35887,7 @@ exports.f1445=function(rt,fn,self,args,newTarget,ctx,K){
 // f1446 journeyDate
 exports.f1446=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
     acc=rt.outer(ctx,2)[743];
     r0=acc;
     acc=rt.outer(ctx,1)[2];
@@ -36018,8 +35901,7 @@ exports.f1446=function(rt,fn,self,args,newTarget,ctx,K){
     acc=4113;
     r5=acc;
     acc="rkuw";
-    r6=acc;
-    acc=rt.call(r4,undefined,[r5,r6]);
+    acc=rt.call(r4,undefined,[r5,acc]);
     acc=r3[acc];
     r3=acc;
     acc=rt.call(r0,undefined,[r1,r2,r3]);
@@ -36127,7 +36009,7 @@ exports.f1452=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1453=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8=newTarget,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8=newTarget,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r23;
     r14=fn;
     r15=self;
     acc={};
@@ -36465,8 +36347,7 @@ exports.f1453=async function(rt,fn,self,args,newTarget,ctx,K){
                     acc=9275;
                     r21=acc;
                     acc="hm$n";
-                    r22=acc;
-                    acc=rt.call(r9,undefined,[r21,r22]);
+                    acc=rt.call(r9,undefined,[r21,acc]);
                     acc=r19[acc];
                     r18=acc;
                     acc=rt.global("Math");
@@ -36474,8 +36355,7 @@ exports.f1453=async function(rt,fn,self,args,newTarget,ctx,K){
                     acc=3928;
                     r23=acc;
                     acc="*VhR";
-                    r24=acc;
-                    acc=rt.call(r9,undefined,[r23,r24]);
+                    acc=rt.call(r9,undefined,[r23,acc]);
                     acc=r21[acc];
                     r20=acc;
                     acc=rt.call(r20,r21,[]);
@@ -36700,7 +36580,7 @@ exports.f1458=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1459=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12;
     r2=fn;
     r3=self;
     acc={};
@@ -36712,8 +36592,7 @@ exports.f1459=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=18698;
     r12=acc;
     acc="iz(z";
-    r13=acc;
-    acc=rt.call(r1,undefined,[r12,r13]);
+    acc=rt.call(r1,undefined,[r12,acc]);
     acc=args[0][acc];
     r9=acc;
     acc=rt.call(r9,args[0],[args[1]]);
@@ -36802,7 +36681,7 @@ exports.f1460=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1461=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19;
     acc=rt.context(3,ctx);
     r7=ctx;
     ctx=acc;
@@ -36989,8 +36868,7 @@ exports.f1461=async function(rt,fn,self,args,newTarget,ctx,K){
                 if(rt.receiver(acc)){
                   break B30;
                 }else{
-                  r20=acc;
-                  acc=rt.runtime("ThrowIteratorResultNotAnObject",[r20],{});
+                  acc=rt.runtime("ThrowIteratorResultNotAnObject",[acc],{});
                   break B27;
                 }
               }
@@ -37361,7 +37239,7 @@ exports.f1461=async function(rt,fn,self,args,newTarget,ctx,K){
 // f1462 map
 exports.f1462=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4;
+  let acc,pending=HOLE,r0,r1,r2,r3;
     acc=rt.global("Number");
     r1=acc;
     acc=ctx[2];
@@ -37369,8 +37247,7 @@ exports.f1462=function(rt,fn,self,args,newTarget,ctx,K){
     acc=19888;
     r3=acc;
     acc="ou5S";
-    r4=acc;
-    acc=rt.call(r2,undefined,[r3,r4]);
+    acc=rt.call(r2,undefined,[r3,acc]);
     acc=r1[acc];
     r0=acc;
     acc=10;
@@ -37387,7 +37264,7 @@ exports.f1463=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1464=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10;
     r5=fn;
     r6=self;
     acc={};
@@ -37403,8 +37280,7 @@ exports.f1464=async function(rt,fn,self,args,newTarget,ctx,K){
       acc=10263;
       r10=acc;
       acc="s[W0";
-      r11=acc;
-      acc=rt.call(r1,undefined,[r10,r11]);
+      acc=rt.call(r1,undefined,[r10,acc]);
       acc=args[1][acc];
       r7=acc;
       acc=rt.call(r7,args[1],[]);
@@ -37540,7 +37416,7 @@ exports.f1464=async function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1465=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r3,r4,r5,r6;
+  let acc,pending=HOLE,r0,r1,r3,r4,r5;
     acc=ctx[5];
     if(acc===HOLE)throw new ReferenceError("Cannot access "+"_0x5f2623"+" before initialization");
     r0=acc;
@@ -37556,8 +37432,7 @@ exports.f1465=function(rt,fn,self,args,newTarget,ctx,K){
     acc=21253;
     r5=acc;
     acc="Cbvh";
-    r6=acc;
-    acc=rt.call(r0,undefined,[r5,r6]);
+    acc=rt.call(r0,undefined,[r5,acc]);
     r4=acc;
     acc=rt.call(r1,args[0],[r3,r4]);
     return acc;
@@ -37689,7 +37564,7 @@ exports.f1468=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1469=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20;
     r6=fn;
     r7=self;
     acc={};
@@ -37737,8 +37612,7 @@ exports.f1469=async function(rt,fn,self,args,newTarget,ctx,K){
                 acc=15493;
                 r20=acc;
                 acc="]K13";
-                r21=acc;
-                acc=rt.call(r1,undefined,[r20,r21]);
+                acc=rt.call(r1,undefined,[r20,acc]);
                 acc=args[0][acc];
                 r17=acc;
                 acc=rt.call(r17,args[0],[r2]);
@@ -39089,7 +38963,7 @@ exports.f1484=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1485=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15;
     r7=fn;
     r8=self;
     acc={};
@@ -39276,8 +39150,7 @@ exports.f1485=async function(rt,fn,self,args,newTarget,ctx,K){
       acc=7258;
       r15=acc;
       acc="sA1s";
-      r16=acc;
-      acc=rt.call(r1,undefined,[r15,r16]);
+      acc=rt.call(r1,undefined,[r15,acc]);
       acc=args[3][acc];
       r12=acc;
       acc=rt.call(r12,args[3],[]);
@@ -39476,7 +39349,7 @@ exports.f1491=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1492=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32,r33,r34,r35,r36,r37,r38;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32,r33,r34,r35,r36,r37;
     acc=rt.context(3,ctx);
     r21=ctx;
     ctx=acc;
@@ -40397,8 +40270,7 @@ exports.f1492=async function(rt,fn,self,args,newTarget,ctx,K){
                               acc=2935;
                               r37=acc;
                               acc="sA1s";
-                              r38=acc;
-                              acc=rt.call(r36,undefined,[r37,r38]);
+                              acc=rt.call(r36,undefined,[r37,acc]);
                               acc=args[0][acc];
                               r34=acc;
                               acc=rt.call(r34,args[0],[r12]);
@@ -40798,7 +40670,7 @@ exports.f1492=async function(rt,fn,self,args,newTarget,ctx,K){
 // f1493 map
 exports.f1493=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4;
+  let acc,pending=HOLE,r0,r1,r2,r3;
     acc=rt.global("Number");
     r1=acc;
     acc=ctx[2];
@@ -40806,8 +40678,7 @@ exports.f1493=function(rt,fn,self,args,newTarget,ctx,K){
     acc=11081;
     r3=acc;
     acc="%I%T";
-    r4=acc;
-    acc=rt.call(r2,undefined,[r3,r4]);
+    acc=rt.call(r2,undefined,[r3,acc]);
     acc=r1[acc];
     r0=acc;
     acc=10;
@@ -40832,14 +40703,13 @@ exports.f1495=function(rt,fn,self,args,newTarget,ctx,K){
 // f1496 catch
 exports.f1496=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2;
+  let acc,pending=HOLE,r0,r1;
     acc=ctx[2];
     r0=acc;
     acc=13333;
     r1=acc;
     acc="1kPD";
-    r2=acc;
-    acc=rt.call(r0,undefined,[r1,r2]);
+    acc=rt.call(r0,undefined,[r1,acc]);
     return acc;
 };
 // f1497 catch
@@ -40872,7 +40742,7 @@ exports.f1500=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1501=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17;
     r7=fn;
     r8=self;
     acc={};
@@ -41067,8 +40937,7 @@ exports.f1501=async function(rt,fn,self,args,newTarget,ctx,K){
       acc=13403;
       r17=acc;
       acc="OpDQ";
-      r18=acc;
-      acc=rt.call(r1,undefined,[r17,r18]);
+      acc=rt.call(r1,undefined,[r17,acc]);
       acc=args[1][acc];
       r15=acc;
       acc=rt.call(r13,args[0],[r15]);
@@ -41248,7 +41117,7 @@ exports.f1504=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1505=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9;
     r2=fn;
     r3=self;
     acc={};
@@ -41260,8 +41129,7 @@ exports.f1505=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=22802;
     r9=acc;
     acc="*VhR";
-    r10=acc;
-    acc=rt.call(r1,undefined,[r9,r10]);
+    acc=rt.call(r1,undefined,[r9,acc]);
     acc=args[0][acc];
     r6=acc;
     acc=rt.call(r6,args[0],[args[1]]);
@@ -41317,7 +41185,7 @@ exports.f1506=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1507=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9;
     r2=fn;
     r3=self;
     acc={};
@@ -41329,8 +41197,7 @@ exports.f1507=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=22952;
     r9=acc;
     acc="1kPD";
-    r10=acc;
-    acc=rt.call(r1,undefined,[r9,r10]);
+    acc=rt.call(r1,undefined,[r9,acc]);
     acc=args[0][acc];
     r6=acc;
     acc=rt.call(r6,args[0],[args[1]]);
@@ -41467,7 +41334,7 @@ exports.f1509=async function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1510=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r19;
     r8=fn;
     r9=self;
     acc={};
@@ -41566,8 +41433,7 @@ exports.f1510=async function(rt,fn,self,args,newTarget,ctx,K){
               acc=8495;
               r17=acc;
               acc="ou5S";
-              r18=acc;
-              acc=rt.call(r1,undefined,[r17,r18]);
+              acc=rt.call(r1,undefined,[r17,acc]);
               acc=r15[acc];
               r14=acc;
               acc=rt.global("Math");
@@ -41575,8 +41441,7 @@ exports.f1510=async function(rt,fn,self,args,newTarget,ctx,K){
               acc=12401;
               r19=acc;
               acc="OpDQ";
-              r20=acc;
-              acc=rt.call(r1,undefined,[r19,r20]);
+              acc=rt.call(r1,undefined,[r19,acc]);
               acc=r17[acc];
               r16=acc;
               acc=rt.call(r16,r17,[]);
@@ -41640,7 +41505,7 @@ exports.f1511=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1512=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10;
     acc=ctx[5];
     if(acc===HOLE)throw new ReferenceError("Cannot access "+"_0x5f2623"+" before initialization");
     r0=acc;
@@ -41656,8 +41521,7 @@ exports.f1512=function(rt,fn,self,args,newTarget,ctx,K){
     acc=21436;
     r10=acc;
     acc="9urW";
-    r11=acc;
-    acc=rt.call(r0,undefined,[r10,r11]);
+    acc=rt.call(r0,undefined,[r10,acc]);
     r9=acc;
     acc=rt.call(r6,args[0],[r8,r9]);
     r6=acc;
@@ -41749,7 +41613,7 @@ exports.f1512=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1513=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r6,r7,r8;
     r2=fn;
     r3=self;
     acc={};
@@ -41770,8 +41634,7 @@ exports.f1513=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=5113;
     r8=acc;
     acc="s[W0";
-    r9=acc;
-    acc=rt.call(r1,undefined,[r8,r9]);
+    acc=rt.call(r1,undefined,[r8,acc]);
     r7=acc;
     acc=rt.call(r6,undefined,[r7]);
     r6=acc;
@@ -41785,8 +41648,7 @@ exports.f1513=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=r4[acc];
     r3=acc;
     acc=rt.makeFunction("f1514",ctx,{thisValue:self,newTarget});
-    r5=acc;
-    acc=rt.call(r3,r4,[r5]);
+    acc=rt.call(r3,r4,[acc]);
     r4=acc;
     r3=r0;
     acc=r4;
@@ -41824,14 +41686,13 @@ exports.f1515=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1516=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8;
+  let acc,pending=HOLE,r0,r1,r3,r4,r5,r6,r7,r8;
     B2:{
       acc=fn[rt.constant(K[0])];
       if(acc===undefined){
         break B2;
       }else{
-        r2=acc;
-        acc=rt.call(r2,self,[]);
+        acc=rt.call(acc,self,[]);
         r1=self;
         break B2;
       }
@@ -41922,14 +41783,13 @@ exports.f1517=function(rt,fn,self,args,newTarget,ctx,K){
 // f1518 enabled
 exports.f1518=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r3,r4;
+  let acc,pending=HOLE,r0,r3;
     acc=rt.outer(ctx,1)[5];
     r0=acc;
     acc=16486;
     r3=acc;
     acc="iz(z";
-    r4=acc;
-    acc=rt.call(r0,undefined,[r3,r4]);
+    acc=rt.call(r0,undefined,[r3,acc]);
     acc=self[acc];
     acc=Boolean(acc);
     return acc;
@@ -43315,7 +43175,7 @@ exports.f1526=async function(rt,fn,self,args,newTarget,ctx,K){
 // f1527 execute
 exports.f1527=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12;
     r3=fn;
     r4=self;
     acc={};
@@ -43691,8 +43551,7 @@ exports.f1527=async function(rt,fn,self,args,newTarget,ctx,K){
                 acc=3642;
                 r12=acc;
                 acc="v%&5";
-                r13=acc;
-                acc=rt.call(r1,undefined,[r12,r13]);
+                acc=rt.call(r1,undefined,[r12,acc]);
                 acc=args[2][acc];
                 r10=acc;
                 acc=rt.call(r9,undefined,[r10]);
@@ -43805,7 +43664,7 @@ exports.f1531=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1532=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8;
     acc=rt.context(3,ctx);
     r1=ctx;
     ctx=acc;
@@ -43824,8 +43683,7 @@ exports.f1532=async function(rt,fn,self,args,newTarget,ctx,K){
     acc=11354;
     r8=acc;
     acc="d[0N";
-    r9=acc;
-    acc=rt.call(r7,undefined,[r8,r9]);
+    acc=rt.call(r7,undefined,[r8,acc]);
     acc=args[0][acc];
     r5=acc;
     acc=rt.call(r5,args[0],[args[1]]);
@@ -43867,7 +43725,7 @@ exports.f1532=async function(rt,fn,self,args,newTarget,ctx,K){
 // f1533 map
 exports.f1533=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4;
+  let acc,pending=HOLE,r0,r1,r2,r3;
     acc=ctx[2];
     r1=acc;
     acc=13515;
@@ -43885,15 +43743,14 @@ exports.f1533=function(rt,fn,self,args,newTarget,ctx,K){
     acc=6273;
     r3=acc;
     acc="rMir";
-    r4=acc;
-    acc=rt.call(r2,undefined,[r3,r4]);
+    acc=rt.call(r2,undefined,[r3,acc]);
     acc=args[0][acc];
     acc=r0+acc;
     return acc;
 };
 exports.f1534=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32,r33,r34,r35;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32,r33,r34;
     B3:{
       acc=ctx[5];
       if(acc===HOLE)throw new ReferenceError("Cannot access "+"_0x5f2623"+" before initialization");
@@ -44236,8 +44093,7 @@ exports.f1534=function(rt,fn,self,args,newTarget,ctx,K){
                                 acc=10891;
                                 r34=acc;
                                 acc="MnWs";
-                                r35=acc;
-                                acc=rt.call(r0,undefined,[r34,r35]);
+                                acc=rt.call(r0,undefined,[r34,acc]);
                                 acc=r16[acc];
                                 r31=acc;
                                 acc=1;
@@ -44542,7 +44398,7 @@ exports.f1534=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1535=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r4,r5;
+  let acc,pending=HOLE,r0,r1,r2,r4;
     acc=ctx[5];
     if(acc===HOLE)throw new ReferenceError("Cannot access "+"_0x5f2623"+" before initialization");
     r0=acc;
@@ -44557,8 +44413,7 @@ exports.f1535=function(rt,fn,self,args,newTarget,ctx,K){
         acc=9901;
         r4=acc;
         acc="d[0N";
-        r5=acc;
-        acc=rt.call(r0,undefined,[r4,r5]);
+        acc=rt.call(r0,undefined,[r4,acc]);
         acc=r2[acc];
         return acc;
       }catch(e3){
@@ -44664,7 +44519,7 @@ exports.f1536=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1537=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r7,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r7,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25;
     r11=fn;
     r12=self;
     acc={};
@@ -44898,8 +44753,7 @@ exports.f1537=async function(rt,fn,self,args,newTarget,ctx,K){
                             acc=11215;
                             r25=acc;
                             acc="]K13";
-                            r26=acc;
-                            acc=rt.call(r1,undefined,[r25,r26]);
+                            acc=rt.call(r1,undefined,[r25,acc]);
                             acc=args[0][acc];
                             r22=acc;
                             acc=rt.literal(K[12]);
@@ -45022,7 +44876,7 @@ exports.f1537=async function(rt,fn,self,args,newTarget,ctx,K){
 // f1538 execute
 exports.f1538=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r6,r7,r8,r9,r10,r11,r12;
     B2:{
       acc=rt.context(3,ctx);
       r3=ctx;
@@ -45033,8 +44887,7 @@ exports.f1538=function(rt,fn,self,args,newTarget,ctx,K){
       if(acc===undefined){
         break B2;
       }else{
-        r5=acc;
-        acc=rt.call(r5,self,[]);
+        acc=rt.call(acc,self,[]);
         r4=self;
         break B2;
       }
@@ -45172,8 +45025,7 @@ exports.f1538=function(rt,fn,self,args,newTarget,ctx,K){
             acc=3905;
             r12=acc;
             acc="jg)a";
-            r13=acc;
-            acc=rt.call(r11,undefined,[r12,r13]);
+            acc=rt.call(r11,undefined,[r12,acc]);
             acc=r2[acc];
             rt.own(r9,"pool",acc);
             acc=r9;
@@ -45223,7 +45075,7 @@ exports.f1538=function(rt,fn,self,args,newTarget,ctx,K){
 // f1539 response
 exports.f1539=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8;
     acc=ctx[2];
     r0=acc;
     r2=ctx;
@@ -45306,8 +45158,7 @@ exports.f1539=function(rt,fn,self,args,newTarget,ctx,K){
               acc=12632;
               r8=acc;
               acc="ou5S";
-              r9=acc;
-              acc=rt.call(r0,undefined,[r8,r9]);
+              acc=rt.call(r0,undefined,[r8,acc]);
               acc=r6[acc];
               r6=acc;
               acc=rt.call(r3,r4,[r1,r6]);
@@ -45331,7 +45182,7 @@ exports.f1539=function(rt,fn,self,args,newTarget,ctx,K){
 // f1540 raceCall
 exports.f1540=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
+  let acc,pending=HOLE,r0,r2,r3,r4;
     acc=ctx[2];
     r0=acc;
     acc=undefined;
@@ -45353,11 +45204,9 @@ exports.f1540=function(rt,fn,self,args,newTarget,ctx,K){
     acc=13093;
     r4=acc;
     acc="QgKz";
-    r5=acc;
-    acc=rt.call(r3,undefined,[r4,r5]);
+    acc=rt.call(r3,undefined,[r4,acc]);
     acc=r2[acc];
-    r1=acc;
-    acc=rt.call(r1,r2,[]);
+    acc=rt.call(acc,r2,[]);
     rt.own(self,r0,acc);
     acc=ctx[6];
     r0=acc;
@@ -45510,7 +45359,7 @@ exports.f1542=function(rt,fn,self,args,newTarget,ctx,K){
 // f1543 setCsrfOwnership
 exports.f1543=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7;
     B18:{
       acc=rt.context(4,ctx);
       r0=ctx;
@@ -45746,8 +45595,7 @@ exports.f1543=function(rt,fn,self,args,newTarget,ctx,K){
                 acc=19211;
                 r7=acc;
                 acc="MnWs";
-                r8=acc;
-                acc=rt.call(r6,undefined,[r7,r8]);
+                acc=rt.call(r6,undefined,[r7,acc]);
                 acc=r5[acc];
                 acc=r4-acc;
                 acc=r3+acc;
@@ -45839,7 +45687,7 @@ exports.f1544=function(rt,fn,self,args,newTarget,ctx,K){
 // f1545 page
 exports.f1545=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4;
+  let acc,pending=HOLE,r0,r1,r2,r3;
     acc=ctx[2];
     r1=acc;
     acc=ctx[3];
@@ -45847,8 +45695,7 @@ exports.f1545=function(rt,fn,self,args,newTarget,ctx,K){
     acc=13559;
     r3=acc;
     acc="8#8#";
-    r4=acc;
-    acc=rt.call(r2,undefined,[r3,r4]);
+    acc=rt.call(r2,undefined,[r3,acc]);
     acc=r1[acc];
     r0=acc;
     acc=true;
@@ -45859,21 +45706,20 @@ exports.f1545=function(rt,fn,self,args,newTarget,ctx,K){
 // f1546 blockedPageRequests
 exports.f1546=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r3,r4;
+  let acc,pending=HOLE,r0,r3;
     acc=rt.outer(ctx,1)[5];
     r0=acc;
     acc=8519;
     r3=acc;
     acc="Cbvh";
-    r4=acc;
-    acc=rt.call(r0,undefined,[r3,r4]);
+    acc=rt.call(r0,undefined,[r3,acc]);
     acc=self[acc];
     return acc;
 };
 // f1547 refuseRequest
 exports.f1547=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12;
     B3:{
       r0=args[0];
       acc=args[1];
@@ -46085,8 +45931,7 @@ exports.f1547=function(rt,fn,self,args,newTarget,ctx,K){
                       acc=16914;
                       r12=acc;
                       acc="rkuw";
-                      r13=acc;
-                      acc=rt.call(r2,undefined,[r12,r13]);
+                      acc=rt.call(r2,undefined,[r12,acc]);
                       acc=r0[acc];
                       r10=acc;
                       acc=rt.call(r9,undefined,[r10]);
@@ -46152,7 +45997,7 @@ exports.f1547=function(rt,fn,self,args,newTarget,ctx,K){
 // f1548 isOwnRequest
 exports.f1548=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7;
     B2:{
       acc=rt.outer(ctx,1)[5];
       r0=acc;
@@ -46213,8 +46058,7 @@ exports.f1548=function(rt,fn,self,args,newTarget,ctx,K){
               acc=18843;
               r7=acc;
               acc="9urW";
-              r8=acc;
-              acc=rt.call(r0,undefined,[r7,r8]);
+              acc=rt.call(r0,undefined,[r7,acc]);
               acc=args[0][acc];
               r4=acc;
               acc="?";
@@ -46247,7 +46091,7 @@ exports.f1548=function(rt,fn,self,args,newTarget,ctx,K){
 // f1549 installCsrfStamp
 exports.f1549=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13;
     acc=rt.context(4,ctx);
     r2=ctx;
     ctx=acc;
@@ -46438,8 +46282,7 @@ exports.f1549=async function(rt,fn,self,args,newTarget,ctx,K){
                   acc=23503;
                   r13=acc;
                   acc="@Yk*";
-                  r14=acc;
-                  acc=rt.call(r12,undefined,[r13,r14]);
+                  acc=rt.call(r12,undefined,[r13,acc]);
                   acc=r11[acc];
                   break B13;
                 }
@@ -46506,7 +46349,7 @@ exports.f1549=async function(rt,fn,self,args,newTarget,ctx,K){
 // f1550 route
 exports.f1550=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16;
     acc=rt.context(4,ctx);
     r3=ctx;
     ctx=acc;
@@ -46765,8 +46608,7 @@ exports.f1550=function(rt,fn,self,args,newTarget,ctx,K){
                           acc=12183;
                           r16=acc;
                           acc="rMir";
-                          r17=acc;
-                          acc=rt.call(r15,undefined,[r16,r17]);
+                          acc=rt.call(r15,undefined,[r16,acc]);
                           acc=r14[acc];
                           r13=acc;
                           acc=rt.call(r13,r14,[]);
@@ -46948,7 +46790,7 @@ exports.f1550=function(rt,fn,self,args,newTarget,ctx,K){
 // f1551 catch
 exports.f1551=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4;
     acc=ctx[2];
     r2=acc;
     acc=ctx[3];
@@ -46956,8 +46798,7 @@ exports.f1551=function(rt,fn,self,args,newTarget,ctx,K){
     acc=21032;
     r4=acc;
     acc="b!6h";
-    r5=acc;
-    acc=rt.call(r3,undefined,[r4,r5]);
+    acc=rt.call(r3,undefined,[r4,acc]);
     acc=r2[acc];
     r1=acc;
     acc=rt.call(r1,r2,[]);
@@ -46986,7 +46827,7 @@ exports.f1552=function(rt,fn,self,args,newTarget,ctx,K){
 // f1553 catch
 exports.f1553=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4;
     acc=ctx[2];
     r2=acc;
     acc=ctx[3];
@@ -46994,8 +46835,7 @@ exports.f1553=function(rt,fn,self,args,newTarget,ctx,K){
     acc=2421;
     r4=acc;
     acc="OpDQ";
-    r5=acc;
-    acc=rt.call(r3,undefined,[r4,r5]);
+    acc=rt.call(r3,undefined,[r4,acc]);
     acc=r2[acc];
     r1=acc;
     acc=rt.call(r1,r2,[]);
@@ -47038,21 +46878,20 @@ exports.f1556=function(rt,fn,self,args,newTarget,ctx,K){
 // f1557 currentCsrf
 exports.f1557=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r3,r4;
+  let acc,pending=HOLE,r0,r3;
     acc=rt.outer(ctx,1)[5];
     r0=acc;
     acc=6510;
     r3=acc;
     acc="]K13";
-    r4=acc;
-    acc=rt.call(r0,undefined,[r3,r4]);
+    acc=rt.call(r0,undefined,[r3,acc]);
     acc=self[acc];
     return acc;
 };
 // f1558 setCsrf
 exports.f1558=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
+  let acc,pending=HOLE,r0,r2,r3,r4,r5;
     B4:{
       acc=rt.outer(ctx,1)[5];
       r0=acc;
@@ -47068,8 +46907,7 @@ exports.f1558=function(rt,fn,self,args,newTarget,ctx,K){
         r5=acc;
         acc=rt.call(r0,undefined,[r4,r5]);
         acc=r2[acc];
-        r1=acc;
-        acc=rt.call(r1,r2,[args[0]]);
+        acc=rt.call(acc,r2,[args[0]]);
         if(!acc){
           break B4;
         }else{
@@ -47111,21 +46949,20 @@ exports.f1558=function(rt,fn,self,args,newTarget,ctx,K){
 // f1559 csrfToken
 exports.f1559=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r3,r4;
+  let acc,pending=HOLE,r0,r3;
     acc=rt.outer(ctx,1)[5];
     r0=acc;
     acc=14187;
     r3=acc;
     acc="S)Et";
-    r4=acc;
-    acc=rt.call(r0,undefined,[r3,r4]);
+    acc=rt.call(r0,undefined,[r3,acc]);
     acc=self[acc];
     return acc;
 };
 // f1560 resyncCsrf
 exports.f1560=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7;
     B12:{
       B6:{
         acc=rt.outer(ctx,1)[5];
@@ -47196,8 +47033,7 @@ exports.f1560=function(rt,fn,self,args,newTarget,ctx,K){
                 acc=1002;
                 r7=acc;
                 acc="S)Et";
-                r8=acc;
-                acc=rt.call(r0,undefined,[r7,r8]);
+                acc=rt.call(r0,undefined,[r7,acc]);
                 acc=args[0][acc];
                 r4=acc;
                 acc=0;
@@ -47567,7 +47403,7 @@ exports.f1562=function(rt,fn,self,args,newTarget,ctx,K){
 // f1563 yAlt
 exports.f1563=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8;
     B2:{
       acc=rt.outer(ctx,1)[5];
       r0=acc;
@@ -47693,8 +47529,7 @@ exports.f1563=function(rt,fn,self,args,newTarget,ctx,K){
                 acc=17238;
                 r8=acc;
                 acc="JT7O";
-                r9=acc;
-                acc=rt.call(r0,undefined,[r8,r9]);
+                acc=rt.call(r0,undefined,[r8,acc]);
                 acc=r6+acc;
                 r6=acc;
                 acc=rt.call(r4,r5,[r6]);
@@ -48018,7 +47853,7 @@ exports.f1564=function(rt,fn,self,args,newTarget,ctx,K){
 // f1565 sendViaWebTls
 exports.f1565=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32,r33;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32;
     acc=rt.context(4,ctx);
     r18=ctx;
     ctx=acc;
@@ -48352,8 +48187,7 @@ exports.f1565=async function(rt,fn,self,args,newTarget,ctx,K){
                   acc=17441;
                   r32=acc;
                   acc="4dr8";
-                  r33=acc;
-                  acc=rt.call(r31,undefined,[r32,r33]);
+                  acc=rt.call(r31,undefined,[r32,acc]);
                   acc=r9[acc];
                   r29=acc;
                   acc=rt.call(r29,r9,[]);
@@ -49033,7 +48867,7 @@ exports.f1566=function(rt,fn,self,args,newTarget,ctx,K){
 // f1567 forEach
 exports.f1567=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4;
+  let acc,pending=HOLE,r0,r1,r2,r3;
     acc=ctx[3];
     r1=acc;
     acc=ctx[2];
@@ -49041,8 +48875,7 @@ exports.f1567=function(rt,fn,self,args,newTarget,ctx,K){
     acc=10796;
     r3=acc;
     acc="s[W0";
-    r4=acc;
-    acc=rt.call(r2,undefined,[r3,r4]);
+    acc=rt.call(r2,undefined,[r3,acc]);
     acc=r1[acc];
     r0=acc;
     acc=": ";
@@ -49064,7 +48897,7 @@ exports.f1568=function(rt,fn,self,args,newTarget,ctx,K){
 // f1569 sessionTls
 exports.f1569=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r5,r6,r7;
+  let acc,pending=HOLE,r0,r1,r2,r3,r5,r6;
     acc=rt.outer(ctx,1)[5];
     r0=acc;
     acc=11193;
@@ -49104,8 +48937,7 @@ exports.f1569=function(rt,fn,self,args,newTarget,ctx,K){
             acc=14373;
             r6=acc;
             acc="RuQs";
-            r7=acc;
-            acc=rt.call(r0,undefined,[r6,r7]);
+            acc=rt.call(r0,undefined,[r6,acc]);
             acc=r2[acc];
             r3=acc;
             acc=rt.call(r3,r2,[args[0]]);
@@ -49450,7 +49282,7 @@ exports.f1571=async function(rt,fn,self,args,newTarget,ctx,K){
 // f1572 withLock
 exports.f1572=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9=newTarget,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9=newTarget,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27;
     acc=rt.context(3,ctx);
     r12=ctx;
     ctx=acc;
@@ -50189,8 +50021,7 @@ exports.f1572=async function(rt,fn,self,args,newTarget,ctx,K){
                               acc=15822;
                               r27=acc;
                               acc="nWFp";
-                              r28=acc;
-                              acc=rt.call(r26,undefined,[r27,r28]);
+                              acc=rt.call(r26,undefined,[r27,acc]);
                               acc=r25[acc];
                               break B41;
                             }
@@ -50758,7 +50589,7 @@ exports.f1572=async function(rt,fn,self,args,newTarget,ctx,K){
 // f1573 slice
 exports.f1573=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r2,r3,r4;
+  let acc,pending=HOLE,r0,r2,r3;
     B3:{
       acc=args[0];
       if(!acc){
@@ -50770,8 +50601,7 @@ exports.f1573=function(rt,fn,self,args,newTarget,ctx,K){
         acc=3220;
         r3=acc;
         acc="]K13";
-        r4=acc;
-        acc=rt.call(r2,undefined,[r3,r4]);
+        acc=rt.call(r2,undefined,[r3,acc]);
         acc=args[0][acc];
         r0=acc;
         acc=0;
@@ -51214,7 +51044,7 @@ exports.f1576=async function(rt,fn,self,args,newTarget,ctx,K){
 // f1577 include
 exports.f1577=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7;
     acc=rt.context(3,ctx);
     r0=ctx;
     ctx=acc;
@@ -51247,8 +51077,7 @@ exports.f1577=function(rt,fn,self,args,newTarget,ctx,K){
     acc=13300;
     r7=acc;
     acc="ou5S";
-    r8=acc;
-    acc=rt.call(r6,undefined,[r7,r8]);
+    acc=rt.call(r6,undefined,[r7,acc]);
     r6=acc;
     acc=rt.call(r5,undefined,[r6]);
     r5=acc;
@@ -51300,7 +51129,7 @@ exports.f1577=function(rt,fn,self,args,newTarget,ctx,K){
 // f1578 then
 exports.f1578=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
     B3:{
       acc=rt.outer(ctx,2)[2];
       r1=acc;
@@ -51351,8 +51180,7 @@ exports.f1578=function(rt,fn,self,args,newTarget,ctx,K){
         acc=13824;
         r5=acc;
         acc="o^v]";
-        r6=acc;
-        acc=rt.call(r4,undefined,[r5,r6]);
+        acc=rt.call(r4,undefined,[r5,acc]);
         acc=args[0][acc];
         acc=r2+acc;
         r2=acc;
@@ -51366,7 +51194,7 @@ exports.f1578=function(rt,fn,self,args,newTarget,ctx,K){
 // f1579 catch
 exports.f1579=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4;
     B3:{
       acc=rt.outer(ctx,2)[2];
       r1=acc;
@@ -51414,8 +51242,7 @@ exports.f1579=function(rt,fn,self,args,newTarget,ctx,K){
         acc=6529;
         r4=acc;
         acc="rkuw";
-        r5=acc;
-        acc=rt.call(r3,undefined,[r4,r5]);
+        acc=rt.call(r3,undefined,[r4,acc]);
         acc=r2+acc;
         r2=acc;
         acc=rt.call(r0,r1,[r2]);
@@ -51428,7 +51255,7 @@ exports.f1579=function(rt,fn,self,args,newTarget,ctx,K){
 // f1580 include
 exports.f1580=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1;
+  let acc,pending=HOLE,r0;
     acc=rt.context(9,ctx);
     r0=ctx;
     ctx=acc;
@@ -51459,14 +51286,13 @@ exports.f1580=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.makeFunction("f1582",ctx,{thisValue:self,newTarget});
     ctx[8]=acc;
     acc=ctx[8];
-    r1=acc;
-    acc=rt.call(r1,undefined,[]);
+    acc=rt.call(acc,undefined,[]);
     acc=undefined;
     return acc;
 };
 exports.f1581=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0;
+  let acc,pending=HOLE;
     B2:{
       acc=ctx[5];
       if(acc){
@@ -51475,8 +51301,7 @@ exports.f1581=function(rt,fn,self,args,newTarget,ctx,K){
         acc=true;
         ctx[5]=acc;
         acc=ctx[2];
-        r0=acc;
-        acc=rt.call(r0,undefined,[args[0]]);
+        acc=rt.call(acc,undefined,[args[0]]);
         break B2;
       }
     }
@@ -51485,7 +51310,7 @@ exports.f1581=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f1582=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
     acc=rt.context(3,ctx);
     r1=ctx;
     ctx=acc;
@@ -51531,8 +51356,7 @@ exports.f1582=function(rt,fn,self,args,newTarget,ctx,K){
               acc=4891;
               r5=acc;
               acc="G]71";
-              r6=acc;
-              acc=rt.call(r4,undefined,[r5,r6]);
+              acc=rt.call(r4,undefined,[r5,acc]);
               acc=r3[acc];
               r2=acc;
               acc=rt.makeFunction("f1583",ctx,{thisValue:self,newTarget});
@@ -51580,7 +51404,7 @@ exports.f1582=function(rt,fn,self,args,newTarget,ctx,K){
 // f1583 then
 exports.f1583=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4;
+  let acc,pending=HOLE,r0,r1,r3;
     B11:{
       acc=ctx[2];
       r0=acc;
@@ -51603,8 +51427,7 @@ exports.f1583=function(rt,fn,self,args,newTarget,ctx,K){
               acc=19658;
               r3=acc;
               acc="WyZ@";
-              r4=acc;
-              acc=rt.call(r0,undefined,[r3,r4]);
+              acc=rt.call(r0,undefined,[r3,acc]);
               acc=args[0][acc];
               r1=acc;
               acc=400;
@@ -51658,8 +51481,7 @@ exports.f1583=function(rt,fn,self,args,newTarget,ctx,K){
             acc=rt.outer(ctx,1)[7];
             r1=acc;
             acc=rt.outer(ctx,1)[6];
-            r2=acc;
-            acc=rt.call(r1,undefined,[r2]);
+            acc=rt.call(r1,undefined,[acc]);
             break B11;
           }
         }
@@ -51671,7 +51493,7 @@ exports.f1583=function(rt,fn,self,args,newTarget,ctx,K){
 // f1584 bm_mi
 exports.f1584=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7;
+  let acc,pending=HOLE,r0,r1,r3,r4,r5,r6;
     B2:{
       acc=rt.context(4,ctx);
       r0=ctx;
@@ -51684,8 +51506,7 @@ exports.f1584=function(rt,fn,self,args,newTarget,ctx,K){
       if(acc===undefined){
         break B2;
       }else{
-        r2=acc;
-        acc=rt.call(r2,self,[]);
+        acc=rt.call(acc,self,[]);
         r1=self;
         break B2;
       }
@@ -51735,8 +51556,7 @@ exports.f1584=function(rt,fn,self,args,newTarget,ctx,K){
     acc=10070;
     r6=acc;
     acc="]TXZ";
-    r7=acc;
-    acc=rt.call(r5,undefined,[r6,r7]);
+    acc=rt.call(r5,undefined,[r6,acc]);
     r5=acc;
     acc=rt.makeFunction("f1585",ctx,{thisValue:self,newTarget});
     r6=acc;
@@ -51747,7 +51567,7 @@ exports.f1584=function(rt,fn,self,args,newTarget,ctx,K){
 // f1585 response
 exports.f1585=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8;
     acc=ctx[3];
     r0=acc;
     r2=ctx;
@@ -51768,8 +51588,7 @@ exports.f1585=function(rt,fn,self,args,newTarget,ctx,K){
             acc=19521;
             r8=acc;
             acc="57pP";
-            r9=acc;
-            acc=rt.call(r0,undefined,[r8,r9]);
+            acc=rt.call(r0,undefined,[r8,acc]);
             acc=args[0][acc];
             r5=acc;
             acc=rt.call(r5,args[0],[]);
@@ -51930,28 +51749,26 @@ exports.f1587=function(rt,fn,self,args,newTarget,ctx,K){
 // f1588 score
 exports.f1588=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r3,r4;
+  let acc,pending=HOLE,r0,r3;
     acc=rt.outer(ctx,1)[5];
     r0=acc;
     acc=3781;
     r3=acc;
     acc="7u]a";
-    r4=acc;
-    acc=rt.call(r0,undefined,[r3,r4]);
+    acc=rt.call(r0,undefined,[r3,acc]);
     acc=self[acc];
     return acc;
 };
 // f1589 scoreHistory
 exports.f1589=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r5,r6;
+  let acc,pending=HOLE,r0,r5;
     acc=rt.outer(ctx,1)[5];
     r0=acc;
     acc=13386;
     r5=acc;
     acc="a3QL";
-    r6=acc;
-    acc=rt.call(r0,undefined,[r5,r6]);
+    acc=rt.call(r0,undefined,[r5,acc]);
     acc=self[acc];
     acc=[...acc];
     return acc;
@@ -52054,4 +51871,448 @@ exports.f1590=function(rt,fn,self,args,newTarget,ctx,K){
     }
     acc=undefined;
     return acc;
+};
+// f1591 shouldRefresh
+exports.f1591=function(rt,fn,self,args,newTarget,ctx,K){
+  const{HOLE}=rt;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5;
+    B3:{
+      acc=args[0];
+      if(acc!==undefined){
+        acc=args[0];
+        break B3;
+      }else{
+        acc=rt.outer(ctx,1)[772];
+        if(acc===HOLE)throw new ReferenceError("Cannot access "+"ed"+" before initialization");
+        r2=acc;
+        acc=rt.outer(ctx,1)[5];
+        r3=acc;
+        acc=17473;
+        r4=acc;
+        acc="rMir";
+        r5=acc;
+        acc=rt.call(r3,undefined,[r4,r5]);
+        acc=r2[acc];
+        break B3;
+      }
+    }
+    r0=acc;
+    acc=rt.outer(ctx,1)[5];
+    r1=acc;
+    acc=10691;
+    r4=acc;
+    acc="QgKz";
+    r5=acc;
+    acc=rt.call(r1,undefined,[r4,r5]);
+    acc=self[acc];
+    r2=acc;
+    acc=r0;
+    acc=r2>acc;
+    return acc;
+};
+// f1592 fastRefresh
+exports.f1592=async function(rt,fn,self,args,newTarget,ctx,K){
+  const{HOLE}=rt;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10;
+    r2=fn;
+    r3=self;
+    acc={};
+    r0=acc;
+    r2=ctx;
+    acc=rt.outer(ctx,1)[5];
+    r1=acc;
+    acc=16802;
+    r5=acc;
+    acc="NqM3";
+    r6=acc;
+    acc=rt.call(r1,undefined,[r5,r6]);
+    acc=self[acc];
+    if(!acc){
+      acc=4178;
+      r5=acc;
+      acc="QgKz";
+      r6=acc;
+      acc=rt.call(r1,undefined,[r5,r6]);
+      r4=acc;
+      acc=23108;
+      r8=acc;
+      acc="MnWs";
+      r9=acc;
+      acc=rt.call(r1,undefined,[r8,r9]);
+      acc=self[acc];
+      r5=acc;
+      acc=rt.call(r5,self,[]);
+      self[r4]=acc;
+      acc=HOLE;
+      r5=acc;
+      r6=ctx;
+      B7:{
+        B5:{
+          B6:{
+            try{
+              acc=17363;
+              r9=acc;
+              acc="OpDQ";
+              r10=acc;
+              acc=rt.call(r1,undefined,[r9,r10]);
+              acc=self[acc];
+              r8=acc;
+              r7=r0;
+              r7=await r8;
+              r8=0;
+              acc=true;
+              break B5;
+            }catch(e11){
+              acc=e11;ctx=r6;
+              break B6;
+            }
+          }
+          r4=acc;
+          acc=0;
+          r3=acc;
+          acc=HOLE;
+          {const previous=pending;pending=acc;acc=previous;}
+          r5=acc;
+          break B7;
+        }
+        acc=-1;
+        r4=acc;
+        r3=acc;
+        break B7;
+      }
+      acc=20002;
+      r9=acc;
+      acc="0vo)";
+      r10=acc;
+      acc=rt.call(r1,undefined,[r9,r10]);
+      r8=acc;
+      acc=null;
+      self[r8]=acc;
+      acc=0;
+      acc=r3===acc;
+      if(acc===false){
+        acc=undefined;
+        r4=acc;
+        r3=r0;
+        acc=r4;
+        return acc;
+      }else{
+        acc=r5;
+        {const previous=pending;pending=acc;acc=previous;}
+        acc=r4;
+        throw acc;
+      }
+    }else{
+      acc=2741;
+      r5=acc;
+      acc="ZYwv";
+      r6=acc;
+      acc=rt.call(r1,undefined,[r5,r6]);
+      acc=self[acc];
+      r4=acc;
+      r3=r0;
+      r3=await r4;
+      r4=0;
+      acc=true;
+      acc=undefined;
+      r4=acc;
+      r3=r0;
+      acc=r4;
+      return acc;
+    }
+};
+// f1593 refreshViaBackgroundPage
+exports.f1593=async function(rt,fn,self,args,newTarget,ctx,K){
+  const{HOLE}=rt;
+  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20;
+    r8=fn;
+    r9=self;
+    acc={};
+    r0=acc;
+    r8=ctx;
+    acc=rt.outer(ctx,1)[5];
+    r1=acc;
+    acc=22115;
+    r12=acc;
+    acc="a3QL";
+    r13=acc;
+    acc=rt.call(r1,undefined,[r12,r13]);
+    acc=self[acc];
+    r10=acc;
+    acc=11070;
+    r12=acc;
+    acc="1kPD";
+    r13=acc;
+    acc=rt.call(r1,undefined,[r12,r13]);
+    acc=r10[acc];
+    r9=acc;
+    acc=rt.call(r9,r10,[]);
+    r2=acc;
+    acc=5000;
+    r3=acc;
+    acc=null;
+    r4=acc;
+    acc=rt.global("Date");
+    r10=acc;
+    acc=7336;
+    r12=acc;
+    acc="nWFp";
+    r13=acc;
+    acc=rt.call(r1,undefined,[r12,r13]);
+    acc=r10[acc];
+    r9=acc;
+    acc=rt.call(r9,r10,[]);
+    r5=acc;
+    acc=0;
+    r6=acc;
+    acc=HOLE;
+    r11=acc;
+    r12=ctx;
+    B8:{
+      B6:{
+        B7:{
+          try{
+            r13=ctx;
+            B4:{
+              B5:{
+                try{
+                  acc=20448;
+                  r17=acc;
+                  acc="RuQs";
+                  r18=acc;
+                  acc=rt.call(r1,undefined,[r17,r18]);
+                  acc=r2[acc];
+                  r14=acc;
+                  acc=rt.call(r14,r2,[]);
+                  r15=acc;
+                  r14=r0;
+                  r14=await r15;
+                  r15=0;
+                  acc=true;
+                  r4=r14;
+                  acc=17224;
+                  r18=acc;
+                  acc="]TXZ";
+                  r19=acc;
+                  acc=rt.call(r1,undefined,[r18,r19]);
+                  acc=r4[acc];
+                  r15=acc;
+                  acc=3192;
+                  r19=acc;
+                  acc="hm$n";
+                  r20=acc;
+                  acc=rt.call(r1,undefined,[r19,r20]);
+                  acc=self[acc];
+                  r17=acc;
+                  acc=rt.literal(K[11]);
+                  r18=acc;
+                  acc=10572;
+                  r20=acc;
+                  acc="*VhR";
+                  acc=rt.call(r1,undefined,[r20,acc]);
+                  rt.own(r18,"waitUntil",acc);
+                  acc=r3;
+                  rt.own(r18,"timeout",acc);
+                  acc=rt.call(r15,r4,[r17,r18]);
+                  r15=acc;
+                  acc=23805;
+                  r17=acc;
+                  acc="OpDQ";
+                  r18=acc;
+                  acc=rt.call(r1,undefined,[r17,r18]);
+                  acc=r15[acc];
+                  r14=acc;
+                  acc=rt.makeFunction("f1594",ctx,{thisValue:self,newTarget});
+                  r16=acc;
+                  acc=rt.call(r14,r15,[r16]);
+                  r15=acc;
+                  r14=r0;
+                  r14=await r15;
+                  r15=0;
+                  acc=true;
+                  acc=rt.global("Date");
+                  r15=acc;
+                  acc=9979;
+                  r17=acc;
+                  acc="S)Et";
+                  r18=acc;
+                  acc=rt.call(r1,undefined,[r17,r18]);
+                  acc=r15[acc];
+                  r14=acc;
+                  acc=rt.call(r14,r15,[]);
+                  r14=acc;
+                  acc=r5;
+                  acc=r14-acc;
+                  r6=acc;
+                  break B4;
+                }catch(e17){
+                  acc=e17;ctx=r13;
+                  break B5;
+                }
+              }
+              acc=HOLE;
+              {const previous=pending;pending=acc;acc=previous;}
+              acc=r13;
+              break B6;
+            }
+            break B6;
+          }catch(e18){
+            acc=e18;ctx=r12;
+            break B7;
+          }
+        }
+        r10=acc;
+        acc=0;
+        r9=acc;
+        acc=HOLE;
+        {const previous=pending;pending=acc;acc=previous;}
+        r11=acc;
+        break B8;
+      }
+      acc=-1;
+      r10=acc;
+      r9=acc;
+      break B8;
+    }
+    B10:{
+      acc=r4;
+      if(!acc){
+        break B10;
+      }else{
+        acc=20180;
+        r17=acc;
+        acc="57pP";
+        r18=acc;
+        acc=rt.call(r1,undefined,[r17,r18]);
+        acc=r4[acc];
+        r14=acc;
+        acc=rt.call(r14,r4,[]);
+        r14=acc;
+        acc=3043;
+        r16=acc;
+        acc="ou5S";
+        r17=acc;
+        acc=rt.call(r1,undefined,[r16,r17]);
+        acc=r14[acc];
+        r13=acc;
+        acc=rt.makeFunction("f1595",ctx,{thisValue:self,newTarget});
+        r15=acc;
+        acc=rt.call(r13,r14,[r15]);
+        r14=acc;
+        r13=r0;
+        r13=await r14;
+        r14=0;
+        acc=true;
+        acc=r13;
+        break B10;
+      }
+    }
+    acc=0;
+    acc=r9===acc;
+    if(acc===false){
+      B15:{
+        acc=4155;
+        r11=acc;
+        acc="d[0N";
+        r12=acc;
+        acc=rt.call(r1,undefined,[r11,r12]);
+        acc=self[acc];
+        if(!acc){
+          acc=2000;
+          r9=acc;
+          acc=rt.global("Math");
+          r11=acc;
+          acc=23898;
+          r13=acc;
+          acc="s[W0";
+          r14=acc;
+          acc=rt.call(r1,undefined,[r13,r14]);
+          acc=r11[acc];
+          r10=acc;
+          acc=rt.global("Math");
+          r13=acc;
+          acc=17856;
+          r15=acc;
+          acc="NqM3";
+          r16=acc;
+          acc=rt.call(r1,undefined,[r15,r16]);
+          acc=r13[acc];
+          r12=acc;
+          acc=rt.call(r12,r13,[]);
+          acc=acc*2000;
+          r12=acc;
+          acc=rt.call(r10,r11,[r12]);
+          acc=r9+acc;
+          break B15;
+        }else{
+          acc=16902;
+          r12=acc;
+          acc="G]71";
+          r13=acc;
+          acc=rt.call(r1,undefined,[r12,r13]);
+          acc=self[acc];
+          r9=acc;
+          acc=rt.call(r9,self,[]);
+          break B15;
+        }
+      }
+      r7=acc;
+      acc=13956;
+      r13=acc;
+      acc="rkuw";
+      r14=acc;
+      acc=rt.call(r1,undefined,[r13,r14]);
+      acc=self[acc];
+      r11=acc;
+      acc=18585;
+      r13=acc;
+      acc="Y(mF";
+      r14=acc;
+      acc=rt.call(r1,undefined,[r13,r14]);
+      acc=r11[acc];
+      r10=acc;
+      acc=rt.global("Math");
+      r13=acc;
+      acc=20949;
+      r15=acc;
+      acc="hm$n";
+      r16=acc;
+      acc=rt.call(r1,undefined,[r15,r16]);
+      acc=r13[acc];
+      r12=acc;
+      acc=0;
+      r14=acc;
+      acc=r6;
+      acc=r7-acc;
+      r15=acc;
+      acc=rt.call(r12,r13,[r14,r15]);
+      r12=acc;
+      acc=rt.call(r10,r11,[r12]);
+      r10=acc;
+      acc=5194;
+      r12=acc;
+      acc="]TXZ";
+      r13=acc;
+      acc=rt.call(r1,undefined,[r12,r13]);
+      acc=r10[acc];
+      r9=acc;
+      acc=rt.makeFunction("f1596",ctx,{thisValue:self,newTarget});
+      r11=acc;
+      acc=rt.call(r9,r10,[r11]);
+      r10=acc;
+      r9=r0;
+      r9=await r10;
+      r10=0;
+      acc=true;
+      acc=undefined;
+      r10=acc;
+      r9=r0;
+      acc=r10;
+      return acc;
+    }else{
+      acc=r11;
+      {const previous=pending;pending=acc;acc=previous;}
+      acc=r10;
+      throw acc;
+    }
 };

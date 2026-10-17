@@ -46,6 +46,42 @@ function plainRejection(handlerBlock) {
   return handlerBlock.rows.slice(0,intrinsic).every(row=>/^Star\d*$/.test(row[1])||['LdaTheHole','SetPendingMessage','Mov'].includes(row[1]));
 }
 
+// Drops a register that only ever copies the accumulator and is read exactly once, right after the copy:
+//   rN=acc; <next statement using rN>   =>   <next statement with rN replaced by acc>
+// Safe because nothing executes between the two statements, so acc still holds the same value: this substitutes
+// one side-effect-free read for another, never reordering any computation. Gated on the register's TOTAL token
+// count across the whole function (both blocks' lines joined) being exactly 2 (the copy plus that one use), so a
+// register read or written anywhere else in the function is left untouched. Runs per block, since adjacency only
+// holds within a single straight-line basic block.
+function inlineStarCopies(blockLines) {
+  const totalCount=new Map();
+  for(const lines of blockLines.values())for(const line of lines)for(const match of line.matchAll(/\br(\d+)\b/g)) {
+    const n=Number(match[1]);
+    totalCount.set(n,(totalCount.get(n)??0)+1);
+  }
+  for(const[block,lines]of blockLines) {
+    const out=[];
+    for(let index=0;index<lines.length;index++) {
+      const line=lines[index];
+      const star=/^r(\d+)=acc;$/.exec(line);
+      if(star) {
+        const n=Number(star[1]);
+        const next=lines[index+1];
+        if(totalCount.get(n)===2&&next!==undefined) {
+          const use=new RegExp('\\br'+n+'\\b');
+          if(use.test(next)&&!new RegExp('^r'+n+'=').test(next)) {
+            out.push(next.replace(use,'acc'));
+            index++;
+            continue;
+          }
+        }
+      }
+      out.push(line);
+    }
+    blockLines.set(block,out);
+  }
+}
+
 // Compiles one recovered definition to JavaScript source: `exports.<id>=function(rt,fn,self,args,newTarget,ctx,K){...}`.
 // Throws Unsupported for shapes that are not translated yet; those functions keep running in the interpreter.
 function compileDefinition(definition,options={}) {
@@ -54,12 +90,17 @@ function compileDefinition(definition,options={}) {
   const working=isAsync?{...definition,code:rewriteAsync(definition.code)}:definition;
   const cfg=buildCfg(working);
   const lowering=new Lowering(working,options);
-  const emit=block=>{
-    const rows=block.rows;
+  const blockLines=new Map();
+  for(const block of cfg.blocks) {
     const term=block.term;
     const keepLast=term.kind==='fallOff'||(term.kind==='jump'&&term.implicit);
-    const body=keepLast?rows:rows.slice(0,-1);
-    const lines=body.flatMap(row=>lowering.instruction(row));
+    const body=keepLast?block.rows:block.rows.slice(0,-1);
+    blockLines.set(block,body.flatMap(row=>lowering.instruction(row)));
+  }
+  inlineStarCopies(blockLines);
+  const emit=block=>{
+    const term=block.term;
+    const lines=blockLines.get(block);
     if(term.kind==='cond'&&term.row)return{lines,term:{...term,test:lowering.forInDone(term.row)}};
     return{lines,term};
   };
