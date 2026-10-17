@@ -39,9 +39,12 @@ function check(name,id,args=[],o={}) {
       if (args[0]===42 && (id==='f4032'||id==='f4033')) {
         // Malformed numeric IPC password: the two engines name the failed
         // call differently. Accept these exact messages only, not other errors.
+        const message = String(value.result.value.error);
         assert.ok(['Reflect.apply is not a function',
           'Function.prototype.apply was called on undefined, which is a undefined and not a function',
-          '(password || "").trim is not a function'].includes(value.result.value.error),String(value.result.value.error));
+          '(password || "").trim is not a function'].includes(message)
+          // the compiled bundle names the failed call by its register expression, for example r18[r0(...)]
+          || /^r\d+\[r\d+\(\.\.\.\)\] is not a function$/.test(message),message);
         return {...value,result:{value:{...value.result.value,error:'non-callable trim'}}};
       }
       return value;
