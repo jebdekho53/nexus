@@ -1,5 +1,30 @@
 # TypeScript migration: Windows verification
 
+## Follow-up: e734c2d (62 modules)
+
+Verified 17 October 2026 on Windows, Node 24.21.0, in the independent QA
+worktree. Includes 1c0887a (offline-smoke and index helpers) and e734c2d
+(compiled runtime and interpreter).
+
+- `npm ci --ignore-scripts`, `npm run check:ts`, `npm run build:ts`: passed.
+- Default full suite: 2306 tests, all passed; zero cancelled/skipped.
+- `MATRIX_COMPILED=1` full suite: 2306 tests, all passed; zero cancelled/skipped.
+- `start.cmd --smoke-test --interpreter-runtime`: smoke-complete, eight
+  windows (PID 27872).
+- `Matrix.cmd --smoke-test`: smoke-complete, eight windows (PID 28716).
+- The sequential launcher check exited 0. Both used the offline harness.
+
+No new installer build, normal visual UI, or live provider flows were
+verified for this head. These tests do not establish full migration.
+
+Review limitation: the new engine default-path/parity test constructs a
+function but does not invoke it. The compiler differential compares two
+current implementations; after migrating both, it is not an independent
+pre-migration behavior oracle. Keep the original JS engine/support fixtures
+and add actual old-vs-new interpreter execution checks across synthetic
+opcode and control-flow cases. This is a coverage limitation, not an
+observed runtime regression.
+
 ## Follow-up: c859a0b (55 modules)
 
 Verified on Windows on 17 October 2026 using the same independent QA

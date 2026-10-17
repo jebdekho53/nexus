@@ -192,6 +192,12 @@ against live services without authorisation).
 
 ## Windows verification of later commits
 
+Follow-up Windows verification of `e734c2d` (including `1c0887a`) now passes
+2306/2306 tests in both modes and both offline launcher smoke checks.
+See `docs/typescript-windows-verification.md` for exact scope and the
+independent engine-oracle coverage limitation. Statements below about
+unverified Windows commits describe the earlier cloud session.
+
 `c9ae78e` (merged) verified `c859a0b`: 2256/2256 tests in both modes, `start.cmd --smoke-test --interpreter-runtime` and
 `Matrix.cmd --smoke-test` each complete with eight windows. Normal visual UI, live provider flows and a rebuilt
 installer were not verified. **The commits after that (offline-smoke, smoke-run, startup-support, development-windows,
