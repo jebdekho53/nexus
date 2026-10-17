@@ -2285,7 +2285,7 @@ exports.f4126=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f4127=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23;
+  let acc,pending=HOLE,r0,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23;
     acc=ctx[5];
     if(acc===HOLE)throw new ReferenceError("Cannot access "+"_0x5f2623"+" before initialization");
     r0=acc;
@@ -2326,8 +2326,7 @@ exports.f4127=function(rt,fn,self,args,newTarget,ctx,K){
                 r8=acc;
                 acc=false;
                 r9=acc;
-                r1=r8;
-                acc=r1[Symbol.iterator]();
+                acc=r8[Symbol.iterator]();
                 r16=acc;
                 acc=r16.next;
                 r15=acc;
@@ -3291,7 +3290,7 @@ exports.f4135=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f4136=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r16;
+  let acc,pending=HOLE,r0,r1,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r16;
     acc=ctx[5];
     if(acc===HOLE)throw new ReferenceError("Cannot access "+"_0x5f2623"+" before initialization");
     r0=acc;
@@ -3344,8 +3343,7 @@ exports.f4136=function(rt,fn,self,args,newTarget,ctx,K){
                   r7=acc;
                   acc=false;
                   r8=acc;
-                  r2=r7;
-                  r4=r2;
+                  r4=r7;
                   acc=9240;
                   r16=acc;
                   acc="rMir";
@@ -12988,7 +12986,7 @@ exports.f4208=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f4209=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r16,r17,r18;
+  let acc,pending=HOLE,r0,r1,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r16,r17,r18;
     acc=ctx[5];
     if(acc===HOLE)throw new ReferenceError("Cannot access "+"_0x5f2623"+" before initialization");
     r0=acc;
@@ -13086,8 +13084,7 @@ exports.f4209=function(rt,fn,self,args,newTarget,ctx,K){
                 r7=acc;
                 acc=false;
                 r8=acc;
-                r2=r7;
-                r4=r2;
+                r4=r7;
                 acc=r7;
                 r13=ctx;
                 B9:{
@@ -16142,7 +16139,7 @@ exports.f4233=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f4234=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r15,r16;
+  let acc,pending=HOLE,r0,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r15,r16;
     acc=ctx[5];
     if(acc===HOLE)throw new ReferenceError("Cannot access "+"_0x5f2623"+" before initialization");
     r0=acc;
@@ -16200,8 +16197,7 @@ exports.f4234=function(rt,fn,self,args,newTarget,ctx,K){
                   r6=acc;
                   acc=false;
                   r7=acc;
-                  r1=r6;
-                  r3=r1;
+                  r3=r6;
                   acc=ctx[2075];
                   if(acc===HOLE)throw new ReferenceError("Cannot access "+"Q"+" before initialization");
                   acc=r3===acc;
@@ -16358,7 +16354,7 @@ exports.f4234=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f4235=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r15,r16;
+  let acc,pending=HOLE,r0,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r15,r16;
     acc=ctx[5];
     if(acc===HOLE)throw new ReferenceError("Cannot access "+"_0x5f2623"+" before initialization");
     r0=acc;
@@ -16416,8 +16412,7 @@ exports.f4235=function(rt,fn,self,args,newTarget,ctx,K){
                   r6=acc;
                   acc=false;
                   r7=acc;
-                  r1=r6;
-                  r3=r1;
+                  r3=r6;
                   acc=ctx[2075];
                   if(acc===HOLE)throw new ReferenceError("Cannot access "+"Q"+" before initialization");
                   acc=r3===acc;
@@ -16877,7 +16872,7 @@ exports.f4238=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f4239=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r15,r16;
+  let acc,pending=HOLE,r0,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r15,r16;
     acc=ctx[5];
     if(acc===HOLE)throw new ReferenceError("Cannot access "+"_0x5f2623"+" before initialization");
     r0=acc;
@@ -16952,8 +16947,7 @@ exports.f4239=function(rt,fn,self,args,newTarget,ctx,K){
                   r6=acc;
                   acc=false;
                   r7=acc;
-                  r1=r6;
-                  r3=r1;
+                  r3=r6;
                   acc=ctx[2101];
                   if(acc===HOLE)throw new ReferenceError("Cannot access "+"wn"+" before initialization");
                   acc=r3===acc;
@@ -17996,7 +17990,7 @@ exports.f4248=async function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f4249=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23;
+  let acc,pending=HOLE,r1,r2,r3,r4,r5,r6,r7,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23;
     acc=rt.context(4,ctx);
     r10=ctx;
     ctx=acc;
@@ -18093,8 +18087,7 @@ exports.f4249=function(rt,fn,self,args,newTarget,ctx,K){
                       r13=acc;
                       acc=false;
                       r14=acc;
-                      r0=r13;
-                      r9=r0;
+                      r9=r13;
                       acc=args[1];
                       if(!acc){
                         break B8;
@@ -19331,7 +19324,7 @@ exports.f4260=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f4261=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r16,r17,r18;
+  let acc,pending=HOLE,r0,r1,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r16,r17,r18;
     acc=ctx[5];
     if(acc===HOLE)throw new ReferenceError("Cannot access "+"_0x5f2623"+" before initialization");
     r0=acc;
@@ -19391,8 +19384,7 @@ exports.f4261=function(rt,fn,self,args,newTarget,ctx,K){
                   r7=acc;
                   acc=false;
                   r8=acc;
-                  r2=r7;
-                  r4=r2;
+                  r4=r7;
                   acc=args[0];
                   acc=r4===acc;
                   if(acc===true){
@@ -19629,7 +19621,7 @@ exports.f4262=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f4263=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2=newTarget,r3,r4,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r21,r22;
+  let acc,pending=HOLE,r0,r1,r2=newTarget,r4,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r21,r22;
     acc=rt.context(3,ctx);
     r7=ctx;
     ctx=acc;
@@ -19766,8 +19758,7 @@ exports.f4263=async function(rt,fn,self,args,newTarget,ctx,K){
                         r11=acc;
                         acc=false;
                         r12=acc;
-                        r3=r11;
-                        r6=r3;
+                        r6=r11;
                         acc=r11;
                         r17=ctx;
                         B23:{
@@ -24227,7 +24218,7 @@ exports.f4291=async function(rt,fn,self,args,newTarget,ctx,K){
 // f4292 CloseAuxWindows
 exports.f4292=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2=newTarget,r3,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21;
+  let acc,pending=HOLE,r0,r1,r2=newTarget,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21;
     r7=fn;
     r8=self;
     acc={};
@@ -24315,8 +24306,7 @@ exports.f4292=async function(rt,fn,self,args,newTarget,ctx,K){
                     r10=acc;
                     acc=false;
                     r11=acc;
-                    r3=r10;
-                    r5=r3;
+                    r5=r10;
                     acc=9068;
                     r19=acc;
                     acc="]K13";
@@ -27693,7 +27683,7 @@ exports.f4313=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f4314=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21;
+  let acc,pending=HOLE,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21;
     acc=rt.context(3,ctx);
     r3=ctx;
     ctx=acc;
@@ -27745,8 +27735,7 @@ exports.f4314=function(rt,fn,self,args,newTarget,ctx,K){
                           r7=acc;
                           acc=false;
                           r8=acc;
-                          r0=r7;
-                          r2=r0;
+                          r2=r7;
                           acc=rt.global("process");
                           r13=acc;
                           acc=ctx[2];
@@ -28192,7 +28181,7 @@ exports.f4318=function(rt,fn,self,args,newTarget,ctx,K){
 // f4319 readdir
 exports.f4319=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r19;
+  let acc,pending=HOLE,r0,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r19;
     B20:{
       acc=rt.outer(ctx,1)[2];
       r0=acc;
@@ -28235,8 +28224,7 @@ exports.f4319=function(rt,fn,self,args,newTarget,ctx,K){
                       r6=acc;
                       acc=false;
                       r7=acc;
-                      r1=r6;
-                      r3=r1;
+                      r3=r6;
                       acc=6797;
                       r15=acc;
                       acc="]TXZ";

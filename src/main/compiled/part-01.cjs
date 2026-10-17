@@ -35763,7 +35763,7 @@ exports.f13=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f14=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2=newTarget,r3,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19;
+  let acc,pending=HOLE,r0,r1,r2=newTarget,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19;
     r6=fn;
     r7=self;
     acc={};
@@ -35819,8 +35819,7 @@ exports.f14=async function(rt,fn,self,args,newTarget,ctx,K){
                   r9=acc;
                   acc=false;
                   r10=acc;
-                  r3=r9;
-                  r5=r3;
+                  r5=r9;
                   acc=ctx[5];
                   acc=r5===acc;
                   acc=!acc;

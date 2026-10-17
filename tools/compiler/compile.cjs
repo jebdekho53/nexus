@@ -46,32 +46,42 @@ function plainRejection(handlerBlock) {
   return handlerBlock.rows.slice(0,intrinsic).every(row=>/^Star\d*$/.test(row[1])||['LdaTheHole','SetPendingMessage','Mov'].includes(row[1]));
 }
 
-// Drops a register that only ever copies the accumulator and is read exactly once, right after the copy:
-//   rN=acc; <next statement using rN>   =>   <next statement with rN replaced by acc>
-// Safe because nothing executes between the two statements, so acc still holds the same value: this substitutes
-// one side-effect-free read for another, never reordering any computation. Gated on the register's TOTAL token
-// count across the whole function (both blocks' lines joined) being exactly 2 (the copy plus that one use), so a
-// register read or written anywhere else in the function is left untouched. Runs per block, since adjacency only
-// holds within a single straight-line basic block.
-function inlineStarCopies(blockLines) {
+// Drops a register that only ever copies the accumulator or another register, and is read exactly once, right
+// after the copy:
+//   rN=acc;  <next statement using rN>   =>   <next statement with rN replaced by acc>
+//   rN=rM;   <next statement using rN>   =>   <next statement with rN replaced by rM>
+// Safe because nothing executes between the two statements, so the source (acc or rM) still holds the exact value
+// that was copied into rN: this substitutes one side-effect-free read for another, never reordering any
+// computation. Gated on the register's TOTAL token count across the whole function (every block's lines joined)
+// being exactly 2 (the copy plus that one use), so a register read or written anywhere else in the function is
+// left untouched. Runs per block, since adjacency only holds within a single straight-line basic block.
+//
+// A chain of copies (rN=acc; rM=rN; <use rM>) only has its first hop collapsed by a single scan, because the scan
+// looks at each block's original line list once: rM=rN turns into rM=acc, but rM's own def+use pair isn't
+// re-examined until a later pass sees it fresh. Re-running to a fixpoint (below) finishes the chain, one hop per
+// round, with no change to the single-hop safety argument above.
+function inlineStarCopiesOnce(blockLines) {
   const totalCount=new Map();
   for(const lines of blockLines.values())for(const line of lines)for(const match of line.matchAll(/\br(\d+)\b/g)) {
     const n=Number(match[1]);
     totalCount.set(n,(totalCount.get(n)??0)+1);
   }
+  let changed=false;
   for(const[block,lines]of blockLines) {
     const out=[];
     for(let index=0;index<lines.length;index++) {
       const line=lines[index];
-      const star=/^r(\d+)=acc;$/.exec(line);
+      const star=/^r(\d+)=(acc|r\d+);$/.exec(line);
       if(star) {
         const n=Number(star[1]);
+        const source=star[2];
         const next=lines[index+1];
         if(totalCount.get(n)===2&&next!==undefined) {
           const use=new RegExp('\\br'+n+'\\b');
           if(use.test(next)&&!new RegExp('^r'+n+'=').test(next)) {
-            out.push(next.replace(use,'acc'));
+            out.push(next.replace(use,source));
             index++;
+            changed=true;
             continue;
           }
         }
@@ -80,6 +90,10 @@ function inlineStarCopies(blockLines) {
     }
     blockLines.set(block,out);
   }
+  return changed;
+}
+function inlineStarCopies(blockLines) {
+  while(inlineStarCopiesOnce(blockLines));
 }
 
 // Compiles one recovered definition to JavaScript source: `exports.<id>=function(rt,fn,self,args,newTarget,ctx,K){...}`.

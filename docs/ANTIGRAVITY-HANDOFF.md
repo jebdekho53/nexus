@@ -1,4 +1,18 @@
-# Latest checkpoint — phase24
+# Latest checkpoint — phase25
+
+Readability pass, inline-temporaries second slice (copy chains): tools/compiler/compile.cjs's `inlineStarCopies`
+now matches `rN=acc;` or `rN=rM;` (any register source, not just the accumulator) and substitutes whichever
+source text was captured, then re-runs the scan to a fixpoint — this collapses same-block chains of register
+copies (`rN=acc; rM=rN; rP=rM; <use rP>` all the way down to `<use acc>`), one hop per round, same adjacency
+safety argument as phase24 each round. Net -202 lines across src/main/compiled. Re-verified: full suite 1686/1686
+(plain and MATRIX_COMPILED=1), differential --seeds 4 (4354 checked, 0 failing), offline smoke --compiled-runtime
+--reconstructed-payment --development (8/8 windows complete, diagnostics/startup.jsonl recorded
+definitions-loaded{functions:4354,compiledRuntime:true} and smoke-complete{windows:8} for that run's PID, clean
+process exit). See docs/reconstruction-phase-25.md. Exact next action: cross-block single-use copies (needs real
+liveness across block boundaries — deliberately deferred again), promote context-array slots to lexical
+variables, split the f1 bootstrap into modules; keep soaking --compiled-runtime offline before making it default.
+
+# Earlier checkpoint — phase24
 
 Readability pass, inline-temporaries narrow slice: tools/compiler/compile.cjs now drops registers whose only job is
 `rN=acc;` immediately followed by a single read, substituting `acc` directly — safe because nothing executes

@@ -551,7 +551,7 @@ exports.f3783=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f3784=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17;
+  let acc,pending=HOLE,r0,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17;
     B2:{
       acc=rt.context(4,ctx);
       r4=ctx;
@@ -673,8 +673,7 @@ exports.f3784=function(rt,fn,self,args,newTarget,ctx,K){
                 r7=acc;
                 acc=false;
                 r8=acc;
-                r1=r7;
-                r3=r1;
+                r3=r7;
                 acc=ctx[2];
                 r15=acc;
                 acc=9097;
@@ -11541,7 +11540,7 @@ exports.f3833=async function(rt,fn,self,args,newTarget,ctx,K){
 // f3834 StartRailOnePairing
 exports.f3834=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6=newTarget,r7,r8,r9,r10,r11,r12,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32,r33,r34,r35,r36,r37,r38;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6=newTarget,r8,r9,r10,r11,r12,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32,r33,r34,r35,r36,r37,r38;
     r20=fn;
     r21=self;
     acc={};
@@ -11906,8 +11905,7 @@ exports.f3834=async function(rt,fn,self,args,newTarget,ctx,K){
                               r23=acc;
                               acc=false;
                               r24=acc;
-                              r7=r23;
-                              acc=r7[Symbol.iterator]();
+                              acc=r23[Symbol.iterator]();
                               r31=acc;
                               acc=r31.next;
                               r30=acc;
@@ -19832,7 +19830,7 @@ exports.f3862=function(rt,fn,self,args,newTarget,ctx,K){
 // f3863 ExportLogs
 exports.f3863=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13=newTarget,r14,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32,r33,r34,r35,r36,r37,r38,r39,r40,r41;
+  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13=newTarget,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32,r33,r34,r35,r36,r37,r38,r39,r40,r41;
     acc=rt.context(5,ctx);
     r25=ctx;
     ctx=acc;
@@ -21153,8 +21151,7 @@ exports.f3863=async function(rt,fn,self,args,newTarget,ctx,K){
                       r31=acc;
                       acc=false;
                       r32=acc;
-                      r14=r31;
-                      r16=r14;
+                      r16=r31;
                       acc=r31;
                       r37=ctx;
                       B100:{
@@ -21436,7 +21433,7 @@ exports.f3868=function(rt,fn,self,args,newTarget,ctx,K){
 // f3869 Logout
 exports.f3869=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1=newTarget,r2,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19;
+  let acc,pending=HOLE,r0,r1=newTarget,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19;
     r5=fn;
     r6=self;
     acc={};
@@ -21491,8 +21488,7 @@ exports.f3869=async function(rt,fn,self,args,newTarget,ctx,K){
                   r8=acc;
                   acc=false;
                   r9=acc;
-                  r2=r8;
-                  r4=r2;
+                  r4=r8;
                   acc=15054;
                   r17=acc;
                   acc="3W8e";
@@ -21638,7 +21634,7 @@ exports.f3870=function(rt,fn,self,args,newTarget,ctx,K){
 // f3871 GetSession
 exports.f3871=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1=newTarget,r2,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r18,r19;
+  let acc,pending=HOLE,r0,r1=newTarget,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r18,r19;
     r6=fn;
     r7=self;
     acc={};
@@ -21692,8 +21688,7 @@ exports.f3871=async function(rt,fn,self,args,newTarget,ctx,K){
                 r9=acc;
                 acc=false;
                 r10=acc;
-                r2=r9;
-                r4=r2;
+                r4=r9;
                 acc=4746;
                 r18=acc;
                 acc="]TXZ";
@@ -24987,7 +24982,7 @@ exports.f3881=function(rt,fn,self,args,newTarget,ctx,K){
 // f3882 RAZORPAY_API_URL
 exports.f3882=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r2,r3,r4,r5,r6,r7,r8,r9;
+  let acc,pending=HOLE,r0,r1,r2,r3,r7,r8,r9;
     acc=args[0].image;
     r0=acc;
     acc=args[0].captchaType;
@@ -25006,10 +25001,7 @@ exports.f3882=function(rt,fn,self,args,newTarget,ctx,K){
     acc=rt.call(r8,undefined,[r9,acc]);
     acc=r7[acc];
     r7=acc;
-    r4=r0;
-    r5=r1;
-    r6=r2;
-    acc=rt.call(r3,undefined,[r4,r5,r6,r7]);
+    acc=rt.call(r3,undefined,[r0,r1,r2,r7]);
     return acc;
 };
 // f3883 RAZORPAY_API_URL
@@ -27144,7 +27136,7 @@ exports.f3903=async function(rt,fn,self,args,newTarget,ctx,K){
 // f3904 StopBooking
 exports.f3904=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1=newTarget,r2,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18;
+  let acc,pending=HOLE,r0,r1=newTarget,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18;
     r5=fn;
     r6=self;
     acc={};
@@ -27199,8 +27191,7 @@ exports.f3904=async function(rt,fn,self,args,newTarget,ctx,K){
                   r8=acc;
                   acc=false;
                   r9=acc;
-                  r2=r8;
-                  r4=r2;
+                  r4=r8;
                   acc=5356;
                   r17=acc;
                   acc="S)Et";
@@ -31972,7 +31963,7 @@ exports.f3949=async function(rt,fn,self,args,newTarget,ctx,K){
 // f3950 ImportForms
 exports.f3950=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1=newTarget,r2,r3,r4,r5,r6,r7,r8,r9,r10,r12,r13,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32,r33,r34,r35,r37,r38,r39,r40,r41,r42,r43;
+  let acc,pending=HOLE,r0,r1=newTarget,r4,r5,r6,r7,r8,r9,r10,r12,r13,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32,r33,r34,r35,r37,r38,r39,r40,r41,r42,r43;
     r16=fn;
     r17=self;
     acc={};
@@ -32207,8 +32198,7 @@ exports.f3950=async function(rt,fn,self,args,newTarget,ctx,K){
                           r20=acc;
                           acc=false;
                           r21=acc;
-                          r3=r20;
-                          r12=r3;
+                          r12=r20;
                           acc=[];
                           r13=acc;
                           r26=ctx;
@@ -32304,8 +32294,7 @@ exports.f3950=async function(rt,fn,self,args,newTarget,ctx,K){
                                           r28=acc;
                                           acc=false;
                                           r29=acc;
-                                          r2=r28;
-                                          r15=r2;
+                                          r15=r28;
                                           acc=r28;
                                           r34=ctx;
                                           B29:{
@@ -32600,7 +32589,7 @@ exports.f3950=async function(rt,fn,self,args,newTarget,ctx,K){
 // f3951 ImportFormsData
 exports.f3951=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1=newTarget,r2,r3,r4,r5,r6,r7,r8,r9,r11,r12,r13,r14,r15,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32,r33,r34,r35,r36,r37,r39,r40,r41,r42,r43,r44,r45;
+  let acc,pending=HOLE,r0,r1=newTarget,r4,r5,r6,r7,r8,r9,r12,r13,r14,r15,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32,r33,r34,r35,r36,r37,r39,r40,r41,r42,r43,r44,r45;
     r18=fn;
     r19=self;
     acc={};
@@ -32680,9 +32669,7 @@ exports.f3951=async function(rt,fn,self,args,newTarget,ctx,K){
                         r22=acc;
                         acc=false;
                         r23=acc;
-                        r3=r22;
-                        r11=r3;
-                        r12=r11;
+                        r12=r22;
                         acc=r22;
                         r28=r22;
                         if(acc==null){
@@ -32820,8 +32807,7 @@ exports.f3951=async function(rt,fn,self,args,newTarget,ctx,K){
                                             r30=acc;
                                             acc=false;
                                             r31=acc;
-                                            r2=r30;
-                                            r17=r2;
+                                            r17=r30;
                                             acc=r30;
                                             r36=ctx;
                                             B33:{
@@ -35207,7 +35193,7 @@ exports.f3968=function(rt,fn,self,args,newTarget,ctx,K){
 // f3969 ImportUsers
 exports.f3969=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1=newTarget,r2,r3,r4,r5,r6,r7,r8,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r26,r27;
+  let acc,pending=HOLE,r0,r1=newTarget,r3,r4,r5,r6,r7,r8,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r26,r27;
     r11=fn;
     r12=self;
     acc={};
@@ -35448,8 +35434,7 @@ exports.f3969=async function(rt,fn,self,args,newTarget,ctx,K){
                           r15=acc;
                           acc=false;
                           r16=acc;
-                          r2=r15;
-                          r10=r2;
+                          r10=r15;
                           acc=r15;
                           r21=ctx;
                           B19:{
@@ -35945,7 +35930,7 @@ exports.f3970=async function(rt,fn,self,args,newTarget,ctx,K){
 // f3971 ImportUsersData
 exports.f3971=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1=newTarget,r2,r3,r4,r5,r6,r7,r8,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26;
+  let acc,pending=HOLE,r0,r1=newTarget,r3,r4,r5,r6,r7,r8,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26;
     r13=fn;
     r14=self;
     acc={};
@@ -36025,9 +36010,7 @@ exports.f3971=async function(rt,fn,self,args,newTarget,ctx,K){
                         r17=acc;
                         acc=false;
                         r18=acc;
-                        r2=r17;
-                        r10=r2;
-                        r11=r10;
+                        r11=r17;
                         acc=r17;
                         r23=r17;
                         if(acc==null){
@@ -36279,7 +36262,7 @@ exports.f3971=async function(rt,fn,self,args,newTarget,ctx,K){
 // f3972 ImportUsersData
 exports.f3972=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16;
+  let acc,pending=HOLE,r0,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16;
     acc=ctx[2];
     r0=acc;
     acc=rt.outer(ctx,1)[22];
@@ -36336,8 +36319,7 @@ exports.f3972=function(rt,fn,self,args,newTarget,ctx,K){
                   r6=acc;
                   acc=false;
                   r7=acc;
-                  r1=r6;
-                  r3=r1;
+                  r3=r6;
                   acc=1229;
                   r15=acc;
                   acc="sA1s";
@@ -37839,7 +37821,7 @@ exports.f3988=function(rt,fn,self,args,newTarget,ctx,K){
 // f3989 ImportProxies
 exports.f3989=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0=newTarget,r1,r2,r3,r4,r5,r6,r7,r9,r10,r11,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32,r33,r34,r35,r36,r37,r38,r39,r40,r41,r42;
+  let acc,pending=HOLE,r0=newTarget,r1,r3,r4,r5,r6,r7,r9,r10,r11,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24,r25,r26,r27,r28,r29,r30,r31,r32,r33,r34,r35,r36,r37,r38,r39,r40,r41,r42;
     acc=rt.context(3,ctx);
     r16=ctx;
     ctx=acc;
@@ -38109,8 +38091,7 @@ exports.f3989=async function(rt,fn,self,args,newTarget,ctx,K){
                           r21=acc;
                           acc=false;
                           r22=acc;
-                          r2=r21;
-                          r9=r2;
+                          r9=r21;
                           acc=r21;
                           r27=ctx;
                           B44:{
@@ -43178,7 +43159,7 @@ exports.f4015=async function(rt,fn,self,args,newTarget,ctx,K){
 // f4016 SetWindowPin
 exports.f4016=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1=newTarget,r2,r3,r5,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24;
+  let acc,pending=HOLE,r0,r1=newTarget,r5,r7,r8,r9,r10,r11,r12,r13,r14,r15,r16,r17,r18,r19,r20,r21,r22,r23,r24;
     r9=fn;
     r10=self;
     acc={};
@@ -43254,8 +43235,7 @@ exports.f4016=async function(rt,fn,self,args,newTarget,ctx,K){
                       r13=acc;
                       acc=false;
                       r14=acc;
-                      r2=r13;
-                      r7=r2;
+                      r7=r13;
                       acc=5223;
                       r22=acc;
                       acc="0vo)";
@@ -43454,8 +43434,7 @@ exports.f4016=async function(rt,fn,self,args,newTarget,ctx,K){
                         r13=acc;
                         acc=false;
                         r14=acc;
-                        r3=r13;
-                        r5=r3;
+                        r5=r13;
                         acc=19448;
                         r22=acc;
                         acc="qP]&";
@@ -45336,7 +45315,7 @@ exports.f4032=async function(rt,fn,self,args,newTarget,ctx,K){
 // f4033 RestoreData
 exports.f4033=async function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1=newTarget,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r17,r18,r19,r21,r22,r23,r25,r26,r27,r29,r30,r31,r32,r33,r34,r35,r36,r37,r38,r39,r40,r41,r42,r43,r44,r45,r46,r47,r48;
+  let acc,pending=HOLE,r0,r1=newTarget,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r15,r17,r18,r19,r21,r22,r23,r25,r26,r27,r29,r30,r31,r32,r33,r34,r35,r36,r37,r38,r39,r40,r41,r42,r43,r44,r45,r46,r47,r48;
     r31=fn;
     r32=self;
     acc={};
@@ -45675,8 +45654,7 @@ exports.f4033=async function(rt,fn,self,args,newTarget,ctx,K){
                                   r35=acc;
                                   acc=false;
                                   r36=acc;
-                                  r2=r35;
-                                  r29=r2;
+                                  r29=r35;
                                   r30=r29;
                                   acc=r35;
                                   if(!acc){
@@ -45898,8 +45876,7 @@ exports.f4033=async function(rt,fn,self,args,newTarget,ctx,K){
                                   r35=acc;
                                   acc=false;
                                   r36=acc;
-                                  r3=r35;
-                                  r25=r3;
+                                  r25=r35;
                                   acc=rt.outer(ctx,1)[257];
                                   r41=acc;
                                   acc=r25;
@@ -46120,8 +46097,7 @@ exports.f4033=async function(rt,fn,self,args,newTarget,ctx,K){
                                   r35=acc;
                                   acc=false;
                                   r36=acc;
-                                  r4=r35;
-                                  r21=r4;
+                                  r21=r35;
                                   acc=rt.outer(ctx,1)[264];
                                   r41=acc;
                                   acc=r21;
@@ -50701,7 +50677,7 @@ exports.f4077=function(rt,fn,self,args,newTarget,ctx,K){
 };
 exports.f4078=function(rt,fn,self,args,newTarget,ctx,K){
   const{HOLE}=rt;
-  let acc,pending=HOLE,r0,r1,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r16;
+  let acc,pending=HOLE,r0,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r13,r14,r16;
     acc=ctx[5];
     if(acc===HOLE)throw new ReferenceError("Cannot access "+"_0x5f2623"+" before initialization");
     r0=acc;
@@ -50755,8 +50731,7 @@ exports.f4078=function(rt,fn,self,args,newTarget,ctx,K){
                 r6=acc;
                 acc=false;
                 r7=acc;
-                r1=r6;
-                r3=r1;
+                r3=r6;
                 acc=r6;
                 r12=ctx;
                 B8:{
