@@ -8,11 +8,13 @@
 // code uses them. A Binding keeps the two ways the recovered code stores into a binding: with the "uninitialised" check on its
 // own read first (checkedStore) or as a plain store (store); both only differ while the bootstrap is still running.
 //
-// Also here: f4147 (+ f4148 to f4150), the generic utility window (login data, payment, proxy, history, tools, updates, logs) and
+// Also here: f4255 (+ f4256 to f4260), the update window, f4147 (+ f4148 to f4150), the generic utility window (login data, payment, proxy, history, tools, updates, logs) and
 // f4157 (+ f4158 to f4160), the delayed restart.
 //
 // Not here: the passcode window f4109 (app lock), the lease and token timers (f4085 to f4090), the pair-limit check and window
-// (f4137, f4138, f4141: the limit decision), and the version-blocked, security-check and start-error windows (f4151, f4154, f4161).
+// (f4137, f4138, f4141: the limit decision), the version-blocked, device-blocked, security-check and start-error windows (f4151, f4154,
+// f4161, f4236), the helpers of the security-check window (f4234, f4235, f4263), the update download and install steps (f4244 to f4271
+// except f4255) and the version comparison (f4268).
 
 export interface BindingLike<T> {
   get(): T;
@@ -90,6 +92,12 @@ export interface WindowFactoryDeps {
   /** Utility windows by name (slot 2069 "oc"). */
   utilityWindows: BindingLike<{ get(key: unknown): WindowLike | undefined; set(key: unknown, window: WindowLike): unknown; delete(key: unknown): unknown }>;
   setTimer(callback: () => void, ms: number): unknown;
+  /** The update window (slot 2115 "Ve") and the progress remembered for it (slot 2117 "yo"). */
+  updateWindow: BindingLike<WindowLike | null | undefined>;
+  updateProgress: BindingLike<unknown>;
+  /** Ends or hides the update flow (slot 2118) and sends remembered progress to a window (slot 2121). */
+  closeUpdate(): void;
+  sendUpdateProgress(window: WindowLike, progress: unknown): void;
 }
 
 const PAGE_WEB_PREFERENCES = (deps: WindowFactoryDeps): Record<string, unknown> => ({
@@ -376,4 +384,59 @@ export function scheduleRestart(deps: WindowFactoryDeps, delayMs: number): void 
       deps.exitApp(0);
     }, delayMs);
   })();
+}
+
+// Recovered f4255 (+ f4256 to f4260): the update window, one at a time, for the given version. Closing it (or its renderer dying)
+// ends the update flow instead of closing it outright, unless the app is quitting. Once its page has loaded, the progress made so
+// far is sent to it.
+export function createUpdateWindow(deps: WindowFactoryDeps, version: string): WindowLike {
+  if (deps.updateWindow.get()) {
+    if (!deps.updateWindow.get()!.isDestroyed()) {
+      deps.updateWindow.get()!.show();
+      return deps.updateWindow.get()!;
+    }
+  }
+  const electron = deps.electron();
+  const options: Record<string, unknown> = {
+    width: 460,
+    height: 360,
+    frame: false,
+    transparent: true,
+    backgroundColor: '#00000000',
+    hasShadow: false,
+    resizable: false,
+    movable: true,
+    minimizable: false,
+    maximizable: false,
+    fullscreenable: false,
+    closable: true,
+    alwaysOnTop: true,
+    center: true,
+    skipTaskbar: true,
+    show: false,
+    webPreferences: PAGE_WEB_PREFERENCES(deps),
+  };
+  const window = new electron.BrowserWindow(options);
+  deps.updateWindow.store(window);
+  deps.updateProgress.checkedStore(null);
+  window.on('close', (event: { preventDefault(): void }) => {
+    if (!deps.quitting.get()) {
+      event.preventDefault();
+      deps.closeUpdate();
+    }
+  });
+  window.webContents.on('render-process-gone', () => deps.closeUpdate());
+  window.webContents.on('did-finish-load', () => {
+    if (window === deps.updateWindow.get()) {
+      if (deps.updateProgress.get()) deps.sendUpdateProgress(window, deps.updateProgress.get());
+    }
+  });
+  window.on('closed', () => {
+    deps.closeUpdate();
+    if (window === deps.updateWindow.get()) deps.updateWindow.store(null);
+  });
+  deps.placeWindow(window);
+  window.on('ready-to-show', () => window.show());
+  deps.loadPage(window, 'updating', version.replace(/^v/i, ''));
+  return window;
 }

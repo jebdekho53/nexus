@@ -65,6 +65,7 @@ function world(options = {}) {
     2051: options.ready ?? false, 2052: options.showWhenReady ?? false, 1971: options.quitting ?? false,
     2041: options.crashes ?? [], 2042: options.crashLimit ?? 3, 2043: options.crashWindow ?? 60000,
     2077: options.restartScheduled ?? false, 2076: typeof options.pendingWork === 'function' ? options.pendingWork() : options.pendingWork,
+    2115: options.updateWin === undefined ? null : existing(options.updateWin), 2117: options.progress === undefined ? null : options.progress,
   };
   for (const [key, spec] of options.registry ?? []) registry.set(key, existing(spec));
   for (const [key, spec] of options.utility ?? []) utilityRegistry.set(key, existing(spec));
@@ -77,9 +78,9 @@ function world(options = {}) {
     2038: call('loadPage', undefined), 2040: call('place', undefined), 2057: call('keepOnTop', undefined), 2056: call('applySettings', undefined),
     1771: call('setPin', undefined), 1770: call('pinned', options.pinned ?? false), 1623: call('newTheme', 'theme-flag'), 1624: call('splashTheme', 'splash-flag'),
     2044: call('recreate', undefined), 2054: call('showController', undefined),
-    203: call('exit', undefined), 2069: options.holes?.includes(2069) ? HOLE : utilityRegistry,
+    203: call('exit', undefined), 2118: call('closeUpdate', undefined), 2121: call('sendProgress', undefined), 2069: options.holes?.includes(2069) ? HOLE : utilityRegistry,
   };
-  for (const slot of [2039, 2050, 2061, 2051, 2052, 1971, 2041, 2042, 2043, 2077, 2076]) slots[slot] = options.holes?.includes(slot) ? HOLE : state[slot];
+  for (const slot of [2039, 2050, 2061, 2051, 2052, 1971, 2041, 2042, 2043, 2077, 2076, 2115, 2117]) slots[slot] = options.holes?.includes(slot) ? HOLE : state[slot];
   return {trace, slots, created, registry, existing, timers, setTimeoutFake, utilityRegistry};
 }
 
@@ -91,7 +92,7 @@ function scenario(name, options, run) {
       const {rootFunction, root} = harness({native, slots: env.slots, globals: {Date: clock, setTimeout: env.setTimeoutFake}, dependencies: {now: clock.now, setTimeout: env.setTimeoutFake}});
       const result = await outcome(async () => run(rootFunction, env, root));
       const rootState = {};
-      for (const slot of [2039, 2050, 2061, 2051, 2052, 2041, 2077, 1971]) rootState[slot] = root[slot] === HOLE ? 'HOLE' : (root[slot] && root[slot].__window ? 'win#' + root[slot].id : root[slot]);
+      for (const slot of [2039, 2050, 2061, 2051, 2052, 2041, 2077, 1971, 2115, 2117]) rootState[slot] = root[slot] === HOLE ? 'HOLE' : (root[slot] && root[slot].__window ? 'win#' + root[slot].id : root[slot]);
       return {result, trace: env.trace, rootState, registry: [...env.registry].map(([key, window]) => [key, window.id]), created: env.created.map(window => window.id), utility: [...env.utilityRegistry].map(([key, window]) => [key, window.id]), timers: env.timers.length};
     });
   });
@@ -208,9 +209,30 @@ scenario('restart: pending binding uninitialised', {holes: [2076]}, f => f('f415
 scenario('restart: scheduled flag uninitialised', {holes: [2077]}, f => f('f4157')(5));
 scenario('restart: quitting flag uninitialised', {holes: [1971]}, f => f('f4157')(5));
 
+// f4255 update window
+for (const version of ['v1.2.3', 'V2.0', '3.4.5', 'vv9', ''])
+  scenario('update window: new / ' + JSON.stringify(version), {}, f => f('f4255')(version));
+scenario('update window: existing is shown', {updateWin: {}}, f => f('f4255')('v1.0'));
+scenario('update window: existing destroyed is replaced', {updateWin: {destroyed: true}, progress: {fraction: 0.5}}, f => f('f4255')('v1.0'));
+scenario('update window: version that is not a string', {}, f => f('f4255')(12));
+scenario('update window: version missing', {}, f => f('f4255')());
+scenario('update window: events when not quitting', {progress: {fraction: 0.4}}, (f, env, root) => {
+  const w = f('f4255')('v1.0');
+  const e = preventable();
+  return [fire(w, 'close', e), e.defaultPrevented, fireContents(w, 'render-process-gone'), fireContents(w, 'did-finish-load'), fire(w, 'ready-to-show'), fire(w, 'closed'), root[2115]];
+});
+scenario('update window: close while quitting', {quitting: true}, f => { const w = f('f4255')('v1.0'); const e = preventable(); return [fire(w, 'close', e), e.defaultPrevented]; });
+scenario('update window: progress is resent after load when it is the update window', {}, (f, env, root) => { const w = f('f4255')('v1.0'); root[2117] = {fraction: 0.7}; return fireContents(w, 'did-finish-load'); });
+scenario('update window: no resend without progress', {}, f => { const w = f('f4255')('v1.0'); return fireContents(w, 'did-finish-load'); });
+scenario('update window: no resend for a window that is no longer the update window', {}, (f, env, root) => { const w = f('f4255')('v1.0'); root[2117] = {fraction: 0.7}; root[2115] = {other: true}; return fireContents(w, 'did-finish-load'); });
+scenario('update window: closed after another window replaced it', {}, (f, env, root) => { const w = f('f4255')('v1.0'); root[2115] = {other: true}; return [fire(w, 'closed'), root[2115]]; });
+scenario('update window: closing the flow fails', {returns: {closeUpdate: () => {throw new Error('synthetic close');}}}, f => { const w = f('f4255')('v1.0'); return [fireContents(w, 'render-process-gone')]; });
+for (const hole of [22, 2115, 2117, 14, 1972]) scenario('update window: binding ' + hole + ' uninitialised', {holes: [hole]}, f => f('f4255')('v1.0'));
+scenario('update window: progress cache uninitialised', {holes: [2117], updateWin: undefined}, f => f('f4255')('v1.0'));
+
 test('every reviewed window creator has a factory; the passcode window stays recovered', () => {
   const {reconstructedPayment} = require('../src/main/runtime/reconstructed-payment.cjs');
   const factories = reconstructedPayment({development: true, enabled: true});
-  for (const id of ['f4099', 'f4105', 'f4112', 'f4128', 'f4132', 'f4147', 'f4157']) assert.equal(typeof factories[id], 'function', id);
-  for (const id of ['f4109', 'f4137', 'f4138', 'f4141', 'f4151', 'f4154', 'f4161']) assert.equal(factories[id], undefined, id + ' stays recovered');
+  for (const id of ['f4099', 'f4105', 'f4112', 'f4128', 'f4132', 'f4147', 'f4157', 'f4255']) assert.equal(typeof factories[id], 'function', id);
+  for (const id of ['f4109', 'f4137', 'f4138', 'f4141', 'f4151', 'f4154', 'f4161', 'f4234', 'f4235', 'f4236', 'f4263']) assert.equal(factories[id], undefined, id + ' stays recovered');
 });

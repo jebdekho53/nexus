@@ -120,6 +120,15 @@ for (const id of wanted) {
       const hole = /\/\*hole:([^*]+)\*\//.exec(lines[index + 1] || '')?.[1];
       note(Number(match[2]), match[3] ? 'write' : 'read', id, hole);
     }
+    // A function created in the bootstrap scope (parent f1) reaches the bootstrap slots directly: ctx[slot] (slots below 6 are the
+    // module wrapper's own). Two or more digits keep array indexes and small context slots out.
+    if (nameInfo.get(id)?.parent === 'f1') {
+      for (const match of line.matchAll(/(?<![\w.\]])ctx\[(\d{2,})\](=[^=])?/g)) {
+        if (Number(match[1]) < 6) continue;
+        const hole = /\/\*hole:([^*]+)\*\//.exec(lines[index + 1] || '')?.[1];
+        note(Number(match[1]), match[2] ? 'write' : 'read', id, hole);
+      }
+    }
   });
   outputs.push({id, ...result});
 }
@@ -136,7 +145,7 @@ for (const out of outputs) {
 }
 fs.writeFileSync(path.join(outDir, 'dossier.md'), dossier.join('\n'), 'utf8');
 
-const slotLines = ['# Bootstrap slots used by ' + name, '', 'Depth in `rt.outer(ctx,N)` is relative to the scope of the function that reads it; handlers created directly in a registration function', 'use depth 1 for root slots (readBinding(slot, name, 1)) and depth 0 for that function\'s own context. Check which with the dossier.', '', '| Slot | Hole-check name | Read by | Written by |', '| ---: | --- | --- | --- |'];
+const slotLines = ['# Bootstrap slots used by ' + name, '', 'Depth in `rt.outer(ctx,N)` is relative to the scope of the function that reads it; functions created in the bootstrap scope itself (parent f1) read the slots as `ctx[slot]`, i.e. readBinding(slot, name) at depth 0; handlers created directly in a registration function', 'use depth 1 for root slots (readBinding(slot, name, 1)) and depth 0 for that function\'s own context. Check which with the dossier.', '', '| Slot | Hole-check name | Read by | Written by |', '| ---: | --- | --- | --- |'];
 for (const [slot, entry] of [...slotUse].sort((a, b) => a[0] - b[0])) {
   slotLines.push(`| ${slot} | ${[...entry.hole].join(', ') || '-'} | ${[...entry.readers].join(', ') || '-'} | ${[...entry.writers].join(', ') || '-'} |`);
 }

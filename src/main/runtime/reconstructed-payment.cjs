@@ -351,6 +351,7 @@ function windowFactoryDependencies(readBinding,writeBinding,dependencies) {
     now:()=>(dependencies.now??(()=>Date.now()))(),
     restartScheduled:binding(2077,'jl'),pendingWork:binding(2076,'mo'),relaunch:()=>readBinding(22,'x').app.relaunch(),exitApp:code=>readBinding(203)(code),
     utilityWindows:binding(2069,'oc'),setTimer:(callback,ms)=>(dependencies.setTimeout??setTimeout)(callback,ms),
+    updateWindow:binding(2115,'Ve'),updateProgress:binding(2117,'yo'),closeUpdate:call(2118),sendUpdateProgress:call(2121),
   };
 }
 function windowFactoryFactories(dependencies) {
@@ -363,6 +364,7 @@ function windowFactoryFactories(dependencies) {
     f4132:reader=>function(show){return windowFactory.createOpenFormWindow(deps(reader),show);},
     f4147:reader=>function(name,title,width,height,option){return windowFactory.createUtilityWindow(deps(reader),name,title,width,height,option);},
     f4157:reader=>function(delay){return windowFactory.scheduleRestart(deps(reader),delay);},
+    f4255:reader=>function(version){return windowFactory.createUpdateWindow(deps(reader),version);},
   };
 }
 
