@@ -1,6 +1,6 @@
 # TypeScript migration
 
-Status: **in progress**. 55 modules are real TypeScript reconstructions (listed below). Everything else — the generated
+Status: **in progress**. 60 modules are real TypeScript reconstructions (listed below). Everything else — the generated
 definitions in `src/main/generated`, the compiled bundle, the interpreter, the engine, the exclusions listed below and
 the remaining `.cjs` modules — is unchanged. No completion percentage is claimed; the migration is **not** complete.
 
@@ -84,6 +84,11 @@ the remaining `.cjs` modules — is unchanged. No completion percentage is claim
 | `src/ts/main/runtime/recovered-contract.ts` | Definition contract fingerprint | — | `ts-misc` |
 | `src/ts/main/runtime/ticket-docking.ts` | Ticket window docking | — | `existing ticket-docking.test` |
 | `src/ts/main/runtime/runtime-support.ts` | Lexical contexts, constants, literals, class definition and runtime intrinsics shared by the interpreter and the compiled runtime | engine / compiled-runtime support | `ts-runtime-support` + full suite + compiler differential |
+| `src/ts/main/runtime/offline-smoke.ts` | Offline smoke harness: blocks network, child processes and visible windows | `index.cjs` smoke wiring | `ts-offline-smoke` |
+| `src/ts/main/runtime/smoke-run.ts` | The `--smoke-test` run: per-window DOM/screenshot report, optional offline diagnostics, `smoke-result.json`, exit code | extracted from `index.cjs` | `ts-smoke-run` (31 scenarios) |
+| `src/ts/main/runtime/startup-support.ts` | Startup diagnostics log with secret redaction, error details, `.jsc` guard, ESM import bridge | extracted from `index.cjs` | `ts-startup-support` |
+| `src/ts/main/runtime/development-windows.ts` | Development profile selection and window diagnostics | extracted from `index.cjs` | `ts-development-windows` |
+| `src/ts/main/runtime/invoke-observer.ts` | `onInvoke` observer: activity events, action trace, live-test diagnostics | extracted from `index.cjs` | `ts-invoke-observer` |
 | `src/ts/main/runtime/updates.ts` | Verified update download and Updates IPC | — | `ts-misc + updates.test` |
 | `src/ts/main/runtime/window-readiness.ts` | Windows stay hidden until the renderer is ready | — | `ts-runtime` |
 
@@ -125,7 +130,8 @@ These were deliberately **not** migrated or modified:
   (licensing server), `DEVELOPMENT-CHECKS.md` overrides (f2539/f2549, f3370, f3383, f2595 … f2835). Not touched.
 * **Core runtime kept as JavaScript on purpose:** `runtime/engine.cjs` (interpreter fallback), `compiled-runtime.cjs`,
   `reconstructed-payment.cjs` (the factory table), `offline-smoke.cjs`, `src/main/index.cjs`
-  (Electron entry; cannot be exercised here) and `src/main/generated`, `src/main/compiled`.
+  (Electron entry: the activation gate, engine boot and the live-test hooks stay inline; its smoke run, startup log,
+  development windows and invoke observer were extracted to TypeScript) and `src/main/generated`, `src/main/compiled`.
 
 ## Remaining generated/interpreted business logic
 
@@ -183,23 +189,37 @@ The following list describes the original Linux session's limitations.
 Native dependencies, GoLogin/Playwright launchers and live provider flows were not exercised (and must not be tested
 against live services without authorisation).
 
+## Windows verification of later commits
+
+`c9ae78e` (merged) verified `c859a0b`: 2256/2256 tests in both modes, `start.cmd --smoke-test --interpreter-runtime` and
+`Matrix.cmd --smoke-test` each complete with eight windows. Normal visual UI, live provider flows and a rebuilt
+installer were not verified. **The commits after that (offline-smoke, smoke-run, startup-support, development-windows,
+invoke-observer and the `index.cjs` edits) have not been run on Windows.** `index.cjs` changed, so rerun at least both
+smoke commands and the launchers there.
+
 ## Continuation checkpoint
 
-Done in the latest batch: `booking/run-controls.ts` (extracted from `controls.cjs`) and `runtime/runtime-support.ts`
-(shared by the interpreter and compiled runtime; the default `import()` stays in `runtime-support.cjs` because TypeScript's
-CommonJS output would turn an `import()` into `require()`).
+Done in the latest batch: `offline-smoke.ts`, and four helpers extracted from `src/main/index.cjs`
+(`smoke-run.ts`, `startup-support.ts`, `development-windows.ts`, `invoke-observer.ts`). The `import()` calls stay in
+`index.cjs` (`globalThis.__esmImport`) because TypeScript's CommonJS output would turn them into `require()`.
 
-Re-verify on Windows before relying on the latest head: `npm ci --ignore-scripts`, the full suite in both modes, the default
-and `--interpreter-runtime` smoke tests, and the launchers, because `runtime-support` sits under every recovered function.
+Not migrated, with reasons:
+* `src/main/index.cjs` remainder: the activation gate (`requireActivation`), the engine boot (`bootRecovered`), the `startMatrix`
+  sequencing and the live-test/brand-check/ui-diagnostic hooks. The activation gate is licensing; the rest is wiring that
+  only a full Windows run can exercise.
+* `src/preload/index.js` and `src/preload/matrix.js` (about 50 KB each, single-line minified bundles) and the Vite
+  bundles in `src/renderer/assets` (51 minified files): no readable logic to reconstruct.
+* The nine small renderer scripts (`src/renderer/matrix-*.js`, about 160 lines): they are browser scripts loaded by
+  `<script>` tags (and `matrix-payments.js` is also `require`d by the main process); migrating them needs a browser-target
+  build and a visual check of the UI, neither available here.
+* `src/main/generated`, `src/main/compiled` (generated), `runtime/engine.cjs` (interpreter fallback),
+  `compiled-runtime.cjs`, `reconstructed-payment.cjs` (factory table), `runtime/legacy-services.cjs` (retired reporting stays
+  disabled), `development.cjs`, `development-policy.cjs`, `activation.cjs`, `id-check.cjs`, `services/control-plane`
+  (licensing).
+* Everything in "Excluded or blocked" above.
 
-Next eligible work, in order:
-1. `src/main/index.cjs` (Electron entry) — only together with a Windows smoke run; it cannot be exercised on Linux.
-2. `runtime/offline-smoke.cjs` — a test harness that monkey-patches `http`, `net`, `fetch` and `child_process`; migrate only with a
-   Windows smoke run, since a Linux fake cannot prove it.
-3. `src/renderer` and `src/preload`: the renderer is HTML with inline script and `src/preload/*.js` are tiny; inspect before
-   deciding whether anything is worth converting.
-4. The excluded list above needs an explicit decision. I did not extract helpers from the gateway modules
-   (`gateway-lifecycle`, `gateway-routing`, `gateway-session`, `gateway-headers`, `gateway-tls`): their ordinary helpers are
-   entangled with the cookie filtering, header emulation and TLS-gateway transport, so extraction would restructure those
-   mechanisms rather than separate them.
+Possible next steps:
+1. Decide on the excluded list; that gates the largest remaining pieces of business logic.
+2. If wanted, a browser-target TypeScript build for the small renderer scripts, with a visual check on Windows.
+3. `compiled-runtime.cjs` and `engine.cjs` typing, only with the full differential and Windows smoke runs.
 Do not remove the legacy fixtures, the interpreter fallback or `src/main/generated` while any of this is open.
