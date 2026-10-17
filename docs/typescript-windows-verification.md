@@ -153,3 +153,36 @@ Not done: no installer or ZIP was rebuilt; no screenshot spot check was made (no
 (booking, payment, provider, licence server) was exercised. The vault and IPC reconstructions are verified against the
 recovered code in synthetic worlds only; their real encryption helper, real windows and real file system were not exercised
 beyond the offline smoke start-up.
+
+## Local Windows session 2: f3790 handlers, inventory and a rebuilt installer (code at 01c4779)
+
+Run on 17 October 2026 on Windows with the bundled Node 24, offline and with synthetic data only. Results are for code commit
+`01c4779` (documentation commits after it do not change tested code).
+
+- `tsc` check and build, main and renderer: clean; `git status` clean afterwards (committed renderer output current).
+- `node --test test/*.test.cjs`: 3433 passed, 0 failed, 0 cancelled. `MATRIX_COMPILED=1`: 3433 passed, 0 failed, 0 cancelled.
+- Offline smoke, every result file deleted before its run and its timestamp checked afterwards, each with eight DOM-ready windows
+  and `nativeBytecodeLoaded=false`: `start.cmd --smoke-test --interpreter-runtime` (log: `compiledRuntime:false`),
+  `Matrix.cmd --smoke-test` (`compiledRuntime:true`), `scripts/run.cjs --smoke-test --smoke-panel --smoke-duration=25000`, and
+  `scripts/run.cjs --development --smoke-test --reconstructed-payment` with the compiled runtime and with
+  `--interpreter-runtime` (271 reconstructed functions enabled, including the new handlers).
+- Installer: `tools/build_installer.py` into the NEW directory `matrix-ts-artifacts/qa-01c4779` (8935 files, 252,394,488 bytes,
+  SHA-256 21b0c916b867f8322ef1f7fff01d1b2ea56e7474aa7933de36a4715e16e26828). Its payload has the same 78 compiled TypeScript modules as
+  `build/ts`, byte for byte, plus `scripts/ensure-ts-build.cjs` and the new `.cjs` entry points; no root `node_modules` and no
+  `diagnostics`.
+- Installed with `/S /nolaunch /noshortcuts /target=matrix-ts-installed-qa-01c4779` (exit 0, 8936 files): no desktop or Start-menu
+  shortcut was created and no root `node_modules` was installed. In that copy `Matrix.cmd --smoke-test` (compiled), `Matrix.cmd
+  --smoke-test --interpreter-runtime` and `electron --development --smoke-test --reconstructed-payment` each exited 0 with eight
+  windows, no native bytecode and 271 reconstructed functions.
+- Portable ZIP: `tools/package_project.py` into the same QA directory (9097 files, 253,765,115 bytes, SHA-256
+  9acc2b1714a294b2374a27003a56b536d20aa2a917732f101a316752493b861e); integrity check passed, the same 78 TypeScript modules byte for
+  byte, no `node_modules`, no `diagnostics`. The ZIP itself was not unpacked and run.
+- Not touched: the earlier artifacts in `matrix-ts-artifacts`, the earlier QA install, and the normal installed Matrix.
+
+Compared with the previous session, `ts-engine-independent` did not fail again in any run (the wording rule is narrower now and
+tested). The compiler differential was not rerun: no compiler or engine behaviour changed (only `writeBinding` was added to the
+factory API).
+
+Still not done: no visual spot check of the interactive UI (no renderer source changed), nothing live (booking, payment, provider,
+licence server), and the new IPC handlers were exercised only against the recovered code in synthetic worlds and by the offline start-up,
+not through the real windows.
