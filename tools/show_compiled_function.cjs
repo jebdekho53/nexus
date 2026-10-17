@@ -7,6 +7,13 @@ const strings=Object.assign({},...Object.values(require('../test/fixtures/paymen
 for(const id of process.argv.slice(2)) {
   if(!/^f\d+$/.test(id)||!bodies[id])throw new Error('Unknown compiled function '+id);
   let source=bodies[id].toString();
+  for(const match of source.matchAll(/acc=ctx\[5\];[\s\S]{0,180}?(r\d+)=acc;/g)) {
+    const pattern=new RegExp(match[1]+'\\((\\d+),("(?:[^"\\\\]|\\\\.)*")\\)','g');
+    source=source.replace(pattern,(call,index,key)=>{
+      const value=strings[index+'|'+JSON.parse(key)];
+      return value===undefined?call:JSON.stringify(value);
+    });
+  }
   if(source.includes('r0=ctx[2]')||/acc=ctx\[5\];[\s\S]{0,180}r0=acc;/.test(source))source=source.replace(/r0\((\d+),("(?:[^"\\]|\\.)*")\)/g,(call,index,key)=>{
     const value=strings[index+'|'+JSON.parse(key)];
     return value===undefined?call:JSON.stringify(value);

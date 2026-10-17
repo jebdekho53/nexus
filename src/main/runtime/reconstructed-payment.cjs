@@ -59,6 +59,7 @@ const transferIpc=require('../ipc/transfer-ipc.cjs');
 const formsTransferIpc=require('../ipc/forms-transfer-ipc.cjs');
 const formCodecs=require('../storage/form-codecs.cjs');
 const formsCsv=require('../storage/forms-csv.cjs');
+const formNormalization=require('../storage/form-normalization.cjs');
 const {definitionFingerprint}=require('./recovered-contract.cjs');
 const contracts=require('../payment/recovered-contract.json');
 
@@ -587,6 +588,14 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     });},
     f482:()=>formsCsv.normalizeHeader,
     f483:({readBinding})=>function(...aliases){return formsCsv.aliasedCell(readBinding(2),readBinding(3,undefined,1),aliases);},
+    f487:()=>formNormalization.defaultForm,
+    f472:({readBinding})=>function(value,id,now){return formNormalization.normalizeForm(value,id,now,{
+      defaults:(...args)=>readBinding(327)(...args),isRecord:value=>readBinding(297)(value),
+      string:value=>readBinding(298)(value),label:(...args)=>readBinding(281)(...args),
+      enumValue:(...args)=>readBinding(299)(...args),quotas:()=>readBinding(295,'wI'),classes:()=>readBinding(294,'lI'),
+      paymentMethods:()=>readBinding(296,'uI'),fare:value=>readBinding(300)(value),racers:value=>readBinding(301)(value),
+      paymentMethod:value=>readBinding(317)(value),passenger:()=>readBinding(319),
+    });},
     f2196:({readBinding})=>function(resolve){
       return startPaytmWatch(resolve,readBinding(2),readBinding(4),readBinding(5),readBinding(6));
     },

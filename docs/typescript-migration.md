@@ -34,6 +34,7 @@ The migration is **not** complete.
 | `src/ts/main/ipc/forms-transfer-ipc.ts` | Saved form/model JSON exports, file and pasted CSV/JSON imports | f3949-f3953 | `forms-transfer-ipc-reconstruction` |
 | `src/ts/main/storage/form-codecs.ts` | Form file dispatch, portable form and passenger serialization | f484-f486 | `form-codecs-reconstruction` |
 | `src/ts/main/storage/forms-csv.ts` | CSV tokenizer, passenger text parsing, header normalization and form alias mapping | f473-f483 | `forms-csv-reconstruction` |
+| `src/ts/main/storage/form-normalization.ts` | Legacy/nested form schema conversion and defaults; reuses existing rules validation helpers | f472, f487 | `form-normalization-reconstruction` |
 | --- | --- | --- | --- |
 | `src/ts/main/booking/provider-page.ts` | Wait for the operator to return to the provider site | f2255, f2256, f2257 | `ts-misc` |
 | `src/ts/main/booking/rules.ts` | Booking rules, berth limits, opening/availability times, mode routing | f425, f426, f427, f428, f429, f431, f433, f435, f436, f437, f438, f439, f440, f441, f444, f445, f446, f447, f448, f449, f450, f451, f452, f453, f454, f455, f456 | `ts-rules` |
