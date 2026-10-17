@@ -68,6 +68,8 @@ src/ts/main/windows/window-ipc.ts,business_logic,19,2755,"window-ipc-reconstruct
 src/ts/main/ipc/browser-ipc.ts,business_logic,4,557,"browser-logs-ipc-reconstruction (119 scenarios)","Browser detection, vendor download page, Brahmos Browser install with throttled progress"
 src/ts/main/ipc/logs-ipc.ts,business_logic,5,1297,"browser-logs-ipc-reconstruction","Diagnostic-log buffers and verified export, success-ticket store"
 src/ts/main/ipc/data-ipc.ts,business_logic,27,2018,"data-ipc-reconstruction (95 scenarios)","Saved-data IPC: forms (with armed copies), history, saved logins, payment methods, proxies, vault lock state and recovery"
+src/ts/main/ipc/settings-ipc.ts,business_logic,9,640,"settings-ipc-reconstruction (65 scenarios)","Application settings IPC: auto update, window pin (applied to the controller and booking-box windows), AI switch, QR popup, theme flag"
+src/ts/main/ipc/transfer-ipc.ts,business_logic,8,3237,"transfer-ipc-reconstruction (113 scenarios)","Import and export of saved logins and proxies: save/open dialogs, per-file parsing, pasted text with private-host rejection"
 src/ts/renderer/matrix-availability.ts,renderer_script,0,0,"renderer-dom","Browser-target renderer script (compiled to src/renderer/matrix-availability.js)"
 src/ts/renderer/matrix-book-now.ts,renderer_script,0,0,"renderer-dom","Browser-target renderer script (compiled to src/renderer/matrix-book-now.js)"
 src/ts/renderer/matrix-booking-timer.ts,renderer_script,0,0,"renderer-dom","Browser-target renderer script (compiled to src/renderer/matrix-booking-timer.js)"

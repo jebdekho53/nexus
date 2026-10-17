@@ -1,6 +1,6 @@
 # TypeScript migration
 
-Status: **in progress**. 69 main-process modules and 9 browser-target renderer scripts are real TypeScript reconstructions (listed below and in "Renderer scripts"). Everything else — the generated
+Status: **in progress**. 71 main-process modules and 9 browser-target renderer scripts are real TypeScript reconstructions (listed below and in "Renderer scripts"). Everything else — the generated
 definitions in `src/main/generated`, the compiled bundle, the interpreter, the engine, the exclusions listed below and
 the remaining `.cjs` modules — is unchanged. No completion percentage is claimed; the migration is **not** complete.
 
@@ -100,6 +100,8 @@ the remaining `.cjs` modules — is unchanged. No completion percentage is claim
 | `src/ts/main/ipc/browser-ipc.ts` | Browser detection, vendor download page, Brahmos Browser install with throttled progress | f3817, f3818, f3819, f3825 | `browser-logs-ipc-reconstruction` (119 scenarios) |
 | `src/ts/main/ipc/logs-ipc.ts` | Diagnostic-log buffers and verified export, success-ticket store | f3831, f3832, f3861, f3862, f3863 | `browser-logs-ipc-reconstruction` |
 | `src/ts/main/ipc/data-ipc.ts` | Saved-data IPC: forms (with armed copies), history, saved logins, payment methods, proxies, vault lock state and recovery | f3936, f3938, f3940, f3941, f3943–f3947, f3959–f3963, f3965, f3966, f3972–f3974, f3976–f3980, f3982, f3984, f3985 | `data-ipc-reconstruction` (95 scenarios) |
+| `src/ts/main/ipc/settings-ipc.ts` | Application settings IPC: auto update, window pin (applied to the controller and booking-box windows), AI switch, QR popup, theme flag | f4013–f4021 | `settings-ipc-reconstruction` (65 scenarios) |
+| `src/ts/main/ipc/transfer-ipc.ts` | Import and export of saved logins and proxies: save/open dialogs, per-file parsing, pasted text with private-host rejection | f3967, f3969, f3970, f3971, f3986, f3989, f3991, f3993 | `transfer-ipc-reconstruction` (113 scenarios) |
 
 How each was verified: legacy vs TypeScript on identical inputs (missing / null / empty / zero / NaN / wrong-type
 values) comparing results, thrown error types, traces, mutated state and lazy dependency reads; existing recovered-vs-native

@@ -55,6 +55,7 @@ const browserIpc=require('../ipc/browser-ipc.cjs');
 const logsIpc=require('../ipc/logs-ipc.cjs');
 const dataIpc=require('../ipc/data-ipc.cjs');
 const settingsIpc=require('../ipc/settings-ipc.cjs');
+const transferIpc=require('../ipc/transfer-ipc.cjs');
 const {definitionFingerprint}=require('./recovered-contract.cjs');
 const contracts=require('../payment/recovered-contract.json');
 
@@ -249,6 +250,28 @@ function settingsIpcFactories() {
     f4013:handler(settingsIpc.getAutoUpdate),f4014:handler(settingsIpc.setAutoUpdate),f4015:handler(settingsIpc.getWindowPin),
     f4016:handler(settingsIpc.setWindowPin),f4017:handler(settingsIpc.getAiEnabled),f4018:handler(settingsIpc.setAiEnabled),
     f4019:handler(settingsIpc.getQrPopup),f4020:handler(settingsIpc.getNewTheme),f4021:handler(settingsIpc.setQrPopup),
+  };
+}
+
+// Import and export of saved logins and proxies (registered by f3790).
+function transferIpcDependencies(readBinding,dependencies) {
+  const call=number=>(...args)=>readBinding(number,undefined,1)(...args);
+  const dialog=()=>readBinding(22,undefined,1).dialog;
+  return {
+    windowFor:sender=>readBinding(22,'x',1).BrowserWindow.fromWebContents(sender),
+    showSaveDialog:(parent,options)=>dialog().showSaveDialog(parent,options),showSaveDialogWithoutParent:options=>dialog().showSaveDialog(options),
+    showOpenDialog:(parent,options)=>dialog().showOpenDialog(parent,options),showOpenDialogWithoutParent:options=>dialog().showOpenDialog(options),
+    fs:()=>readBinding(18,'y',1),usersVault:call(1789),usersChanged:call(1721),parseUsers:call(1794),formatUser:()=>readBinding(255,undefined,1),
+    proxiesVault:call(1798),formatProxy:call(262),parseProxy:call(263),isPrivateHost:call(1464),proxyFromLine:()=>readBinding(264,undefined,1),
+    randomUuid:()=>readBinding(23,'j',1).randomUUID(),now:()=>(dependencies.now??(()=>Date.now()))(),
+  };
+}
+function transferIpcFactories(dependencies) {
+  const handler=call=>({readBinding})=>async function(event,argument){return call(transferIpcDependencies(readBinding,dependencies),event,argument);};
+  const withoutEvent=call=>({readBinding})=>async function(event,argument){return call(transferIpcDependencies(readBinding,dependencies),argument);};
+  return {
+    f3967:handler(transferIpc.exportUsers),f3969:handler(transferIpc.importUsers),f3970:handler(transferIpc.importUserFile),f3971:withoutEvent(transferIpc.importUsersData),
+    f3986:handler(transferIpc.exportProxies),f3989:handler(transferIpc.importProxies),f3991:withoutEvent(transferIpc.importProxyPaste),f3993:handler(transferIpc.importProxyFile),
   };
 }
 
@@ -523,6 +546,7 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     ...ordinaryIpcFactories(dependencies),
     ...dataIpcFactories(dependencies),
     ...settingsIpcFactories(),
+    ...transferIpcFactories(dependencies),
     f2196:({readBinding})=>function(resolve){
       return startPaytmWatch(resolve,readBinding(2),readBinding(4),readBinding(5),readBinding(6));
     },
