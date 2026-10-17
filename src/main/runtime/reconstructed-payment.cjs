@@ -60,6 +60,7 @@ const formsTransferIpc=require('../ipc/forms-transfer-ipc.cjs');
 const formCodecs=require('../storage/form-codecs.cjs');
 const formsCsv=require('../storage/forms-csv.cjs');
 const formNormalization=require('../storage/form-normalization.cjs');
+const recordCodecs=require('../storage/record-codecs.cjs');
 const {definitionFingerprint}=require('./recovered-contract.cjs');
 const contracts=require('../payment/recovered-contract.json');
 
@@ -589,6 +590,18 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     f482:()=>formsCsv.normalizeHeader,
     f483:({readBinding})=>function(...aliases){return formsCsv.aliasedCell(readBinding(2),readBinding(3,undefined,1),aliases);},
     f487:()=>formNormalization.defaultForm,
+    f414:()=>recordCodecs.exportLogin,
+    f415:({readBinding})=>function(input,id,now){return recordCodecs.loginFromLine(input,id,now,()=>readBinding(254)());},
+    f416:()=>recordCodecs.loginFromObject,f417:()=>recordCodecs.scalarText,
+    f418:({readBinding})=>function(value){return recordCodecs.validUpi(value,()=>readBinding(258,'Ky'));},
+    f419:({readBinding})=>function(method,upi){return recordCodecs.railPaymentMethod(method,upi,value=>readBinding(259)(value));},
+    f420:({readBinding})=>function(input,now){return recordCodecs.paymentFromInput(input,now,{
+      valid:value=>readBinding(259)(value),now:()=>(dependencies.now??(()=>Date.now()))(),random:()=>(dependencies.random??Math.random)(),
+    });},
+    f421:()=>recordCodecs.exportProxy,
+    f422:({readBinding})=>function(input){return recordCodecs.parseProxy(input,line=>readBinding(263)(line));},
+    f423:({readBinding})=>function(input,id,now){return recordCodecs.proxyFromInput(input,id,now,line=>readBinding(263)(line));},
+    f424:()=>recordCodecs.scalarText,
     f472:({readBinding})=>function(value,id,now){return formNormalization.normalizeForm(value,id,now,{
       defaults:(...args)=>readBinding(327)(...args),isRecord:value=>readBinding(297)(value),
       string:value=>readBinding(298)(value),label:(...args)=>readBinding(281)(...args),
