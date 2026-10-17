@@ -1,4 +1,323 @@
 {
+  "f962": {
+    "11696|rkuw": "bookedAt"
+  },
+  "f963": {
+    "14414|WyZ@": "bookedAt",
+    "17501|b!6h": "bookedAt"
+  },
+  "f964": {
+    "2419|NqM3": "existsSync",
+    "7223|0vo)": "file",
+    "2540|ZYwv": "parse",
+    "16762|C)Ez": "readFileSync",
+    "23825|P3P7": "file",
+    "11435|A@un": "utf8",
+    "12633|jg)a": "parse",
+    "20429|v%&5": "key",
+    "3819|9urW": "toString",
+    "3433|RuQs": "utf8",
+    "2514|PLJe": "isArray"
+  },
+  "f965": {
+    "18152|NqM3": "readVault",
+    "22147|4dr8": "entries"
+  },
+  "f966": {
+    "1388|qP]&": "readVault",
+    "15323|]TXZ": "Booking history vault could not be decrypted \u2014 not writing (to avoid overwriting existing history).",
+    "7137|QgKz": "entries"
+  },
+  "f967": {
+    "7185|qP]&": "mkdirSync",
+    "1042|7u]a": "dir",
+    "9827|1kPD": "key",
+    "20029|ZYwv": "from",
+    "10669|UMn*": "stringify",
+    "20770|OpDQ": "file",
+    "6166|S)Et": ".tmp",
+    "21117|UaF#": "writeFileSync",
+    "17504|*VhR": "stringify",
+    "13066|0vo)": "utf8",
+    "16157|8#8#": "renameSync",
+    "6164|qP]&": "file"
+  },
+  "f968": {
+    "2289|P3P7": "has",
+    "23752|1kPD": "protocol",
+    "8946|UaF#": "hostname",
+    "19012|9urW": "toLowerCase",
+    "9720|3W8e": "replace",
+    "1334|hm$n": "some"
+  },
+  "f969": {
+    "9748|iz(z": "endsWith"
+  },
+  "f970": {
+    "3252|PLJe": "now",
+    "11548|o^v]": "v1.",
+    "9990|zBnB": "max",
+    "10017|QgKz": "floor",
+    "1925|qP]&": "toString",
+    "7750|bTc%": "randomBytes",
+    "11294|b!6h": "toString",
+    "16613|%I%T": "base64url"
+  },
+  "f971": {
+    "1870|C)Ez": "set",
+    "19168|8#8#": "fromEntries",
+    "6034|MnWs": "entries"
+  },
+  "f972": {
+    "8075|iz(z": "http://",
+    "19204|S)Et": "trim",
+    "8076|a3QL": "replace"
+  },
+  "f973": {
+    "7256|s[W0": "request",
+    "20894|o^v]": "newContext",
+    "15500|ZYwv": "server",
+    "23126|rMir": "username",
+    "1719|sA1s": "password"
+  },
+  "f974": {
+    "6226|UaF#": "method",
+    "19965|sA1s": "GET",
+    "22502|s[W0": "headers",
+    "12947|rkuw": "server",
+    "15672|P3P7": "trim",
+    "9445|NqM3": "isBuffer",
+    "10635|C)Ez": "body",
+    "21840|*VhR": "body",
+    "2005|%I%T": "body",
+    "21788|lhKE": "no-cache",
+    "3902|o^v]": "signal",
+    "4390|%I%T": "headers",
+    "15327|WyZ@": "forEach",
+    "3120|Cbvh": "from",
+    "2897|JT7O": "arrayBuffer",
+    "19052|s[W0": "status",
+    "12560|zBnB": "toString",
+    "4639|PLJe": "utf8",
+    "15853|0vo)": "fetch",
+    "9274|@Yk*": "body",
+    "20390|]K13": "timeoutMs",
+    "5752|k([I": "headers",
+    "22827|S)Et": "keys",
+    "9647|JT7O": "toLowerCase",
+    "18193|b!6h": "body",
+    "20929|qP]&": "status",
+    "10012|A@un": "toString",
+    "17840|UMn*": "utf8",
+    "8019|QgKz": "dispose",
+    "3043|ou5S": "catch"
+  },
+  "f975": {
+    "14789|ZYwv": "toLowerCase"
+  },
+  "f976": {},
+  "f977": {
+    "4090|MnWs": "round"
+  },
+  "f978": {},
+  "f979": {
+    "2433|NqM3": "Host machine (direct)",
+    "5326|rkuw": "request",
+    "3962|bTc%": "newContext",
+    "23189|JT7O": "server",
+    "6922|k([I": "trim",
+    "19386|k([I": "server",
+    "12871|7u]a": "username",
+    "19278|8#8#": "password",
+    "4096|sA1s": "server",
+    "5526|bTc%": "trim",
+    "18091|MnWs": "Proxy is not working \u2014 check its host, port & credentials",
+    "21292|k([I": "Could not start the test \u2014 check your connection",
+    "9469|Y(mF": "get",
+    "18286|iz(z": "parse",
+    "23014|hm$n": "text",
+    "22389|RuQs": "publicIp",
+    "5395|*VhR": "clientIp",
+    "20230|UaF#": "now",
+    "14341|qP]&": "get",
+    "1103|MnWs": "?bytes=0",
+    "8143|]K13": "body",
+    "6097|PLJe": "push",
+    "20950|lhKE": "now",
+    "17549|rkuw": "length",
+    "21207|JT7O": "pingMs",
+    "17699|4dr8": "min",
+    "5967|4dr8": "now",
+    "13216|%I%T": "get",
+    "12729|A@un": "?bytes=",
+    "18956|a3QL": "body",
+    "8547|C)Ez": "downloadMbps",
+    "17800|bTc%": "length",
+    "3752|9urW": "now",
+    "14720|bTc%": "alloc",
+    "16272|A@un": "now",
+    "16654|UMn*": "post",
+    "23146|*VhR": "application/octet-stream",
+    "10753|v%&5": "body",
+    "17482|nWFp": "uploadMbps",
+    "3465|rkuw": "now",
+    "3252|PLJe": "now",
+    "3557|bTc%": "get",
+    "2059|P3P7": "status",
+    "21216|s[W0": "irctc",
+    "14974|qP]&": "now",
+    "6299|iz(z": "irctc",
+    "22496|WyZ@": "dispose",
+    "8768|rMir": "catch",
+    "3755|d[0N": "downloadMbps",
+    "16454|lhKE": "uploadMbps",
+    "6440|S)Et": "pingMs",
+    "6247|QgKz": "irctc",
+    "20989|P3P7": "reachable",
+    "21693|d[0N": "error",
+    "2045|*VhR": "server",
+    "9622|G]71": "trim",
+    "16127|JT7O": "Proxy is not working \u2014 check its host, port & credentials",
+    "21262|JT7O": "No internet connection \u2014 check your network"
+  },
+  "f980": {},
+  "f981": {
+    "23157|b!6h": "trim",
+    "2600|P3P7": "toLowerCase",
+    "1830|A@un": "replace",
+    "8613|MnWs": "notavailable",
+    "4854|ZYwv": "notapplicable",
+    "23197|UMn*": "unknown",
+    "7903|S)Et": "none",
+    "4253|]TXZ": "null",
+    "19102|zBnB": "undefined",
+    "15470|G]71": "trainnotavailable",
+    "18871|57pP": "trainnamenotavailable",
+    "20505|OpDQ": "test"
+  },
+  "f982": {
+    "20708|57pP": "trim",
+    "12396|UMn*": "exec",
+    "11456|MnWs": "trim"
+  },
+  "f983": {
+    "11870|A@un": "trim"
+  },
+  "f984": {
+    "2048|S)Et": "parse",
+    "8565|ou5S": "isArray",
+    "1509|S)Et": "trains",
+    "19325|o^v]": "trains",
+    "22537|nWFp": "trim",
+    "12607|QgKz": "find",
+    "8420|zBnB": "train_name",
+    "8563|UaF#": "eng_train_name"
+  },
+  "f985": {
+    "6501|UMn*": "train_number",
+    "18875|7u]a": "trim"
+  },
+  "f986": {
+    "9331|jg)a": "trim",
+    "19514|9urW": "replace",
+    "22516|qP]&": "toLowerCase"
+  },
+  "f987": {
+    "22048|57pP": "getUTCFullYear",
+    "734|iz(z": "getUTCMonth",
+    "20161|d[0N": "getUTCDate",
+    "21532|1kPD": "UTC",
+    "17169|QgKz": "UTC"
+  },
+  "f988": {},
+  "f989": {},
+  "f990": {
+    "1559|s[W0": "entries",
+    "15305|hm$n": "tag"
+  },
+  "f991": {
+    "7845|Cbvh": "entries"
+  },
+  "f992": {
+    "6128|d[0N": "from",
+    "13001|7u]a": "base64",
+    "21691|RuQs": "toString",
+    "18540|]K13": "utf8"
+  },
+  "f993": {
+    "22837|Cbvh": "unknown",
+    "22450|rMir": "keys",
+    "9835|WyZ@": "toLowerCase",
+    "20410|s[W0": "server",
+    "17591|s[W0": "toLowerCase",
+    "6922|k([I": "trim",
+    "9746|v%&5": "startsWith",
+    "13501|a3QL": "startsWith",
+    "19330|lhKE": "startsWith",
+    "4946|57pP": "startsWith",
+    "17260|Cbvh": "ready",
+    "7751|4dr8": "startsWith",
+    "22165|nWFp": "startsWith",
+    "8558|]TXZ": "degraded",
+    "7539|JT7O": "unknown"
+  },
+  "f994": {
+    "4771|v%&5": "degraded"
+  },
+  "f995": {
+    "14130|k([I": "forEach"
+  },
+  "f996": {
+    "14429|0vo)": "toLowerCase"
+  },
+  "f997": {
+    "6221|@Yk*": "randomBytes",
+    "20786|v%&5": "randomBytes",
+    "15157|rkuw": "createCipheriv",
+    "3042|d[0N": "aes-256-gcm",
+    "12153|QgKz": "concat",
+    "15364|S)Et": "update",
+    "11027|Cbvh": "utf8",
+    "9870|JT7O": "final",
+    "5708|Cbvh": "getAuthTag",
+    "16125|OpDQ": "createPublicKey",
+    "13827|G]71": "from",
+    "3327|v%&5": "base64",
+    "8070|C)Ez": "der",
+    "4955|3W8e": "spki",
+    "18014|C)Ez": "publicEncrypt",
+    "11866|*VhR": "constants",
+    "12494|7u]a": "RSA_PKCS1_OAEP_PADDING",
+    "19495|rMir": "sha256",
+    "7144|UMn*": "toString",
+    "14286|9urW": "base64",
+    "14825|WyZ@": "RSA-OAEP-256+AES-256-GCM",
+    "13537|iz(z": "base64",
+    "19626|hm$n": "toString",
+    "8043|QgKz": "base64",
+    "19913|a3QL": "toString",
+    "13233|NqM3": "base64",
+    "3350|NqM3": "createHash",
+    "4624|lhKE": "sha256",
+    "7537|sA1s": "update",
+    "4310|A@un": "digest",
+    "5331|UMn*": "hex"
+  },
+  "f998": {
+    "16376|MnWs": "test",
+    "15620|C)Ez": "test",
+    "575|%I%T": "test",
+    "20742|Y(mF": "test"
+  },
+  "f999": {
+    "586|a3QL": "test",
+    "5428|3W8e": "test",
+    "535|NqM3": "locked",
+    "19655|4dr8": "bad"
+  },
+  "f1000": {
+    "7828|nWFp": "test"
+  },
   "f152": {
     "23070|ZYwv": "message",
     "11124|@Yk*": "test"

@@ -48,12 +48,14 @@ export interface RecordVaultDeps {
   now(): number;
 }
 
-// The recovered locked-vault messages, keyed by collection.
+// The recovered locked-vault messages, keyed by collection ("entries" is the booking-history vault, see history-vault.ts).
 export const LOCKED_MESSAGES: Record<string, string> = {
   users:
     'Saved login data is locked: the secure vault could not be decrypted (its encryption key is unavailable). Not saving, to avoid overwriting your existing logins. Restart the app; if it persists, restore from a backup.',
   proxies:
     'Saved proxies are locked: the secure vault could not be decrypted (its encryption key is unavailable). Not saving, to avoid overwriting your existing proxies. Restart the app; if it persists, restore from a backup.',
+  entries:
+    'Booking history vault could not be decrypted — not writing (to avoid overwriting existing history).',
   payments:
     'Saved payments are locked: the secure vault could not be decrypted (its encryption key is unavailable). Not saving, to avoid overwriting your existing payments. Restart the app; if it persists, restore from a backup.',
 };

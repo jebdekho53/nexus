@@ -13,6 +13,10 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--node', required=True)
 parser.add_argument('--decoder', type=Path, required=True)
 parser.add_argument('--string-table', type=Path, required=True)
+parser.add_argument('--range', action='append', default=[], metavar='LO-HI',
+                    help='export only these inclusive function-id ranges (for example 962-1000); repeatable')
+parser.add_argument('--merge', action='store_true',
+                    help='keep every existing fixture entry and add only functions that are missing')
 args = parser.parse_args()
 root = Path(__file__).resolve().parent.parent
 spec = importlib.util.spec_from_file_location('payment_fixture_decoder', args.decoder)
@@ -33,6 +37,11 @@ selected_ids = [
     *[f'f{n}' for n in range(2172, 2186)],
     *[f'f{n}' for n in range(2186, 2249)],
 ]
+if args.range:
+    selected_ids = []
+    for item in args.range:
+        low, high = (int(part) for part in item.split('-'))
+        selected_ids += [f'f{n}' for n in range(low, high + 1)]
 code = (
     "const d=require('./src/main/generated/index.cjs');const ids="
     + json.dumps(selected_ids)
@@ -61,5 +70,8 @@ for name, definition in definitions.items():
             accumulator = None
     output[name] = strings
 destination = root / 'test/fixtures/payment-strings.json'
+if args.merge:
+    existing = json.loads(destination.read_text(encoding='utf-8'))
+    output = {**output, **existing}
 destination.write_text(json.dumps(output, indent=2, ensure_ascii=True) + '\n', encoding='utf-8', newline='\n')
 print(f'Exported {sum(map(len, output.values()))} static lookups from {len(output)} functions')

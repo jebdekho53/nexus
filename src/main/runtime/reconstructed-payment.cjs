@@ -49,6 +49,7 @@ const {getFinalPaytmStatus}=require('../payment/paytm-final-status.cjs');
 const {fingerprint,phonePeHeaders,phonePeRedirect,razorpayRedirect,phonePeQr,pollPhonePe}=require('../payment/phonepe-transport.cjs');
 const formsVault=require('../storage/forms-vault.cjs');
 const recordVault=require('../storage/record-vault.cjs');
+const historyVault=require('../storage/history-vault.cjs');
 const {definitionFingerprint}=require('./recovered-contract.cjs');
 const contracts=require('../payment/recovered-contract.json');
 
@@ -62,12 +63,14 @@ function formsVaultDependencies(readBinding,dependencies) {
   };
 }
 
-// Record vaults (saved logins, proxies, payments): the three recovered classes differ only in the collection name, the
-// locked-error text and the presence of get. ids: list,get,save,saveMany,delete,deleteAll,readVault,locked,readAll,readForWrite,writeAll.
+// Record vaults (saved logins, proxies, payments, booking history). The recovered classes share readVault/readAll/
+// readForWrite/writeAll and differ in the collection name and the locked-error text; the saved-logins vault has no get,
+// and history has its own list/add/import/delete/deleteAll/prune (history-vault.ts).
 const RECORD_VAULTS={
-  users:{list:'f900',save:'f902',saveMany:'f903',delete:'f906',deleteAll:'f908',readVault:'f909',locked:'f910',readAll:'f911',readForWrite:'f912',writeAll:'f913'},
-  proxies:{list:'f916',get:'f918',save:'f920',saveMany:'f921',delete:'f924',deleteAll:'f926',readVault:'f927',locked:'f928',readAll:'f929',readForWrite:'f930',writeAll:'f931'},
-  payments:{list:'f934',get:'f936',save:'f938',saveMany:'f939',delete:'f942',deleteAll:'f944',readVault:'f945',locked:'f946',readAll:'f947',readForWrite:'f948',writeAll:'f949'},
+  users:{collection:'users',list:'f900',save:'f902',saveMany:'f903',delete:'f906',deleteAll:'f908',readVault:'f909',locked:'f910',readAll:'f911',readForWrite:'f912',writeAll:'f913'},
+  proxies:{collection:'proxies',list:'f916',get:'f918',save:'f920',saveMany:'f921',delete:'f924',deleteAll:'f926',readVault:'f927',locked:'f928',readAll:'f929',readForWrite:'f930',writeAll:'f931'},
+  payments:{collection:'payments',list:'f934',get:'f936',save:'f938',saveMany:'f939',delete:'f942',deleteAll:'f944',readVault:'f945',locked:'f946',readAll:'f947',readForWrite:'f948',writeAll:'f949'},
+  history:{collection:'entries',readVault:'f964',readAll:'f965',readForWrite:'f966',writeAll:'f967'},
 };
 function recordVaultDependencies(collection,readBinding,dependencies) {
   const slot=number=>()=>readBinding(number,undefined,1);
@@ -75,21 +78,34 @@ function recordVaultDependencies(collection,readBinding,dependencies) {
 }
 function recordVaultFactories(dependencies) {
   const factories={};
-  for(const[collection,ids]of Object.entries(RECORD_VAULTS)) {
-    const deps=readBinding=>recordVaultDependencies(collection,readBinding,dependencies);
+  for(const ids of Object.values(RECORD_VAULTS)) {
+    const deps=readBinding=>recordVaultDependencies(ids.collection,readBinding,dependencies);
     factories[ids.readVault]=({readBinding})=>function(){return recordVault.readVault(this,deps(readBinding));};
-    factories[ids.locked]=()=>function(){return recordVault.locked(this);};
     factories[ids.readAll]=({readBinding})=>function(){return recordVault.readAll(this,deps(readBinding));};
     factories[ids.readForWrite]=({readBinding})=>function(){return recordVault.readForWrite(this,deps(readBinding));};
     factories[ids.writeAll]=({readBinding})=>function(records){return recordVault.writeAll(this,records,deps(readBinding));};
-    factories[ids.list]=()=>function(){return recordVault.list(this);};
+    if(ids.locked)factories[ids.locked]=()=>function(){return recordVault.locked(this);};
+    if(ids.list&&ids.collection!=='entries')factories[ids.list]=()=>function(){return recordVault.list(this);};
     if(ids.get)factories[ids.get]=()=>function(id){return recordVault.get(this,id);};
-    factories[ids.save]=()=>function(record){return recordVault.save(this,record);};
-    factories[ids.saveMany]=({readBinding})=>function(records){return recordVault.saveMany(this,records,deps(readBinding));};
-    factories[ids.delete]=()=>function(id){return recordVault.remove(this,id);};
-    factories[ids.deleteAll]=()=>function(){return recordVault.deleteAll(this);};
+    if(ids.save)factories[ids.save]=()=>function(record){return recordVault.save(this,record);};
+    if(ids.saveMany)factories[ids.saveMany]=({readBinding})=>function(records){return recordVault.saveMany(this,records,deps(readBinding));};
+    if(ids.delete&&ids.collection!=='entries')factories[ids.delete]=()=>function(id){return recordVault.remove(this,id);};
+    if(ids.deleteAll&&ids.collection!=='entries')factories[ids.deleteAll]=()=>function(){return recordVault.deleteAll(this);};
   }
   return factories;
+}
+// Booking-history specifics (class constructed by f950). Retention settings are bootstrap slots read when pruning.
+function historyVaultFactories(dependencies) {
+  return {
+    f952:()=>function(){return historyVault.list(this);},
+    f954:()=>function(entry){return historyVault.add(this,entry);},
+    f955:()=>function(entries){return historyVault.importEntries(this,entries);},
+    f957:()=>function(id){return historyVault.remove(this,id);},
+    f959:()=>function(){return historyVault.deleteAll(this);},
+    f961:({readBinding})=>function(entries){
+      return historyVault.prune(entries,{maxAgeMs:()=>readBinding(553,'k0',1),maxEntries:()=>readBinding(552,'bA',1),now:()=>(dependencies.now??(()=>Date.now()))()});
+    },
+  };
 }
 
 // Development-only migration switch. The installed release retains the old
@@ -358,6 +374,7 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     f895:({readBinding})=>function(forms){return formsVault.writeAll(this,forms,formsVaultDependencies(readBinding,dependencies));},
     f896:()=>function(form){return formsVault.summarizeForm(form);},
     ...recordVaultFactories(dependencies),
+    ...historyVaultFactories(dependencies),
     f2196:({readBinding})=>function(resolve){
       return startPaytmWatch(resolve,readBinding(2),readBinding(4),readBinding(5),readBinding(6));
     },
