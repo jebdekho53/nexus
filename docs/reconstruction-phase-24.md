@@ -1,3 +1,5 @@
+> Note: this report describes work on the branch `local-codex-phase25`. Its compiler changes were NOT carried into main when cloud phase 23 was merged (main uses the cloud compiler: tools/compiler/optimize.cjs and split.cjs). Re-apply only if still wanted.
+
 # Phase 24 — compiled-bundle readability: dropping pure accumulator-copy registers
 
 Offline only. No live service, stored credential, booking, payment, deployment or release was involved.

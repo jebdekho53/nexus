@@ -3,6 +3,8 @@ const {buildCfg,Unsupported}=require('./cfg.cjs');
 const {Lowering}=require('./lower.cjs');
 const {structure}=require('./structure.cjs');
 const {print}=require('./print.cjs');
+const {optimizeBlock,liveness}=require('./optimize.cjs');
+const {identifierOf}=require('./names.cjs');
 
 const SUPPORTED_KINDS=/^(DerivedConstructor|ClassMembersInitializerFunction(PrecededByStatic)?|ClassStaticInitializerFunction(PrecededByMember)?|NormalFunction|ArrowFunction|AsyncFunction|AsyncArrowFunction|AsyncConciseMethod|ConciseMethod|StaticConciseMethod|GetterFunction|SetterFunction|BaseConstructor|DefaultBaseConstructor)$/;
 
@@ -46,95 +48,86 @@ function plainRejection(handlerBlock) {
   return handlerBlock.rows.slice(0,intrinsic).every(row=>/^Star\d*$/.test(row[1])||['LdaTheHole','SetPendingMessage','Mov'].includes(row[1]));
 }
 
-// Drops a register that only ever copies the accumulator or another register, and is read exactly once, right
-// after the copy:
-//   rN=acc;  <next statement using rN>   =>   <next statement with rN replaced by acc>
-//   rN=rM;   <next statement using rN>   =>   <next statement with rN replaced by rM>
-// Safe because nothing executes between the two statements, so the source (acc or rM) still holds the exact value
-// that was copied into rN: this substitutes one side-effect-free read for another, never reordering any
-// computation. Gated on the register's TOTAL token count across the whole function (every block's lines joined)
-// being exactly 2 (the copy plus that one use), so a register read or written anywhere else in the function is
-// left untouched. Runs per block, since adjacency only holds within a single straight-line basic block.
-//
-// A chain of copies (rN=acc; rM=rN; <use rM>) only has its first hop collapsed by a single scan, because the scan
-// looks at each block's original line list once: rM=rN turns into rM=acc, but rM's own def+use pair isn't
-// re-examined until a later pass sees it fresh. Re-running to a fixpoint (below) finishes the chain, one hop per
-// round, with no change to the single-hop safety argument above.
-function inlineStarCopiesOnce(blockLines) {
-  const totalCount=new Map();
-  for(const lines of blockLines.values())for(const line of lines)for(const match of line.matchAll(/\br(\d+)\b/g)) {
-    const n=Number(match[1]);
-    totalCount.set(n,(totalCount.get(n)??0)+1);
-  }
-  let changed=false;
-  for(const[block,lines]of blockLines) {
-    const out=[];
-    for(let index=0;index<lines.length;index++) {
-      const line=lines[index];
-      const star=/^r(\d+)=(acc|r\d+);$/.exec(line);
-      if(star) {
-        const n=Number(star[1]);
-        const source=star[2];
-        const next=lines[index+1];
-        if(totalCount.get(n)===2&&next!==undefined) {
-          const use=new RegExp('\\br'+n+'\\b');
-          if(use.test(next)&&!new RegExp('^r'+n+'=').test(next)) {
-            out.push(next.replace(use,source));
-            index++;
-            changed=true;
-            continue;
-          }
-        }
-      }
-      out.push(line);
-    }
-    blockLines.set(block,out);
-  }
-  return changed;
-}
-function inlineStarCopies(blockLines) {
-  while(inlineStarCopiesOnce(blockLines));
-}
-
 // Compiles one recovered definition to JavaScript source: `exports.<id>=function(rt,fn,self,args,newTarget,ctx,K){...}`.
 // Throws Unsupported for shapes that are not translated yet; those functions keep running in the interpreter.
-function compileDefinition(definition,options={}) {
+function compileTree(definition,options={}) {
   if(!SUPPORTED_KINDS.test(definition.kind))throw new Unsupported('kind '+definition.kind);
   const isAsync=definition.kind.includes('Async');
   const working=isAsync?{...definition,code:rewriteAsync(definition.code)}:definition;
   const cfg=buildCfg(working);
   const lowering=new Lowering(working,options);
-  const blockLines=new Map();
-  for(const block of cfg.blocks) {
+  const lowerBlock=block=>{
+    const rows=block.rows;
     const term=block.term;
     const keepLast=term.kind==='fallOff'||(term.kind==='jump'&&term.implicit);
-    const body=keepLast?block.rows:block.rows.slice(0,-1);
-    blockLines.set(block,body.flatMap(row=>lowering.instruction(row)));
+    const body=keepLast?rows:rows.slice(0,-1);
+    const lines=body.flatMap(row=>lowering.instruction(row));
+    const resolved=term.kind==='cond'&&term.row?{...term,test:lowering.forInDone(term.row)}:term;
+    const termText=resolved.kind==='cond'?resolved.test:['return','throw','switch'].includes(resolved.kind)?'acc':null;
+    return{lines,term:resolved,termText};
+  };
+  // lower every block reachable from the entry or a handler, so liveness and register statistics are exact
+  const lowered=new Map();
+  if(options.optimize!==false) {
+    const roots=[cfg.entry,...(working.handlers??[]).map(handler=>cfg.blocks.find(block=>block.pc===handler[2])).filter(Boolean)];
+    const pending=[...roots];
+    while(pending.length) {
+      const block=pending.pop();
+      if(lowered.has(block))continue;
+      lowered.set(block,lowerBlock(block));
+      pending.push(...block.succ);
+    }
   }
-  inlineStarCopies(blockLines);
+  const optimized=new Map();
+  if(options.optimize!==false) {
+    const exceptionalSuccessors=new Map(),entryReads=new Map();
+    for(const[start,end,target,,contextRegister]of working.handlers??[]) {
+      const handlerBlock=cfg.blocks.find(block=>block.pc===target);
+      if(!handlerBlock)continue;
+      if(Number.isInteger(contextRegister))entryReads.set(handlerBlock,[...(entryReads.get(handlerBlock)??[]),'r'+contextRegister]);
+      for(const block of cfg.blocks)if(block.pc>=start&&block.pc<end)exceptionalSuccessors.set(block,[...(exceptionalSuccessors.get(block)??[]),handlerBlock]);
+    }
+    const info=liveness([...lowered.keys()],lowered,exceptionalSuccessors,entryReads);
+    for(const[block,entry]of lowered) {
+      const state=info.get(block);
+      const result=optimizeBlock(entry.lines,entry.termText,{liveOut:state.liveOut,exceptional:state.exceptional});
+      optimized.set(block,{lines:result.lines,term:entry.term,expr:result.term});
+    }
+  }
   const emit=block=>{
-    const term=block.term;
-    const lines=blockLines.get(block);
-    if(term.kind==='cond'&&term.row)return{lines,term:{...term,test:lowering.forInDone(term.row)}};
-    return{lines,term};
+    const entry=optimized.get(block);
+    if(entry) {
+      const term=entry.term;
+      if(term.kind==='cond')return{lines:entry.lines,term:{...term,test:entry.expr}};
+      if(entry.expr!==null&&['return','throw','switch'].includes(term.kind))return{lines:entry.lines,term:{...term,expr:entry.expr}};
+      return{lines:entry.lines,term};
+    }
+    const plain=lowerBlock(block);
+    return{lines:plain.lines,term:plain.term};
   };
   const tree=structure(cfg,working.handlers??[],emit,{isPlainRejection:isAsync?plainRejection:undefined});
+  return{tree,isAsync,incoming:Number.isInteger(definition.incoming)&&definition.incoming>=0&&definition.incoming<definition.registerCount?definition.incoming:null};
+}
+
+function compileDefinition(definition,options={}) {
+  const{tree,isAsync,incoming}=compileTree(definition,options);
   const source=print(tree,options);
   const registers=new Set();
   for(const match of source.matchAll(/\br(\d+)\b/g))registers.add(Number(match[1]));
-  const incoming=Number.isInteger(definition.incoming)&&definition.incoming>=0&&definition.incoming<definition.registerCount?definition.incoming:null;
   if(incoming!==null)registers.add(incoming);
   const declarations=['acc','pending=HOLE',...[...registers].sort((a,b)=>a-b).map(index=>'r'+index+(index===incoming?'=newTarget':''))];
-  const lines=[];
-  if(options.nameHint)lines.push('// '+definition.id+' '+options.nameHint);
-  lines.push(
-    'exports.'+definition.id+'='+(isAsync?'async ':'')+'function(rt,fn,self,args,newTarget,ctx,K){',
+  const label=options.names?.get(definition.id);
+  const own=definition.name&&/^[A-Za-z_$][\w$]*$/.test(definition.name)?definition.name:'';
+  const readable=identifierOf(own||label?.hint||'');
+  const header=['// '+definition.id+(own?' '+own:'')+(label?.parent?' (created in '+label.parent+(label.hint?', hint: '+label.hint:'')+')':'')];
+  return[
+    ...(options.names?header:[]),
+    'exports.'+definition.id+'='+(isAsync?'async ':'')+'function'+(options.names&&readable?' '+readable+'_'+definition.id:'')+'(rt,fn,self,args,newTarget,ctx,K){',
     '  const{HOLE}=rt;',
     '  let '+declarations.join(',')+';',
     source,
     '};',
-  );
-  return lines.join('\n');
+  ].join('\n');
 }
 
-module.exports={compileDefinition,Unsupported};
+module.exports={compileDefinition,compileTree,Unsupported};

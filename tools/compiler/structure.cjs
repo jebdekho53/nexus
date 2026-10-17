@@ -166,10 +166,10 @@ function structure(cfg,handlers,emitBlock,options={}) {
       switch(term.kind) {
         case 'jump': out.push(...branch(x,term.to,context)); break;
         case 'cond': out.push({k:'if',test:term.test,then:branch(x,term.then,context),else:branch(x,term.otherwise,context)}); break;
-        case 'return': out.push({k:'return'}); break;
-        case 'throw': out.push({k:'throw'}); break;
+        case 'return': out.push({k:'return',expr:term.expr}); break;
+        case 'throw': out.push({k:'throw',expr:term.expr}); break;
         case 'fallOff': out.push({k:'return-undefined'}); break;
-        case 'switch': out.push({k:'switch',cases:term.cases.map(([key,target])=>[key,branch(x,target,context)]),otherwise:branch(x,term.otherwise,context)}); break;
+        case 'switch': out.push({k:'switch',expr:term.expr,cases:term.cases.map(([key,target])=>[key,branch(x,target,context)]),otherwise:branch(x,term.otherwise,context)}); break;
         default: throw new Unsupported('terminator '+term.kind);
       }
       return out;

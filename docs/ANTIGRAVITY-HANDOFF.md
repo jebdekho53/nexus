@@ -1,36 +1,8 @@
-# Latest checkpoint — phase25
+# Latest checkpoint — phase23
 
-Readability pass, inline-temporaries second slice (copy chains): tools/compiler/compile.cjs's `inlineStarCopies`
-now matches `rN=acc;` or `rN=rM;` (any register source, not just the accumulator) and substitutes whichever
-source text was captured, then re-runs the scan to a fixpoint — this collapses same-block chains of register
-copies (`rN=acc; rM=rN; rP=rM; <use rP>` all the way down to `<use acc>`), one hop per round, same adjacency
-safety argument as phase24 each round. Net -202 lines across src/main/compiled. Re-verified: full suite 1686/1686
-(plain and MATRIX_COMPILED=1), differential --seeds 4 (4354 checked, 0 failing), offline smoke --compiled-runtime
---reconstructed-payment --development (8/8 windows complete, diagnostics/startup.jsonl recorded
-definitions-loaded{functions:4354,compiledRuntime:true} and smoke-complete{windows:8} for that run's PID, clean
-process exit). See docs/reconstruction-phase-25.md. Exact next action: cross-block single-use copies (needs real
-liveness across block boundaries — deliberately deferred again), promote context-array slots to lexical
-variables, split the f1 bootstrap into modules; keep soaking --compiled-runtime offline before making it default.
+The compiled runtime (src/main/compiled, 4354 definitions; readable: inlined temporaries, named bodies, f1 bootstrap split into src/main/compiled/bootstrap) is now the default; `--interpreter-runtime` selects the archived interpreter. Verified offline: differential (24 seeds, only f1556 seed 23 differs), full suite with and without MATRIX_COMPILED=1 (the same 3 Windows-path tests fail on Linux), class/derived-constructor equivalence (f1614/f1616, f325, f577-f579, f2533) and 797 IPC/event/session callback invocations identical across interpreter, compiled and unsplit runtimes (tools/compiler/bootstrap-check.cjs, boundary-check.cjs). Exact next action: run the Windows Electron offline smoke test locally (`.runtime/electron.exe . --development --smoke-test`, then with `--interpreter-runtime`) and the 3 Windows-path tests; the cloud environment could not. Then continue the controller migration per docs/reconstruction-phase-23.md "Next action". Sections below are earlier history.
 
-# Earlier checkpoint — phase24
-
-Readability pass, inline-temporaries narrow slice: tools/compiler/compile.cjs now drops registers whose only job is
-`rN=acc;` immediately followed by a single read, substituting `acc` directly — safe because nothing executes
-between the two adjacent lines of the same basic block, so it's a value-identical read swap, never a reorder.
-Gated on the register's total token count across the whole function being exactly 2 (the copy plus that one use),
-so anything live elsewhere in the function is left untouched. 6592 copy sites removed across src/main/compiled; net
--2543 lines. Re-verified: full suite 1686/1686 (plain and MATRIX_COMPILED=1), differential --seeds 4 (4354 checked,
-0 failing), offline smoke --compiled-runtime (8/8 windows complete, nativeBytecodeLoaded:false, clean exit). See
-docs/reconstruction-phase-24.md. Exact next action: the harder half of inline-temporaries (copy chains, and copies
-whose single use crosses a block boundary — needs real cross-block liveness, deliberately deferred), promote
-context-array slots to lexical variables, split the f1 bootstrap into modules; keep soaking --compiled-runtime
-offline before making it the default.
-
-# Earlier checkpoint — phase23
-
-Readability pass, first slice: compiled functions that have a short single-line hint in docs/reconstruction-inventory/function-names.csv now carry a `// <id> <hint>` comment above their `exports.<id>=` line (2882 of 4354; tools/compiler/build.cjs+compile.cjs). Comment-only, nothing else changed. Re-verified: full suite 1686/1686 (plain and MATRIX_COMPILED=1), differential --seeds 4 (4354 checked, 0 failing), offline smoke --compiled-runtime (8/8 windows complete, nativeBytecodeLoaded:false). See docs/reconstruction-phase-23.md. Exact next action: continue the readability pass (inline temps, promote context-array slots to lexical variables, split the f1 bootstrap), keep soaking --compiled-runtime offline before making it the default, per docs/reconstruction-phase-22.md and -23.md.
-
-# Earlier checkpoint — phase22
+# Latest checkpoint — phase22
 
 All 4354 recovered definitions are compiled to ordinary JavaScript (src/main/compiled, tools/compiler) and verified by differential execution plus the full suite (1686 tests, also with MATRIX_COMPILED=1). src/main/runtime/compiled-runtime.cjs runs them without the instruction definitions (index.cjs --compiled-runtime; offline smoke passes). Exact next action: soak the compiled runtime offline, make it the default, then readability passes (inline temps, names from function-names.csv, promote context slots to lexical variables, split the f1 bootstrap) per docs/reconstruction-phase-22.md. The sections below are earlier history.
 

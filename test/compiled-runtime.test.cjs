@@ -23,3 +23,24 @@ test('compiled metadata covers every compiled function', () => {
   const bodies = require('../src/main/compiled/index.cjs');
   assert.deepEqual(Object.keys(meta).sort(), Object.keys(bodies).sort());
 });
+
+test('bootstrap (split f1 modules) behaves like the interpreter and the unsplit compile', () => {
+  const result = spawnSync(process.execPath, [path.resolve(__dirname, '../tools/compiler/bootstrap-check.cjs')], {encoding: 'utf8'});
+  assert.equal(result.status, 0, result.stdout + result.stderr);
+  const report = JSON.parse(result.stdout);
+  assert.equal(report.compiledMatchesInterpreter, true);
+  assert.equal(report.unsplitMatchesInterpreter, true);
+  assert.ok(report.bootstrapLog > 100, 'bootstrap should execute deeply');
+  assert.equal(report.errors.interpreter, null);
+  assert.equal(report.classShapesMatch, true, 'class prototypes, statics and parents');
+  assert.equal(report.instancesMatch, true, 'constructed instances and their effects');
+  // payment gateway constructor + field initializer (f1614/f1616) and the derived constructors
+  for (const id of ['f1614', 'f325', 'f577', 'f578', 'f579', 'f2533']) assert.ok(report.constructedIds.includes(id), id + ' was constructed');
+});
+
+test('the compiled runtime is the default and the interpreter is an explicit switch', () => {
+  const source = require('node:fs').readFileSync(path.resolve(__dirname, '../src/main/index.cjs'), 'utf8');
+  assert.match(source, /const compiledRuntime = !process\.argv\.includes\('--interpreter-runtime'\)/);
+  // the archived instruction definitions are only loaded when the interpreter is selected
+  assert.match(source, /compiledRuntime \? null : require\('\.\/generated\/index\.cjs'\)/);
+});

@@ -4,38 +4,11 @@
 const fs=require('node:fs'),path=require('node:path');
 const definitions=require('../../src/main/generated/index.cjs');
 const{compileDefinition,Unsupported}=require('./compile.cjs');
+const{loadNames}=require('./names.cjs');
+const{splitDefinition,SPLIT_IDS}=require('./split.cjs');
+const names=loadNames();
 const excludeArgument=process.argv.indexOf('--exclude');
 const excluded=new Set(excludeArgument>=0?process.argv[excludeArgument+1].split(','):[]);
-
-// Parses docs/reconstruction-inventory/function-names.csv (RFC4180-ish: quoted fields, "" escapes) into id -> nameHint,
-// keeping only short single-line hints that are useful as a readability comment, not incidental string constants.
-function loadNameHints() {
-  const csvPath=path.resolve(__dirname,'../../docs/reconstruction-inventory/function-names.csv');
-  const text=fs.readFileSync(csvPath,'utf8');
-  const rows=[];
-  let row=[],field='',inQuotes=false;
-  for(let i=0;i<text.length;i++) {
-    const c=text[i];
-    if(inQuotes) {
-      if(c==='"'){if(text[i+1]==='"'){field+='"';i++;}else inQuotes=false;}
-      else field+=c;
-    } else if(c==='"')inQuotes=true;
-    else if(c===','){row.push(field);field='';}
-    else if(c==='\n'){row.push(field);rows.push(row);row=[];field='';}
-    else if(c==='\r'){}
-    else field+=c;
-  }
-  if(field.length||row.length){row.push(field);rows.push(row);}
-  const hints=new Map();
-  for(const[id,,hint]of rows.slice(1)) {
-    if(!hint)continue;
-    if(hint.length>40)continue;
-    if([...hint].some(ch=>{const code=ch.codePointAt(0);return code===10||code===13||code===8232||code===8233;}))continue;
-    hints.set(id,hint);
-  }
-  return hints;
-}
-const nameHints=loadNameHints();
 const outputDirectory=path.resolve(__dirname,'../../src/main/compiled');
 fs.mkdirSync(outputDirectory,{recursive:true});
 for(const name of fs.readdirSync(outputDirectory))if(/^part-\d+\.cjs$/.test(name))fs.unlinkSync(path.join(outputDirectory,name));
@@ -50,10 +23,21 @@ const flush=()=>{
   fs.writeFileSync(path.join(outputDirectory,name),"'use strict';\n// Compiled from recovered definitions by tools/compiler (do not edit; rebuild instead).\n"+chunk.join('\n')+'\n');
   parts.push(name);chunk=[];size=0;
 };
+const bootstrapDirectory=path.join(outputDirectory,'bootstrap');
+fs.rmSync(bootstrapDirectory,{recursive:true,force:true});
+const splitModules=[];
 for(const id of ids) {
   if(excluded.has(id))continue;
+  if(SPLIT_IDS.has(id)) {
+    const result=splitDefinition(definitions[id],{names});
+    fs.mkdirSync(bootstrapDirectory,{recursive:true});
+    fs.writeFileSync(path.join(bootstrapDirectory,id+'.cjs'),result.main);
+    for(const part of result.parts)fs.writeFileSync(path.join(bootstrapDirectory,part.name),part.source);
+    splitModules.push(id);compiled++;
+    continue;
+  }
   try {
-    const source=compileDefinition(definitions[id],{nameHint:nameHints.get(id)});
+    const source=compileDefinition(definitions[id],{names});
     chunk.push(source);size+=source.length;compiled++;
     if(size>1500000)flush();
   } catch(error) {
@@ -62,7 +46,7 @@ for(const id of ids) {
   }
 }
 flush();
-fs.writeFileSync(path.join(outputDirectory,'index.cjs'),"'use strict';\nmodule.exports=Object.assign({},\n"+parts.map(name=>'  require("./'+name+'")').join(',\n')+'\n);\n');
+fs.writeFileSync(path.join(outputDirectory,'index.cjs'),"'use strict';\nmodule.exports=Object.assign({},\n"+[...parts.map(name=>'  require("./'+name+'")'),...splitModules.map(id=>'  {'+id+': require("./bootstrap/'+id+'.cjs")}')].join(',\n')+'\n);\n');
 fs.writeFileSync(path.join(outputDirectory,'unsupported.txt'),unsupported.join('\n')+'\n');
 console.log('Compiled '+compiled+' definitions into '+parts.length+' files; '+unsupported.length+' remain interpreted');
 
