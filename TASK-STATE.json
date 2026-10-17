@@ -1,7 +1,7 @@
 {
   "status": "in_progress",
-  "progress": "Post-merge Windows verification of c5e211c: full1688-test suite passes in normal and MATRIX_COMPILED=1 modes. Fresh default compiled smoke PID28084 and interpreter smoke PID20952 each completed8 DOM-ready windows, exit0,4354 definitions and nativeBytecodeLoaded=false. Compiled runtime is default; interpreter retained behind --interpreter-runtime. Local phase24/25 optimization code remains on backup branch, not main. Controller/readability reconstruction remains unfinished; public1.0.11 unchanged; no live service/build/deployment.",
-  "task": "Reconstruct Matrix into maintainable ordinary source with verified compiled runtime",
+  "progress": "Phases1–26: 88 native entries plus booking controllers f2102, f2161, f3149 (src/main/booking), 405 contract pins, 2165-test full suite passes except 3 Windows-path tests on Linux (also with MATRIX_COMPILED=1). Compiled runtime is the default; --interpreter-runtime keeps the interpreter. Differential matches (only f1556 seed23). Windows verification of c5e211c (suite + both smoke modes) passed; smoke for the phase 26 controllers still needs a local run. Public 1.0.11 unchanged; no live service/build/deployment.",
+  "task": "Reconstruct recovered Matrix payment logic into maintainable JavaScript",
   "completedLatestTask": {
     "task": "Fix WebLogin Chrome selection closing another independent pair panel",
     "version": "1.0.10",
