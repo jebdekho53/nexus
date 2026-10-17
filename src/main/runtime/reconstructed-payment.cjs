@@ -340,7 +340,7 @@ function windowLayoutFactories(dependencies) {
 function windowFactoryDependencies(readBinding,writeBinding,dependencies) {
   const slot=(number,name)=>()=>readBinding(number,name);
   const call=number=>(...args)=>readBinding(number)(...args);
-  const binding=(number,name)=>({get:()=>readBinding(number,name),store:value=>writeBinding(number,value),checkedStore:value=>{readBinding(number,name);writeBinding(number,value);}});
+  const binding=(number,name)=>({get:()=>readBinding(number,name),checkedGet:()=>readBinding(number,name),store:value=>writeBinding(number,value),checkedStore:value=>{readBinding(number,name);writeBinding(number,value);}});
   return {
     electron:slot(22,'x'),path:slot(14,'m'),mainDirectory:()=>readBinding(2),devTools:slot(1972,'Pt'),edgeMargin:slot(2027,'Cn'),
     controllerWindow:binding(2039,'tt'),confirmWindow:binding(2050,'Ni'),controllerReady:binding(2051,'go'),showWhenReady:binding(2052,'Ol'),
@@ -349,6 +349,8 @@ function windowFactoryDependencies(readBinding,writeBinding,dependencies) {
     controllerSize:call(2031),placement:call(2032),loadPage:call(2038),placeWindow:call(2040),keepOnTop:call(2057),applyWindowSettings:call(2056),
     setWindowPin:call(1771),pinnedSetting:call(1770),newThemeEnabled:call(1623),splashTheme:call(1624),recreateController:call(2044),showController:call(2054),
     now:()=>(dependencies.now??(()=>Date.now()))(),
+    restartScheduled:binding(2077,'jl'),pendingWork:binding(2076,'mo'),relaunch:()=>readBinding(22,'x').app.relaunch(),exitApp:code=>readBinding(203)(code),
+    utilityWindows:binding(2069,'oc'),setTimer:(callback,ms)=>(dependencies.setTimeout??setTimeout)(callback,ms),
   };
 }
 function windowFactoryFactories(dependencies) {
@@ -359,6 +361,8 @@ function windowFactoryFactories(dependencies) {
     f4112:reader=>function(){return windowFactory.createConfirmQuit(deps(reader));},
     f4128:reader=>function(formId,show){return windowFactory.createFormWindow(deps(reader),formId,show);},
     f4132:reader=>function(show){return windowFactory.createOpenFormWindow(deps(reader),show);},
+    f4147:reader=>function(name,title,width,height,option){return windowFactory.createUtilityWindow(deps(reader),name,title,width,height,option);},
+    f4157:reader=>function(delay){return windowFactory.scheduleRestart(deps(reader),delay);},
   };
 }
 

@@ -8,6 +8,7 @@ const assert = require('node:assert/strict');
 const {harness, outcome, compare} = require('./helpers/recovered-harness.cjs');
 const {HOLE} = require('../src/main/runtime/engine.cjs');
 
+
 const summary = value => {
   if (typeof value === 'function') return 'fn';
   if (value && typeof value === 'object') { if (value.__window) return 'win#' + value.id; try {return JSON.parse(JSON.stringify(value));} catch {return 'object';} }
@@ -51,16 +52,22 @@ function world(options = {}) {
     BrowserWindow,
     screen: {getPrimaryDisplay() {rec('getPrimaryDisplay'); return {workArea};}},
     dialog: {showErrorBox(title, text) {rec('showErrorBox', title, text); if (options.errorBoxThrows) throw new Error('synthetic dialog');}},
+    app: {relaunch() {rec('app.relaunch'); if (options.relaunchThrows) throw new Error('synthetic relaunch');}},
   };
+  const timers = [];
+  const setTimeoutFake = (callback, ms) => {rec('setTimeout', ms); timers.push(callback); if (options.timerThrows) throw new Error('synthetic timer');};
   const registry = new Map();
+  const utilityRegistry = new Map();
   const state = {
     2039: options.controller === undefined ? null : existing(options.controller),
     2050: options.confirm === undefined ? null : existing(options.confirm),
     2061: options.openForm === undefined ? null : existing(options.openForm),
     2051: options.ready ?? false, 2052: options.showWhenReady ?? false, 1971: options.quitting ?? false,
     2041: options.crashes ?? [], 2042: options.crashLimit ?? 3, 2043: options.crashWindow ?? 60000,
+    2077: options.restartScheduled ?? false, 2076: typeof options.pendingWork === 'function' ? options.pendingWork() : options.pendingWork,
   };
   for (const [key, spec] of options.registry ?? []) registry.set(key, existing(spec));
+  for (const [key, spec] of options.utility ?? []) utilityRegistry.set(key, existing(spec));
   const slots = {
     22: options.holes?.includes(22) ? HOLE : electron, 14: options.holes?.includes(14) ? HOLE : {join: (...parts) => parts.join('|')}, 2: 'C:/app/src/main',
     1972: options.holes?.includes(1972) ? HOLE : (options.devTools ?? false), 2027: options.holes?.includes(2027) ? HOLE : 16,
@@ -70,9 +77,10 @@ function world(options = {}) {
     2038: call('loadPage', undefined), 2040: call('place', undefined), 2057: call('keepOnTop', undefined), 2056: call('applySettings', undefined),
     1771: call('setPin', undefined), 1770: call('pinned', options.pinned ?? false), 1623: call('newTheme', 'theme-flag'), 1624: call('splashTheme', 'splash-flag'),
     2044: call('recreate', undefined), 2054: call('showController', undefined),
+    203: call('exit', undefined), 2069: options.holes?.includes(2069) ? HOLE : utilityRegistry,
   };
-  for (const slot of [2039, 2050, 2061, 2051, 2052, 1971, 2041, 2042, 2043]) slots[slot] = options.holes?.includes(slot) ? HOLE : state[slot];
-  return {trace, slots, created, registry, existing};
+  for (const slot of [2039, 2050, 2061, 2051, 2052, 1971, 2041, 2042, 2043, 2077, 2076]) slots[slot] = options.holes?.includes(slot) ? HOLE : state[slot];
+  return {trace, slots, created, registry, existing, timers, setTimeoutFake, utilityRegistry};
 }
 
 function scenario(name, options, run) {
@@ -80,11 +88,11 @@ function scenario(name, options, run) {
     await compare(async native => {
       const env = world(options);
       const clock = {now: () => 1000000 + (options.clockStep ?? 0)};
-      const {rootFunction, root} = harness({native, slots: env.slots, globals: {Date: clock}, dependencies: {now: clock.now}});
+      const {rootFunction, root} = harness({native, slots: env.slots, globals: {Date: clock, setTimeout: env.setTimeoutFake}, dependencies: {now: clock.now, setTimeout: env.setTimeoutFake}});
       const result = await outcome(async () => run(rootFunction, env, root));
       const rootState = {};
-      for (const slot of [2039, 2050, 2061, 2051, 2052, 2041]) rootState[slot] = root[slot] === HOLE ? 'HOLE' : (root[slot] && root[slot].__window ? 'win#' + root[slot].id : root[slot]);
-      return {result, trace: env.trace, rootState, registry: [...env.registry].map(([key, window]) => [key, window.id]), created: env.created.map(window => window.id)};
+      for (const slot of [2039, 2050, 2061, 2051, 2052, 2041, 2077, 1971]) rootState[slot] = root[slot] === HOLE ? 'HOLE' : (root[slot] && root[slot].__window ? 'win#' + root[slot].id : root[slot]);
+      return {result, trace: env.trace, rootState, registry: [...env.registry].map(([key, window]) => [key, window.id]), created: env.created.map(window => window.id), utility: [...env.utilityRegistry].map(([key, window]) => [key, window.id]), timers: env.timers.length};
     });
   });
 }
@@ -173,9 +181,36 @@ scenario('open-form window: events while quitting, hidden', {quitting: true}, f 
 for (const hole of [22, 2061, 14, 1972]) scenario('open-form window: binding ' + hole + ' uninitialised', {holes: [hole]}, f => f('f4132')());
 scenario('open-form window: closed with the binding uninitialised later', {}, (f, env, root) => { const w = f('f4132')(true); root[2061] = HOLE; return fire(w, 'closed'); });
 
+// f4147 utility windows
+for (const option of [undefined, true, false, {}, {reveal: false}, {reveal: true}, {pin: true}, {pin: true, reveal: false}, {pin: 0}, 'text', 0, null])
+  scenario('utility window: new / option ' + JSON.stringify(option), {}, f => f('f4147')('logs', 'Live Logs', 720, 560, option));
+for (const option of [{reveal: false}, {reveal: true}, {}, {reveal: 0}, {reveal: 'no'}, false, true])
+  scenario('utility window: ready-to-show with option ' + JSON.stringify(option), {}, f => { const w = f('f4147')('logs', 'Live Logs', 720, 560, option); return fire(w, 'ready-to-show'); });
+scenario('utility window: existing is revealed', {utility: [['logs', {}]]}, f => f('f4147')('logs', 'Live Logs', 720, 560));
+scenario('utility window: existing left alone when reveal is false', {utility: [['logs', {}]]}, f => f('f4147')('logs', 'Live Logs', 720, 560, false));
+scenario('utility window: existing destroyed is replaced', {utility: [['logs', {destroyed: true}]]}, f => f('f4147')('logs', 'Live Logs', 720, 560));
+scenario('utility window: events', {}, f => { const w = f('f4147')('proxy', 'Proxy', 660, 660); const e = preventable(); return [fire(w, 'ready-to-show'), fire(w, 'close', e), e.defaultPrevented, fire(w, 'closed')]; });
+scenario('utility window: pinned has no close handler', {}, f => { const w = f('f4147')('proxy', 'Proxy', 660, 660, {pin: true}); return [w.listeners.has('close'), fire(w, 'ready-to-show'), fire(w, 'closed')]; });
+scenario('utility window: hidden does not show when ready', {}, f => { const w = f('f4147')('proxy', 'Proxy', 660, 660, false); return fire(w, 'ready-to-show'); });
+scenario('utility window: close while quitting', {quitting: true}, f => { const w = f('f4147')('proxy', 'Proxy', 660, 660); const e = preventable(); return [fire(w, 'close', e), e.defaultPrevented]; });
+for (const hole of [22, 2069, 14, 1972]) scenario('utility window: binding ' + hole + ' uninitialised', {holes: [hole]}, f => f('f4147')('logs', 'Live Logs', 720, 560));
+// f4157 delayed restart
+const settle = async () => { for (let i = 0; i < 6; i++) await new Promise(resolve => setImmediate(resolve)); };
+scenario('restart: scheduled once', {}, async (f, env) => { f('f4157')(1500); await settle(); return env.timers.map(timer => timer()); });
+scenario('restart: second request is ignored', {}, async (f, env) => { f('f4157')(1500); f('f4157')(900); await settle(); return env.timers.length; });
+scenario('restart: already scheduled', {restartScheduled: true}, async (f, env) => { f('f4157')(1500); await settle(); return env.timers.length; });
+scenario('restart: quitting', {quitting: true}, async (f, env) => { f('f4157')(1500); await settle(); return env.timers.length; });
+scenario('restart: quitting by the time the delay is over', {}, async (f, env, root) => { f('f4157')(1500); await settle(); root[1971] = true; return env.timers.map(timer => timer()); });
+scenario('restart: waits for pending work that succeeds', {pendingWork: () => Promise.resolve('done')}, async (f, env) => { f('f4157')(10); const before = env.timers.length; await settle(); return [before, env.timers.length]; });
+scenario('restart: pending work that fails does not stop it', {pendingWork: () => Promise.reject(new Error('synthetic pending'))}, async (f, env) => { f('f4157')(10); await settle(); return env.timers.length; });
+scenario('restart: relaunch fails', {relaunchThrows: true}, async (f, env) => { f('f4157')(1); await settle(); try {env.timers[0]();} catch (error) {return error.message;} return 'no error'; });
+scenario('restart: pending binding uninitialised', {holes: [2076]}, f => f('f4157')(5));
+scenario('restart: scheduled flag uninitialised', {holes: [2077]}, f => f('f4157')(5));
+scenario('restart: quitting flag uninitialised', {holes: [1971]}, f => f('f4157')(5));
+
 test('every reviewed window creator has a factory; the passcode window stays recovered', () => {
   const {reconstructedPayment} = require('../src/main/runtime/reconstructed-payment.cjs');
   const factories = reconstructedPayment({development: true, enabled: true});
-  for (const id of ['f4099', 'f4105', 'f4112', 'f4128', 'f4132']) assert.equal(typeof factories[id], 'function', id);
-  assert.equal(factories.f4109, undefined);
+  for (const id of ['f4099', 'f4105', 'f4112', 'f4128', 'f4132', 'f4147', 'f4157']) assert.equal(typeof factories[id], 'function', id);
+  for (const id of ['f4109', 'f4137', 'f4138', 'f4141', 'f4151', 'f4154', 'f4161']) assert.equal(factories[id], undefined, id + ' stays recovered');
 });

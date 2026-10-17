@@ -8,10 +8,16 @@
 // code uses them. A Binding keeps the two ways the recovered code stores into a binding: with the "uninitialised" check on its
 // own read first (checkedStore) or as a plain store (store); both only differ while the bootstrap is still running.
 //
-// Not here: the passcode window f4109, which belongs to the app-lock feature, and the lease and token timers (f4085 to f4090).
+// Also here: f4147 (+ f4148 to f4150), the generic utility window (login data, payment, proxy, history, tools, updates, logs) and
+// f4157 (+ f4158 to f4160), the delayed restart.
+//
+// Not here: the passcode window f4109 (app lock), the lease and token timers (f4085 to f4090), the pair-limit check and window
+// (f4137, f4138, f4141: the limit decision), and the version-blocked, security-check and start-error windows (f4151, f4154, f4161).
 
 export interface BindingLike<T> {
   get(): T;
+  /** The same read; named for call sites that only read once. */
+  checkedGet(): T;
   /** A plain assignment. */
   store(value: T): void;
   /** An assignment that first reads the binding, which throws a ReferenceError while it is uninitialised. */
@@ -75,6 +81,15 @@ export interface WindowFactoryDeps {
   recreateController(): void; // slot 2044
   showController(window: WindowLike): void; // slot 2054
   now(): number;
+  /** Whether a restart is already scheduled (slot 2077 "jl"); pending work that must settle first (slot 2076 "mo"). */
+  restartScheduled: BindingLike<boolean>;
+  pendingWork: BindingLike<{ catch(handler: () => unknown): Promise<unknown> } | null | undefined>;
+  /** Relaunch and exit (Electron app, slot 22 "x"; the exit function is slot 203). */
+  relaunch(): void;
+  exitApp(code: number): void;
+  /** Utility windows by name (slot 2069 "oc"). */
+  utilityWindows: BindingLike<{ get(key: unknown): WindowLike | undefined; set(key: unknown, window: WindowLike): unknown; delete(key: unknown): unknown }>;
+  setTimer(callback: () => void, ms: number): unknown;
 }
 
 const PAGE_WEB_PREFERENCES = (deps: WindowFactoryDeps): Record<string, unknown> => ({
@@ -298,4 +313,67 @@ export function createOpenFormWindow(deps: WindowFactoryDeps, showWindow?: boole
   });
   deps.loadPage(window, 'open-form');
   return window;
+}
+
+export interface UtilityWindowOptions {
+  reveal?: unknown;
+  pin?: unknown;
+}
+
+// Recovered f4147 (+ f4148 to f4150): a named utility window of a given size. An open one is reused (and brought forward unless asked
+// not to); a new one keeps on top while focused and only hides when closed, unless it is pinned, in which case it is just placed.
+// The last argument is either a boolean (reveal) or an object { reveal, pin }.
+export function createUtilityWindow(deps: WindowFactoryDeps, name: string, title: string, width: number, height: number, option?: boolean | UtilityWindowOptions): WindowLike {
+  const choice = option !== undefined ? option : true;
+  const reveal = typeof choice === 'boolean' ? choice : !((choice as UtilityWindowOptions).reveal === false);
+  const pin = typeof choice === 'object' ? Boolean((choice as UtilityWindowOptions).pin) : false;
+  const existing = deps.utilityWindows.get().get(name);
+  if (existing && !existing.isDestroyed()) {
+    if (reveal) deps.applyWindowSettings(existing);
+    return existing;
+  }
+  const electron = deps.electron();
+  const options: Record<string, unknown> = { ...deps.placement(width, height) };
+  options.show = false;
+  options.frame = false;
+  options.title = title;
+  options.backgroundColor = '#ffffff';
+  options.webPreferences = PAGE_WEB_PREFERENCES(deps);
+  const window = new electron.BrowserWindow(options);
+  deps.utilityWindows.get().set(name, window);
+  if (!pin) deps.keepOnTop(window);
+  else deps.placeWindow(window);
+  if (!pin) {
+    window.on('close', (event: { preventDefault(): void }) => {
+      if (!deps.quitting.get()) {
+        event.preventDefault();
+        window.hide();
+      }
+    });
+  }
+  window.on('closed', () => deps.utilityWindows.get().delete(name));
+  window.on('ready-to-show', () => {
+    if (reveal) window.show();
+  });
+  deps.loadPage(window, name);
+  return window;
+}
+
+// Recovered f4157 (+ f4158 to f4160): restart the app after a delay, once, unless it is already quitting. Work that is still pending
+// is waited for (its failure is ignored) before the delay starts; when the delay is over and the app is still not quitting, it marks
+// itself as quitting, relaunches and exits.
+export function scheduleRestart(deps: WindowFactoryDeps, delayMs: number): void {
+  if (deps.restartScheduled.get()) return;
+  if (deps.quitting.get()) return;
+  deps.restartScheduled.store(true);
+  const pending = deps.pendingWork.checkedGet();
+  void (async () => {
+    if (pending) await pending.catch(() => undefined);
+    deps.setTimer(() => {
+      if (deps.quitting.get()) return;
+      deps.quitting.store(true);
+      deps.relaunch();
+      deps.exitApp(0);
+    }, delayMs);
+  })();
 }
