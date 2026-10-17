@@ -125,6 +125,7 @@ scenario('importUserFile parse fails', {files: FILES, open: {canceled: false, fi
 for (const items of [undefined, null, 'x', {}, [], [{text: 'alice\nbob'}], [{text: 'carol'}, null, undefined, {}, {text: ''}, {text: 5}, {text: 'THROW'}, {text: 'dave'}],
   [{text: 'x'.repeat(5242880)}, {text: 'x'.repeat(5242881)}], Array.from({length: 205}, (_, i) => ({text: 'user' + i}))])
   scenario('importUsersData / ' + JSON.stringify(items)?.slice(0, 60), {}, (h, e) => h('f3971')(e, items));
+scenario('importUsersData counts a text with no login as skipped', {}, (h, e) => h('f3971')(e, [{text: '\n'}, {text: 'real'}, {text: '\n\n'}]));
 scenario('importUsersData saveMany keeps some', {saveLimit: 1}, (h, e) => h('f3971')(e, [{text: 'a\nb\nc'}]));
 scenario('importUsersData saveMany fails', {returns: {'users.saveMany': () => {throw new Error('synthetic save');}}}, (h, e) => h('f3971')(e, [{text: 'a'}]));
 // ---- proxies ----
@@ -133,6 +134,8 @@ for (const parent of [false, true]) {
     scenario('exportProxies / ' + JSON.stringify(ids) + (parent ? ' / parent' : ''), {parent}, (h, e) => h('f3986')(e, ids));
 }
 scenario('exportProxies cancelled', {save: {canceled: true}}, (h, e) => h('f3986')(e, undefined));
+scenario('exportProxies no path', {save: {canceled: false}}, (h, e) => h('f3986')(e, undefined));
+scenario('exportProxies cancelled with a path', {save: {canceled: true, filePath: '/out/x.txt'}}, (h, e) => h('f3986')(e, undefined));
 scenario('exportProxies write fails', {writeFails: true}, (h, e) => h('f3986')(e, undefined));
 scenario('exportProxies empty vault', {proxiesList: []}, (h, e) => h('f3986')(e, undefined));
 scenario('exportProxies single proxy without label or host', {proxiesList: [{id: 'z'}]}, (h, e) => h('f3986')(e, undefined));

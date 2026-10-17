@@ -145,6 +145,7 @@ scenario('a second download while the first runs is refused', {returns: {install
   const second = await h('f3819')(e);
   return [second, await first];
 });
+scenario('brahmos progress with a total of exactly one', {returns: {install: play([{downloading: true, received: 1, total: 1, step: 1, steps: 2, label: 'x'}, {downloading: false, received: 0, total: 1, step: 2, steps: 2, label: 'y'}])}}, (h, e) => h('f3819')(e));
 scenario('brahmos no progress', {}, (h, e) => h('f3819')(e));
 scenario('brahmos busy', {busy: true}, (h, e) => h('f3819')(e));
 scenario('brahmos busy flag uninitialised', {holes: [1965]}, (h, e) => h('f3819')(e));
