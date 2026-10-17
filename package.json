@@ -9,7 +9,9 @@
     "smoke": "node scripts/run.cjs --smoke-test",
     "test": "npm run build:ts && node --test test/*.test.cjs",
     "build:ts": "tsc -p tsconfig.json",
-    "check:ts": "tsc -p tsconfig.json --noEmit"
+    "check:ts": "tsc -p tsconfig.json --noEmit",
+    "build:renderer": "tsc -p tsconfig.renderer.json",
+    "check:renderer": "tsc -p tsconfig.renderer.json --noEmit"
   },
   "engines": {
     "node": ">=22.12.0"
@@ -17,6 +19,7 @@
   "productName": "Matrix",
   "devDependencies": {
     "@types/node": "^22.20.5",
+    "jsdom": "^26.1.0",
     "typescript": "^5.9.3"
   }
 }
