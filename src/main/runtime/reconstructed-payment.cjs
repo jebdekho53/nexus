@@ -61,6 +61,7 @@ const formCodecs=require('../storage/form-codecs.cjs');
 const formsCsv=require('../storage/forms-csv.cjs');
 const formNormalization=require('../storage/form-normalization.cjs');
 const recordCodecs=require('../storage/record-codecs.cjs');
+const backupIpc=require('../ipc/backup-ipc.cjs');
 const {definitionFingerprint}=require('./recovered-contract.cjs');
 const contracts=require('../payment/recovered-contract.json');
 
@@ -281,6 +282,22 @@ function transferIpcFactories(dependencies) {
 }
 
 // Development-only migration switch. The installed release retains the old
+function backupIpcFactories(dependencies) {
+  const deps=read=>({
+    forms:()=>read(1712,undefined,1)(),users:()=>read(1789,undefined,1)(),proxies:()=>read(1798,undefined,1)(),payments:()=>read(1796,undefined,1)(),history:()=>read(1792,undefined,1)(),
+    token:()=>read(1786,undefined,1)(),setToken:value=>read(1785,undefined,1)(value),aadhaar:()=>read(1761,undefined,1)(),aadhaarPath:()=>read(1760,undefined,1)(),
+    lock:()=>read(1773,undefined,1)(),restoreLock:value=>read(1775,undefined,1)(value),seal:(...args)=>read(962,undefined,1)(...args),unseal:(...args)=>read(963,undefined,1)(...args),
+    fs:()=>read(18,'y',1),userDataPath:()=>read(22,'x',1).app.getPath('userData'),windowFor:sender=>read(22,'x',1).BrowserWindow.fromWebContents(sender),
+    saveDialog:(parent,options)=>read(22,'x',1).dialog.showSaveDialog(parent,options),saveDialogWithoutParent:options=>read(22,'x',1).dialog.showSaveDialog(options),
+    openDialog:(parent,options)=>read(22,'x',1).dialog.showOpenDialog(parent,options),openDialogWithoutParent:options=>read(22,'x',1).dialog.showOpenDialog(options),
+    normalizeUser:(...args)=>read(257,undefined,1)(...args),normalizeProxy:(...args)=>read(264,undefined,1)(...args),normalizePayment:value=>read(261,undefined,1)(value),
+    uuid:()=>read(23,'j',1).randomUUID(),now:()=>(dependencies.now??(()=>Date.now()))(),isoNow:()=>new (dependencies.dateConstructor??Date)().toISOString(),
+  });
+  return {f4031:({readBinding})=>async function(){return backupIpc.getBackupInfo(deps(readBinding));},
+    f4032:({readBinding})=>async function(event,password,selection){return backupIpc.backupData(deps(readBinding),event,password,selection);},
+    f4033:({readBinding})=>async function(event,password){return backupIpc.restoreData(deps(readBinding),event,password);}};
+}
+
 function formsTransferFactories(dependencies) {
   const deps=read=>({
     windowFor:sender=>read(22,'x',1).BrowserWindow.fromWebContents(sender),
@@ -572,6 +589,7 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     ...settingsIpcFactories(),
     ...transferIpcFactories(dependencies),
     ...formsTransferFactories(dependencies),
+    ...backupIpcFactories(dependencies),
     f484:({readBinding})=>function(name,text){return formCodecs.parseFormFile(name,text,{
       extensions:()=>readBinding(324,'_I'),csv:text=>readBinding(323)(text),
     });},

@@ -4,6 +4,7 @@ src/ts/main/storage/form-codecs.ts,business_logic,3,779,"form-codecs-reconstruct
 src/ts/main/storage/forms-csv.ts,business_logic,11,1192,"forms-csv-reconstruction","CSV tokenizer, passenger text parsing, header normalization and form alias mapping"
 src/ts/main/storage/form-normalization.ts,business_logic,2,1055,"form-normalization-reconstruction","Legacy/nested form schema conversion and defaults; reuses existing rules validation helpers"
 src/ts/main/storage/record-codecs.ts,business_logic,11,1482,"record-codecs-reconstruction","Saved login/proxy text and object conversion, UPI-record validation/normalization and stored method mapping"
+src/ts/main/ipc/backup-ipc.ts,business_logic,3,1970,"backup-ipc-reconstruction","Backup selection/info and user-requested encrypted backup/restore orchestration using unchanged crypto/store helpers"
 src/ts/main/booking/provider-page.ts,business_logic,3,482,"ts-misc","Wait for the operator to return to the provider site"
 src/ts/main/booking/rules.ts,business_logic,27,1485,"ts-rules","Booking rules, berth limits, opening/availability times, mode routing"
 src/ts/main/booking/run-controls.ts,business_logic,12,2517,"ts-run-controls","Run controls: cancel/stop, browser window handling, live-form edits, sign-in waiting, session-drop and duplicate-login detection, AI hand-off, print control"
