@@ -2,7 +2,7 @@
 
 // JavaScript execution engine for recovered instruction definitions.
 // Generated modules are ordinary editable JavaScript; no .jsc file is loaded.
-const {createSupport, HOLE, SUSPEND, META, CONTEXT, numeric, receiver, own} = require('../../../src/main/runtime/runtime-support.cjs');
+const {createSupport, HOLE, SUSPEND, META, CONTEXT, numeric, receiver, own} = require('./runtime-support.legacy.cjs');
 
 function createEngine(definitions, options = {}) {
   const globals = options.globals || globalThis;

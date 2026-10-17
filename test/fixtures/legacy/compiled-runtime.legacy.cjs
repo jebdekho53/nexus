@@ -3,7 +3,7 @@
 // Standalone runtime for the compiled bundle (src/main/compiled). It exposes the same API as the instruction engine
 // but never loads the recovered instruction definitions: function metadata and constant pools come from
 // compiled/meta.cjs and every body is ordinary generated JavaScript.
-const {createSupport, HOLE, META, CONTEXT, numeric, receiver, own} = require('../../../src/main/runtime/runtime-support.cjs');
+const {createSupport, HOLE, META, CONTEXT, numeric, receiver, own} = require('./runtime-support.legacy.cjs');
 
 function createCompiledRuntime(options = {}) {
   const globals = options.globals || globalThis;

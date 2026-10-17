@@ -190,6 +190,28 @@ The following list describes the original Linux session's limitations.
 Native dependencies, GoLogin/Playwright launchers and live provider flows were not exercised (and must not be tested
 against live services without authorisation).
 
+## Independent verification of the interpreter and runtime support
+
+The earlier engine test compared the migrated interpreter with the migrated compiled runtime, which is not an independent
+reference. Now:
+
+* `test/fixtures/legacy/engine.legacy.cjs`, `compiled-runtime.legacy.cjs` and `runtime-support.legacy.cjs` are the preserved
+  original JavaScript. They require only each other (a test checks that no migrated code is loaded).
+* `tools/compiler/engine-parity.cjs` executes **all 4354 recovered functions** through original-vs-migrated interpreter and
+  original-vs-migrated compiled runtime in identical seeded synthetic worlds (`tools/compiler/world.cjs`) and compares return
+  values, thrown errors and the full interaction log. Result on this branch: 17416 executions, 0 confirmed divergences.
+  Some recovered functions overwrite real built-ins (for example `Reflect.apply`) inside a long-running process; the tool
+  restores the intrinsics after each run and re-checks every candidate mismatch alone in a fresh process, so only
+  divergences that persist in isolation count (45 candidates appeared, none persisted). Fault injection (a changed `Sub`,
+  `StaContextSlot`, handler choice or async rejection mode) is detected.
+* `test/ts-engine-independent.test.cjs` runs hand-assembled programs (loops, branches, arithmetic, strings, context slots
+  including the opcodes no recovered function uses, exceptions with nested handlers and `recoveredFrames`, hole/super checks,
+  `new.target`/`this`, closures, `for-in`, switch tables, rest parameters, opcode errors, the step limit and dynamic import with
+  and without a loader) against the original and the migrated engine, a guard test that the programs compute the expected
+  values, and a 60+ function opcode-covering subset of the real functions through the parity tool.
+
+Run it with `node tools/compiler/engine-parity.cjs --mode both --seeds 2` (about two minutes).
+
 ## Windows verification of later commits
 
 Follow-up Windows verification of `e734c2d` (including `1c0887a`) now passes
