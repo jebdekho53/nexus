@@ -10232,5 +10232,571 @@
   },
   "f3171": {
     "1654|lhKE": "log"
+  },
+  "f860": {
+    "13518|OpDQ": "from",
+    "13233|NqM3": "base64"
+  },
+  "f861": {
+    "2797|rkuw": "has",
+    "12788|WyZ@": "browserProvider",
+    "7890|jg)a": "chrome"
+  },
+  "f862": {
+    "10148|hm$n": "dir",
+    "7148|4dr8": "key",
+    "13276|S)Et": "availabilityEpoch",
+    "1819|lhKE": "file",
+    "19796|*VhR": "join",
+    "12052|4dr8": "forms.vault"
+  },
+  "f863": {},
+  "f864": {},
+  "f865": {
+    "6071|%I%T": "readAll",
+    "16738|WyZ@": "map",
+    "3795|v%&5": "sort",
+    "15188|Y(mF": "map"
+  },
+  "f866": {
+    "23798|C)Ez": "order",
+    "16226|Y(mF": "createdAt"
+  },
+  "f867": {},
+  "f868": {},
+  "f869": {
+    "4596|A@un": "readVault",
+    "5844|57pP": "map",
+    "3553|sA1s": "forms",
+    "22893|A@un": "get",
+    "18948|ou5S": "order",
+    "3954|G]71": "order",
+    "4790|]K13": "writeAll",
+    "20116|o^v]": "forms"
+  },
+  "f870": {},
+  "f871": {
+    "19935|Cbvh": "readAll",
+    "8054|s[W0": "slice",
+    "4191|A@un": "sort"
+  },
+  "f872": {
+    "14757|NqM3": "updatedAt",
+    "15844|8#8#": "updatedAt"
+  },
+  "f873": {
+    "15216|QgKz": "readAll",
+    "18336|3W8e": "find"
+  },
+  "f874": {},
+  "f875": {
+    "15939|WyZ@": "saveMany"
+  },
+  "f876": {
+    "17549|rkuw": "length",
+    "10642|bTc%": "readForWrite",
+    "14550|o^v]": "forEach",
+    "4950|RuQs": "map",
+    "1009|A@un": "writeAll"
+  },
+  "f877": {
+    "4947|RuQs": "has",
+    "2561|A@un": "set"
+  },
+  "f878": {
+    "5757|s[W0": "normalizeTiming",
+    "8882|rMir": "now",
+    "21483|rkuw": "get",
+    "20883|bTc%": "set",
+    "17484|*VhR": "length",
+    "10901|Y(mF": "push"
+  },
+  "f879": {
+    "10949|%I%T": "readForWrite",
+    "15910|lhKE": "filter",
+    "7253|UMn*": "length",
+    "18042|UaF#": "length",
+    "18953|zBnB": "writeAll"
+  },
+  "f880": {},
+  "f881": {
+    "8154|4dr8": "readForWrite",
+    "6379|MnWs": "length",
+    "3899|hm$n": "length",
+    "13125|@Yk*": "writeAll"
+  },
+  "f882": {
+    "3221|QgKz": "readForWrite",
+    "7523|1kPD": "find",
+    "21361|jg)a": "now",
+    "11742|]TXZ": "randomUUID",
+    "3966|iz(z": "label",
+    "6360|P3P7": "push",
+    "15538|sA1s": "writeAll"
+  },
+  "f883": {},
+  "f884": {
+    "14244|sA1s": "readVault",
+    "9661|*VhR": "forms",
+    "5870|Cbvh": "label",
+    "2143|sA1s": "trim",
+    "11124|@Yk*": "test",
+    "22480|sA1s": "replace",
+    "4562|ZYwv": "trim",
+    "21795|rMir": "account",
+    "4915|RuQs": "username",
+    "17673|rMir": "label",
+    "3966|iz(z": "label",
+    "12301|0vo)": "writeAll"
+  },
+  "f885": {
+    "15473|nWFp": "readVault",
+    "4979|lhKE": "forms",
+    "5667|hm$n": "timing",
+    "10306|0vo)": "availTimes",
+    "11621|sA1s": "availTimes",
+    "7691|o^v]": "loginTimes",
+    "920|PLJe": "timing",
+    "1471|s[W0": "writeAll"
+  },
+  "f886": {
+    "8820|@Yk*": "readVault",
+    "13476|%I%T": "forms",
+    "5144|s[W0": "map",
+    "12060|ou5S": "writeAll"
+  },
+  "f887": {
+    "3852|a3QL": "timing",
+    "5667|hm$n": "timing"
+  },
+  "f888": {
+    "5667|hm$n": "timing",
+    "16724|k([I": "availabilityEpoch",
+    "15132|S)Et": "timing"
+  },
+  "f889": {
+    "3645|lhKE": "existsSync",
+    "10249|Cbvh": "file",
+    "7723|nWFp": "parse",
+    "4026|rkuw": "readFileSync",
+    "20177|9urW": "file",
+    "13659|S)Et": "utf8",
+    "964|UMn*": "key",
+    "4254|3W8e": "toString",
+    "3730|s[W0": "utf8",
+    "16670|Cbvh": "parse",
+    "21942|bTc%": "isArray",
+    "16738|WyZ@": "map"
+  },
+  "f890": {
+    "13658|]TXZ": "readVault"
+  },
+  "f891": {
+    "16490|Y(mF": "readVault",
+    "1425|WyZ@": "forms",
+    "2179|v%&5": "map"
+  },
+  "f892": {
+    "4295|b!6h": "normalizeTiming"
+  },
+  "f893": {
+    "21095|9urW": "readVault",
+    "17469|iz(z": "Saved data is locked: the secure vault exists but could not be decrypted (its encryption key is unavailable \u2014 e.g. the OS keychain is locked or changed after an update). Not saving, to avoid overwriting your existing data. Restart the app; if it persists, restore from a backup.",
+    "16079|0vo)": "forms",
+    "11786|qP]&": "map"
+  },
+  "f894": {
+    "3499|C)Ez": "normalizeTiming"
+  },
+  "f895": {
+    "17308|sA1s": "mkdirSync",
+    "5983|1kPD": "dir",
+    "12182|zBnB": "key",
+    "18093|8#8#": "from",
+    "16696|]TXZ": "stringify",
+    "9693|]TXZ": "file",
+    "2417|A@un": ".tmp",
+    "7057|S)Et": "writeFileSync",
+    "17179|WyZ@": "stringify",
+    "17650|4dr8": "utf8",
+    "21696|1kPD": "renameSync",
+    "19901|Y(mF": "file"
+  },
+  "f896": {
+    "962|v%&5": "label",
+    "6002|a3QL": "journey",
+    "23853|Y(mF": "origin",
+    "14282|Y(mF": "journey",
+    "4719|sA1s": "destination",
+    "13740|zBnB": "journey",
+    "1277|jg)a": "journeyDate",
+    "16871|Y(mF": "loginMode",
+    "20334|k([I": "payment",
+    "18620|JT7O": "method",
+    "9844|lhKE": "passengers",
+    "14173|PLJe": "length",
+    "14065|NqM3": "label",
+    "18154|]TXZ": "journey",
+    "3579|MnWs": "origin",
+    "10763|@Yk*": "journey",
+    "3736|a3QL": "destination",
+    "17413|qP]&": "journey",
+    "17676|1kPD": "trainNumber",
+    "1566|k([I": "journey",
+    "2758|WyZ@": "journeyDate",
+    "2984|RuQs": "account",
+    "309|qP]&": "username",
+    "21795|rMir": "account",
+    "21523|WyZ@": "mobileNumber",
+    "22828|v%&5": "passengers",
+    "1378|k([I": "map",
+    "17841|MnWs": "filter",
+    "1052|rMir": "join",
+    "5467|]K13": "toLowerCase",
+    "8963|PLJe": "createdAt",
+    "21241|jg)a": "updatedAt"
+  },
+  "f897": {
+    "11763|lhKE": "name"
+  },
+  "f898": {
+    "21490|0vo)": "dir",
+    "11497|rkuw": "key",
+    "19901|Y(mF": "file",
+    "4102|rkuw": "join",
+    "23322|*VhR": "users.vault"
+  },
+  "f899": {},
+  "f900": {
+    "11697|UaF#": "readAll",
+    "15526|S)Et": "sort"
+  },
+  "f901": {
+    "23915|iz(z": "updatedAt",
+    "5171|ZYwv": "updatedAt"
+  },
+  "f902": {
+    "1454|sA1s": "saveMany"
+  },
+  "f903": {
+    "5539|NqM3": "length",
+    "12832|MnWs": "readForWrite",
+    "22790|v%&5": "forEach",
+    "7794|d[0N": "map",
+    "5695|%I%T": "writeAll"
+  },
+  "f904": {
+    "12754|iz(z": "has",
+    "16953|WyZ@": "set"
+  },
+  "f905": {
+    "18330|b!6h": "now",
+    "6372|iz(z": "get",
+    "20150|8#8#": "set",
+    "14964|9urW": "length",
+    "883|4dr8": "push"
+  },
+  "f906": {
+    "3221|QgKz": "readForWrite",
+    "10185|UaF#": "filter",
+    "3838|7u]a": "length",
+    "19551|JT7O": "length",
+    "4603|b!6h": "writeAll"
+  },
+  "f907": {},
+  "f908": {
+    "13229|57pP": "readForWrite",
+    "8271|lhKE": "length",
+    "18811|Y(mF": "length",
+    "16019|qP]&": "writeAll"
+  },
+  "f909": {
+    "17195|3W8e": "existsSync",
+    "13301|UaF#": "file",
+    "14296|8#8#": "parse",
+    "8999|lhKE": "readFileSync",
+    "932|NqM3": "file",
+    "11027|Cbvh": "utf8",
+    "8237|P3P7": "key",
+    "7084|8#8#": "toString",
+    "19400|MnWs": "utf8",
+    "2617|C)Ez": "isArray"
+  },
+  "f910": {
+    "3764|bTc%": "readVault"
+  },
+  "f911": {
+    "18152|NqM3": "readVault",
+    "8139|UaF#": "users"
+  },
+  "f912": {
+    "12967|UMn*": "readVault",
+    "9915|a3QL": "Saved login data is locked: the secure vault could not be decrypted (its encryption key is unavailable). Not saving, to avoid overwriting your existing logins. Restart the app; if it persists, restore from a backup.",
+    "2128|bTc%": "users"
+  },
+  "f913": {
+    "21172|]TXZ": "mkdirSync",
+    "9558|]K13": "dir",
+    "11102|k([I": "key",
+    "15410|QgKz": "from",
+    "2650|iz(z": "stringify",
+    "17128|S)Et": "file",
+    "4362|]TXZ": ".tmp",
+    "10203|rkuw": "writeFileSync",
+    "3294|A@un": "stringify",
+    "16918|7u]a": "utf8",
+    "1767|lhKE": "renameSync",
+    "619|o^v]": "file"
+  },
+  "f914": {
+    "18710|JT7O": "dir",
+    "12182|zBnB": "key",
+    "932|NqM3": "file",
+    "14489|9urW": "join",
+    "17096|s[W0": "proxies.vault"
+  },
+  "f915": {},
+  "f916": {
+    "14106|b!6h": "readAll",
+    "22452|PLJe": "sort"
+  },
+  "f917": {
+    "5171|ZYwv": "updatedAt",
+    "14052|%I%T": "updatedAt"
+  },
+  "f918": {
+    "23575|ou5S": "readAll",
+    "16980|ZYwv": "find"
+  },
+  "f919": {},
+  "f920": {
+    "1072|d[0N": "saveMany"
+  },
+  "f921": {
+    "3216|k([I": "length",
+    "14297|Y(mF": "readForWrite",
+    "9951|nWFp": "forEach",
+    "1378|k([I": "map",
+    "14543|1kPD": "writeAll"
+  },
+  "f922": {
+    "7983|lhKE": "has",
+    "12564|3W8e": "set"
+  },
+  "f923": {
+    "20256|WyZ@": "now",
+    "11858|S)Et": "get",
+    "6344|rkuw": "set",
+    "14173|PLJe": "length",
+    "11708|lhKE": "push"
+  },
+  "f924": {
+    "21185|*VhR": "readForWrite",
+    "18377|rMir": "filter",
+    "3216|k([I": "length",
+    "19619|zBnB": "length",
+    "10357|3W8e": "writeAll"
+  },
+  "f925": {},
+  "f926": {
+    "8154|4dr8": "readForWrite",
+    "2256|WyZ@": "length",
+    "21604|jg)a": "length",
+    "14501|Cbvh": "writeAll"
+  },
+  "f927": {
+    "8104|v%&5": "existsSync",
+    "23825|P3P7": "file",
+    "15394|OpDQ": "parse",
+    "14940|PLJe": "readFileSync",
+    "1819|lhKE": "file",
+    "7508|hm$n": "utf8",
+    "22533|57pP": "parse",
+    "8237|P3P7": "key",
+    "8781|C)Ez": "toString",
+    "13066|0vo)": "utf8",
+    "5969|a3QL": "isArray"
+  },
+  "f928": {
+    "18067|Cbvh": "readVault"
+  },
+  "f929": {
+    "16443|57pP": "readVault",
+    "6719|nWFp": "proxies"
+  },
+  "f930": {
+    "14305|hm$n": "readVault",
+    "6700|a3QL": "Saved proxies are locked: the secure vault could not be decrypted (its encryption key is unavailable). Not saving, to avoid overwriting your existing proxies. Restart the app; if it persists, restore from a backup.",
+    "10235|qP]&": "proxies"
+  },
+  "f931": {
+    "23686|v%&5": "mkdirSync",
+    "6234|ou5S": "dir",
+    "20429|v%&5": "key",
+    "15410|QgKz": "from",
+    "19241|sA1s": "stringify",
+    "23825|P3P7": "file",
+    "15542|d[0N": ".tmp",
+    "21144|4dr8": "writeFileSync",
+    "17504|*VhR": "stringify",
+    "18364|1kPD": "utf8",
+    "5873|A@un": "renameSync",
+    "10249|Cbvh": "file"
+  },
+  "f932": {
+    "6234|ou5S": "dir",
+    "15648|C)Ez": "key",
+    "9693|]TXZ": "file",
+    "3442|lhKE": "join",
+    "4515|9urW": "payments.vault"
+  },
+  "f933": {},
+  "f934": {
+    "15216|QgKz": "readAll",
+    "15856|@Yk*": "sort"
+  },
+  "f935": {
+    "18029|UaF#": "updatedAt",
+    "14052|%I%T": "updatedAt"
+  },
+  "f936": {
+    "7328|ZYwv": "readAll",
+    "19312|UaF#": "find"
+  },
+  "f937": {},
+  "f938": {
+    "15826|lhKE": "saveMany"
+  },
+  "f939": {
+    "14771|d[0N": "length",
+    "18198|ou5S": "readForWrite",
+    "14651|lhKE": "forEach",
+    "17570|%I%T": "map",
+    "7759|UMn*": "writeAll"
+  },
+  "f940": {
+    "21418|o^v]": "has",
+    "10178|%I%T": "set"
+  },
+  "f941": {
+    "10744|MnWs": "now",
+    "2867|C)Ez": "get",
+    "6344|rkuw": "set",
+    "9789|]TXZ": "length",
+    "6762|*VhR": "push"
+  },
+  "f942": {
+    "18194|UMn*": "readForWrite",
+    "22412|7u]a": "filter",
+    "13149|1kPD": "length",
+    "14964|9urW": "length",
+    "21209|MnWs": "writeAll"
+  },
+  "f943": {},
+  "f944": {
+    "12832|MnWs": "readForWrite",
+    "3551|nWFp": "length",
+    "22174|a3QL": "length",
+    "3111|RuQs": "writeAll"
+  },
+  "f945": {
+    "15693|7u]a": "existsSync",
+    "932|NqM3": "file",
+    "15350|b!6h": "parse",
+    "1783|a3QL": "readFileSync",
+    "11464|@Yk*": "file",
+    "3730|s[W0": "utf8",
+    "4299|0vo)": "parse",
+    "8379|UaF#": "key",
+    "21691|RuQs": "toString",
+    "16286|8#8#": "utf8",
+    "3297|Y(mF": "isArray"
+  },
+  "f946": {
+    "17085|P3P7": "readVault"
+  },
+  "f947": {
+    "15473|nWFp": "readVault",
+    "3729|P3P7": "payments"
+  },
+  "f948": {
+    "18152|NqM3": "readVault",
+    "15860|k([I": "Saved payments are locked: the secure vault could not be decrypted (its encryption key is unavailable). Not saving, to avoid overwriting your existing payments. Restart the app; if it persists, restore from a backup.",
+    "5454|rMir": "payments"
+  },
+  "f949": {
+    "6715|nWFp": "mkdirSync",
+    "14277|PLJe": "dir",
+    "18674|rMir": "key",
+    "4658|Y(mF": "from",
+    "16848|Cbvh": "stringify",
+    "5036|QgKz": "file",
+    "14671|*VhR": ".tmp",
+    "18615|@Yk*": "writeFileSync",
+    "16291|o^v]": "stringify",
+    "14950|zBnB": "utf8",
+    "7048|]K13": "renameSync",
+    "10705|rkuw": "file"
+  },
+  "f950": {
+    "3790|3W8e": "dir",
+    "23768|WyZ@": "key",
+    "756|nWFp": "file",
+    "5455|Cbvh": "join",
+    "20588|*VhR": "history.vault"
+  },
+  "f951": {},
+  "f952": {
+    "19935|Cbvh": "readAll",
+    "14693|rkuw": "sort"
+  },
+  "f953": {
+    "16801|NqM3": "bookedAt",
+    "16561|QgKz": "bookedAt"
+  },
+  "f954": {
+    "16203|A@un": "readForWrite",
+    "4122|NqM3": "push",
+    "15538|sA1s": "writeAll",
+    "16064|Y(mF": "prune"
+  },
+  "f955": {
+    "7752|rkuw": "isArray",
+    "6917|v%&5": "length",
+    "21343|C)Ez": "readForWrite",
+    "14235|lhKE": "map",
+    "9749|s[W0": "string",
+    "19237|57pP": "pnr",
+    "17735|Y(mF": "has",
+    "21440|A@un": "push",
+    "14250|WyZ@": "add",
+    "14501|Cbvh": "writeAll",
+    "9807|rMir": "prune"
+  },
+  "f956": {},
+  "f957": {
+    "9124|v%&5": "readForWrite",
+    "22951|bTc%": "findIndex",
+    "18609|9urW": "splice",
+    "11876|hm$n": "writeAll"
+  },
+  "f958": {},
+  "f959": {
+    "12967|UMn*": "readVault",
+    "3828|b!6h": "entries",
+    "11625|@Yk*": "map",
+    "15910|lhKE": "filter",
+    "16019|qP]&": "writeAll",
+    "18246|s[W0": "length"
+  },
+  "f960": {
+    "15589|jg)a": "pnr"
+  },
+  "f961": {
+    "16272|A@un": "now",
+    "17841|MnWs": "filter",
+    "19616|zBnB": "sort",
+    "14182|3W8e": "length",
+    "7864|1kPD": "slice"
   }
 }

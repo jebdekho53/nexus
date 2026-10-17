@@ -47,8 +47,50 @@ const {runBrowserBooking}=require('../booking/browser-booking.cjs');
 const {runRailOne}=require('../booking/railone-booking.cjs');
 const {getFinalPaytmStatus}=require('../payment/paytm-final-status.cjs');
 const {fingerprint,phonePeHeaders,phonePeRedirect,razorpayRedirect,phonePeQr,pollPhonePe}=require('../payment/phonepe-transport.cjs');
+const formsVault=require('../storage/forms-vault.cjs');
+const recordVault=require('../storage/record-vault.cjs');
 const {definitionFingerprint}=require('./recovered-contract.cjs');
 const contracts=require('../payment/recovered-contract.json');
+
+// Saved-forms vault (class constructed by f862): every accessor reads its bootstrap slot at call time.
+function formsVaultDependencies(readBinding,dependencies) {
+  const slot=number=>()=>readBinding(number,undefined,1);
+  return {
+    fs:slot(18),encrypt:slot(537),decrypt:slot(538),normalizeForm:slot(546),summarize:slot(548),timing:slot(276),label:slot(281),
+    randomUuid:()=>readBinding(23,undefined,1).randomUUID(),
+    now:()=>(dependencies.now??(()=>Date.now()))(),
+  };
+}
+
+// Record vaults (saved logins, proxies, payments): the three recovered classes differ only in the collection name, the
+// locked-error text and the presence of get. ids: list,get,save,saveMany,delete,deleteAll,readVault,locked,readAll,readForWrite,writeAll.
+const RECORD_VAULTS={
+  users:{list:'f900',save:'f902',saveMany:'f903',delete:'f906',deleteAll:'f908',readVault:'f909',locked:'f910',readAll:'f911',readForWrite:'f912',writeAll:'f913'},
+  proxies:{list:'f916',get:'f918',save:'f920',saveMany:'f921',delete:'f924',deleteAll:'f926',readVault:'f927',locked:'f928',readAll:'f929',readForWrite:'f930',writeAll:'f931'},
+  payments:{list:'f934',get:'f936',save:'f938',saveMany:'f939',delete:'f942',deleteAll:'f944',readVault:'f945',locked:'f946',readAll:'f947',readForWrite:'f948',writeAll:'f949'},
+};
+function recordVaultDependencies(collection,readBinding,dependencies) {
+  const slot=number=>()=>readBinding(number,undefined,1);
+  return {collection,lockedMessage:recordVault.LOCKED_MESSAGES[collection],fs:slot(18),encrypt:slot(537),decrypt:slot(538),now:()=>(dependencies.now??(()=>Date.now()))()};
+}
+function recordVaultFactories(dependencies) {
+  const factories={};
+  for(const[collection,ids]of Object.entries(RECORD_VAULTS)) {
+    const deps=readBinding=>recordVaultDependencies(collection,readBinding,dependencies);
+    factories[ids.readVault]=({readBinding})=>function(){return recordVault.readVault(this,deps(readBinding));};
+    factories[ids.locked]=()=>function(){return recordVault.locked(this);};
+    factories[ids.readAll]=({readBinding})=>function(){return recordVault.readAll(this,deps(readBinding));};
+    factories[ids.readForWrite]=({readBinding})=>function(){return recordVault.readForWrite(this,deps(readBinding));};
+    factories[ids.writeAll]=({readBinding})=>function(records){return recordVault.writeAll(this,records,deps(readBinding));};
+    factories[ids.list]=()=>function(){return recordVault.list(this);};
+    if(ids.get)factories[ids.get]=()=>function(id){return recordVault.get(this,id);};
+    factories[ids.save]=()=>function(record){return recordVault.save(this,record);};
+    factories[ids.saveMany]=({readBinding})=>function(records){return recordVault.saveMany(this,records,deps(readBinding));};
+    factories[ids.delete]=()=>function(id){return recordVault.remove(this,id);};
+    factories[ids.deleteAll]=()=>function(){return recordVault.deleteAll(this);};
+  }
+  return factories;
+}
 
 // Development-only migration switch. The installed release retains the old
 // implementation until the reconstructed path has also had service validation.
@@ -296,6 +338,26 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     f2193:()=>function(journey,transactionId,amount){return runPaytm(this,journey,transactionId,amount,dependencies);},
     f2208:()=>function(journey,transactionId,amount){return runPhonePe(this,journey,transactionId,amount,dependencies);},
     f2213:()=>function(journey,transactionId,amount,flow){return runRazorpay(this,journey,transactionId,amount,flow,dependencies);},
+    f865:({readBinding})=>function(){return formsVault.list(this,formsVaultDependencies(readBinding,dependencies));},
+    f869:()=>function(ids){return formsVault.reorderForms(this,ids);},
+    f871:()=>function(){return formsVault.all(this);},
+    f873:()=>function(id){return formsVault.get(this,id);},
+    f875:()=>function(form){return formsVault.save(this,form);},
+    f876:({readBinding})=>function(forms){return formsVault.saveMany(this,forms,formsVaultDependencies(readBinding,dependencies));},
+    f879:()=>function(id){return formsVault.remove(this,id);},
+    f881:()=>function(){return formsVault.deleteAll(this);},
+    f882:({readBinding})=>function(id){return formsVault.duplicate(this,id,formsVaultDependencies(readBinding,dependencies));},
+    f884:({readBinding})=>function(){return formsVault.migrateLabels(this,formsVaultDependencies(readBinding,dependencies));},
+    f885:()=>function(){return formsVault.clearAvailTimingOverrides(this);},
+    f886:({readBinding})=>function(epoch){return formsVault.adoptAvailabilityDefaults(this,epoch,formsVaultDependencies(readBinding,dependencies));},
+    f888:({readBinding})=>function(form){return formsVault.normalizeTiming(this,form,formsVaultDependencies(readBinding,dependencies));},
+    f889:({readBinding})=>function(){return formsVault.readVault(this,formsVaultDependencies(readBinding,dependencies));},
+    f890:()=>function(){return formsVault.locked(this);},
+    f891:()=>function(){return formsVault.readAll(this);},
+    f893:()=>function(){return formsVault.readForWrite(this);},
+    f895:({readBinding})=>function(forms){return formsVault.writeAll(this,forms,formsVaultDependencies(readBinding,dependencies));},
+    f896:()=>function(form){return formsVault.summarizeForm(form);},
+    ...recordVaultFactories(dependencies),
     f2196:({readBinding})=>function(resolve){
       return startPaytmWatch(resolve,readBinding(2),readBinding(4),readBinding(5),readBinding(6));
     },
