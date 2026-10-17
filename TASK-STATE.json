@@ -252,5 +252,12 @@
       "externalPushPerformed": false
     }
   },
-  "continuationSchedule": "First16Oct2026at18:42IST, then every5h30m (330min). Existing general unfinished-task fallback remains active."
+  "continuationSchedule": "First16Oct2026at18:42IST, then every5h30m (330min). Existing general unfinished-task fallback remains active.",
+  "typescriptMigration": {
+    "branch": "refactor/typescript-migration",
+    "status": "in_progress",
+    "document": "docs/typescript-migration.md",
+    "migratedModules": 53,
+    "note": "Real TypeScript reconstructions under src/ts compiled to build/ts; excluded mechanisms are listed in the document. Windows startup, smoke test and packaging are unverified."
+  }
 }
