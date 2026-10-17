@@ -18291,5 +18291,1359 @@
   "f3960": {
     "20788|NqM3": "list",
     "19914|bTc%": "message"
+  },
+  "f3961": {
+    "2612|s[W0": "delete",
+    "22519|JT7O": "pnr",
+    "16981|ou5S": "message"
+  },
+  "f3962": {
+    "22930|a3QL": "deleteAll",
+    "4054|0vo)": "message"
+  },
+  "f3963": {
+    "13998|JT7O": "message"
+  },
+  "f3964": {
+    "9138|4dr8": "save"
+  },
+  "f3965": {
+    "16284|jg)a": "delete",
+    "7801|rMir": "message"
+  },
+  "f3966": {
+    "17450|rMir": "deleteAll",
+    "1280|UaF#": "message"
+  },
+  "f3967": {
+    "14226|nWFp": "list",
+    "12629|k([I": "isArray",
+    "14771|d[0N": "length",
+    "10358|ZYwv": "filter",
+    "19711|S)Et": "length",
+    "16592|bTc%": "No logins to export",
+    "15294|@Yk*": "BrowserWindow",
+    "13965|Cbvh": "fromWebContents",
+    "13935|Y(mF": "sender",
+    "9789|]TXZ": "length",
+    "2945|ou5S": "username",
+    "16351|P3P7": "login",
+    "16175|4dr8": "logins-",
+    "13119|G]71": "length",
+    "16098|G]71": "replace",
+    "12000|4dr8": "slice",
+    "19712|qP]&": "logins",
+    "17012|k([I": ".txt",
+    "14797|OpDQ": "Text",
+    "21661|C)Ez": "txt",
+    "19556|b!6h": "dialog",
+    "14238|9urW": "showSaveDialog",
+    "5624|bTc%": "dialog",
+    "11483|*VhR": "showSaveDialog",
+    "5734|S)Et": "canceled",
+    "9444|PLJe": "filePath",
+    "21163|zBnB": "writeFileSync",
+    "19686|ou5S": "filePath",
+    "8062|9urW": "map",
+    "5785|0vo)": "join",
+    "17864|WyZ@": "utf8",
+    "11420|zBnB": "message"
+  },
+  "f3968": {
+    "17029|%I%T": "includes"
+  },
+  "f3969": {
+    "1036|v%&5": "BrowserWindow",
+    "17784|3W8e": "fromWebContents",
+    "2976|sA1s": "sender",
+    "15162|8#8#": "openFile",
+    "12903|d[0N": "multiSelections",
+    "13242|nWFp": "Text / JSON",
+    "3490|P3P7": "txt",
+    "1794|C)Ez": "json",
+    "14023|S)Et": "csv",
+    "11629|G]71": "dialog",
+    "4167|S)Et": "showOpenDialog",
+    "12020|8#8#": "dialog",
+    "8490|UaF#": "showOpenDialog",
+    "8350|@Yk*": "canceled",
+    "8851|MnWs": "filePaths",
+    "13119|G]71": "length",
+    "10360|7u]a": "filePaths",
+    "11397|hm$n": "readFileSync",
+    "17840|UMn*": "utf8",
+    "6268|57pP": "saveMany",
+    "21604|jg)a": "length",
+    "1603|o^v]": "message"
+  },
+  "f3970": {
+    "7899|S)Et": "BrowserWindow",
+    "5229|b!6h": "fromWebContents",
+    "10013|lhKE": "sender",
+    "15646|1kPD": "openFile",
+    "14131|UMn*": "Text / JSON",
+    "13165|MnWs": "txt",
+    "9761|qP]&": "json",
+    "8945|zBnB": "csv",
+    "23102|MnWs": "dialog",
+    "22463|7u]a": "showOpenDialog",
+    "14345|NqM3": "dialog",
+    "3701|8#8#": "showOpenDialog",
+    "11591|v%&5": "canceled",
+    "5840|]TXZ": "filePaths",
+    "3551|nWFp": "length",
+    "18079|P3P7": "readFileSync",
+    "23291|bTc%": "filePaths",
+    "16918|7u]a": "utf8",
+    "12789|ou5S": "length",
+    "19829|3W8e": "No login found in that file",
+    "10019|jg)a": "message"
+  },
+  "f3971": {
+    "3297|Y(mF": "isArray",
+    "1722|rkuw": "slice",
+    "23014|hm$n": "text",
+    "3824|UaF#": "string",
+    "19619|zBnB": "length",
+    "22715|4dr8": "saveMany",
+    "1859|]K13": "length",
+    "904|9urW": "message"
+  },
+  "f3972": {
+    "21721|3W8e": "BrowserWindow",
+    "23699|7u]a": "getAllWindows",
+    "1229|sA1s": "isDestroyed",
+    "1013|57pP": "webContents",
+    "5306|G]71": "send",
+    "7497|0vo)": "PaymentsChanged"
+  },
+  "f3973": {
+    "21615|3W8e": "list",
+    "17086|WyZ@": "message"
+  },
+  "f3974": {
+    "12656|7u]a": "Enter a valid UPI ID, e.g. name@okhdfc.",
+    "9943|v%&5": "message"
+  },
+  "f3975": {
+    "20268|lhKE": "save"
+  },
+  "f3976": {
+    "3399|S)Et": "delete",
+    "1997|G]71": "message"
+  },
+  "f3977": {
+    "7995|Cbvh": "deleteAll",
+    "16981|ou5S": "message"
+  },
+  "f3978": {
+    "23706|iz(z": "list",
+    "1744|lhKE": "message"
+  },
+  "f3979": {
+    "9766|4dr8": "message"
+  },
+  "f3980": {
+    "23706|iz(z": "list",
+    "16980|ZYwv": "find",
+    "8046|9urW": "That proxy is no longer saved",
+    "20744|@Yk*": "Host machine (direct)",
+    "557|S)Et": "message"
+  },
+  "f3981": {},
+  "f3982": {
+    "5878|]K13": "message"
+  },
+  "f3983": {
+    "3268|MnWs": "save"
+  },
+  "f3984": {
+    "8492|k([I": "delete",
+    "1603|o^v]": "message"
+  },
+  "f3985": {
+    "1405|qP]&": "deleteAll",
+    "2322|PLJe": "message"
+  },
+  "f3986": {
+    "407|9urW": "list",
+    "20506|G]71": "isArray",
+    "23290|@Yk*": "length",
+    "8861|@Yk*": "filter",
+    "1235|QgKz": "length",
+    "3955|RuQs": "No proxies to export",
+    "11178|rkuw": "BrowserWindow",
+    "4635|UaF#": "fromWebContents",
+    "23882|ZYwv": "sender",
+    "3216|k([I": "length",
+    "16482|ou5S": "label",
+    "20835|%I%T": "host",
+    "16634|hm$n": "proxy",
+    "23321|jg)a": "proxies-",
+    "7253|UMn*": "length",
+    "4599|]TXZ": "replace",
+    "19780|ou5S": "slice",
+    "22077|s[W0": "proxies",
+    "13717|QgKz": ".txt",
+    "7965|v%&5": "Text",
+    "13089|QgKz": "txt",
+    "11640|zBnB": "dialog",
+    "18864|rMir": "showSaveDialog",
+    "12011|C)Ez": "dialog",
+    "16109|s[W0": "showSaveDialog",
+    "8350|@Yk*": "canceled",
+    "8177|7u]a": "filePath",
+    "18904|o^v]": "writeFileSync",
+    "15569|hm$n": "filePath",
+    "20879|]K13": "map",
+    "3442|lhKE": "join",
+    "16029|3W8e": "utf8",
+    "18811|Y(mF": "length",
+    "2322|PLJe": "message"
+  },
+  "f3987": {
+    "12302|G]71": "includes"
+  },
+  "f3988": {},
+  "f3989": {
+    "21721|3W8e": "BrowserWindow",
+    "17866|hm$n": "fromWebContents",
+    "1573|1kPD": "sender",
+    "12529|4dr8": "openFile",
+    "19814|b!6h": "multiSelections",
+    "23307|ZYwv": "Proxy list",
+    "9509|4dr8": "json",
+    "2239|JT7O": "txt",
+    "15507|k([I": "dialog",
+    "2008|UMn*": "showOpenDialog",
+    "3510|P3P7": "dialog",
+    "14733|0vo)": "showOpenDialog",
+    "17122|bTc%": "canceled",
+    "629|S)Et": "filePaths",
+    "13119|G]71": "length",
+    "12378|ou5S": "filePaths",
+    "13944|zBnB": "readFileSync",
+    "8229|P3P7": "utf8",
+    "15449|PLJe": "parse",
+    "5969|a3QL": "isArray",
+    "16000|PLJe": "split",
+    "8832|sA1s": "map",
+    "16746|G]71": "filter",
+    "13246|57pP": "randomUUID",
+    "1034|a3QL": "now",
+    "6360|P3P7": "push",
+    "14752|Y(mF": "saveMany",
+    "13149|1kPD": "length",
+    "15987|d[0N": "message"
+  },
+  "f3990": {
+    "14390|UaF#": "trim"
+  },
+  "f3991": {
+    "4506|OpDQ": "split",
+    "16518|S)Et": "map",
+    "20449|iz(z": "filter",
+    "10262|8#8#": "host",
+    "8025|PLJe": "toLowerCase",
+    "16070|OpDQ": "localhost",
+    "19326|a3QL": "endsWith",
+    "11086|k([I": ".localhost",
+    "12996|9urW": "endsWith",
+    "2228|C)Ez": ".local",
+    "10190|57pP": "port",
+    "1630|d[0N": "push",
+    "10010|G]71": "push",
+    "15498|v%&5": "randomUUID",
+    "17352|ZYwv": "host",
+    "8425|k([I": "port",
+    "10221|a3QL": "username",
+    "5024|3W8e": "password",
+    "6799|7u]a": "now",
+    "6418|8#8#": "now",
+    "10851|UMn*": "saveMany",
+    "1859|]K13": "length",
+    "8271|lhKE": "length",
+    "4426|b!6h": "slice",
+    "17003|P3P7": "message"
+  },
+  "f3992": {
+    "797|UMn*": "trim"
+  },
+  "f3993": {
+    "23855|RuQs": "BrowserWindow",
+    "19582|s[W0": "fromWebContents",
+    "12151|9urW": "sender",
+    "9964|0vo)": "openFile",
+    "8053|A@un": "Proxy",
+    "16963|iz(z": "json",
+    "19478|hm$n": "txt",
+    "6116|s[W0": "dialog",
+    "17972|zBnB": "showOpenDialog",
+    "15024|RuQs": "dialog",
+    "19212|sA1s": "showOpenDialog",
+    "7722|1kPD": "canceled",
+    "629|S)Et": "filePaths",
+    "9692|57pP": "length",
+    "13944|zBnB": "readFileSync",
+    "6180|zBnB": "filePaths",
+    "3433|RuQs": "utf8",
+    "4222|1kPD": "parse",
+    "8086|UMn*": "isArray",
+    "3808|8#8#": "split",
+    "22501|PLJe": "map",
+    "20860|]TXZ": "find",
+    "13761|sA1s": "randomUUID",
+    "3465|rkuw": "now",
+    "20586|@Yk*": "No proxy found in that file",
+    "13998|JT7O": "message"
+  },
+  "f3994": {
+    "892|]K13": "trim"
+  },
+  "f3995": {
+    "22322|3W8e": "isArray",
+    "2319|jg)a": "map",
+    "13170|bTc%": "filter",
+    "3838|7u]a": "length",
+    "11428|%I%T": "all",
+    "9898|UaF#": "from",
+    "10471|UMn*": "min",
+    "14964|9urW": "length",
+    "20879|]K13": "map",
+    "2065|MnWs": "map"
+  },
+  "f3996": {
+    "1321|OpDQ": "trim"
+  },
+  "f3997": {
+    "9692|57pP": "length",
+    "4935|JT7O": "force",
+    "11156|]TXZ": "get",
+    "16935|ou5S": "now",
+    "6646|Cbvh": "push",
+    "21568|@Yk*": "status",
+    "17512|rkuw": "GET",
+    "13447|sA1s": "signal",
+    "3610|lhKE": "application/json, text/plain, */*",
+    "22374|d[0N": "en-GB,en;q=0.7",
+    "5724|hm$n": "desktop",
+    "5299|*VhR": "sessionId",
+    "4933|UaF#": "journeyId",
+    "15105|nWFp": "traceId",
+    "19381|7u]a": "\"Chromium\";v=\"154\", \"Brave\";v=\"154\", \"Not A(Brand\";v=\"99\"",
+    "21366|k([I": "\"macOS\"",
+    "8566|ou5S": "same-site",
+    "16763|A@un": "cors",
+    "5630|rMir": "empty",
+    "22892|qP]&": "u=1, i",
+    "19787|d[0N": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "298|k([I": "text",
+    "23369|v%&5": "parse",
+    "857|]TXZ": "idcheck",
+    "5958|s[W0": " \u2192 ",
+    "18140|ZYwv": "state",
+    "21717|3W8e": "raw",
+    "10666|A@un": "raw",
+    "21663|4dr8": " [HTTP ",
+    "2059|P3P7": "status",
+    "20391|qP]&": "state",
+    "1082|@Yk*": "unknown",
+    "864|9urW": "set",
+    "11275|bTc%": "now",
+    "22831|7u]a": "push",
+    "14970|jg)a": "idcheck",
+    "22145|a3QL": " \u2192 primary unavailable (",
+    "12645|rkuw": "message",
+    "15762|0vo)": "slice",
+    "21287|v%&5": "warn",
+    "22898|rMir": "set",
+    "7336|nWFp": "now",
+    "17640|WyZ@": "push",
+    "4851|MnWs": "push",
+    "4943|b!6h": "unknown"
+  },
+  "f3998": {
+    "17219|A@un": "GET",
+    "9205|A@un": "signal",
+    "22101|a3QL": "*/*",
+    "19751|57pP": "en-GB,en;q=0.7",
+    "22249|ZYwv": "application/json",
+    "3943|zBnB": "dweb",
+    "7421|lhKE": "null",
+    "9493|*VhR": "{\"24HOUR\":true,\"enableEducationFlow\":true}",
+    "21683|@Yk*": "randomUUID",
+    "4776|WyZ@": "\"Chromium\";v=\"154\", \"Brave\";v=\"154\", \"Not A(Brand\";v=\"99\"",
+    "21489|MnWs": "\"macOS\"",
+    "3400|P3P7": "same-site",
+    "11312|MnWs": "cors",
+    "15000|0vo)": "empty",
+    "22627|hm$n": "u=1, i",
+    "1376|nWFp": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    "22734|JT7O": "text",
+    "8061|a3QL": "parse",
+    "14918|UMn*": "idcheck",
+    "13068|@Yk*": " \u2192 fallback says ",
+    "21804|WyZ@": "state",
+    "11839|Cbvh": "raw",
+    "19269|P3P7": "raw",
+    "7337|]K13": " [HTTP ",
+    "9626|bTc%": "status",
+    "19710|iz(z": "state",
+    "4943|b!6h": "unknown",
+    "23644|b!6h": "idcheck",
+    "4123|7u]a": " \u2192 fallback unavailable (",
+    "20823|]TXZ": "message",
+    "6512|iz(z": "slice",
+    "9417|sA1s": "warn"
+  },
+  "f3999": {
+    "3178|*VhR": "abort"
+  },
+  "f4000": {
+    "2068|zBnB": "abort"
+  },
+  "f4001": {},
+  "f4002": {
+    "22285|Y(mF": "userId"
+  },
+  "f4003": {
+    "21650|G]71": "get",
+    "1082|@Yk*": "unknown"
+  },
+  "f4004": {
+    "23876|9urW": "trim",
+    "5526|bTc%": "trim",
+    "13606|8#8#": "Enter both From and To station codes.",
+    "2837|zBnB": "https://erail.in/rail/getTrains.aspx?Station_From=",
+    "17148|OpDQ": "toUpperCase",
+    "23562|QgKz": "&Station_To=",
+    "23272|]TXZ": "toUpperCase",
+    "3258|v%&5": "&DataSource=0&Language=0&Cache=true",
+    "11405|G]71": "*/*",
+    "18273|OpDQ": "message",
+    "21648|7u]a": "startsWith",
+    "16401|o^v]": "Train data unavailable",
+    "7072|7u]a": "run",
+    "12292|a3QL": "erail busy (wait-queue) \u2014 retry ",
+    "19385|lhKE": "warn"
+  },
+  "f4005": {
+    "17117|C)Ez": "trim",
+    "16453|P3P7": "test",
+    "8002|G]71": "test",
+    "7940|8#8#": "length",
+    "3878|4dr8": "length"
+  },
+  "f4006": {
+    "11826|hm$n": "toLowerCase",
+    "2478|ou5S": "includes",
+    "21071|]K13": "from station not found",
+    "10723|S)Et": "From station \"",
+    "10374|zBnB": "\" not recognised \u2014 pick one from the suggestions.",
+    "12302|G]71": "includes",
+    "19839|G]71": "to station not found",
+    "15246|@Yk*": "To station \"",
+    "16916|o^v]": "\" not recognised \u2014 pick one from the suggestions.",
+    "2557|NqM3": "includes",
+    "10879|S)Et": "station not found",
+    "8690|RuQs": "A station code was not recognised \u2014 pick from the suggestions.",
+    "17506|v%&5": "Train data source is busy right now \u2014 please try again in a moment."
+  },
+  "f4007": {
+    "22953|lhKE": "Train data unavailable (HTTP ",
+    "5698|ZYwv": "status",
+    "23757|0vo)": "text",
+    "17056|bTc%": "run",
+    "1874|QgKz": "erail TLS cert invalid (",
+    "9309|jg)a": ") \u2014 loading train data without cert check (public source)",
+    "6482|ou5S": "warn",
+    "20397|*VhR": "Train data unavailable (HTTP ",
+    "4015|]TXZ": "status",
+    "20345|1kPD": "text"
+  },
+  "f4008": {},
+  "f4009": {},
+  "f4010": {
+    "7253|UMn*": "length",
+    "5526|bTc%": "trim",
+    "23696|S)Et": "test",
+    "8214|PLJe": " - "
+  },
+  "f4011": {
+    "16567|qP]&": "source",
+    "16722|QgKz": "trim",
+    "12621|0vo)": "toUpperCase",
+    "6203|JT7O": "destination",
+    "23638|0vo)": "trim",
+    "19576|d[0N": "toUpperCase",
+    "23400|]TXZ": "classCode",
+    "23217|bTc%": "quota",
+    "23183|d[0N": "doj",
+    "5221|MnWs": "trainNumber",
+    "6615|ou5S": "trim",
+    "13904|ou5S": "dead",
+    "23052|]K13": "Availability unavailable (HTTP ",
+    "16504|d[0N": "status",
+    "9209|lhKE": "parse",
+    "17357|]TXZ": "text",
+    "13198|ZYwv": "error",
+    "7799|MnWs": "error",
+    "6508|8#8#": "trim",
+    "9724|a3QL": "response",
+    "16315|57pP": "availability_status",
+    "13381|]TXZ": "No availability returned.",
+    "3274|zBnB": "quota",
+    "11681|k([I": "availability_status",
+    "5698|ZYwv": "status",
+    "21586|*VhR": "status",
+    "21251|hm$n": "status_color",
+    "17183|%I%T": "new_status_color",
+    "12416|WyZ@": "#1d4ed8",
+    "13288|]K13": "status_bg_color",
+    "13373|k([I": "new_status_color",
+    "18044|s[W0": "#eff6ff",
+    "20710|Cbvh": "price",
+    "11165|MnWs": "date",
+    "20735|@Yk*": "is_bookable",
+    "579|C)Ez": "last_updated_on",
+    "5557|Cbvh": "class",
+    "13090|C)Ez": "classCode",
+    "3642|v%&5": "value",
+    "607|Y(mF": "key",
+    "1114|qP]&": "quota",
+    "7683|ZYwv": "name",
+    "6404|]K13": "AbortError",
+    "23797|rMir": "test",
+    "904|9urW": "message",
+    "9014|0vo)": "Live availability timed out \u2014 the source is slow/unreachable right now (this does not affect booking).",
+    "12363|9urW": "Availability check failed: ",
+    "557|S)Et": "message"
+  },
+  "f4012": {
+    "6889|sA1s": "https://rails-cbe.goibibo.com/v1/search/refreshAvailabilty?flavour=dweb",
+    "13794|G]71": "POST",
+    "16280|s[W0": "application/json",
+    "20648|RuQs": "stringify",
+    "22841|Y(mF": "stringify"
+  },
+  "f4013": {
+    "2816|NqM3": "autoUpdate"
+  },
+  "f4014": {
+    "23503|@Yk*": "message"
+  },
+  "f4015": {},
+  "f4016": {
+    "19993|bTc%": "BrowserWindow",
+    "4149|QgKz": "getAllWindows",
+    "5223|0vo)": "isDestroyed",
+    "4323|Y(mF": "webContents",
+    "6319|RuQs": "getURL",
+    "4532|QgKz": "test",
+    "6803|s[W0": "floating",
+    "20998|9urW": "test",
+    "2956|WyZ@": "screen-saver",
+    "15799|57pP": "BrowserWindow",
+    "1888|3W8e": "getAllWindows",
+    "19448|qP]&": "isDestroyed",
+    "17311|MnWs": "webContents",
+    "18562|UMn*": "send",
+    "15868|QgKz": "WindowPinChanged",
+    "1744|lhKE": "message"
+  },
+  "f4017": {
+    "9364|rkuw": "aiEnabled",
+    "2416|bTc%": "CLAUDE_API_KEY"
+  },
+  "f4018": {
+    "4241|hm$n": "message"
+  },
+  "f4019": {},
+  "f4020": {},
+  "f4021": {
+    "10614|b!6h": "message"
+  },
+  "f4022": {
+    "5878|]K13": "message"
+  },
+  "f4023": {},
+  "f4024": {
+    "11223|S)Et": "error"
+  },
+  "f4025": {
+    "22468|jg)a": "error"
+  },
+  "f4026": {
+    "23577|%I%T": "trim",
+    "19702|C)Ez": "Key cleared",
+    "21799|0vo)": "profiles",
+    "5539|NqM3": "length",
+    "11989|qP]&": "error",
+    "12645|rkuw": "message"
+  },
+  "f4027": {
+    "2555|UMn*": "some",
+    "15822|nWFp": "message"
+  },
+  "f4028": {
+    "8098|b!6h": "type",
+    "10183|0vo)": "gologin",
+    "10719|rkuw": "installed"
+  },
+  "f4029": {
+    "5197|9urW": "No GoLogin API key \u2014 set it in Tools \u2192 GoLogin API Key",
+    "9330|nWFp": "profiles",
+    "20067|G]71": "map",
+    "4419|QgKz": "error",
+    "19065|]TXZ": "Could not fetch GoLogin profiles",
+    "15822|nWFp": "message"
+  },
+  "f4030": {
+    "22280|ou5S": "Blocked today (510) \u2014 use another profile"
+  },
+  "f4031": {
+    "5007|QgKz": "all",
+    "6379|MnWs": "length",
+    "6866|ZYwv": "list",
+    "8408|ZYwv": "length",
+    "963|ou5S": "list",
+    "18811|Y(mF": "length",
+    "9846|1kPD": "list",
+    "3678|qP]&": "length",
+    "20247|WyZ@": "keys",
+    "12708|OpDQ": "length",
+    "23885|sA1s": "list",
+    "6917|v%&5": "length",
+    "23815|MnWs": "message"
+  },
+  "f4032": {
+    "3075|]TXZ": "trim",
+    "21604|jg)a": "length",
+    "6496|OpDQ": "Choose a backup password (at least 4 characters)",
+    "20825|rMir": "forms",
+    "1109|b!6h": "payments",
+    "18020|k([I": "users",
+    "18499|ZYwv": "proxies",
+    "16739|s[W0": "gologinToken",
+    "17635|WyZ@": "aadhaar",
+    "5436|v%&5": "appLock",
+    "19288|7u]a": "history",
+    "14965|%I%T": "Select at least one thing to back up",
+    "7961|qP]&": "forms",
+    "1438|qP]&": "all",
+    "16957|]TXZ": "users",
+    "5120|rkuw": "list",
+    "23834|d[0N": "proxies",
+    "20666|s[W0": "list",
+    "21219|JT7O": "payments",
+    "19095|4dr8": "list",
+    "9945|UaF#": "appLock",
+    "18351|qP]&": "history",
+    "23894|@Yk*": "list",
+    "9091|Y(mF": "toISOString",
+    "21022|hm$n": "gologinToken",
+    "18965|MnWs": "aadhaar",
+    "22942|3W8e": "salt",
+    "1517|Y(mF": "hash",
+    "9914|JT7O": "BrowserWindow",
+    "18101|d[0N": "fromWebContents",
+    "2442|nWFp": "sender",
+    "4653|OpDQ": "ts-backup-",
+    "23914|hm$n": "toISOString",
+    "1722|rkuw": "slice",
+    "12646|v%&5": ".tsbak",
+    "16377|o^v]": "TS Backup",
+    "1463|3W8e": "tsbak",
+    "1536|WyZ@": "json",
+    "1083|Cbvh": "dialog",
+    "21048|0vo)": "showSaveDialog",
+    "3510|P3P7": "dialog",
+    "18864|rMir": "showSaveDialog",
+    "20681|qP]&": "canceled",
+    "17783|ZYwv": "filePath",
+    "20326|MnWs": "writeFileSync",
+    "23721|nWFp": "filePath",
+    "16979|57pP": "stringify",
+    "8410|ou5S": "utf8",
+    "14771|d[0N": "length",
+    "6379|MnWs": "length",
+    "17107|UMn*": "message"
+  },
+  "f4033": {
+    "11400|3W8e": "trim",
+    "12424|G]71": "Enter the backup password",
+    "3991|k([I": "BrowserWindow",
+    "14481|*VhR": "fromWebContents",
+    "12151|9urW": "sender",
+    "6391|Cbvh": "openFile",
+    "7064|RuQs": "TS Backup",
+    "14848|sA1s": "tsbak",
+    "916|UMn*": "json",
+    "22849|7u]a": "dialog",
+    "8330|ZYwv": "showOpenDialog",
+    "3460|sA1s": "dialog",
+    "9781|lhKE": "showOpenDialog",
+    "6740|%I%T": "canceled",
+    "21323|rMir": "filePaths",
+    "3899|hm$n": "length",
+    "12111|zBnB": "parse",
+    "2452|3W8e": "readFileSync",
+    "3822|UMn*": "filePaths",
+    "22668|Y(mF": "utf8",
+    "19670|]K13": "Wrong password, or not a valid TS backup file",
+    "21942|bTc%": "isArray",
+    "6100|NqM3": "forms",
+    "23787|PLJe": "forms",
+    "7695|RuQs": "object",
+    "4567|3W8e": "string",
+    "8911|1kPD": "journey",
+    "22962|P3P7": "account",
+    "10367|k([I": "push",
+    "11407|v%&5": "saveMany",
+    "2531|C)Ez": "length",
+    "16934|RuQs": "isArray",
+    "4019|a3QL": "users",
+    "14590|9urW": "users",
+    "18645|*VhR": "randomUUID",
+    "12337|@Yk*": "now",
+    "23340|qP]&": "push",
+    "4792|zBnB": "saveMany",
+    "23382|NqM3": "isArray",
+    "23834|d[0N": "proxies",
+    "8672|8#8#": "proxies",
+    "7478|JT7O": "randomUUID",
+    "12598|]K13": "now",
+    "3526|bTc%": "saveMany",
+    "19356|Cbvh": "isArray",
+    "21643|9urW": "payments",
+    "20328|7u]a": "payments",
+    "944|rkuw": "push",
+    "3551|nWFp": "length",
+    "15415|@Yk*": "saveMany",
+    "21022|hm$n": "gologinToken",
+    "3824|UaF#": "string",
+    "13420|*VhR": "gologinToken",
+    "10893|C)Ez": "gologinToken",
+    "3401|S)Et": "aadhaar",
+    "21079|RuQs": "aadhaar",
+    "9642|QgKz": "object",
+    "6364|JT7O": "aadhaar",
+    "11935|4dr8": "mkdirSync",
+    "6599|Cbvh": "app",
+    "18187|3W8e": "getPath",
+    "13551|ou5S": "userData",
+    "13164|Y(mF": "writeFileSync",
+    "16291|o^v]": "stringify",
+    "17840|UMn*": "utf8",
+    "19227|WyZ@": "appLock",
+    "18435|PLJe": "appLock",
+    "13613|57pP": "object",
+    "2870|qP]&": "appLock",
+    "23256|UaF#": "salt",
+    "9325|rMir": "string",
+    "23194|k([I": "appLock",
+    "2361|0vo)": "hash",
+    "7480|zBnB": "string",
+    "5436|v%&5": "appLock",
+    "11704|bTc%": "salt",
+    "20483|QgKz": "appLock",
+    "14148|nWFp": "hash",
+    "14327|JT7O": "isArray",
+    "17968|3W8e": "history",
+    "14778|bTc%": "importEntries",
+    "13795|UaF#": "history",
+    "13852|57pP": "message"
+  },
+  "f4034": {
+    "1603|o^v]": "message"
+  },
+  "f4035": {
+    "923|Cbvh": "SENSOR_TEMPLATE_DIR",
+    "12540|S)Et": "isAbsolute",
+    "18155|PLJe": "join",
+    "7742|3W8e": "cwd",
+    "19182|QgKz": "readdirSync",
+    "13772|nWFp": "filter",
+    "16308|b!6h": "SENSOR_STRATEGY",
+    "4342|3W8e": "message"
+  },
+  "f4036": {
+    "3312|0vo)": "endsWith",
+    "17604|OpDQ": ".json"
+  },
+  "f4037": {
+    "5526|bTc%": "trim",
+    "9720|3W8e": "replace",
+    "10976|rkuw": "test",
+    "14855|o^v]": "includes",
+    "1876|9urW": "lastIndexOf",
+    "9752|WyZ@": "slice",
+    "1739|57pP": "slice",
+    "11725|PLJe": "indexOf",
+    "8172|ZYwv": "includes",
+    "13015|a3QL": "slice",
+    "1002|S)Et": "slice",
+    "22593|zBnB": "split"
+  },
+  "f4038": {},
+  "f4039": {
+    "4900|d[0N": "solo",
+    "387|C)Ez": "run",
+    "11712|v%&5": "alt-egress route not configured \u2014 running as plain direct login",
+    "5613|1kPD": "warn",
+    "1991|57pP": "run",
+    "16708|A@un": "alt-egress unavailable on this run (",
+    "6126|*VhR": "native transport not loaded",
+    "13145|zBnB": "disabled by the server",
+    "5187|3W8e": ") \u2014 running as plain direct login",
+    "1093|PLJe": "warn"
+  },
+  "f4040": {
+    "11670|UaF#": "alt-"
+  },
+  "f4041": {},
+  "f4042": {
+    "15566|4dr8": "error",
+    "11603|ou5S": "[uncaughtException]",
+    "16271|ou5S": "stack",
+    "4342|3W8e": "message"
+  },
+  "f4043": {
+    "23159|A@un": "error",
+    "10444|a3QL": "[unhandledRejection]"
+  },
+  "f4044": {
+    "4289|PLJe": "APP_ENV",
+    "2908|G]71": "prod"
+  },
+  "f4045": {
+    "3596|lhKE": "findings",
+    "12127|3W8e": "some"
+  },
+  "f4046": {
+    "2493|b!6h": "kind",
+    "21505|]TXZ": "network"
+  },
+  "f4047": {
+    "20580|]TXZ": "join",
+    "14385|s[W0": "app",
+    "16206|nWFp": "getPath",
+    "638|QgKz": "userData",
+    "5218|57pP": "security-monitoring-consent.v1.json"
+  },
+  "f4048": {
+    "11132|JT7O": "lstatSync",
+    "20451|UMn*": "isFile",
+    "16083|1kPD": "isSymbolicLink",
+    "19069|]TXZ": "size",
+    "9084|rkuw": "parse",
+    "8969|k([I": "readFileSync",
+    "13659|S)Et": "utf8",
+    "5217|3W8e": "version",
+    "20266|8#8#": "isFinite",
+    "12549|ou5S": "acceptedAt",
+    "22449|Y(mF": "acceptedAt",
+    "19624|NqM3": "version",
+    "13120|@Yk*": "acceptedAt"
+  },
+  "f4049": {
+    "22848|rMir": ".tmp-",
+    "1785|7u]a": "pid",
+    "3158|bTc%": "randomUUID",
+    "18615|@Yk*": "writeFileSync",
+    "16848|Cbvh": "stringify",
+    "13161|rMir": "utf8",
+    "4264|G]71": "renameSync",
+    "10813|@Yk*": "unlinkSync",
+    "2261|Cbvh": "renameSync",
+    "20827|d[0N": "unlinkSync"
+  },
+  "f4050": {
+    "9605|d[0N": "acceptedAt",
+    "12598|]K13": "now"
+  },
+  "f4051": {
+    "1620|nWFp": "SECURITY_NEWS_URL",
+    "1057|UMn*": "CONTROL_SERVER_URL",
+    "16371|C)Ez": "/news",
+    "18760|0vo)": "CONTROL_SERVER_URL",
+    "5647|4dr8": "toString",
+    "13972|jg)a": "APP_ENV",
+    "1553|UaF#": "prod",
+    "7462|QgKz": "protocol",
+    "12867|4dr8": "https:",
+    "12203|7u]a": "toString"
+  },
+  "f4052": {
+    "21412|hm$n": "SECURITY_NEWS_FALLBACK_URL",
+    "20556|57pP": "SECURITY_NEWS_FALLBACK_URL",
+    "6208|rMir": "APP_ENV",
+    "12785|Y(mF": "prod",
+    "18908|MnWs": "protocol",
+    "2118|3W8e": "https:",
+    "4254|3W8e": "toString"
+  },
+  "f4053": {
+    "4416|3W8e": "APP_ENV",
+    "6893|%I%T": "prod",
+    "7046|lhKE": "SECURITY_NEWS_PUBLIC_KEY",
+    "16495|k([I": "SECURITY_NEWS_KEY_ID",
+    "6596|]K13": "join",
+    "2435|d[0N": "app",
+    "5646|Y(mF": "getPath",
+    "20130|A@un": "userData",
+    "9036|bTc%": "security-evidence-queue.v1.json",
+    "21111|4dr8": "start"
+  },
+  "f4054": {
+    "3791|PLJe": "stringify",
+    "2065|MnWs": "map"
+  },
+  "f4055": {
+    "5180|zBnB": "kind",
+    "12649|d[0N": "match",
+    "19420|@Yk*": "processName",
+    "20051|nWFp": "certificateStore",
+    "19791|zBnB": "certificateFingerprint",
+    "17546|]K13": "where"
+  },
+  "f4056": {
+    "19559|PLJe": "isDestroyed",
+    "8841|]TXZ": "webContents",
+    "5499|iz(z": "send",
+    "7171|PLJe": "SecurityEvidenceCaptureDecision"
+  },
+  "f4057": {
+    "22053|*VhR": "APP_ENV",
+    "15981|JT7O": "prod"
+  },
+  "f4058": {
+    "14109|a3QL": "log",
+    "6717|rMir": "[evidence-test] firing synthetic detection \u2192 block screen + capture",
+    "20325|RuQs": "Interception certificate detected",
+    "11475|rkuw": "Remove it and re-check.",
+    "716|s[W0": "portswigger",
+    "19957|P3P7": "PortSwigger CA",
+    "6384|A@un": "login.keychain-db",
+    "7592|sA1s": "certificate",
+    "11623|QgKz": "repeat",
+    "12278|WyZ@": "mac-user",
+    "6057|rkuw": "catch"
+  },
+  "f4059": {},
+  "f4060": {
+    "22772|Y(mF": "findings",
+    "3899|hm$n": "length",
+    "14411|o^v]": "not-eligible",
+    "17730|s[W0": "configured",
+    "8129|WyZ@": "not-configured",
+    "16787|UaF#": "isDestroyed",
+    "1966|RuQs": "failed",
+    "9097|hm$n": "webContents",
+    "13445|OpDQ": "isLoading",
+    "567|zBnB": "isDestroyed",
+    "17519|7u]a": "isDestroyed",
+    "12654|0vo)": "now",
+    "17600|v%&5": "capturing"
+  },
+  "f4061": {
+    "9933|ou5S": "webContents",
+    "13605|%I%T": "once",
+    "9519|OpDQ": "did-finish-load"
+  },
+  "f4062": {},
+  "f4063": {},
+  "f4064": {
+    "9829|]K13": "findings",
+    "22433|Cbvh": "length"
+  },
+  "f4065": {
+    "679|ZYwv": "BrowserWindow",
+    "8653|0vo)": "fromWebContents",
+    "2880|k([I": "sender",
+    "13168|*VhR": "now"
+  },
+  "f4066": {
+    "12246|hm$n": "isEmpty",
+    "10975|zBnB": "getSize",
+    "9637|hm$n": "width",
+    "5175|8#8#": "resize",
+    "6026|UaF#": "good",
+    "14388|8#8#": "getSize",
+    "23561|]K13": "toJPEG",
+    "12789|ou5S": "length",
+    "12708|OpDQ": "length",
+    "3083|lhKE": "image/jpeg",
+    "20025|1kPD": "width",
+    "1007|b!6h": "height",
+    "17458|ZYwv": "toString",
+    "21986|57pP": "base64"
+  },
+  "f4067": {
+    "15178|ZYwv": "string",
+    "19551|JT7O": "length",
+    "1550|k([I": "exec",
+    "4197|PLJe": "nativeImage",
+    "1041|lhKE": "createFromBuffer",
+    "10868|iz(z": "from",
+    "6805|ou5S": "base64"
+  },
+  "f4068": {
+    "15829|7u]a": "session",
+    "12503|]K13": "defaultSession",
+    "9244|rMir": "setPermissionRequestHandler",
+    "2034|JT7O": "setPermissionCheckHandler"
+  },
+  "f4069": {
+    "9068|]K13": "isDestroyed",
+    "20512|4dr8": "webContents",
+    "6903|o^v]": "now",
+    "5206|ZYwv": "now"
+  },
+  "f4070": {
+    "12586|k([I": "has",
+    "15151|hm$n": "media",
+    "14349|UaF#": "mediaTypes",
+    "11977|OpDQ": "isArray",
+    "16835|0vo)": "mediaTypes",
+    "12026|d[0N": "mediaTypes",
+    "19835|3W8e": "media",
+    "18811|Y(mF": "length",
+    "14726|Cbvh": "every"
+  },
+  "f4071": {
+    "19298|4dr8": "video"
+  },
+  "f4072": {
+    "16317|a3QL": "has",
+    "955|P3P7": "media",
+    "2653|PLJe": "mediaType",
+    "5945|OpDQ": "video"
+  },
+  "f4073": {
+    "9368|]TXZ": "some"
+  },
+  "f4074": {
+    "10880|k([I": "name",
+    "5587|jg)a": "blocked-software",
+    "17284|nWFp": "readAccessFailure"
+  },
+  "f4075": {
+    "2470|S)Et": "join",
+    "17775|WyZ@": "app",
+    "16009|MnWs": "getPath",
+    "10945|v%&5": "userData",
+    "7296|PLJe": "security-bypass.v1"
+  },
+  "f4076": {
+    "11540|MnWs": "join",
+    "2435|d[0N": "app",
+    "2407|4dr8": "getPath",
+    "23619|WyZ@": "userData",
+    "11699|A@un": "security-bypass-clock.v1"
+  },
+  "f4077": {
+    "8231|MnWs": "app",
+    "1871|1kPD": "getVersion",
+    "7318|*VhR": "APP_VERSION"
+  },
+  "f4078": {
+    "17710|v%&5": "unlinkSync"
+  },
+  "f4079": {},
+  "f4080": {},
+  "f4081": {
+    "14385|s[W0": "app",
+    "8286|d[0N": "relaunch"
+  },
+  "f4082": {
+    "19244|57pP": "safeStorage",
+    "20628|hm$n": "isEncryptionAvailable",
+    "10628|o^v]": "Secure OS storage is unavailable.",
+    "14492|UaF#": "safeStorage",
+    "21306|A@un": "encryptString",
+    "16696|]TXZ": "stringify",
+    "9026|rMir": "toString",
+    "1455|4dr8": "base64",
+    "19746|d[0N": ".tmp-",
+    "1785|7u]a": "pid",
+    "7478|JT7O": "randomUUID",
+    "11983|sA1s": "writeFileSync",
+    "3730|s[W0": "utf8",
+    "19507|a3QL": "unlinkSync",
+    "15401|WyZ@": "code",
+    "494|OpDQ": "ENOENT",
+    "15076|JT7O": "renameSync",
+    "913|UMn*": "unlinkSync"
+  },
+  "f4083": {
+    "10917|C)Ez": "safeStorage",
+    "12076|]K13": "isEncryptionAvailable",
+    "6532|9urW": "Secure OS storage is unavailable.",
+    "16657|o^v]": "lstatSync",
+    "6252|A@un": "isFile",
+    "3197|OpDQ": "isSymbolicLink",
+    "6778|9urW": "size",
+    "4628|4dr8": "size",
+    "9760|WyZ@": "Invalid security bypass checkpoint.",
+    "20936|1kPD": "readFileSync",
+    "14241|*VhR": "utf8",
+    "5526|bTc%": "trim",
+    "10569|rMir": "length",
+    "20023|8#8#": "test",
+    "6103|nWFp": "Invalid security bypass checkpoint.",
+    "15135|*VhR": "parse",
+    "4815|A@un": "safeStorage",
+    "2073|o^v]": "decryptString",
+    "2049|k([I": "from",
+    "5481|o^v]": "base64"
+  },
+  "f4084": {
+    "12654|0vo)": "now",
+    "7604|PLJe": "hrtime",
+    "15349|iz(z": "bigint",
+    "871|lhKE": "monotonicStartedAt",
+    "17779|rkuw": "max",
+    "16272|A@un": "now",
+    "15906|1kPD": "observedAt",
+    "9416|P3P7": "max"
+  },
+  "f4085": {
+    "6853|o^v]": "unref"
+  },
+  "f4086": {
+    "8495|ou5S": "floor",
+    "10501|OpDQ": "expiresAt",
+    "21444|7u]a": "tokenHash"
+  },
+  "f4087": {
+    "10969|]TXZ": "max",
+    "20081|8#8#": "min",
+    "22784|b!6h": "hrtime",
+    "2677|*VhR": "bigint",
+    "4297|ZYwv": "unref"
+  },
+  "f4088": {
+    "7901|7u]a": "max",
+    "12295|zBnB": "hrtime",
+    "6204|UaF#": "bigint"
+  },
+  "f4089": {
+    "16677|RuQs": "exp",
+    "13583|]TXZ": "hrtime",
+    "5802|]K13": "bigint"
+  },
+  "f4090": {
+    "23439|]K13": "lstatSync",
+    "14379|b!6h": "isFile",
+    "20599|lhKE": "isSymbolicLink",
+    "10786|3W8e": "size",
+    "14167|PLJe": "size",
+    "13568|WyZ@": "readFileSync",
+    "12047|NqM3": "utf8",
+    "1979|4dr8": "trim",
+    "16915|jg)a": "BOOTSTRAP_VERIFY_KEY",
+    "3347|QgKz": "valid",
+    "11341|nWFp": "payload",
+    "5205|MnWs": "payload",
+    "7784|ZYwv": "valid",
+    "13818|bTc%": "remainingMs",
+    "457|k([I": "observedAt",
+    "891|QgKz": "payload",
+    "12305|MnWs": "observedAt",
+    "5296|S)Et": "remainingMs"
+  },
+  "f4091": {
+    "14317|k([I": "max",
+    "14906|zBnB": "width",
+    "4079|s[W0": "min",
+    "4205|]TXZ": "round",
+    "13971|NqM3": "round"
+  },
+  "f4092": {
+    "18046|QgKz": "center",
+    "19415|A@un": "screen",
+    "13653|*VhR": "getPrimaryDisplay",
+    "9830|v%&5": "max",
+    "3366|Cbvh": "height",
+    "1695|OpDQ": "min",
+    "19661|3W8e": "width",
+    "23582|iz(z": "min",
+    "16270|@Yk*": "round",
+    "18773|@Yk*": "width",
+    "18083|hm$n": "top",
+    "16223|b!6h": "round"
+  },
+  "f4093": {
+    "13720|%I%T": "screen",
+    "20366|ou5S": "getPrimaryDisplay",
+    "12554|Y(mF": "BrowserWindow",
+    "17058|iz(z": "getAllWindows",
+    "13772|nWFp": "filter",
+    "6692|9urW": "sort",
+    "11269|9urW": "max",
+    "17111|A@un": "floor",
+    "5262|A@un": "width",
+    "15630|bTc%": "forEach"
+  },
+  "f4094": {
+    "9011|UMn*": "isDestroyed",
+    "5222|PLJe": "getTitle",
+    "13169|UMn*": "Booking",
+    "18821|]TXZ": "has"
+  },
+  "f4095": {},
+  "f4096": {
+    "1492|OpDQ": "floor",
+    "18818|C)Ez": "setPosition"
+  },
+  "f4097": {
+    "10379|9urW": "push",
+    "21155|]TXZ": "id=",
+    "8296|nWFp": "push",
+    "12855|UMn*": "theme=new",
+    "21358|o^v]": "join",
+    "16075|s[W0": "loadURL",
+    "19801|PLJe": ".html",
+    "4648|@Yk*": "loadFile",
+    "5881|QgKz": "join",
+    "14497|o^v]": "../renderer/",
+    "1795|lhKE": ".html"
+  },
+  "f4098": {
+    "15818|4dr8": "setAlwaysOnTop",
+    "3689|JT7O": "setVisibleOnAllWorkspaces"
+  },
+  "f4099": {
+    "3920|rkuw": "isDestroyed",
+    "14212|rMir": "show",
+    "6036|4dr8": "screen",
+    "23860|%I%T": "getPrimaryDisplay",
+    "18788|ZYwv": "width",
+    "2321|lhKE": "BrowserWindow",
+    "21519|%I%T": "height",
+    "3285|PLJe": "round",
+    "12775|9urW": "width",
+    "16822|UaF#": "height",
+    "3366|Cbvh": "height",
+    "9335|Cbvh": "#00000000",
+    "7492|UaF#": "join",
+    "17643|hm$n": "../preload/index.js",
+    "17383|a3QL": "closed",
+    "14741|o^v]": "webContents",
+    "9461|a3QL": "render-process-gone",
+    "10685|k([I": "floating",
+    "12342|9urW": "ready-to-show",
+    "18389|hm$n": "zoom",
+    "8841|]TXZ": "webContents",
+    "14081|o^v]": "did-finish-load",
+    "5909|57pP": "controller"
+  },
+  "f4100": {},
+  "f4101": {
+    "6500|ZYwv": "isDestroyed",
+    "12235|a3QL": "destroy",
+    "22576|3W8e": "now",
+    "23651|a3QL": "filter",
+    "12789|ou5S": "length",
+    "11629|G]71": "dialog",
+    "940|3W8e": "showErrorBox",
+    "19887|Y(mF": "TS could not start",
+    "15385|ZYwv": "The app window kept closing unexpectedly. Please restart TS. If it continues, reinstall a genuine copy.",
+    "18725|v%&5": "push"
+  },
+  "f4102": {},
+  "f4103": {
+    "8897|MnWs": "show"
+  },
+  "f4104": {
+    "19563|1kPD": "webContents",
+    "3080|ou5S": "setZoomFactor",
+    "6725|]K13": "zoom"
+  },
+  "f4105": {
+    "11728|8#8#": "BrowserWindow",
+    "7705|QgKz": "#00000000",
+    "8388|RuQs": "join",
+    "13981|UMn*": "../preload/index.js",
+    "20460|JT7O": "no-user-gesture-required",
+    "17808|zBnB": "ready-to-show",
+    "16033|C)Ez": "splash"
+  },
+  "f4106": {
+    "11390|k([I": "show"
+  },
+  "f4107": {
+    "2611|Cbvh": "resolve"
+  },
+  "f4108": {},
+  "f4109": {
+    "542|b!6h": "isDestroyed",
+    "4558|C)Ez": "focus",
+    "20927|QgKz": "BrowserWindow",
+    "6906|MnWs": "#3b82f6",
+    "14036|Y(mF": "Enter Passcode",
+    "17648|%I%T": "join",
+    "17592|jg)a": "../preload/index.js",
+    "463|lhKE": "closed",
+    "12342|9urW": "ready-to-show",
+    "17471|iz(z": "app-lock"
+  },
+  "f4110": {},
+  "f4111": {
+    "18080|ou5S": "show"
+  },
+  "f4112": {
+    "20219|Cbvh": "isDestroyed",
+    "1098|Cbvh": "BrowserWindow",
+    "10393|S)Et": "#00000000",
+    "2470|S)Et": "join",
+    "23618|]K13": "../preload/index.js",
+    "7696|RuQs": "closed",
+    "1875|8#8#": "close",
+    "10042|s[W0": "ready-to-show",
+    "15286|QgKz": "confirm-quit"
+  },
+  "f4113": {},
+  "f4114": {
+    "717|WyZ@": "preventDefault",
+    "10107|]TXZ": "hide"
+  },
+  "f4115": {},
+  "f4116": {
+    "796|ou5S": "center",
+    "1651|]TXZ": "show",
+    "11921|ou5S": "focus"
+  },
+  "f4117": {
+    "2719|G]71": "isVisible",
+    "16772|%I%T": "focus"
+  },
+  "f4118": {
+    "1234|lhKE": "isDestroyed",
+    "12790|bTc%": "isMinimized",
+    "19622|*VhR": "restore",
+    "359|v%&5": "show",
+    "3007|JT7O": "platform",
+    "20962|MnWs": "darwin",
+    "17755|PLJe": "app",
+    "1364|qP]&": "focus",
+    "12350|jg)a": "focus",
+    "19481|RuQs": "moveTop"
+  },
+  "f4119": {
+    "15519|Cbvh": "focus",
+    "8141|zBnB": "blur",
+    "21863|3W8e": "hide",
+    "20535|QgKz": "minimize",
+    "16999|bTc%": "restore",
+    "1935|A@un": "show"
+  },
+  "f4120": {
+    "18757|s[W0": "isDestroyed",
+    "5134|3W8e": "setAlwaysOnTop",
+    "19874|ZYwv": "screen-saver",
+    "5061|rkuw": "normal",
+    "13140|bTc%": "moveTop"
   }
 }

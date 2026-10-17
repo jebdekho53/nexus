@@ -53,6 +53,7 @@ const historyVault=require('../storage/history-vault.cjs');
 const windowIpc=require('../windows/window-ipc.cjs');
 const browserIpc=require('../ipc/browser-ipc.cjs');
 const logsIpc=require('../ipc/logs-ipc.cjs');
+const dataIpc=require('../ipc/data-ipc.cjs');
 const {definitionFingerprint}=require('./recovered-contract.cjs');
 const contracts=require('../payment/recovered-contract.json');
 
@@ -195,6 +196,39 @@ function ordinaryIpcFactories(dependencies) {
     f3861:({readBinding})=>function(event,key,value){return logsIpc.openSuccessTicket(logs(readBinding),key,value);},
     f3862:({readBinding})=>function(event,key){return logsIpc.getSuccessTicket(logs(readBinding),key);},
     f3863:({readBinding})=>async function(event,formIds){return logsIpc.exportLogs(logs(readBinding),event,formIds);},
+  };
+}
+
+// Saved-data IPC handlers (forms, history, logins, payments, proxies; registered by f3790).
+function dataIpcDependencies(readBinding,dependencies) {
+  const slot=(number,name)=>()=>readBinding(number,name,1);
+  const call=number=>(...args)=>readBinding(number,undefined,1)(...args);
+  return {
+    formsVault:call(1712),armedForms:slot(1539,'wt'),armedIds:call(1835),runWrite:write=>readBinding(1813,undefined,1)(write),
+    afterFormSaved:call(1801),formsChanged:call(1720),
+    normalizeTiming:timing=>readBinding(276,undefined,1)(timing,readBinding(1611,'ns',1)),
+    lockedVaults:call(1809),recoverVaults:call(1810),usersVault:call(1789),afterUserSaved:call(1800),usersChanged:call(1721),
+    historyVault:call(1792),forgetPnr:call(1793),paymentsVault:call(1796),normalizePayment:call(261),
+    paymentsChanged:()=>readBinding(11,'_0x3a61fa',0)(),
+    proxiesVault:call(1798),proxyTags:call(1734),runSpeedTest:call(576),proxyAddress:call(265),proxyLabel:call(266),
+    relaunch:()=>readBinding(22,'x',1).app.relaunch(),exit:code=>readBinding(22,'x',1).app.exit(code),
+    setTimer:(callback,ms)=>(dependencies.setTimeout??setTimeout)(callback,ms),
+    windows:()=>readBinding(22,'x',1).BrowserWindow.getAllWindows(),channels:slot(336,'v'),
+  };
+}
+function dataIpcFactories(dependencies) {
+  const deps=readBinding=>dataIpcDependencies(readBinding,dependencies);
+  const handler=(call)=>({readBinding})=>async function(event,argument){return call(deps(readBinding),argument);};
+  return {
+    f3938:handler(dataIpc.listForms),f3936:handler(dataIpc.saveForm),f3943:handler(dataIpc.getForm),f3944:handler(dataIpc.deleteForm),
+    f3945:handler(dataIpc.deleteAllForms),f3946:handler(dataIpc.duplicateForm),f3947:handler(dataIpc.reorderForms),
+    f3940:handler(dataIpc.getVaultLockState),f3941:handler(dataIpc.recoverVaults),
+    f3960:handler(dataIpc.listHistory),f3961:handler(dataIpc.deleteHistoryEntry),f3962:handler(dataIpc.clearHistory),
+    f3959:handler(dataIpc.listUsers),f3963:handler(dataIpc.saveUser),f3965:handler(dataIpc.deleteUser),f3966:handler(dataIpc.deleteAllUsers),
+    f3972:({readBinding})=>function(){return dataIpc.broadcastPaymentsChanged(deps(readBinding));},
+    f3973:handler(dataIpc.listPayments),f3974:handler(dataIpc.savePayment),f3976:handler(dataIpc.deletePayment),f3977:handler(dataIpc.deleteAllPayments),
+    f3978:handler(dataIpc.listProxies),f3979:({readBinding})=>function(){return dataIpc.getProxyTags(deps(readBinding));},
+    f3980:handler(dataIpc.runSpeedTest),f3982:handler(dataIpc.saveProxy),f3984:handler(dataIpc.deleteProxy),f3985:handler(dataIpc.deleteAllProxies),
   };
 }
 
@@ -467,6 +501,7 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     ...historyVaultFactories(dependencies),
     ...windowIpcFactories(dependencies),
     ...ordinaryIpcFactories(dependencies),
+    ...dataIpcFactories(dependencies),
     f2196:({readBinding})=>function(resolve){
       return startPaytmWatch(resolve,readBinding(2),readBinding(4),readBinding(5),readBinding(6));
     },
