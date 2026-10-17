@@ -165,7 +165,7 @@
       "pid": 25652,
       "complete": true
     },
-    "codeCheckpoint": "PENDING-phase25-commit",
+    "codeCheckpoint": "1607c2d",
     "handoffReady": true,
     "phaseTwoReport": "docs/reconstruction-phase-2.md",
     "pinnedDefinitions": 193,
