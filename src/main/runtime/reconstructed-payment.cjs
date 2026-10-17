@@ -54,6 +54,7 @@ const windowIpc=require('../windows/window-ipc.cjs');
 const browserIpc=require('../ipc/browser-ipc.cjs');
 const logsIpc=require('../ipc/logs-ipc.cjs');
 const dataIpc=require('../ipc/data-ipc.cjs');
+const settingsIpc=require('../ipc/settings-ipc.cjs');
 const {definitionFingerprint}=require('./recovered-contract.cjs');
 const contracts=require('../payment/recovered-contract.json');
 
@@ -229,6 +230,25 @@ function dataIpcFactories(dependencies) {
     f3973:handler(dataIpc.listPayments),f3974:handler(dataIpc.savePayment),f3976:handler(dataIpc.deletePayment),f3977:handler(dataIpc.deleteAllPayments),
     f3978:handler(dataIpc.listProxies),f3979:({readBinding})=>function(){return dataIpc.getProxyTags(deps(readBinding));},
     f3980:handler(dataIpc.runSpeedTest),f3982:handler(dataIpc.saveProxy),f3984:handler(dataIpc.deleteProxy),f3985:handler(dataIpc.deleteAllProxies),
+  };
+}
+
+// Application-settings IPC handlers (registered by f3790).
+function settingsIpcDependencies(readBinding) {
+  const slot=(number,name)=>()=>readBinding(number,name,1);
+  const call=number=>(...args)=>readBinding(number,undefined,1)(...args);
+  return {
+    readSettings:call(1768),writeSettings:call(1769),windowPinned:call(1770),applyWindowPin:call(1771),
+    windows:()=>readBinding(22,'x',1).BrowserWindow.getAllWindows(),channels:slot(336,'v'),
+    aiKeyConfigured:call(1784),environment:()=>readBinding(3,undefined,0),qrPopupEnabled:call(1925),newThemeEnabled:call(1623),
+  };
+}
+function settingsIpcFactories() {
+  const handler=call=>({readBinding})=>async function(event,argument){return call(settingsIpcDependencies(readBinding),argument);};
+  return {
+    f4013:handler(settingsIpc.getAutoUpdate),f4014:handler(settingsIpc.setAutoUpdate),f4015:handler(settingsIpc.getWindowPin),
+    f4016:handler(settingsIpc.setWindowPin),f4017:handler(settingsIpc.getAiEnabled),f4018:handler(settingsIpc.setAiEnabled),
+    f4019:handler(settingsIpc.getQrPopup),f4020:handler(settingsIpc.getNewTheme),f4021:handler(settingsIpc.setQrPopup),
   };
 }
 
@@ -502,6 +522,7 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     ...windowIpcFactories(dependencies),
     ...ordinaryIpcFactories(dependencies),
     ...dataIpcFactories(dependencies),
+    ...settingsIpcFactories(),
     f2196:({readBinding})=>function(resolve){
       return startPaytmWatch(resolve,readBinding(2),readBinding(4),readBinding(5),readBinding(6));
     },
