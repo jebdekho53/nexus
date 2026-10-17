@@ -1,6 +1,6 @@
 # TypeScript migration
 
-Status: **in progress**. 66 main-process modules and 9 browser-target renderer scripts are real TypeScript reconstructions (listed below and in "Renderer scripts"). Everything else — the generated
+Status: **in progress**. 69 main-process modules and 9 browser-target renderer scripts are real TypeScript reconstructions (listed below and in "Renderer scripts"). Everything else — the generated
 definitions in `src/main/generated`, the compiled bundle, the interpreter, the engine, the exclusions listed below and
 the remaining `.cjs` modules — is unchanged. No completion percentage is claimed; the migration is **not** complete.
 
@@ -97,6 +97,9 @@ the remaining `.cjs` modules — is unchanged. No completion percentage is claim
 | `src/ts/main/storage/record-vault.ts` | Encrypted record vaults for saved logins (`users.vault`), proxies and payment methods, plus the readers/writers of the history vault | f900, f902, f903, f906, f908–f913 (logins); f916, f918, f920, f921, f924, f926–f931 (proxies); f934, f936, f938, f939, f942, f944–f949 (payments); f964–f967 (history) | `record-vault-reconstruction` (331 scenarios), `history-vault-reconstruction` |
 | `src/ts/main/storage/history-vault.ts` | Booking-history vault: newest-first listing, add with retention pruning, import, delete, clear | f952, f954, f955, f957, f959, f961 | `history-vault-reconstruction` (103 scenarios) |
 | `src/ts/main/windows/window-ipc.ts` | Window-management IPC handlers: controller toolbar actions, update download/cancel, form and booking windows, window sizing, external links, ticket PDF, quit/restart | f4273–f4275, f4277–f4282, f4284–f4288, f4291–f4295 | `window-ipc-reconstruction` (186 scenarios) |
+| `src/ts/main/ipc/browser-ipc.ts` | Browser detection, vendor download page, Brahmos Browser install with throttled progress | f3817, f3818, f3819, f3825 | `browser-logs-ipc-reconstruction` (119 scenarios) |
+| `src/ts/main/ipc/logs-ipc.ts` | Diagnostic-log buffers and verified export, success-ticket store | f3831, f3832, f3861, f3862, f3863 | `browser-logs-ipc-reconstruction` |
+| `src/ts/main/ipc/data-ipc.ts` | Saved-data IPC: forms (with armed copies), history, saved logins, payment methods, proxies, vault lock state and recovery | f3936, f3938, f3940, f3941, f3943–f3947, f3959–f3963, f3965, f3966, f3972–f3974, f3976–f3980, f3982, f3984, f3985 | `data-ipc-reconstruction` (95 scenarios) |
 
 How each was verified: legacy vs TypeScript on identical inputs (missing / null / empty / zero / NaN / wrong-type
 values) comparing results, thrown error types, traces, mutated state and lazy dependency reads; existing recovered-vs-native
