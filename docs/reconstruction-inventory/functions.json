@@ -23,21 +23,21 @@
         "instructions": 11873,
         "instructionPercent": 2.32,
         "nativeEntries": 11,
-        "pinnedSupport": 149
+        "pinnedSupport": 170
       },
       "small": {
         "functions": 1555,
         "instructions": 77741,
         "instructionPercent": 15.16,
         "nativeEntries": 70,
-        "pinnedSupport": 59
+        "pinnedSupport": 63
       },
       "medium": {
         "functions": 741,
         "instructions": 127291,
         "instructionPercent": 24.82,
         "nativeEntries": 34,
-        "pinnedSupport": 14
+        "pinnedSupport": 15
       },
       "large": {
         "functions": 288,
@@ -50,7 +50,7 @@
         "functions": 59,
         "instructions": 149579,
         "instructionPercent": 29.17,
-        "nativeEntries": 8,
+        "nativeEntries": 9,
         "pinnedSupport": 0
       }
     },
@@ -60,14 +60,14 @@
         "instructions": 88772,
         "instructionPercent": 17.31,
         "nativeEntries": 59,
-        "pinnedSupport": 214
+        "pinnedSupport": 239
       },
       "moderate": {
         "functions": 862,
         "instructions": 137049,
         "instructionPercent": 26.72,
         "nativeEntries": 62,
-        "pinnedSupport": 9
+        "pinnedSupport": 10
       },
       "high": {
         "functions": 305,
@@ -87,29 +87,29 @@
         "functions": 6,
         "instructions": 63599,
         "instructionPercent": 12.4,
-        "nativeEntries": 1,
+        "nativeEntries": 2,
         "pinnedSupport": 0
       }
     },
     "byStatus": {
       "native_entry": {
-        "functions": 154,
-        "instructions": 44633,
-        "instructionPercent": 8.7,
-        "nativeEntries": 154,
+        "functions": 155,
+        "instructions": 54764,
+        "instructionPercent": 10.68,
+        "nativeEntries": 155,
         "pinnedSupport": 0
       },
       "pinned_support": {
-        "functions": 224,
-        "instructions": 6557,
-        "instructionPercent": 1.28,
+        "functions": 250,
+        "instructions": 7007,
+        "instructionPercent": 1.37,
         "nativeEntries": 0,
-        "pinnedSupport": 224
+        "pinnedSupport": 250
       },
       "recovered_other": {
-        "functions": 3976,
-        "instructions": 461667,
-        "instructionPercent": 90.02,
+        "functions": 3949,
+        "instructions": 451086,
+        "instructionPercent": 87.96,
         "nativeEntries": 0,
         "pinnedSupport": 0
       }
@@ -182,7 +182,7 @@
         "suspensions": 48,
         "closures": 26,
         "calls": 1124,
-        "status": "recovered_other"
+        "status": "native_entry"
       },
       {
         "id": "f1073",
@@ -680,7 +680,7 @@
         "suspensions": 48,
         "closures": 26,
         "calls": 1124,
-        "status": "recovered_other"
+        "status": "native_entry"
       },
       {
         "id": "f2551",
@@ -51515,7 +51515,7 @@
       "suspensions": 48,
       "closures": 26,
       "calls": 1124,
-      "status": "recovered_other"
+      "status": "native_entry"
     },
     {
       "id": "f3150",
@@ -51531,7 +51531,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f3151",
@@ -51547,7 +51547,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 28,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f3152",
@@ -51563,7 +51563,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 2,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f3153",
@@ -51579,7 +51579,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 7,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f3154",
@@ -51595,7 +51595,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f3155",
@@ -51611,7 +51611,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f3156",
@@ -51627,7 +51627,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f3157",
@@ -51643,7 +51643,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f3158",
@@ -51659,7 +51659,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f3159",
@@ -51675,7 +51675,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f3160",
@@ -51691,7 +51691,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 1,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f3161",
@@ -51707,7 +51707,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 3,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f3162",
@@ -51723,7 +51723,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 2,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f3163",
@@ -51739,7 +51739,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 2,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f3164",
@@ -51755,7 +51755,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f3165",
@@ -51771,7 +51771,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f3166",
@@ -51787,7 +51787,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f3167",
@@ -51803,7 +51803,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f3168",
@@ -51819,7 +51819,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 1,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f3169",
@@ -51835,7 +51835,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 3,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f3170",
@@ -51851,7 +51851,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 2,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f3171",
@@ -51867,7 +51867,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 2,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f3172",
@@ -51883,7 +51883,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f3173",
@@ -51899,7 +51899,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f3174",
@@ -51915,7 +51915,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f3175",
@@ -51931,7 +51931,7 @@
       "suspensions": 0,
       "closures": 0,
       "calls": 0,
-      "status": "recovered_other"
+      "status": "pinned_support"
     },
     {
       "id": "f3176",

@@ -1,6 +1,6 @@
 {
   "status": "in_progress",
-  "progress": "Phases1–23: 88 native entries, 355 contract pins, 1688-test full suite passes except 3 Windows-path tests on Linux (also with MATRIX_COMPILED=1). Compiled runtime (src/main/compiled, readable output, split f1 bootstrap) is now the default; --interpreter-runtime keeps the archived interpreter. Differential matches (only f1556 seed23); class and 797 boundary invocations match the interpreter. Electron smoke test not run in the cloud: run locally on Windows. Public 1.0.11 unchanged; no live service/build/deployment.",
+  "progress": "Phases1–26: 88 native entries plus booking controllers f2102, f2161, f3149 (src/main/booking), 405 contract pins, 2165-test full suite passes except 3 Windows-path tests on Linux (also with MATRIX_COMPILED=1). Compiled runtime is the default; --interpreter-runtime keeps the interpreter. Differential matches (only f1556 seed23). Electron smoke test not run in the cloud: run locally on Windows. Public 1.0.11 unchanged; no live service/build/deployment.",
   "task": "Reconstruct recovered Matrix payment logic into maintainable JavaScript",
   "completedLatestTask": {
     "task": "Fix WebLogin Chrome selection closing another independent pair panel",
@@ -203,7 +203,6 @@
     },
     "fullProjectPrompt": "docs/FULL-RECONSTRUCTION-PROMPT.md",
     "handoffVerification": "Read-only verification confirmed current74 factories and same-PID7344 factory list plus8-window smoke-complete.1124 tests are phase20 recorded evidence, not rerun during handoff update.",
-    "phaseTwentyThreeReport": "docs/reconstruction-phase-23.md",
     "defaultRuntime": "compiled (switch: --interpreter-runtime)",
     "pendingLocalChecks": "Windows Electron offline smoke test (default and --interpreter-runtime) and the 3 Windows-path tests (development-policy x2, window-readiness)"
   },
