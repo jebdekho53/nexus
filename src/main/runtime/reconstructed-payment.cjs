@@ -58,6 +58,8 @@ const settingsIpc=require('../ipc/settings-ipc.cjs');
 const aiKeyStore=require('../storage/ai-key-store.cjs');
 const localCatalog=require('../storage/local-catalog.cjs');
 const vaultAccess=require('../storage/vault-access.cjs');
+const loginCollection=require('../storage/login-collection.cjs');
+const recordImport=require('../storage/record-import.cjs');
 const transferIpc=require('../ipc/transfer-ipc.cjs');
 const formsTransferIpc=require('../ipc/forms-transfer-ipc.cjs');
 const formCodecs=require('../storage/form-codecs.cjs');
@@ -632,6 +634,15 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     f422:({readBinding})=>function(input){return recordCodecs.parseProxy(input,line=>readBinding(263)(line));},
     f423:({readBinding})=>function(input,id,now){return recordCodecs.proxyFromInput(input,id,now,line=>readBinding(263)(line));},
     f424:()=>recordCodecs.scalarText,
+    f3580:({readBinding})=>function(input,records){return recordImport.importRecords(input,records,{
+      id:()=>readBinding(23,'j').randomUUID(),now:()=>(dependencies.now??(()=>Date.now()))(),
+      parseObject:(...args)=>readBinding(257)(...args),parseText:(...args)=>readBinding(256)(...args),
+    });},
+    f3581:({readBinding,writeBinding})=>function(value){return recordImport.appendImportedRecord(value,{
+      records:()=>readBinding(2),count:()=>readBinding(4),setCount:count=>writeBinding(4,count),
+    });},
+    f3576:({readBinding})=>function(){return loginCollection.collectLogins({logins:()=>readBinding(1789)(),forms:()=>readBinding(1712)()});},
+    f3577:({readBinding})=>function(username,password,mobile){return loginCollection.addLogin(username,password,mobile,{seen:()=>readBinding(2),records:()=>readBinding(3)});},
     f3499:({readBinding,writeBinding})=>function(){return vaultAccess.formsVault({
       cached:()=>readBinding(1711,'fr'),cache:value=>writeBinding(1711,value),
       userData:()=>readBinding(22,'x').app.getPath('userData'),constructor:()=>readBinding(547,'m0'),

@@ -267,3 +267,21 @@ checks pass. Both `start.cmd --smoke-test --interpreter-runtime` and
 No payment was submitted and no live provider flow was run in this batch.
 
 Full default suite after this batch: 5136 passed, 0 failed (npm test).
+
+## Continuous local checkpoint, 17 October 2026
+
+After 6ef8e14: local catalogs (e3ac82c), settings migrations (2e99273), lazy
+vault initialization (6890ce9), login collection and local record import.
+The default full suite passes 5499/5499. New focused suites also pass in
+MATRIX_COMPILED=1; the entire full suite was not rerun in that mode here.
+Renderer type check passes. Both offline launchers exited 0 and produced new
+smoke-complete events with eight windows: interpreter PID 27308 at
+2026-10-17T17:16:50.812Z and default PID 1572 at 17:17:16.441Z.
+No new installer/ZIP, visual interactive session or live QR was verified.
+
+The user requested continuous work until 5% remaining quota. It was 7% at
+final-check start and 2% at the next account-wide check; new work stopped then.
+Claude's separate worktree has active uncommitted window-factory changes and
+was only inspected, never edited or merged. Its next handoff prompt is saved
+outside the repository as ../MATRIX-CLAUDE-NEXT-PROMPT.txt. Integrate its lane
+later after review, preserving both factory tables, contracts and inventory.

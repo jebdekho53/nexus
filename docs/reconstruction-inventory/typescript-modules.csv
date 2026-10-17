@@ -9,6 +9,8 @@ src/ts/main/storage/settings-store.ts,business_logic,8,751,"settings-store-recon
 src/ts/main/storage/ai-key-store.ts,business_logic,3,276,"ai-key-store-reconstruction","Local AI key save/read, OS encryption and legacy plaintext migration; settings IPC error forwarding"
 src/ts/main/storage/local-catalog.ts,business_logic,3,430,"local-catalog-reconstruction","Offline JSON catalog read/fallback, ranked station suggestions and capped train-name suggestions"
 src/ts/main/storage/vault-access.ts,business_logic,6,262,"vault-access-reconstruction","Lazy initialization/cache of ordinary form and record vaults, form-label migration and identity callback"
+src/ts/main/storage/login-collection.ts,business_logic,2,352,"login-collection-reconstruction","Collect local saved logins and form accounts with original order, deduplication and partial-source failure handling"
+src/ts/main/storage/record-import.ts,business_logic,2,323,"record-import-reconstruction","Local JSON/text record import, original fallback and append/count behavior; existing parsers stay injected"
 src/ts/main/booking/provider-page.ts,business_logic,3,482,"ts-misc","Wait for the operator to return to the provider site"
 src/ts/main/booking/rules.ts,business_logic,27,1485,"ts-rules","Booking rules, berth limits, opening/availability times, mode routing"
 src/ts/main/booking/run-controls.ts,business_logic,12,2517,"ts-run-controls","Run controls: cancel/stop, browser window handling, live-form edits, sign-in waiting, session-drop and duplicate-login detection, AI hand-off, print control"

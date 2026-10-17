@@ -41,6 +41,8 @@ The migration is **not** complete.
 | `src/ts/main/storage/ai-key-store.ts` | Local AI key save/read, OS encryption and legacy plaintext migration; settings IPC error forwarding | f3570-f3571, f4022 | `ai-key-store-reconstruction` |
 | `src/ts/main/storage/local-catalog.ts` | Offline JSON catalog read/fallback, ranked station suggestions and capped train-name suggestions | f3495-f3497 | `local-catalog-reconstruction` |
 | `src/ts/main/storage/vault-access.ts` | Lazy initialization/cache of ordinary form and record vaults, form-label migration and identity callback | f3499-f3500, f3575, f3578, f3582-f3583 | `vault-access-reconstruction` |
+| `src/ts/main/storage/login-collection.ts` | Collect local saved logins and form accounts with original order, deduplication and partial-source failure handling | f3576-f3577 | `login-collection-reconstruction` |
+| `src/ts/main/storage/record-import.ts` | Local JSON/text record import, original fallback and append/count behavior; existing parsers stay injected | f3580-f3581 | `record-import-reconstruction` |
 | --- | --- | --- | --- |
 | `src/ts/main/booking/provider-page.ts` | Wait for the operator to return to the provider site | f2255, f2256, f2257 | `ts-misc` |
 | `src/ts/main/booking/rules.ts` | Booking rules, berth limits, opening/availability times, mode routing | f425, f426, f427, f428, f429, f431, f433, f435, f436, f437, f438, f439, f440, f441, f444, f445, f446, f447, f448, f449, f450, f451, f452, f453, f454, f455, f456 | `ts-rules` |
@@ -472,3 +474,17 @@ as in the recovered code.
 Validation: 97/97 focused tests, compiled mode plus inventory 100/100; three
 mutation candidates killed. These are synthetic local tests; they neither open
 real profiles nor contact services.
+
+## Local login collection and record import batch
+
+Reconstructed f3576/f3577 in login-collection.ts and f3580/f3581 in
+record-import.ts. Collection keeps saved-login-first order, case-insensitive
+username plus exact-password deduplication, original whitespace conversion and
+partial results when either source fails. Import keeps BOM handling, JSON-first
+parsing, line fallback after a JSON-stage error (including already appended
+records), injected existing parsers, UUID/time order and truthy append counting.
+Nothing signs in, transmits records or reads a real saved profile in these tests.
+
+Validation: collection 34/34 and import 53/53 default; compiled plus inventory
+90/90. Login collection mutation check: 6/6 killed. No record-import mutation
+sweep was run. Full-suite and launcher results follow in the Windows checkpoint.
