@@ -38,6 +38,7 @@ The migration is **not** complete.
 | `src/ts/main/storage/record-codecs.ts` | Saved login/proxy text and object conversion, UPI-record validation/normalization and stored method mapping | f414-f424 | `record-codecs-reconstruction` |
 | `src/ts/main/ipc/backup-ipc.ts` | Backup selection/info and user-requested encrypted backup/restore orchestration using unchanged crypto/store helpers | f4031-f4033 | `backup-ipc-reconstruction` |
 | `src/ts/main/storage/settings-store.ts` | Settings JSON read/atomic replacement and standard Electron window pin operations; secret values remain opaque | f3552-f3556 | `settings-store-reconstruction` |
+| `src/ts/main/storage/ai-key-store.ts` | Local AI key save/read, OS encryption and legacy plaintext migration; settings IPC error forwarding | f3570-f3571, f4022 | `ai-key-store-reconstruction` |
 | --- | --- | --- | --- |
 | `src/ts/main/booking/provider-page.ts` | Wait for the operator to return to the provider site | f2255, f2256, f2257 | `ts-misc` |
 | `src/ts/main/booking/rules.ts` | Booking rules, berth limits, opening/availability times, mode routing | f425, f426, f427, f428, f429, f431, f433, f435, f436, f437, f438, f439, f440, f441, f444, f445, f446, f447, f448, f449, f450, f451, f452, f453, f454, f455, f456 | `ts-rules` |
@@ -404,3 +405,26 @@ Possible next steps:
 2. Windows visual check of the compiled renderer scripts (list in "Renderer scripts").
 3. `reconstructed-payment.cjs` (the factory table) once the modules it routes to are all decided.
 Do not remove the legacy fixtures, the interpreter fallback or `src/main/generated` while any of this is open.
+
+## Local AI key persistence batch
+
+Reconstructed f3570, f3571 and f4022 in storage/ai-key-store.ts. Saving trims
+the key, removes obsolete fields and uses Electron safeStorage when available;
+the existing plaintext fallback is preserved when OS encryption is unavailable.
+Reading gives the environment key priority, decrypts stored ciphertext, returns
+an empty key on decryption failure, and migrates a legacy plaintext key through
+the original setter. The IPC handler preserves synchronous save/error handling.
+There are no provider calls or changes to licensing or access control.
+
+The independent recovered-function comparisons cover storage mutation and call
+order, encryption availability, missing/empty keys, environment precedence,
+legacy migration, and read/encrypt/decrypt/write failures. Invalid non-string
+inputs compare TypeError directly; IPC error forwarding uses scripted errors
+because JS and the interpreter generate different non-callable-method messages.
+The general harness and error normalization rules were not broadened.
+
+Related tests and inventory: 122/122 default; settings and key tests: 119/119
+with MATRIX_COMPILED=1. Mutation check: 8/8 killed, no survivors. Main TypeScript
+check passes. No live account, saved profile or provider flow was used.
+
+Full default suite after integration: 5190 passed, 0 failed (npm test).

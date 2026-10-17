@@ -55,6 +55,7 @@ const browserIpc=require('../ipc/browser-ipc.cjs');
 const logsIpc=require('../ipc/logs-ipc.cjs');
 const dataIpc=require('../ipc/data-ipc.cjs');
 const settingsIpc=require('../ipc/settings-ipc.cjs');
+const aiKeyStore=require('../storage/ai-key-store.cjs');
 const transferIpc=require('../ipc/transfer-ipc.cjs');
 const formsTransferIpc=require('../ipc/forms-transfer-ipc.cjs');
 const formCodecs=require('../storage/form-codecs.cjs');
@@ -257,6 +258,7 @@ function settingsIpcFactories() {
     f4013:handler(settingsIpc.getAutoUpdate),f4014:handler(settingsIpc.setAutoUpdate),f4015:handler(settingsIpc.getWindowPin),
     f4016:handler(settingsIpc.setWindowPin),f4017:handler(settingsIpc.getAiEnabled),f4018:handler(settingsIpc.setAiEnabled),
     f4019:handler(settingsIpc.getQrPopup),f4020:handler(settingsIpc.getNewTheme),f4021:handler(settingsIpc.setQrPopup),
+    f4022:({readBinding})=>async function(event,key){return aiKeyStore.setAiKey(key,value=>readBinding(1783,undefined,1)(value));},
   };
 }
 
@@ -621,6 +623,15 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     f422:({readBinding})=>function(input){return recordCodecs.parseProxy(input,line=>readBinding(263)(line));},
     f423:({readBinding})=>function(input,id,now){return recordCodecs.proxyFromInput(input,id,now,line=>readBinding(263)(line));},
     f424:()=>recordCodecs.scalarText,
+    f3570:({readBinding})=>function(value){return aiKeyStore.saveAiKey(value,{
+      readSettings:()=>readBinding(1768)(),writeSettings:next=>readBinding(1769)(next),
+      safeStorage:()=>readBinding(22,'x').safeStorage,
+    });},
+    f3571:({readBinding})=>function(){return aiKeyStore.readAiKey({
+      environmentKey:()=>readBinding(1566,'Wc'),readSettings:()=>readBinding(1768)(),
+      writeSettings:next=>readBinding(1769)(next),safeStorage:()=>readBinding(22,'x').safeStorage,
+      decodeBase64:value=>Buffer.from(value,'base64'),saveKey:value=>readBinding(1783)(value),
+    });},
     f3552:({readBinding})=>function(){return settingsStore.autoUpdate(()=>readBinding(1768)());},
     f3553:({readBinding})=>function(){return settingsStore.readSettings({fs:()=>readBinding(18,'y'),path:()=>readBinding(1766)()});},
     f3554:({readBinding})=>function(value){return settingsStore.writeSettings(value,{

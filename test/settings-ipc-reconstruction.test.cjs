@@ -83,9 +83,9 @@ scenario('setWindowPin apply fails', {returns: {applyPin: () => {throw new Error
 scenario('setWindowPin electron uninitialised', {holes: [22]}, (h, e) => h('f4016')(e, true));
 scenario('setWindowPin channels uninitialised', {holes: [336]}, (h, e) => h('f4016')(e, true));
 
-test('every reviewed settings handler has a factory; SetAiKey is deliberately left recovered', () => {
+test('every reviewed settings handler has a factory', () => {
   const {reconstructedPayment} = require('../src/main/runtime/reconstructed-payment.cjs');
   const factories = reconstructedPayment({development: true, enabled: true});
   for (const id of ['f4013', 'f4014', 'f4015', 'f4016', 'f4017', 'f4018', 'f4019', 'f4020', 'f4021']) assert.equal(typeof factories[id], 'function', id);
-  assert.equal(factories.f4022, undefined);
+  assert.equal(typeof factories.f4022, 'function');
 });

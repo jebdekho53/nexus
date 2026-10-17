@@ -6,7 +6,7 @@
 // GetQrPopup f4019, GetNewTheme f4020 and SetQrPopup f4021. The settings store itself is a recovered helper pair that is
 // injected here (read the stored settings, write them back).
 //
-// Not here: SetAiKey (f4022, stores an API key), the app-lock and GoLogin handlers, and the version and update-status
+// SetAiKey (f4022) lives with storage/ai-key-store. Not here: the app-lock and GoLogin handlers, and the version and update-status
 // handlers, which feed the version gate.
 
 export interface HandlerResult {
