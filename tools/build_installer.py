@@ -6,13 +6,17 @@ ROOT = Path(__file__).resolve().parent.parent
 IS_UPDATE = '--updater' in sys.argv
 ARGS = [arg for arg in sys.argv[1:] if arg != '--updater']
 OUT = Path(ARGS[0]) if ARGS else ROOT.parent / 'matrix-build'
+# Compile src/ts -> build/ts first; the payload must carry build/ts because the migrated modules load it at run time.
+subprocess.run(['node', str(ROOT / 'scripts' / 'ensure-ts-build.cjs')], check=True)
+if not (ROOT / 'build' / 'ts').is_dir():
+    raise SystemExit('build/ts is missing; run `npm install` and `npm run build:ts` before building the installer.')
 VERSION = json.loads((ROOT / 'package.json').read_text())['version']
 (ROOT / 'src/renderer/matrix-build.js').write_text(
     'globalThis.MATRIX_BUILD=Object.freeze(' + json.dumps({'name': 'Matrix', 'version': VERSION}, separators=(',', ':')) + ');\n',
     encoding='utf-8', newline='\n')
-INCLUDE = ['.runtime', 'src', 'vendor', 'resources', 'package.json', 'Matrix.cmd', 'test']
+INCLUDE = ['.runtime', 'src', 'build', 'scripts/ensure-ts-build.cjs', 'vendor', 'resources', 'package.json', 'Matrix.cmd', 'test']
 if IS_UPDATE:
-    INCLUDE = ['src', 'resources', 'vendor/package.json', 'package.json', 'Matrix.cmd']
+    INCLUDE = ['src', 'build', 'scripts/ensure-ts-build.cjs', 'resources', 'vendor/package.json', 'package.json', 'Matrix.cmd']
 SKIP_NAMES = {'__pycache__', '.git'}
 CSC = Path(os.environ.get('WINDIR', r'C:\Windows')) / 'Microsoft.NET' / 'Framework64' / 'v4.0.30319' / 'csc.exe'
 OUT.mkdir(parents=True, exist_ok=True)
