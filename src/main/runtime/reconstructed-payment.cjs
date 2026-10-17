@@ -47,6 +47,7 @@ const {runBrowserBooking}=require('../booking/browser-booking.cjs');
 const {runRailOne}=require('../booking/railone-booking.cjs');
 const {callTransport}=require('../booking/transport-retry.cjs');
 const {safeCall}=require('../booking/safe-call.cjs');
+const {pollAvailability}=require('../booking/availability.cjs');
 const {getFinalPaytmStatus}=require('../payment/paytm-final-status.cjs');
 const {fingerprint,phonePeHeaders,phonePeRedirect,razorpayRedirect,phonePeQr,pollPhonePe}=require('../payment/phonepe-transport.cjs');
 const {definitionFingerprint}=require('./recovered-contract.cjs');
@@ -187,6 +188,28 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
       reference:()=>readBinding(941,undefined,1)(),
     });},
     f2128:({readBinding})=>function(goal,extra){return aiResolve(this,goal,extra,{createSnapshot:page=>new(readBinding(230,undefined,1))(page)});},
+    f2269:({readBinding})=>function(journey,trainNumber,quota,options){
+      const call=slot=>(...args)=>readBinding(slot,undefined,1)(...args);
+      const val=slot=>readBinding(slot,undefined,1);
+      return pollAvailability(this,journey,trainNumber,quota,options,{
+        buildBody:call(351),
+        newSiteBody:val(353),
+        maxOptStep:val(363),
+        buildUrl:call(369),
+        newSiteUrl:call(371),
+        isHighLoadBody:call(403),
+        isAkamaiBlockedBody:call(404),
+        parseResponse:call(405),
+        parseNewSiteResponse:call(408),
+        isAkamaiBlock:call(409),
+        slotTimeoutWindowMs:val(912),
+        slowRetryDelayMs:call(915),
+        pollStatusVerdict:call(916),
+        highloadStatuses:val(921),
+        random:dependencies.random,
+        env:dependencies.environment,
+      });
+    },
     f2271:()=>function(min,max){return timeHelpers.randomBetween(min,max,dependencies.random);},
     f2367:()=>function(list){return timeHelpers.pickRandom(list,dependencies.random);},
     f2368:()=>timeHelpers.pickStep,

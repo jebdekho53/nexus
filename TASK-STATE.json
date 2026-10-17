@@ -1,6 +1,6 @@
 {
   "status": "in_progress",
-  "progress": "Phases1–28: 90 native entries plus booking controllers f2102, f2161, f3149, f3132, f2064 (src/main/booking), 421 contract pins, 2186-test full suite passes cleanly. Compiled runtime is the default; --interpreter-runtime keeps the interpreter. Differential matches. Windows verification passed (2186 tests passing). Public 1.0.11 unchanged; no live service/build/deployment.",
+  "progress": "Phases1–29: 91 native entries plus booking controllers f2102, f2161, f3149, f3132, f2064, f2269 (src/main/booking), 422 contract pins, 2194-test full suite passes cleanly. Compiled runtime is the default; --interpreter-runtime keeps the interpreter. Differential matches. Windows verification passed (2194 tests passing). Public 1.0.11 unchanged; no live service/build/deployment.",
   "task": "Reconstruct recovered Matrix payment logic into maintainable JavaScript",
   "completedLatestTask": {
     "task": "Fix WebLogin Chrome selection closing another independent pair panel",

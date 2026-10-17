@@ -14,7 +14,7 @@ Bands: tiny1–20 instructions; small21–100; medium101–300; large301–1000;
 | small | 1555 | 77741 | 15.16% | 70 | 65 |
 | medium | 741 | 127291 | 24.82% | 34 | 15 |
 | large | 288 | 146373 | 28.54% | 31 | 2 |
-| very_large | 59 | 149579 | 29.17% | 11 | 0 |
+| very_large | 59 | 149579 | 29.17% | 12 | 0 |
 
 ## Structural review load
 
@@ -25,16 +25,16 @@ Score = 1 + conditional jumps + loop jumps + switch alternatives + 2*exception h
 | low | 3128 | 88772 | 17.31% | 59 | 253 |
 | moderate | 862 | 137049 | 26.72% | 62 | 10 |
 | high | 305 | 142330 | 27.75% | 24 | 1 |
-| very_high | 53 | 81107 | 15.81% | 10 | 0 |
+| very_high | 53 | 81107 | 15.81% | 11 | 0 |
 | extreme | 6 | 63599 | 12.4% | 2 | 0 |
 
 ## Migration status
 
 | Band | Functions | Original instructions | Instruction share | Native entries | Pinned support |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| native_entry | 157 | 60485 | 11.79% | 157 | 0 |
+| native_entry | 158 | 62322 | 12.15% | 158 | 0 |
 | pinned_support | 264 | 7180 | 1.4% | 0 | 264 |
-| recovered_other | 3933 | 445192 | 86.81% | 0 | 0 |
+| recovered_other | 3932 | 443355 | 86.45% | 0 | 0 |
 
 Native entry is an active development-only replacement. Pinned support is a reviewed callback/dependency; do not count every pin as a completed standalone migration. Original instruction share is a size proxy, not completed effort or tested feature coverage. Main-function count alone substantially misrepresents progress.
 
@@ -59,7 +59,7 @@ Native entry is an active development-only replacement. Pinned support is a revi
 | f1367 | 2303 | 124 | 68 | 7 | 2 | 23 | 21 | recovered_other |
 | f811 | 2069 | 101 | 61 | 0 | 2 | 24 | 11 | recovered_other |
 | f2994 | 1845 | 93 | 65 | 5 | 5 | 6 | 6 | recovered_other |
-| f2269 | 1837 | 69 | 58 | 1 | 1 | 7 | 0 | recovered_other |
+| f2269 | 1837 | 69 | 58 | 1 | 1 | 7 | 0 | native_entry |
 | f713 | 1805 | 117 | 68 | 1 | 1 | 34 | 11 | recovered_other |
 | f2102 | 1741 | 81 | 55 | 0 | 1 | 11 | 12 | native_entry |
 | f3876 | 1738 | 64 | 41 | 0 | 0 | 0 | 22 | recovered_other |

@@ -85,3 +85,5 @@ Phase26: booking controllers f2102 (ui-booking), f2161 (browser-booking) and f31
 Phase27: transport retry controller f3132 (2,871 instructions, previously one of the largest unmigrated methods in recovered_other) is reconstructed as native module src/main/booking/transport-retry.cjs with oracle tests (8 scenarios) and 406 pins; see docs/reconstruction-phase-27.md. Total tests passed: 2,173.
 
 Phase28: browser booking HTTP transport & retry controller f2064 (`safeCall`, 2,850 instructions) and its child closures f2065–f2078 are reconstructed as native module src/main/booking/safe-call.cjs with oracle tests (13 scenarios) and 421 pins; see docs/reconstruction-phase-28.md. Total tests passed: 2,186.
+
+Phase29: train availability polling & slot gating controller f2269 (`pollAvailability`, 1,837 instructions) is reconstructed as native module src/main/booking/availability.cjs with oracle tests (8 scenarios) and 422 pins; see docs/reconstruction-phase-29.md. Total tests passed: 2,194.
