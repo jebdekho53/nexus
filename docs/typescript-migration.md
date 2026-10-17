@@ -214,6 +214,13 @@ Run it with `node tools/compiler/engine-parity.cjs --mode both --seeds 2` (about
 
 ## Windows verification of later commits
 
+`1b0cdaf` follow-up: main tsconfig accidentally included the browser sources,
+causing TS2451 (`module` redeclaration). Fixed by limiting the main include
+to src/ts/main/**/*.ts. After this fix, both builds/type checks, all 2347
+tests in both modes, both launcher smoke checks and synthetic booking-panel
+checks pass on Windows. Screenshots for Form, Logs, Tools, Updates and the
+Booking box were visually spot-checked. See the Windows verification doc.
+
 Follow-up Windows verification of `e734c2d` (including `1c0887a`) now passes
 2306/2306 tests in both modes and both offline launcher smoke checks.
 See `docs/typescript-windows-verification.md` for exact scope and the

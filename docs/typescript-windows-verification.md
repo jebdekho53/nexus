@@ -1,5 +1,38 @@
 # TypeScript migration: Windows verification
 
+## Follow-up: 1b0cdaf (independent engine checks and renderer)
+
+Verified 17 October 2026 on Windows, Node 24.21.0, after the config fix
+described below. Includes 122fc20 and 1b0cdaf.
+
+Found a real build regression before verification: tsconfig.json included
+all src/ts sources, including the new browser renderer scripts. Its Node
+types conflict with the renderer's ambient module declaration (TS2451).
+Limited the main config to src/ts/main/**/*.ts; the renderer remains under
+tsconfig.renderer.json. No application behavior or renderer output changed.
+
+- `npm ci --ignore-scripts`: passed.
+- Both TypeScript type checks and both builds: passed after the config fix.
+- Default full suite: 2347 tests, all passed; zero cancelled/skipped.
+- MATRIX_COMPILED=1 full suite: 2347 tests, all passed; zero cancelled/skipped.
+- `start.cmd --smoke-test --interpreter-runtime`: smoke-complete, eight
+  windows (PID 11472).
+- `Matrix.cmd --smoke-test`: smoke-complete, eight windows (PID 8496).
+- Visually inspected Electron smoke screenshots for Form, Logs, Tools and
+  Updates: page text, headers and controls render readably with Matrix branding.
+  Network-unavailable messages are expected in offline smoke.
+- `node scripts/run.cjs --smoke-test --smoke-panel --smoke-duration=25000`:
+  smoke-complete (PID 25784). Synthetic account/payment loaded; mode,
+  payment and timer visible; payment/mode options readable; calendar
+  selection passed. Booking-box screenshot visually inspected and readable.
+  No booking start or payment submission was invoked. The synthetic form
+  is deleted by the harness afterward.
+
+These are screenshot spot checks, not complete interactive UI validation.
+No live provider flow or rebuilt installer was verified for this head.
+The full engine-parity CLI sweep was reported by cloud, not rerun locally;
+the independent engine unit tests are included in the passing full suite.
+
 ## Follow-up: e734c2d (62 modules)
 
 Verified 17 October 2026 on Windows, Node 24.21.0, in the independent QA

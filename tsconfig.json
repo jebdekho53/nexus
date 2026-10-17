@@ -16,5 +16,5 @@
     "newLine": "lf",
     "skipLibCheck": true
   },
-  "include": ["src/ts/**/*.ts"]
+  "include": ["src/ts/main/**/*.ts"]
 }
