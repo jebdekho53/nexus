@@ -43,6 +43,7 @@ const serverTime=require('../booking/server-time.cjs');
 const timeHelpers=require('../booking/time-helpers.cjs');
 const {attachDuplicateLoginWatch,aiResolve,ensureAuthToken,relaunchIfLoggedOut,dumpAuthState,printTicketInBrowser,stopWith,updateLiveForm,controlProxyContext,routeGatewayThroughFormProxy,cancelPayment,stoppedResult,highLoadDelay,focusBrowser,hideBrowser,minimizeBrowser}=require('../booking/controls.cjs');
 const {runUiBooking}=require('../booking/ui-booking.cjs');
+const {runBrowserBooking}=require('../booking/browser-booking.cjs');
 const {getFinalPaytmStatus}=require('../payment/paytm-final-status.cjs');
 const {fingerprint,phonePeHeaders,phonePeRedirect,razorpayRedirect,phonePeQr,pollPhonePe}=require('../payment/phonepe-transport.cjs');
 const {definitionFingerprint}=require('./recovered-contract.cjs');
@@ -95,6 +96,22 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     f2083:({readBinding})=>function(){return ensureAuthToken(this,{bringToFront:page=>readBinding(123,undefined,1)(page),terminalClosed:()=>readBinding(603,undefined,1),terminalNoToken:()=>readBinding(604,undefined,1)});},
     f2087:({readBinding})=>function(){return relaunchIfLoggedOut(this,{loginButtonVisible:page=>readBinding(431,undefined,1)(page),positivelyLoggedIn:page=>readBinding(755,undefined,1)(page),waitForHydration:page=>readBinding(474,undefined,1)(page)});},
     f2094:({readBinding})=>function(page){return attachDuplicateLoginWatch(this,page,{isJourneyContextUrl:(url,primed)=>readBinding(635,undefined,1)(url,primed)});},
+    f2161:({readBinding})=>function(job,options){
+      const call=slot=>(...args)=>readBinding(slot,undefined,1)(...args);
+      return runBrowserBooking(this,job,options,{
+        humanFor:page=>new(readBinding(230,'Gt',1))(page),
+        stopped:()=>readBinding(940,undefined,1)(),
+        duplicateLogin:()=>readBinding(602,'ni',1),
+        clientTxnId:call(347),slotImminent:call(632),windowLimit:()=>readBinding(631,'QT',1),shouldSearch:call(633),
+        clearOverlays:call(474),spaDecision:call(634),spaWait:()=>readBinding(920,'WC',1),
+        availabilityUrl:()=>readBinding(355,'Ku',1),availabilityBody:call(357),
+        boardingUrl:()=>readBinding(354,'QI',1),boardingBody:call(372),
+        submitUrl:()=>readBinding(358,'XI',1),bookingRequest:call(378),retryNotice:()=>readBinding(598,'Mt',1),
+        parseResponse:call(405),stationList:call(417),inputTimes:call(419),cateringCodes:call(373),bankDetail:call(390),
+        extractError:call(396),isAkamaiBlock:call(409),captchaChallenge:call(411),
+        berthPreferenceUnmet:call(415),notConfirmed:call(416),passengerWait:call(927),
+      });
+    },
     f2102:({readBinding})=>function(job){return runUiBooking(this,job,{
       humanFor:page=>new(readBinding(230,'Gt',1))(page),
       stopped:()=>readBinding(940,undefined,1)(),

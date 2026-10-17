@@ -10,11 +10,11 @@ Bands: tiny1–20 instructions; small21–100; medium101–300; large301–1000;
 
 | Band | Functions | Original instructions | Instruction share | Native entries | Pinned support |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| tiny | 1711 | 11873 | 2.32% | 11 | 142 |
-| small | 1555 | 77741 | 15.16% | 70 | 58 |
+| tiny | 1711 | 11873 | 2.32% | 11 | 149 |
+| small | 1555 | 77741 | 15.16% | 70 | 59 |
 | medium | 741 | 127291 | 24.82% | 34 | 14 |
 | large | 288 | 146373 | 28.54% | 31 | 2 |
-| very_large | 59 | 149579 | 29.17% | 7 | 0 |
+| very_large | 59 | 149579 | 29.17% | 8 | 0 |
 
 ## Structural review load
 
@@ -22,19 +22,19 @@ Score = 1 + conditional jumps + loop jumps + switch alternatives + 2*exception h
 
 | Band | Functions | Original instructions | Instruction share | Native entries | Pinned support |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| low | 3128 | 88772 | 17.31% | 59 | 207 |
-| moderate | 862 | 137049 | 26.72% | 62 | 8 |
+| low | 3128 | 88772 | 17.31% | 59 | 214 |
+| moderate | 862 | 137049 | 26.72% | 62 | 9 |
 | high | 305 | 142330 | 27.75% | 24 | 1 |
 | very_high | 53 | 81107 | 15.81% | 8 | 0 |
-| extreme | 6 | 63599 | 12.4% | 0 | 0 |
+| extreme | 6 | 63599 | 12.4% | 1 | 0 |
 
 ## Migration status
 
 | Band | Functions | Original instructions | Instruction share | Native entries | Pinned support |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| native_entry | 153 | 39134 | 7.63% | 153 | 0 |
-| pinned_support | 216 | 6417 | 1.25% | 0 | 216 |
-| recovered_other | 3985 | 467306 | 91.12% | 0 | 0 |
+| native_entry | 154 | 44633 | 8.7% | 154 | 0 |
+| pinned_support | 224 | 6557 | 1.28% | 0 | 224 |
+| recovered_other | 3976 | 461667 | 90.02% | 0 | 0 |
 
 Native entry is an active development-only replacement. Pinned support is a reviewed callback/dependency; do not count every pin as a completed standalone migration. Original instruction share is a size proxy, not completed effort or tested feature coverage. Main-function count alone substantially misrepresents progress.
 
@@ -45,7 +45,7 @@ Native entry is an active development-only replacement. Pinned support is a revi
 | f1 | 33708 | 2172 | 100 | 21 | 0 | 0 | 2050 | recovered_other |
 | f3149 | 10131 | 372 | 290 | 5 | 1 | 48 | 26 | recovered_other |
 | f1073 | 6222 | 373 | 243 | 6 | 5 | 85 | 28 | recovered_other |
-| f2161 | 5499 | 216 | 170 | 4 | 1 | 31 | 8 | recovered_other |
+| f2161 | 5499 | 216 | 170 | 4 | 1 | 31 | 8 | native_entry |
 | f3450 | 4438 | 122 | 110 | 0 | 4 | 2 | 1 | recovered_other |
 | f3653 | 4368 | 180 | 132 | 1 | 7 | 7 | 24 | recovered_other |
 | f3790 | 4320 | 136 | 4 | 0 | 3 | 0 | 125 | recovered_other |
