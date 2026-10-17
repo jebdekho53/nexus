@@ -51,6 +51,7 @@ const formsVault=require('../storage/forms-vault.cjs');
 const recordVault=require('../storage/record-vault.cjs');
 const historyVault=require('../storage/history-vault.cjs');
 const windowIpc=require('../windows/window-ipc.cjs');
+const windowHelpers=require('../windows/window-helpers.cjs');
 const browserIpc=require('../ipc/browser-ipc.cjs');
 const logsIpc=require('../ipc/logs-ipc.cjs');
 const dataIpc=require('../ipc/data-ipc.cjs');
@@ -279,6 +280,29 @@ function transferIpcFactories(dependencies) {
   return {
     f3967:handler(transferIpc.exportUsers),f3969:handler(transferIpc.importUsers),f3970:handler(transferIpc.importUserFile),f3971:withoutEvent(transferIpc.importUsersData),
     f3986:handler(transferIpc.exportProxies),f3989:handler(transferIpc.importProxies),f3991:withoutEvent(transferIpc.importProxyPaste),f3993:handler(transferIpc.importProxyFile),
+  };
+}
+
+// Window and booking-panel helpers (root functions created in the bootstrap scope: bindings are read at depth 0).
+function windowHelperDependencies(readBinding,writeBinding) {
+  const slot=(number,name)=>()=>readBinding(number,name);
+  return {
+    qrStore:slot(1928,'uu'),defaultFormId:slot(1922,'Xi'),showQr:(...args)=>readBinding(1932)(...args),bookings:slot(1537,'oe'),
+    windowRegistry:slot(2063,'Ln'),updateDownload:slot(2116,'Bi'),updateInstalling:slot(2113,'cs'),allWindows:()=>readBinding(22,'x').BrowserWindow.getAllWindows(),
+    updateWindow:slot(2115,'Ve'),
+    rememberUpdateProgress:progress=>{readBinding(2117,'yo');writeBinding(2117,progress);},
+    channels:slot(336,'v'),
+  };
+}
+function windowHelperFactories() {
+  const deps=({readBinding,writeBinding})=>windowHelperDependencies(readBinding,writeBinding);
+  return {
+    f3738:reader=>function(formId){return windowHelpers.showStoredQr(deps(reader),formId);},
+    f3739:reader=>function(formId){return windowHelpers.checkNow(deps(reader),formId);},
+    f4136:reader=>function(){return windowHelpers.countLiveWindows(deps(reader));},
+    f4254:reader=>function(){return windowHelpers.cancelActiveUpdateDownload(deps(reader));},
+    f4261:reader=>function(except){return windowHelpers.hideOtherWindows(deps(reader),except);},
+    f4262:reader=>function(window,progress){return windowHelpers.publishUpdateProgress(deps(reader),window,progress);},
   };
 }
 
@@ -585,6 +609,7 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     ...recordVaultFactories(dependencies),
     ...historyVaultFactories(dependencies),
     ...windowIpcFactories(dependencies),
+    ...windowHelperFactories(),
     ...ordinaryIpcFactories(dependencies),
     ...dataIpcFactories(dependencies),
     ...settingsIpcFactories(),

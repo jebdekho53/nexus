@@ -19710,5 +19710,161 @@
     "22777|JT7O": "setAlwaysOnTop",
     "4579|9urW": "setVisibleOnAllWorkspaces",
     "12596|0vo)": "setSkipTaskbar"
+  },
+  "f4121": {},
+  "f4122": {},
+  "f4123": {},
+  "f4124": {},
+  "f4125": {
+    "1229|sA1s": "isDestroyed",
+    "18190|4dr8": "isFocused"
+  },
+  "f4126": {
+    "19448|qP]&": "isDestroyed",
+    "16228|QgKz": "isFocused"
+  },
+  "f4127": {
+    "13428|P3P7": "__new__",
+    "13989|MnWs": "isDestroyed",
+    "16949|*VhR": "isVisible"
+  },
+  "f4128": {
+    "8216|3W8e": "__new__",
+    "7740|4dr8": "get",
+    "542|b!6h": "isDestroyed",
+    "13092|ou5S": "form",
+    "9942|0vo)": "BrowserWindow",
+    "14875|7u]a": "top",
+    "9075|Cbvh": "Edit Form",
+    "16955|rkuw": "New Form",
+    "16546|s[W0": "#ffffff",
+    "19796|*VhR": "join",
+    "4830|rkuw": "../preload/index.js",
+    "12258|7u]a": "set",
+    "3505|4dr8": "close",
+    "1964|G]71": "closed",
+    "18683|d[0N": "ready-to-show",
+    "11021|P3P7": "form"
+  },
+  "f4129": {
+    "10919|S)Et": "preventDefault",
+    "5380|*VhR": "hide"
+  },
+  "f4130": {
+    "16408|b!6h": "get",
+    "22591|7u]a": "delete"
+  },
+  "f4131": {
+    "21916|nWFp": "show"
+  },
+  "f4132": {
+    "6500|ZYwv": "isDestroyed",
+    "679|ZYwv": "BrowserWindow",
+    "3145|WyZ@": "Open Form",
+    "14699|zBnB": "#ffffff",
+    "14489|9urW": "join",
+    "1688|P3P7": "../preload/index.js",
+    "10349|hm$n": "close",
+    "3380|UMn*": "closed",
+    "10396|Y(mF": "ready-to-show",
+    "21462|S)Et": "open-form"
+  },
+  "f4133": {
+    "5250|nWFp": "preventDefault",
+    "10107|]TXZ": "hide"
+  },
+  "f4134": {},
+  "f4135": {
+    "10594|4dr8": "show"
+  },
+  "f4136": {
+    "7269|8#8#": "values",
+    "9240|rMir": "isDestroyed"
+  },
+  "f4137": {
+    "6372|iz(z": "get",
+    "9239|1kPD": "isDestroyed"
+  },
+  "f4138": {
+    "17275|hm$n": "isDestroyed",
+    "23214|a3QL": "show",
+    "20713|hm$n": "focus",
+    "4447|7u]a": "BrowserWindow",
+    "10756|C)Ez": "Limit Reached",
+    "23110|a3QL": "#ffffff",
+    "22644|bTc%": "join",
+    "18550|WyZ@": "../preload/index.js",
+    "2533|o^v]": "closed",
+    "10042|s[W0": "ready-to-show",
+    "11649|4dr8": "max=",
+    "19881|Cbvh": "loadURL",
+    "14956|*VhR": "/pair-limit.html?",
+    "16698|WyZ@": "loadFile",
+    "21508|OpDQ": "join",
+    "18831|d[0N": "../renderer/pair-limit.html"
+  },
+  "f4139": {},
+  "f4140": {
+    "20234|bTc%": "show"
+  },
+  "f4141": {
+    "2172|a3QL": "get",
+    "21119|JT7O": "isDestroyed",
+    "4852|JT7O": "booking-box",
+    "23855|RuQs": "BrowserWindow",
+    "7863|OpDQ": "top",
+    "2701|OpDQ": "Booking",
+    "4164|8#8#": "#eaeff8",
+    "459|8#8#": "join",
+    "8484|4dr8": "../preload/index.js",
+    "12018|1kPD": "screen-saver",
+    "11582|1kPD": "ready-to-show",
+    "10746|s[W0": "move",
+    "11775|A@un": "close",
+    "7050|UaF#": "webContents",
+    "17670|%I%T": "render-process-gone",
+    "13781|hm$n": "closed",
+    "16953|WyZ@": "set",
+    "22179|iz(z": "booking-box"
+  },
+  "f4142": {
+    "17845|NqM3": "show"
+  },
+  "f4143": {},
+  "f4144": {},
+  "f4145": {
+    "9239|1kPD": "isDestroyed",
+    "15054|3W8e": "booking",
+    "23200|OpDQ": "box renderer stopped unexpectedly (",
+    "8924|ZYwv": ") \u2014 disposing the run",
+    "3919|]K13": "warn",
+    "18921|iz(z": "isDestroyed",
+    "15570|JT7O": "destroy"
+  },
+  "f4146": {
+    "22877|]TXZ": "delete"
+  },
+  "f4147": {
+    "18735|UaF#": "boolean",
+    "7496|WyZ@": "reveal",
+    "19442|qP]&": "object",
+    "17143|7u]a": "pin",
+    "10364|JT7O": "get",
+    "19559|PLJe": "isDestroyed",
+    "4447|7u]a": "BrowserWindow",
+    "11417|iz(z": "#ffffff",
+    "21358|o^v]": "join",
+    "7329|0vo)": "../preload/index.js",
+    "16252|hm$n": "set",
+    "22054|bTc%": "close",
+    "8917|]TXZ": "closed",
+    "6382|0vo)": "ready-to-show"
+  },
+  "f4148": {
+    "22431|iz(z": "preventDefault",
+    "12797|jg)a": "hide"
+  },
+  "f4149": {
+    "9456|0vo)": "delete"
   }
 }
