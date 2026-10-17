@@ -299,6 +299,22 @@ treats the two non-function call wordings (`Reflect.apply is not a function` ver
 on …`) as equal, as the compiler differential already did. Before that the opcode-covering parity test failed intermittently,
 also on the untouched baseline fa54973 (1 of 3 runs), because f1 seed 2 reaches a clobbered `Reflect.apply`.
 
+### Next candidates after this batch (not started)
+
+* `f3790` registration (login, licence, browser downloads, logs, RailOne pairing, success tickets, start/stop booking,
+  clipboard): split by handler. The ordinary ones (`GetLogs` f3831, `GetLogPairs` f3832, `ExportLogs` f3863, `DetectBrowsers`
+  f3817, `OpenBrowserDownload` f3818, `GetBrowserDownloads` f3825, `OpenSuccessTicket`/`GetSuccessTicket` f3861/f3862) can follow
+  the window-ipc pattern; the licence, account and RailOne ones stay excluded.
+* `f4296`/`f4297` (app-lock PIN): needs a `writeBinding` in the factory API of `engine.ts` and `compiled-runtime.ts` (it clears
+  a pending resolver slot and sets a relaunch flag); decide whether the wipe-after-failures part belongs in this migration.
+* Unread: `f2064` (safeCall) and `f2551` (fetchReply: remote gate replies, device blocks, high-load lists), the train list
+  cluster (`trains.json` f3513–f3524, `searchTrains` f2025/f2026/f2386) and the window helpers behind window-ipc's injected
+  functions (slots 1929/1930, 2060–2070, 2105–2131), which would let the injected names become real modules.
+* Process: extend the string fixture for a range with `tools/export_payment_fixture.py --range LO-HI --merge`, read the compiled
+  body of a recovered function with the compiled bundle plus the fixture (the bundle's bodies are structured JavaScript), write the
+  module in `src/ts`, add a three-line `.cjs` entry point, add factories in `reconstructed-payment.cjs`, pin with
+  `tools/pin_recovered_contract.cjs`, then compare with the recovered execution using `test/helpers/recovered-harness.cjs`.
+
 ## Continuation checkpoint
 
 Done in the latest batches: `compiled-runtime.ts` and `engine.ts` (both keep a real `import()` in their `.cjs` entry points; a bug caught on the way: `require('../compiled/…')` inside TypeScript resolves from `build/ts`, so such paths must be written from the project root), `offline-smoke.ts`, and four helpers extracted from `src/main/index.cjs`
