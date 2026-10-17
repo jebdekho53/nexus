@@ -158,6 +158,11 @@ only existing test of the preload swap in `window-readiness`; `test/ts-runtime.t
 
 ## Not verified in this environment (run these on Windows)
 
+Subsequent Windows verification of `aabf9cd` is recorded in
+`docs/typescript-windows-verification.md`: all 2241 tests pass in both modes,
+offline launcher/installer smoke checks pass, and packaging was executed.
+The following list describes the original Linux session's limitations.
+
 1. `npm install` then `npm run build:ts` in a fresh copy; confirm `build\ts` exists.
 2. `start.cmd` and `Matrix.cmd`: confirm `scripts\ensure-ts-build.cjs` runs under `.runtime\electron.exe` and the app opens.
 3. `.runtime\electron.exe . --development --smoke-test`, then again with `--interpreter-runtime`.

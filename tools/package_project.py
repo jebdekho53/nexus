@@ -2,10 +2,12 @@
 import hashlib
 from pathlib import Path
 import subprocess
+import sys
 import zipfile
 
 ROOT = Path(__file__).resolve().parent.parent
-TARGET = ROOT.parent / 'Matrix-source-portable.zip'
+TARGET = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else ROOT.parent / 'Matrix-source-portable.zip'
+TARGET.parent.mkdir(parents=True, exist_ok=True)
 
 def included(path):
     rel = path.relative_to(ROOT)
