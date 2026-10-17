@@ -46,6 +46,7 @@ const {runUiBooking}=require('../booking/ui-booking.cjs');
 const {runBrowserBooking}=require('../booking/browser-booking.cjs');
 const {runRailOne}=require('../booking/railone-booking.cjs');
 const {callTransport}=require('../booking/transport-retry.cjs');
+const {safeCall}=require('../booking/safe-call.cjs');
 const {getFinalPaytmStatus}=require('../payment/paytm-final-status.cjs');
 const {fingerprint,phonePeHeaders,phonePeRedirect,razorpayRedirect,phonePeQr,pollPhonePe}=require('../payment/phonepe-transport.cjs');
 const {definitionFingerprint}=require('./recovered-contract.cjs');
@@ -93,6 +94,29 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     f2052:({readBinding})=>function(){return routeGatewayThroughFormProxy(this,{isFilteredCookie:name=>readBinding(247,undefined,1)(name),normalizeProxy:value=>readBinding(561,undefined,1)(value),bypass:()=>readBinding(133,undefined,1),playwright:()=>readBinding(15,undefined,1)});},
     f2059:({readBinding})=>function(){return printTicketInBrowser(this,{bringToFront:page=>readBinding(123,undefined,1)(page)});},
     f2061:()=>function(page){return dumpAuthState(this,page);},
+    f2064:({readBinding})=>function(target,method,url,body,options){
+      const call=slot=>(...args)=>readBinding(slot,undefined,1)(...args);
+      const val=slot=>readBinding(slot,undefined,1);
+      return safeCall(this,target,method,url,body,options,{
+        formatPathStep:call(365),
+        formatPathShape:call(368),
+        maxOpt:call(364),
+        ewLimit:val(581),
+        highloadText:val(598),
+        ipBlockedMessage:val(601),
+        duplicateLoginMessage:val(602),
+        terminalClosed:val(603),
+        parseAkScore:readBinding(774,undefined,1)?.parseAkScore,
+        hlCoverRateLimit:call(877),
+        fastRetryDelay:val(922),
+        hlCoverWindow:val(923),
+        classifyResponse:call(930),
+        describeFailure:call(931),
+        previewBody:call(939),
+        random:dependencies.random,
+        sleep:dependencies.timers?.sleep,
+      });
+    },
     f2079:({readBinding})=>function(reason,options){return stopWith(this,reason,options,{shouldRecover:(...args)=>readBinding(619,undefined,1)(...args)});},
     f2081:()=>function(patch){return updateLiveForm(this,patch);},
     f2083:({readBinding})=>function(){return ensureAuthToken(this,{bringToFront:page=>readBinding(123,undefined,1)(page),terminalClosed:()=>readBinding(603,undefined,1),terminalNoToken:()=>readBinding(604,undefined,1)});},

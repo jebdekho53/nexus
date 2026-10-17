@@ -83,3 +83,5 @@ Phase23: compiled output made readable (inlined temporaries, names, 12-part f1 b
 Phase26: booking controllers f2102 (ui-booking), f2161 (browser-booking) and f3149 (railone-booking/submit/payment) are native modules under src/main/booking with oracle tests (75/169/233 scenarios) and 405 pins; see docs/reconstruction-phase-26.md. Offline decoder extraction (tools/export_decoder_fixture.cjs) works; decoder folding not attempted. Electron smoke test still needs a local Windows run.
 
 Phase27: transport retry controller f3132 (2,871 instructions, previously one of the largest unmigrated methods in recovered_other) is reconstructed as native module src/main/booking/transport-retry.cjs with oracle tests (8 scenarios) and 406 pins; see docs/reconstruction-phase-27.md. Total tests passed: 2,173.
+
+Phase28: browser booking HTTP transport & retry controller f2064 (`safeCall`, 2,850 instructions) and its child closures f2065–f2078 are reconstructed as native module src/main/booking/safe-call.cjs with oracle tests (13 scenarios) and 421 pins; see docs/reconstruction-phase-28.md. Total tests passed: 2,186.
