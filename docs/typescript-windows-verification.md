@@ -245,3 +245,25 @@ in their commits.
 
 Worth knowing: two agents edited this worktree in the same period without coordinating. The git history shows who committed what, and nothing was lost, but
 parallel work in one worktree should be avoided; use separate worktrees or branches.
+
+## Local scheduling and startup checkpoint, 17 October 2026
+
+Based on b4e64b5. Separate Codex and Claude worktrees and ownership are
+recorded in `parallel-work-plan.md`. Three private local schedules prepare
+five minutes before the requested openings; no live QR result is claimed.
+
+The startup guard now checks every required main and renderer output rather
+than the newest file in an output directory. It detects missing outputs,
+stale source/config/declarations and unsuccessful compiler emission while
+preserving complete packaged output without a compiler.
+
+A read-only QR-plan preflight validates the authorized timing/date/class
+policy and emits only redacted configuration. It does not launch the app or
+perform live booking. Private plan and credentials remain outside Git.
+
+Validation: 46 focused startup/preflight tests pass; main and renderer type
+checks pass. Both `start.cmd --smoke-test --interpreter-runtime` and
+`Matrix.cmd --smoke-test` completed with eight windows after the guard change.
+No payment was submitted and no live provider flow was run in this batch.
+
+Full default suite after this batch: 5136 passed, 0 failed (npm test).
