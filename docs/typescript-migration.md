@@ -308,23 +308,32 @@ also on the untouched baseline fa54973 (1 of 3 runs), because f1 seed 2 reaches 
 
 `f3790` registers about 120 IPC handlers. They were separated by what they do, not by name, and only the ordinary ones were
 reconstructed (module table above; `browser-logs-ipc-reconstruction` and `data-ipc-reconstruction` compare each with the
-recovered handler, 214 scenarios, plus mutation checks):
+recovered handler, 392 scenarios across the four IPC test files, plus mutation checks):
 
 * migrated: DetectBrowsers, OpenBrowserDownload, DownloadBrahmos, GetBrowserDownloads (f3817, f3818, f3819, f3825); GetLogs,
   GetLogPairs, ExportLogs (f3831, f3832, f3863); OpenSuccessTicket, GetSuccessTicket (f3861, f3862); the saved-data handlers
-  for forms, history, logins, payments and proxies, vault lock state and recovery (27 functions).
+  for forms, history, logins, payments and proxies, vault lock state and recovery (27 functions); the settings handlers GetAutoUpdate,
+  SetAutoUpdate, GetWindowPin, SetWindowPin, GetAiEnabled, SetAiEnabled, GetQrPopup, GetNewTheme and SetQrPopup (f4013-f4021); and the
+  login and proxy import/export handlers (ExportUsers, ImportUsers, ImportUserFile, ImportUsersData, ExportProxies, ImportProxies,
+  ImportProxyPaste, ImportProxyFile: f3967, f3969, f3970, f3971, f3986, f3989, f3991, f3993).
 * left untouched on purpose: licence, account and login handlers (Login, CheckUserIdInUse, SetBoxAccount, GetBoxLicenseInfo,
   ValidateLicenseKey, ActivateLicense, CheckIdStatus, GetVersionGate, CheckUsageWindow); RailOne pairing and run handlers; captcha,
   OTP and Aadhaar registration handlers (SubmitCaptcha, SubmitAadhaarOtp, ResendAadhaarOtp, RegisterAadhaar, SubmitConfirm and the
   rest); the sensor-token handler (GetSensorInfo); DownloadChromeAdvance (f3822, installs a fingerprint-spoofing Chromium and records
   its path); the GoLogin key and profile handlers.
-* not yet examined: import/export handlers (file dialogs and parsers), train and station search and CheckAvailability (provider
-  calls), the settings getters and setters (auto update, window pin, AI, QR popup, theme, app lock), backup, restore and rollback.
+* not yet examined or deliberately left: the forms export/import handlers (ExportForm, ImportForms, ImportFormsData, ExportFormModel,
+  ImportFormFile: f3949-f3953), train and station search and CheckAvailability (provider calls), backup, restore and rollback;
+  SetAiKey (f4022, stores an API key), the app-lock PIN handlers, the version-gate and update-status handlers (f3956, f3958) and
+  GetTiming (f3954).
 
 `writeBinding` was added to the factory API of both runtimes (`engine.ts`, `compiled-runtime.ts`): a native replacement can now
 store into the lexical slots of the recovered scope it replaces (DownloadBrahmos sets and clears an in-progress flag; the app-lock
-PIN handler f4296 could use it). `write-binding.test.cjs` covers both runtimes. The legacy fixtures are unchanged because they
+PIN handler f4296 could use it; DownloadBrahmos is the first user). `write-binding.test.cjs` covers both runtimes. The legacy fixtures are unchanged because they
 never receive factories.
+
+`SetQrPopup` (f4021) is replaced here and still wrapped by the qr-delivery interceptor; `native-interceptor-compose.test.cjs` shows in
+both runtimes that the interceptor receives the native implementation as `original` and its result unchanged. The inventory credits the
+replacing module.
 
 The engine parity wording rule is now `tools/compiler/failure-wording.cjs`: exactly `Reflect.apply is not a function` and V8's
 `Function.prototype.apply was called on <value>, which is a|an <type> and not a function` (anchored, one line, TypeError only) are

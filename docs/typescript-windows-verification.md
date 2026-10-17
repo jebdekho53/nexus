@@ -186,3 +186,34 @@ factory API).
 Still not done: no visual spot check of the interactive UI (no renderer source changed), nothing live (booking, payment, provider,
 licence server), and the new IPC handlers were exercised only against the recovered code in synthetic worlds and by the offline start-up,
 not through the real windows.
+
+## Local Windows session 2, final checkpoint (code at 29f1036)
+
+Run on 17 October 2026 on Windows with the bundled Node 24, offline and with synthetic data only. This supersedes the 01c4779 results
+above for the current head; everything below was run on `29f1036` (documentation commits after it do not change tested code).
+The settings and the login/proxy import/export handlers were added after 01c4779.
+
+- `tsc` check and build, main and renderer: clean; `git status` clean afterwards.
+- `node --test test/*.test.cjs`: 3613 passed, 0 failed, 0 cancelled. `MATRIX_COMPILED=1`: 3613 passed, 0 failed, 0 cancelled.
+- Offline smoke, result file deleted before each run and its timestamp checked afterwards, eight DOM-ready windows and
+  `nativeBytecodeLoaded=false` each: `start.cmd --smoke-test --interpreter-runtime` (log `compiledRuntime:false`), `Matrix.cmd
+  --smoke-test` (`true`), `scripts/run.cjs --smoke-test --smoke-panel --smoke-duration=25000`, and `scripts/run.cjs --development
+  --smoke-test --reconstructed-payment` in both runtimes (288 reconstructed functions enabled, including the new handlers).
+- Installer rebuilt into a NEW directory, `matrix-ts-artifacts/qa-29f1036` (8944 files, 252,413,342 bytes, SHA-256
+  0d9730cf459006a671bc859762fe9aec7f3bf487fa6a18ce23acf1f8aec2ab5f): all 80 compiled TypeScript modules are byte-identical to
+  `build/ts`; no root `node_modules`, no `diagnostics`.
+- Installed with `/S /nolaunch /noshortcuts` into `matrix-ts-installed-qa-29f1036` (exit 0, 8945 files, no root `node_modules`, no
+  desktop or Start-menu shortcut). In that copy `Matrix.cmd --smoke-test` (compiled), `Matrix.cmd --smoke-test
+  --interpreter-runtime` and `electron --development --smoke-test --reconstructed-payment` each exited 0 with eight windows, no
+  native bytecode and 288 reconstructed functions.
+- Portable ZIP rebuilt into the same QA directory (9106 files, 253,786,707 bytes, SHA-256
+  dd1cc3e4494fb3e7e298808aed32e39fcdea102c001dcfdfcb4dd6798a3fa816): integrity check passed, all 80 TypeScript modules identical to
+  disk, no `node_modules`, no `diagnostics`. The ZIP was not unpacked and run.
+- Not touched: `qa-01c4779`, the older artifacts, the earlier QA installs and the normal installed Matrix.
+
+`ts-engine-independent` and the new `engine-parity-wording` tests passed in every run of this checkpoint. The compiler differential
+was not rerun (no compiler or engine behaviour changed beyond `writeBinding`).
+
+Still not done: no visual spot check of the interactive UI (no renderer source changed), nothing live (booking, payment, provider,
+licence server), and the new IPC handlers were exercised only against the recovered code in synthetic worlds and by the offline
+start-up, not through the real windows or with the real encryption helper, file system or dialogs.
