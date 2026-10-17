@@ -7,6 +7,7 @@ src/ts/main/storage/record-codecs.ts,business_logic,11,1482,"record-codecs-recon
 src/ts/main/ipc/backup-ipc.ts,business_logic,3,1970,"backup-ipc-reconstruction","Backup selection/info and user-requested encrypted backup/restore orchestration using unchanged crypto/store helpers"
 src/ts/main/storage/settings-store.ts,business_logic,5,591,"settings-store-reconstruction","Settings JSON read/atomic replacement and standard Electron window pin operations; secret values remain opaque"
 src/ts/main/storage/ai-key-store.ts,business_logic,3,276,"ai-key-store-reconstruction","Local AI key save/read, OS encryption and legacy plaintext migration; settings IPC error forwarding"
+src/ts/main/storage/local-catalog.ts,business_logic,3,430,"local-catalog-reconstruction","Offline JSON catalog read/fallback, ranked station suggestions and capped train-name suggestions"
 src/ts/main/booking/provider-page.ts,business_logic,3,482,"ts-misc","Wait for the operator to return to the provider site"
 src/ts/main/booking/rules.ts,business_logic,27,1485,"ts-rules","Booking rules, berth limits, opening/availability times, mode routing"
 src/ts/main/booking/run-controls.ts,business_logic,12,2517,"ts-run-controls","Run controls: cancel/stop, browser window handling, live-form edits, sign-in waiting, session-drop and duplicate-login detection, AI hand-off, print control"

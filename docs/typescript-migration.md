@@ -39,6 +39,7 @@ The migration is **not** complete.
 | `src/ts/main/ipc/backup-ipc.ts` | Backup selection/info and user-requested encrypted backup/restore orchestration using unchanged crypto/store helpers | f4031-f4033 | `backup-ipc-reconstruction` |
 | `src/ts/main/storage/settings-store.ts` | Settings JSON read/atomic replacement and standard Electron window pin operations; secret values remain opaque | f3552-f3556 | `settings-store-reconstruction` |
 | `src/ts/main/storage/ai-key-store.ts` | Local AI key save/read, OS encryption and legacy plaintext migration; settings IPC error forwarding | f3570-f3571, f4022 | `ai-key-store-reconstruction` |
+| `src/ts/main/storage/local-catalog.ts` | Offline JSON catalog read/fallback, ranked station suggestions and capped train-name suggestions | f3495-f3497 | `local-catalog-reconstruction` |
 | --- | --- | --- | --- |
 | `src/ts/main/booking/provider-page.ts` | Wait for the operator to return to the provider site | f2255, f2256, f2257 | `ts-misc` |
 | `src/ts/main/booking/rules.ts` | Booking rules, berth limits, opening/availability times, mode routing | f425, f426, f427, f428, f429, f431, f433, f435, f436, f437, f438, f439, f440, f441, f444, f445, f446, f447, f448, f449, f450, f451, f452, f453, f454, f455, f456 | `ts-rules` |
@@ -428,3 +429,18 @@ with MATRIX_COMPILED=1. Mutation check: 8/8 killed, no survivors. Main TypeScrip
 check passes. No live account, saved profile or provider flow was used.
 
 Full default suite after integration: 5190 passed, 0 failed (npm test).
+
+## Offline local catalog batch
+
+Reconstructed f3495-f3497 in storage/local-catalog.ts. JSON load failures return
+exactly the caller's fallback. Station suggestions retain exact-code, code-prefix,
+name-prefix and substring groups in source order, then truncate to 12; train
+suggestions stop after 12 matches. Empty queries avoid accessing the catalog.
+These functions make no network requests. Remote train-name lookup f3498 and
+RailOne token/profile persistence remain recovered.
+
+Validation: 74/74 focused tests against recovered execution; compiled mode plus
+inventory 77/77; main type check clean; 10/10 mutation candidates killed.
+Tests include late exact-code priority, 11/12/13 boundaries, iterator cleanup,
+getter ordering and JSON/read/path failures. Broad suite is reserved for the
+next material integration checkpoint.

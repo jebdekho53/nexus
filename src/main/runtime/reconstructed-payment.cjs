@@ -56,6 +56,7 @@ const logsIpc=require('../ipc/logs-ipc.cjs');
 const dataIpc=require('../ipc/data-ipc.cjs');
 const settingsIpc=require('../ipc/settings-ipc.cjs');
 const aiKeyStore=require('../storage/ai-key-store.cjs');
+const localCatalog=require('../storage/local-catalog.cjs');
 const transferIpc=require('../ipc/transfer-ipc.cjs');
 const formsTransferIpc=require('../ipc/forms-transfer-ipc.cjs');
 const formCodecs=require('../storage/form-codecs.cjs');
@@ -623,6 +624,11 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     f422:({readBinding})=>function(input){return recordCodecs.parseProxy(input,line=>readBinding(263)(line));},
     f423:({readBinding})=>function(input,id,now){return recordCodecs.proxyFromInput(input,id,now,line=>readBinding(263)(line));},
     f424:()=>recordCodecs.scalarText,
+    f3495:({readBinding})=>function(name,fallback){return localCatalog.readCatalog(name,fallback,{
+      path:value=>readBinding(1704)(value),fs:()=>readBinding(18,'y'),
+    });},
+    f3496:({readBinding})=>function(query){return localCatalog.suggestStations(query,()=>readBinding(1705,'c1'));},
+    f3497:({readBinding})=>function(query){return localCatalog.suggestTrains(query,()=>readBinding(1706,'Xh'));},
     f3570:({readBinding})=>function(value){return aiKeyStore.saveAiKey(value,{
       readSettings:()=>readBinding(1768)(),writeSettings:next=>readBinding(1769)(next),
       safeStorage:()=>readBinding(22,'x').safeStorage,
