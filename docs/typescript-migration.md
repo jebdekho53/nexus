@@ -1,6 +1,6 @@
 # TypeScript migration
 
-Status: **in progress**. 62 main-process modules and 9 browser-target renderer scripts are real TypeScript reconstructions (listed below and in "Renderer scripts"). Everything else — the generated
+Status: **in progress**. 66 main-process modules and 9 browser-target renderer scripts are real TypeScript reconstructions (listed below and in "Renderer scripts"). Everything else — the generated
 definitions in `src/main/generated`, the compiled bundle, the interpreter, the engine, the exclusions listed below and
 the remaining `.cjs` modules — is unchanged. No completion percentage is claimed; the migration is **not** complete.
 
@@ -93,6 +93,10 @@ the remaining `.cjs` modules — is unchanged. No completion percentage is claim
 | `src/ts/main/runtime/engine.ts` | The archived instruction interpreter (fallback runtime) | `--interpreter-runtime` | full suite (recovered-vs-native oracles) + compiler differential (it is the oracle) |
 | `src/ts/main/runtime/updates.ts` | Verified update download and Updates IPC | — | `ts-misc + updates.test` |
 | `src/ts/main/runtime/window-readiness.ts` | Windows stay hidden until the renderer is ready | — | `ts-runtime` |
+| `src/ts/main/storage/forms-vault.ts` | Saved-forms vault (`forms.vault`): read/decrypt, list, save, delete, duplicate, reorder, label migration, timing normalisation, atomic write; form summary projection | f865, f869, f871, f873, f875, f876, f879, f881, f882, f884, f885, f886, f888, f889, f890, f891, f893, f895, f896 | `forms-vault-reconstruction` (234 scenarios vs the recovered methods) |
+| `src/ts/main/storage/record-vault.ts` | Encrypted record vaults for saved logins (`users.vault`), proxies and payment methods, plus the readers/writers of the history vault | f900, f902, f903, f906, f908–f913 (logins); f916, f918, f920, f921, f924, f926–f931 (proxies); f934, f936, f938, f939, f942, f944–f949 (payments); f964–f967 (history) | `record-vault-reconstruction` (331 scenarios), `history-vault-reconstruction` |
+| `src/ts/main/storage/history-vault.ts` | Booking-history vault: newest-first listing, add with retention pruning, import, delete, clear | f952, f954, f955, f957, f959, f961 | `history-vault-reconstruction` (103 scenarios) |
+| `src/ts/main/windows/window-ipc.ts` | Window-management IPC handlers: controller toolbar actions, update download/cancel, form and booking windows, window sizing, external links, ticket PDF, quit/restart | f4273–f4275, f4277–f4282, f4284–f4288, f4291–f4295 | `window-ipc-reconstruction` (186 scenarios) |
 
 How each was verified: legacy vs TypeScript on identical inputs (missing / null / empty / zero / NaN / wrong-type
 values) comparing results, thrown error types, traces, mutated state and lazy dependency reads; existing recovered-vs-native
@@ -136,7 +140,7 @@ These were deliberately **not** migrated or modified:
 
 ## Remaining generated/interpreted business logic
 
-Almost all of it: `docs/reconstruction-inventory/` lists 3949 of 4354 recovered functions as `recovered_other` and the
+Almost all of it: `docs/reconstruction-inventory/` lists 3869 of 4354 recovered functions as `recovered_other` and the
 mechanisms above are not reconstructed in TypeScript. Migrated modules cover only the functions mapped in the table.
 
 ## Uncertain behaviour
@@ -262,6 +266,38 @@ global, not `window.`.
 Windows visual checks still to do: open Tools (portal buttons, service status line), Booking box (book-now chip, general
 timer, payment label, login mode), Form (availability button), Updates, Logs (filter, download, clear) and any page for
 rebranded text/logo.
+
+## Batch: storage vaults and window IPC (Windows, local session)
+
+Four modules (`forms-vault`, `record-vault`, `history-vault`, `window-ipc`) reconstruct the methods of five recovered classes and
+19 window IPC handlers. They replace the recovered bodies one function at a time through the existing factory table; the
+classes, their constructors, the channel registration (f4272) and the nested closures that the replaced bodies used to
+create stay as recovered or disappear with their parent. Each was compared with the **actual recovered execution** on
+identical synthetic worlds (in-memory file system, reversible fake cipher, fake windows and screens, traced bootstrap
+helpers), checking results, thrown error names, the full effect trace in order and the resulting state, and with selective
+mutations of the compiled TypeScript (negated conditions, off-by-one limits, sort direction, `==` for `===`, dropped
+cleanup and the like). Mutants that the first draft of the tests missed led to more scenarios (distinct updatedAt values,
+single-record vaults, mixed-type ids, an untracked-window case).
+
+Helper functions the recovered code reads from the bootstrap (cipher, form normaliser, timing and label helpers, window
+helpers, retention settings) are injected and read at call time. Their original names are unknown, so `window-ipc.ts` names
+them from their use and records the recovered slot beside each. The locked-vault error texts are the recovered ones.
+
+Behaviour preserved on purpose: the history `deleteAll` reads an unreadable vault as empty and overwrites it (the other
+writers refuse); the saved-logins vault has no `get`; `get` returns `undefined` on the record vaults and `null` on the forms
+vault; `list` sorts the array `readAll` returned, in place, on the record and history vaults.
+
+Not migrated from the same area, with reasons: `f4296`/`f4297` (app-lock PIN check: it writes bootstrap slots, which the
+factory API cannot do yet, and wipes local data after failed attempts), `f4177` (security-block, bypass and evidence IPC:
+a protection mechanism), `f3790` (login, licence and RailOne pairing IPC: licensing and the excluded RailOne controllers),
+`f968`–`f999` (request-signing headers and the TLS web-gateway fetch: the excluded gateway layer).
+
+Tooling changes: `tools/export_payment_fixture.py` gained `--range LO-HI` (repeatable), `--merge` (keep every existing entry
+and add only missing functions) and `--output`, and passes ids over stdin; the committed fixture was extended with the
+lookups of f860–f1300, f3700–f3800 and f4150–f4353 from the local string table only. `tools/compiler/engine-parity.cjs`
+treats the two non-function call wordings (`Reflect.apply is not a function` versus V8's `Function.prototype.apply was called
+on …`) as equal, as the compiler differential already did. Before that the opcode-covering parity test failed intermittently,
+also on the untouched baseline fa54973 (1 of 3 runs), because f1 seed 2 reaches a clobbered `Reflect.apply`.
 
 ## Continuation checkpoint
 

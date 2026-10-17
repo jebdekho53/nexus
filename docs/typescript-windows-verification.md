@@ -126,3 +126,30 @@ reproducible.
 Use the next prompt in `docs/claude-typescript-continuation.txt`. Continue
 the migration branch and existing draft PR, preserving this Windows evidence.
 Do not treat the full application migration as complete.
+
+## Local Windows session: storage vaults and window IPC (code at 61f6b4d)
+
+Run on 17 October 2026 on Windows with the bundled Node 24, in the isolated worktree, offline and with synthetic data only.
+These results are for code commit `61f6b4d`; documentation commits after it do not change tested code.
+
+- `tsc` check and build for the main and renderer configurations: clean. The committed renderer output was unchanged afterwards
+  (`git status` clean).
+- `node --test test/*.test.cjs`: 3201 passed, 0 failed, 0 cancelled.
+- `MATRIX_COMPILED=1 node --test test/*.test.cjs`: 3201 passed, 0 failed, 0 cancelled.
+- `cmd /c .\start.cmd --smoke-test --interpreter-runtime`: exit 0, eight DOM-ready windows, `nativeBytecodeLoaded=false`, startup
+  log `compiledRuntime:false`.
+- `cmd /c .\Matrix.cmd --smoke-test`: exit 0, eight windows, `compiledRuntime:true`.
+- `node scripts/run.cjs --smoke-test --smoke-panel --smoke-duration=25000`: exit 0, eight windows.
+- `node scripts/run.cjs --development --smoke-test --reconstructed-payment` (compiled) and again with `--interpreter-runtime`:
+  exit 0, eight windows each; 235 reconstructed functions enabled, including the new vault and window IPC handlers.
+  Every smoke result file was deleted before its run and its timestamp checked afterwards.
+
+Flaky test found and addressed: `ts-engine-independent` (opcode-covering parity) failed intermittently on the untouched baseline
+fa54973 (1 of 3 runs) and once in each mode here, always at f1 seed 2, on the wording of one TypeError. With the wording
+normalised in `tools/compiler/engine-parity.cjs` it passed six consecutive runs. The compiler differential
+(`tools/compiler/differential*.cjs`) was not rerun for this batch: no compiler or engine code changed.
+
+Not done: no installer or ZIP was rebuilt; no screenshot spot check was made (no renderer source changed); nothing live
+(booking, payment, provider, licence server) was exercised. The vault and IPC reconstructions are verified against the
+recovered code in synthetic worlds only; their real encryption helper, real windows and real file system were not exercised
+beyond the offline smoke start-up.
