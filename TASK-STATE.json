@@ -1,7 +1,7 @@
 {
   "status": "in_progress",
-  "progress": "Phases1–23: 88 native entries, 355 contract pins, 1688-test full suite passes except 3 Windows-path tests on Linux (also with MATRIX_COMPILED=1). Compiled runtime (src/main/compiled, readable output, split f1 bootstrap) is now the default; --interpreter-runtime keeps the archived interpreter. Differential matches (only f1556 seed23); class and 797 boundary invocations match the interpreter. Electron smoke test not run in the cloud: run locally on Windows. Public 1.0.11 unchanged; no live service/build/deployment.",
-  "task": "Reconstruct recovered Matrix payment logic into maintainable JavaScript",
+  "progress": "Post-merge Windows verification of c5e211c: full1688-test suite passes in normal and MATRIX_COMPILED=1 modes. Fresh default compiled smoke PID28084 and interpreter smoke PID20952 each completed8 DOM-ready windows, exit0,4354 definitions and nativeBytecodeLoaded=false. Compiled runtime is default; interpreter retained behind --interpreter-runtime. Local phase24/25 optimization code remains on backup branch, not main. Controller/readability reconstruction remains unfinished; public1.0.11 unchanged; no live service/build/deployment.",
+  "task": "Reconstruct Matrix into maintainable ordinary source with verified compiled runtime",
   "completedLatestTask": {
     "task": "Fix WebLogin Chrome selection closing another independent pair panel",
     "version": "1.0.10",
@@ -74,7 +74,7 @@
     }
   },
   "reconstruction": {
-    "phase": "PayTM bank settlement",
+    "phase": "cloud phase23 merge verified on Windows",
     "report": "docs/reconstruction-progress.md",
     "handoff": "docs/ANTIGRAVITY-HANDOFF.md",
     "flag": "--reconstructed-payment",
@@ -156,21 +156,23 @@
     "quotaHandoffThresholdRemainingPercent": 5,
     "lastObservedPrimaryRemainingPercent": 12,
     "lastObservedWeeklyRemainingPercent": 3,
-    "testsPassed": 1686,
+    "testsPassed": 1688,
     "smoke": {
       "windows": 8,
       "completeDom": true,
-      "factoriesEnabled": 74,
       "offline": true,
-      "pid": 25652,
-      "complete": true
+      "pid": 28084,
+      "complete": true,
+      "compiledRuntime": true,
+      "nativeBytecodeLoaded": false,
+      "definitions": 4354
     },
-    "codeCheckpoint": "1607c2d",
+    "codeCheckpoint": "c5e211c",
     "handoffReady": true,
     "phaseTwoReport": "docs/reconstruction-phase-2.md",
     "pinnedDefinitions": 193,
     "phaseFourReport": "docs/reconstruction-phase-4.md",
-    "nextReview": "Run the Windows smoke test; then migrate controllers f2161/f2102/f3149 to ordinary modules and fold string-decoder calls at build time (needs the local string table); remove the interpreter from packaging only after a soak.",
+    "nextReview": "Windows post-merge tests/smokes complete. Continue controller migration f2161/f2102/f3149 and evaluate build-time static string folding against local table with oracle comparisons. Do not automatically reapply archived phase24/25 transforms; main uses cloud compiler. Packaging removal needs further soak and appropriate release authorization.",
     "phasesFiveSixReport": "docs/reconstruction-phases-5-6.md",
     "phaseSevenReport": "docs/reconstruction-phase-7.md",
     "phaseEightReport": "docs/reconstruction-phase-8.md",
@@ -203,9 +205,52 @@
     },
     "fullProjectPrompt": "docs/FULL-RECONSTRUCTION-PROMPT.md",
     "handoffVerification": "Read-only verification confirmed current74 factories and same-PID7344 factory list plus8-window smoke-complete.1124 tests are phase20 recorded evidence, not rerun during handoff update.",
-    "phaseTwentyThreeReport": "docs/reconstruction-phase-23.md",
     "defaultRuntime": "compiled (switch: --interpreter-runtime)",
-    "pendingLocalChecks": "Windows Electron offline smoke test (default and --interpreter-runtime) and the 3 Windows-path tests (development-policy x2, window-readiness)"
+    "pendingLocalChecks": "Windows Electron offline smoke test (default and --interpreter-runtime) and the 3 Windows-path tests (development-policy x2, window-readiness)",
+    "postMergeVerification": {
+      "commit": "c5e211c",
+      "report": "docs/postmerge-c5e211c-windows-verification.md",
+      "fullSuite": {
+        "default": {
+          "passed": 1688,
+          "failed": 0
+        },
+        "MATRIX_COMPILED=1": {
+          "passed": 1688,
+          "failed": 0
+        }
+      },
+      "smokeModes": [
+        {
+          "compiledRuntime": true,
+          "nativeBytecodeLoaded": false,
+          "evidence": "C:\\Users\\gurpr\\OneDrive\\Documents\\ts\\nexus\\diagnostics\\postmerge-c5e211c-smoke-default.json",
+          "completeDom": true,
+          "startedUtc": "2026-10-17T05:01:01.2698690Z",
+          "exitCode": 0,
+          "mode": "default",
+          "pid": 28084,
+          "definitions": 4354,
+          "windows": 8
+        },
+        {
+          "compiledRuntime": false,
+          "nativeBytecodeLoaded": false,
+          "evidence": "C:\\Users\\gurpr\\OneDrive\\Documents\\ts\\nexus\\diagnostics\\postmerge-c5e211c-smoke-interpreter.json",
+          "completeDom": true,
+          "startedUtc": "2026-10-17T05:01:24.8772093Z",
+          "exitCode": 0,
+          "mode": "interpreter",
+          "pid": 20952,
+          "definitions": 4354,
+          "windows": 8
+        }
+      ],
+      "backupBranch": "local-codex-phase25",
+      "backupCommit": "0dfd75f",
+      "legacyOriginTrackingRef": "60ec6ae",
+      "externalPushPerformed": false
+    }
   },
   "continuationSchedule": "First16Oct2026at18:42IST, then every5h30m (330min). Existing general unfinished-task fallback remains active."
 }

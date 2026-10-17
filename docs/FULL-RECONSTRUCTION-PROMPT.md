@@ -1,3 +1,11 @@
+# Current checkpoint — post-merge Windows verification
+
+Main source c5e211c combines the cloud phase23 default compiled runtime, readability and split bootstrap with preserved local history. Fresh verification on17October2026:1688/1688 tests pass both normally and with MATRIX_COMPILED=1. Default compiled smoke PID28084 and interpreter smoke PID20952 each completed8 DOM-ready windows, exit0,4354 definitions, nativeBytecodeLoaded=false. Runtime selection was confirmed from each new PID's definitions-loaded event, not inferred from stale smoke files. See docs/postmerge-c5e211c-windows-verification.md.
+
+The earlier cloud note saying Windows smoke/path tests are pending is superseded. Main uses the cloud compiler; local phase24/25 optimization implementations remain on local-codex-phase25(0dfd75f), not on main. Do not blindly rerun or merge those transforms. No runtime source change, live service test, credential change, release, deployment or push occurred during this verification.
+
+Next: continue controller migration f2161/f2102/f3149 and evaluate static string-decoder folding with the local recovered string table. Compiled coverage of4354 functions is not proof of idiomatic maintainable source or live feature correctness. Continue the full roadmap; retain the interpreter fallback during soak. Older checkpoint sections below are historical where inconsistent with this header.
+
 # Matrix: complete project reconstruction handoff
 
 You are taking over an existing Electron/Node.js project. Your assignment is the complete reconstruction of its recovered application logic into maintainable ordinary JavaScript, from the current checkpoint through a standalone source project. This is an implementation assignment, not just a request for advice or a plan. Work through verified milestones across sessions. Do not restart existing work or stop after reconstructing one payment method and call the whole project complete.
