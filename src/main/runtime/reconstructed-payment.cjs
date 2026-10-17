@@ -42,6 +42,7 @@ const providerPage=require('../booking/provider-page.cjs');
 const serverTime=require('../booking/server-time.cjs');
 const timeHelpers=require('../booking/time-helpers.cjs');
 const {attachDuplicateLoginWatch,aiResolve,ensureAuthToken,relaunchIfLoggedOut,dumpAuthState,printTicketInBrowser,stopWith,updateLiveForm,controlProxyContext,routeGatewayThroughFormProxy,cancelPayment,stoppedResult,highLoadDelay,focusBrowser,hideBrowser,minimizeBrowser}=require('../booking/controls.cjs');
+const {runUiBooking}=require('../booking/ui-booking.cjs');
 const {getFinalPaytmStatus}=require('../payment/paytm-final-status.cjs');
 const {fingerprint,phonePeHeaders,phonePeRedirect,razorpayRedirect,phonePeQr,pollPhonePe}=require('../payment/phonepe-transport.cjs');
 const {definitionFingerprint}=require('./recovered-contract.cjs');
@@ -94,6 +95,14 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     f2083:({readBinding})=>function(){return ensureAuthToken(this,{bringToFront:page=>readBinding(123,undefined,1)(page),terminalClosed:()=>readBinding(603,undefined,1),terminalNoToken:()=>readBinding(604,undefined,1)});},
     f2087:({readBinding})=>function(){return relaunchIfLoggedOut(this,{loginButtonVisible:page=>readBinding(431,undefined,1)(page),positivelyLoggedIn:page=>readBinding(755,undefined,1)(page),waitForHydration:page=>readBinding(474,undefined,1)(page)});},
     f2094:({readBinding})=>function(page){return attachDuplicateLoginWatch(this,page,{isJourneyContextUrl:(url,primed)=>readBinding(635,undefined,1)(url,primed)});},
+    f2102:({readBinding})=>function(job){return runUiBooking(this,job,{
+      humanFor:page=>new(readBinding(230,'Gt',1))(page),
+      stopped:()=>readBinding(940,undefined,1)(),
+      duplicateLogin:()=>readBinding(602,'ni',1),
+      optimizeSpace:(page,on)=>readBinding(466,undefined,1)(page,on),
+      driver:()=>readBinding(666,undefined,1),
+      reference:()=>readBinding(941,undefined,1)(),
+    });},
     f2128:({readBinding})=>function(goal,extra){return aiResolve(this,goal,extra,{createSnapshot:page=>new(readBinding(230,undefined,1))(page)});},
     f2271:()=>function(min,max){return timeHelpers.randomBetween(min,max,dependencies.random);},
     f2367:()=>function(list){return timeHelpers.pickRandom(list,dependencies.random);},

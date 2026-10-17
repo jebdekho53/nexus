@@ -10,11 +10,11 @@ Bands: tiny1–20 instructions; small21–100; medium101–300; large301–1000;
 
 | Band | Functions | Original instructions | Instruction share | Native entries | Pinned support |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| tiny | 1711 | 11873 | 2.32% | 11 | 137 |
-| small | 1555 | 77741 | 15.16% | 70 | 50 |
+| tiny | 1711 | 11873 | 2.32% | 11 | 142 |
+| small | 1555 | 77741 | 15.16% | 70 | 58 |
 | medium | 741 | 127291 | 24.82% | 34 | 14 |
 | large | 288 | 146373 | 28.54% | 31 | 2 |
-| very_large | 59 | 149579 | 29.17% | 6 | 0 |
+| very_large | 59 | 149579 | 29.17% | 7 | 0 |
 
 ## Structural review load
 
@@ -22,19 +22,19 @@ Score = 1 + conditional jumps + loop jumps + switch alternatives + 2*exception h
 
 | Band | Functions | Original instructions | Instruction share | Native entries | Pinned support |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| low | 3128 | 88772 | 17.31% | 59 | 194 |
+| low | 3128 | 88772 | 17.31% | 59 | 207 |
 | moderate | 862 | 137049 | 26.72% | 62 | 8 |
 | high | 305 | 142330 | 27.75% | 24 | 1 |
-| very_high | 53 | 81107 | 15.81% | 7 | 0 |
+| very_high | 53 | 81107 | 15.81% | 8 | 0 |
 | extreme | 6 | 63599 | 12.4% | 0 | 0 |
 
 ## Migration status
 
 | Band | Functions | Original instructions | Instruction share | Native entries | Pinned support |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| native_entry | 152 | 37393 | 7.29% | 152 | 0 |
-| pinned_support | 203 | 6023 | 1.17% | 0 | 203 |
-| recovered_other | 3999 | 469441 | 91.53% | 0 | 0 |
+| native_entry | 153 | 39134 | 7.63% | 153 | 0 |
+| pinned_support | 216 | 6417 | 1.25% | 0 | 216 |
+| recovered_other | 3985 | 467306 | 91.12% | 0 | 0 |
 
 Native entry is an active development-only replacement. Pinned support is a reviewed callback/dependency; do not count every pin as a completed standalone migration. Original instruction share is a size proxy, not completed effort or tested feature coverage. Main-function count alone substantially misrepresents progress.
 
@@ -61,7 +61,7 @@ Native entry is an active development-only replacement. Pinned support is a revi
 | f2994 | 1845 | 93 | 65 | 5 | 5 | 6 | 6 | recovered_other |
 | f2269 | 1837 | 69 | 58 | 1 | 1 | 7 | 0 | recovered_other |
 | f713 | 1805 | 117 | 68 | 1 | 1 | 34 | 11 | recovered_other |
-| f2102 | 1741 | 81 | 55 | 0 | 1 | 11 | 12 | recovered_other |
+| f2102 | 1741 | 81 | 55 | 0 | 1 | 11 | 12 | native_entry |
 | f3876 | 1738 | 64 | 41 | 0 | 0 | 0 | 22 | recovered_other |
 | f829 | 1707 | 92 | 56 | 0 | 2 | 22 | 9 | recovered_other |
 | f4212 | 1648 | 92 | 50 | 0 | 8 | 5 | 19 | recovered_other |
