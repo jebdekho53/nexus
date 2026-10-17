@@ -1,11 +1,3 @@
 'use strict';
-
-function bookingPaymentBody(method,amount,bankOverride,defaultBankId) {
-  const bankId=bankOverride??defaultBankId(method);
-  if(method==='wallet')return {
-    bankId,txnType:7,paramList:[{key:'TXN_PASSWORD',value:''}],
-    amount:String(amount),transationId:0,txnStatus:1,
-  };
-  return{bankId,txnType:1,paramList:[],amount:String(amount),transationId:0,txnStatus:1};
-}
-module.exports={bookingPaymentBody};
+// Implementation: src/ts/main/payment/request-body.ts (compiled by `npm run build:ts` into build/ts).
+module.exports=require('../runtime/ts-build.cjs').loadTs('main/payment/request-body');

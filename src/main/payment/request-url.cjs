@@ -1,9 +1,3 @@
 'use strict';
-
-// The spelling and the empty insured value are the provider's existing wire
-// contract. Preserve JavaScript concatenation; do not re-encode identifiers.
-function bookingPaymentUrl(apiBase,transactionId,insuranceApplicable) {
-  return apiBase+'/bookingInitPayment/'+transactionId+'?insurenceApplicable='+(insuranceApplicable?'':'NA');
-}
-function bookingDataUrl(apiBase,transactionId){return apiBase+'/bookingData/'+transactionId;}
-module.exports={bookingPaymentUrl,bookingDataUrl};
+// Implementation: src/ts/main/payment/request-url.ts (compiled by `npm run build:ts` into build/ts).
+module.exports=require('../runtime/ts-build.cjs').loadTs('main/payment/request-url');
