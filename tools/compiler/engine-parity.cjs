@@ -109,6 +109,11 @@ if(shardArg===null) {
     for(let tick=0;tick<4;tick++){await new Promise(resolve=>setImmediate(resolve));restoreIntrinsics();}
     return{outcome:scrub(outcome),log:scrub(world.log.map(entry=>entry.join(' ')).join('\n')),name:fn.name,length:fn.length,kind:Object.getOwnPropertySymbols(fn).length};
   }
+  // Calling a non-function fails with a TypeError in every engine, but the message depends on how the engine reached the call
+  // (a clobbered Reflect.apply versus the intrinsic captured at load). Only these two wordings are treated as equal, as in
+  // tools/compiler/differential.cjs; every other outcome, log and error must match exactly.
+  const CALL_WORDING=/^throw:TypeError:(Reflect.apply is not a function|Function.prototype.apply was called on .*)$/;
+  const sameFailureWording=result=>CALL_WORDING.test(result.outcome)?{...result,outcome:'throw:TypeError:call'}:result;
   process.on('unhandledRejection',()=>{});
   (async()=>{
     const[shard,shards]=shardArg.split('/').map(Number);
@@ -126,7 +131,7 @@ if(shardArg===null) {
       const expected=await runOnce(kind,'legacy',id,seed),actual=await runOnce(kind,'new',id,seed);
       checked++;
       if(!expected.outcome.startsWith('throw:')||!/LOOP_LIMIT|instruction limit/.test(expected.outcome))executed++;
-      if(JSON.stringify(expected)!==JSON.stringify(actual)){
+      if(JSON.stringify(sameFailureWording(expected))!==JSON.stringify(sameFailureWording(actual))){
         mismatching++;
         console.log('CANDIDATE '+JSON.stringify({kind,id,n}));
         if(oneArg)console.log(`MISMATCH ${kind} ${id} seed ${seed}\n  legacy: ${expected.outcome}\n  new:    ${actual.outcome}\n  logs equal: ${expected.log===actual.log}`);
