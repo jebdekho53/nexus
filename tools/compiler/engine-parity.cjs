@@ -112,7 +112,7 @@ if(shardArg===null) {
   // Calling a non-function fails with a TypeError in every engine, but the message depends on how the engine reached the call
   // (a clobbered Reflect.apply versus the intrinsic captured at load). Only these two wordings are treated as equal, as in
   // tools/compiler/differential.cjs; every other outcome, log and error must match exactly.
-  const CALL_WORDING=/^throw:TypeError:(Reflect.apply is not a function|Function.prototype.apply was called on .*)$/;
+  const CALL_WORDING=/^throw:TypeError:(Reflect\.apply is not a function|Function\.prototype\.apply was called on .*)$/;
   const sameFailureWording=result=>CALL_WORDING.test(result.outcome)?{...result,outcome:'throw:TypeError:call'}:result;
   process.on('unhandledRejection',()=>{});
   (async()=>{
