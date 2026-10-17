@@ -40,6 +40,7 @@ The migration is **not** complete.
 | `src/ts/main/storage/settings-store.ts` | Settings path, JSON read/atomic replacement, one-time local settings migrations and standard Electron window pin operations; secret values remain opaque | f3543-f3544, f3551-f3556 | `settings-store-reconstruction`, `settings-migrations-reconstruction` |
 | `src/ts/main/storage/ai-key-store.ts` | Local AI key save/read, OS encryption and legacy plaintext migration; settings IPC error forwarding | f3570-f3571, f4022 | `ai-key-store-reconstruction` |
 | `src/ts/main/storage/local-catalog.ts` | Offline JSON catalog read/fallback, ranked station suggestions and capped train-name suggestions | f3495-f3497 | `local-catalog-reconstruction` |
+| `src/ts/main/storage/vault-access.ts` | Lazy initialization/cache of ordinary form and record vaults, form-label migration and identity callback | f3499-f3500, f3575, f3578, f3582-f3583 | `vault-access-reconstruction` |
 | --- | --- | --- | --- |
 | `src/ts/main/booking/provider-page.ts` | Wait for the operator to return to the provider site | f2255, f2256, f2257 | `ts-misc` |
 | `src/ts/main/booking/rules.ts` | Booking rules, berth limits, opening/availability times, mode routing | f425, f426, f427, f428, f429, f431, f433, f435, f436, f437, f438, f439, f440, f441, f444, f445, f446, f447, f448, f449, f450, f451, f452, f453, f454, f455, f456 | `ts-rules` |
@@ -458,3 +459,16 @@ the migrated functions were killed. An initial wider mutation range also
 included three old accessor/window-pin candidates outside this test file's
 scope; narrowing to the changed functions left no survivors. Runtime-generated
 error wording normalization was not changed.
+
+## Lazy vault access batch
+
+Reconstructed f3499/f3500 and f3575/f3578/f3582/f3583 in vault-access.ts:
+ordinary forms and saved-record vault construction, cache reuse, current-identity
+callback and initial form-label migration. Existing injected constructors and
+key-loader calls are unchanged. Constructor/key failure leaves the cache empty;
+form migration or logging failure leaves the already-created instance cached,
+as in the recovered code.
+
+Validation: 97/97 focused tests, compiled mode plus inventory 100/100; three
+mutation candidates killed. These are synthetic local tests; they neither open
+real profiles nor contact services.

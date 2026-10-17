@@ -57,6 +57,7 @@ const dataIpc=require('../ipc/data-ipc.cjs');
 const settingsIpc=require('../ipc/settings-ipc.cjs');
 const aiKeyStore=require('../storage/ai-key-store.cjs');
 const localCatalog=require('../storage/local-catalog.cjs');
+const vaultAccess=require('../storage/vault-access.cjs');
 const transferIpc=require('../ipc/transfer-ipc.cjs');
 const formsTransferIpc=require('../ipc/forms-transfer-ipc.cjs');
 const formCodecs=require('../storage/form-codecs.cjs');
@@ -244,6 +245,13 @@ function dataIpcFactories(dependencies) {
 }
 
 // Application-settings IPC handlers (registered by f3790).
+function recordVaultFactory(cacheSlot,cacheName,typeSlot,typeName) {
+  return ({readBinding,writeBinding})=>function(){return vaultAccess.recordVault({
+    cached:()=>readBinding(cacheSlot,cacheName),cache:value=>writeBinding(cacheSlot,value),
+    userData:()=>readBinding(22,'x').app.getPath('userData'),
+    constructor:()=>readBinding(typeSlot,typeName),key:directory=>readBinding(1805)(directory),
+  });};
+}
 function settingsIpcDependencies(readBinding) {
   const slot=(number,name)=>()=>readBinding(number,name,1);
   const call=number=>(...args)=>readBinding(number,undefined,1)(...args);
@@ -624,6 +632,17 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     f422:({readBinding})=>function(input){return recordCodecs.parseProxy(input,line=>readBinding(263)(line));},
     f423:({readBinding})=>function(input,id,now){return recordCodecs.proxyFromInput(input,id,now,line=>readBinding(263)(line));},
     f424:()=>recordCodecs.scalarText,
+    f3499:({readBinding,writeBinding})=>function(){return vaultAccess.formsVault({
+      cached:()=>readBinding(1711,'fr'),cache:value=>writeBinding(1711,value),
+      userData:()=>readBinding(22,'x').app.getPath('userData'),constructor:()=>readBinding(547,'m0'),
+      key:directory=>readBinding(1805)(directory),identity:()=>readBinding(1611,'ns'),
+      log:(...args)=>readBinding(1885)(...args),
+    });},
+    f3500:({readBinding})=>function(){return readBinding(1611,'ns');},
+    f3575:recordVaultFactory(1788,'Do',549,'I0'),
+    f3578:recordVaultFactory(1791,'JM',554,'C0'),
+    f3582:recordVaultFactory(1795,'Eo',551,'S0'),
+    f3583:recordVaultFactory(1797,'To',550,'b0'),
     f3495:({readBinding})=>function(name,fallback){return localCatalog.readCatalog(name,fallback,{
       path:value=>readBinding(1704)(value),fs:()=>readBinding(18,'y'),
     });},
