@@ -355,6 +355,20 @@ JavaScript-native replacements that are not TypeScript (46 functions, 5.98%), Ty
 still run as recovered code (12, 1.49%), reviewed recovered support (250, 1.37%) and recovered-only functions (3821, 84.37%).
 The nine typed runtime-infrastructure modules and the nine renderer scripts replace no business function.
 
+### Reconstruction tooling (scaffold and mutation check)
+
+* `node tools/scaffold_reconstruction.cjs <name> f1234 [f1235 ...] [--children]` writes `diagnostics/scaffold/<name>/`: a dossier with the
+  readable compiled body of every function (decoder strings and constants resolved), a table of the bootstrap slots they read and write
+  with the hole-check names, paste-ready dependency accessors, the three-line `.cjs` entry and a test skeleton. It first extends the
+  string fixture for the id range (additions only). It does the mechanical part only: understanding the function, naming, typing and
+  deciding what is excluded stay manual.
+* `node tools/mutation_check.cjs build/ts/<module>.js test/<file>.test.cjs [--max N] [--lines A-B]` mutates the compiled TypeScript one small
+  change at a time (comparison and logical operators, boundaries, boolean literals, `??`, increments, negated `if`), runs the test file,
+  restores the module and lists the mutants the tests did not notice. It refuses anything outside `build/ts` and an already failing module.
+  First runs on the IPC modules: settings 21/21 and data 40/40 killed; transfer, browser and logs left a handful of survivors, of which
+  the real ones (a login text with no login, a proxy export without a path, a progress total of exactly one) were closed with new scenarios and
+  the rest are equivalent (`window ?? undefined` versus `window || undefined`, an unobservable local). `mutation-check.test.cjs` covers the tool.
+
 ### Next candidates after this batch (not started)
 
 * The not-yet-examined parts of `f3790` listed above, starting with the import/export handlers and the settings getters and setters.

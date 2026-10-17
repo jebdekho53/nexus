@@ -217,3 +217,31 @@ was not rerun (no compiler or engine behaviour changed beyond `writeBinding`).
 Still not done: no visual spot check of the interactive UI (no renderer source changed), nothing live (booking, payment, provider,
 licence server), and the new IPC handlers were exercised only against the recovered code in synthetic worlds and by the offline
 start-up, not through the real windows or with the real encryption helper, file system or dialogs.
+
+## Local Windows session 2, third checkpoint (code at 8cc1d0e)
+
+Run on 17 October 2026 on Windows with the bundled Node 24, offline and with synthetic data only. Between the previous checkpoint
+(50bcf96) and this one, another Codex session working in the same worktree committed six unpushed batches (forms import/export IPC, portable
+form and CSV codecs, stored-form normalisation, login/proxy/UPI record codecs, encrypted backup and restore IPC, settings persistence and window
+pin; commits ae3d972 to a81db5f). They are part of this head and were verified here together with the new tooling; their own documentation lives
+in their commits.
+
+- `tsc` check, main and renderer: clean. Compiled output matches the committed renderer output (`git status` clean).
+- `node --test test/*.test.cjs` on a81db5f plus the tooling: 5090 passed. `MATRIX_COMPILED=1`: 5088 passed and 2 failed, both in
+  `backup-ipc-reconstruction` (the compiled bundle names a failed call of a non-function as `r18[r0(...)] is not a function`, an exact wording the test's
+  allow-list did not yet list). The allow-list now also accepts exactly that shape and nothing broader; `backup-ipc-reconstruction` then passes 159/159 in both modes.
+  After the last test-only edits the full suite was run again on 8cc1d0e: 5090 passed, 0 failed in the default mode and 5090 passed, 0 failed with `MATRIX_COMPILED=1`.
+- Offline smoke on 8cc1d0e, results deleted before each run and timestamps checked, eight windows and `nativeBytecodeLoaded=false` each:
+  `start.cmd --smoke-test --interpreter-runtime`, `Matrix.cmd --smoke-test`, `scripts/run.cjs --smoke-test --smoke-panel --smoke-duration=25000`, and
+  `scripts/run.cjs --development --smoke-test --reconstructed-payment` in both runtimes (328 reconstructed functions enabled).
+- Installer rebuilt into the NEW directory `matrix-ts-artifacts/qa-8cc1d0e` (8973 files, 252,460,149 bytes, SHA-256
+  e0645016390b11a3069dbd454e97ae9a7af05c823315a81c718b6296fcb521d9): all 87 compiled TypeScript modules byte-identical to `build/ts`, no test fixture left
+  in `build/ts`, no root `node_modules`, no `diagnostics`. Installed with `/S /nolaunch /noshortcuts` into `matrix-ts-installed-qa-8cc1d0e`
+  (8974 files, no shortcut created); there `Matrix.cmd --smoke-test` (compiled), the same with `--interpreter-runtime` and `electron --development
+  --smoke-test --reconstructed-payment` each exited 0 with eight windows, no native bytecode and 328 reconstructed functions.
+- Portable ZIP rebuilt into the same directory (9138 files, 253,844,925 bytes, SHA-256 871a9ae73434f81494db0ba458c4dffc74badf3ae71db9699f5d6565b07fb6b0);
+  its packager verified every file. The ZIP was not unpacked and run.
+- Earlier QA directories and the normal installed Matrix were not touched.
+
+Worth knowing: two agents edited this worktree in the same period without coordinating. The git history shows who committed what, and nothing was lost, but
+parallel work in one worktree should be avoided; use separate worktrees or branches.
