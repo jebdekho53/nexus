@@ -10,12 +10,12 @@ Recovered functions: **4354** (512857 original instructions).
 
 | Implementation | Functions | Original instructions | Instruction share |
 | --- | ---: | ---: | ---: |
-| TypeScript business logic (replaces the recovered function) | 277 | 47024 | 9.17% |
+| TypeScript business logic (replaces the recovered function) | 282 | 47615 | 9.28% |
 | TypeScript application services or runtime infrastructure that replace a function | 0 | 0 | 0.00% |
 | TypeScript interceptors and helpers that wrap or serve a function which still runs as recovered code | 11 | 7567 | 1.48% |
 | JavaScript native replacements (not TypeScript; excluded or not yet migrated) | 46 | 30676 | 5.98% |
 | Recovered, reviewed support pinned for a native caller | 250 | 7007 | 1.37% |
-| Recovered only (interpreted or compiled bundle) | 3770 | 420583 | 82.01% |
+| Recovered only (interpreted or compiled bundle) | 3765 | 419992 | 81.89% |
 
 The interceptor row is not a replacement: the recovered function still executes and the TypeScript only observes or adjusts it.
 
@@ -23,7 +23,7 @@ The interceptor row is not a replacement: the recovered function still executes 
 
 | Category | Modules | Functions replaced |
 | --- | ---: | ---: |
-| business_logic | 52 | 277 |
+| business_logic | 53 | 282 |
 | application_service | 16 | 15 |
 | runtime_infrastructure | 9 | 0 |
 | renderer_script | 9 | 0 |

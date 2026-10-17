@@ -19645,5 +19645,70 @@
     "19874|ZYwv": "screen-saver",
     "5061|rkuw": "normal",
     "13140|bTc%": "moveTop"
+  },
+  "f3552": {
+    "11506|WyZ@": "autoUpdate"
+  },
+  "f3553": {
+    "23005|JT7O": "parse",
+    "21646|@Yk*": "readFileSync",
+    "13066|0vo)": "utf8",
+    "13097|bTc%": "autoUpdate",
+    "5886|Y(mF": "pinnedVersion",
+    "15923|k([I": "aiEnabled",
+    "20332|QgKz": "aiKeyEnc",
+    "19174|]K13": "string",
+    "16947|sA1s": "aiKeyEnc",
+    "4431|UMn*": "aiKey",
+    "5683|4dr8": "string",
+    "6665|OpDQ": "aiKey",
+    "5098|bTc%": "gologinTokenEnc",
+    "17101|8#8#": "string",
+    "1512|A@un": "gologinTokenEnc",
+    "10805|zBnB": "gologinToken",
+    "11692|QgKz": "string",
+    "12711|sA1s": "gologinToken",
+    "5225|S)Et": "qrPopup",
+    "11037|G]71": "newTheme",
+    "7800|PLJe": "pinnedOnTop",
+    "8734|QgKz": "autoUpdateOffMigrated",
+    "20891|hm$n": "availTimingResetMigrated",
+    "14249|NqM3": "hostLocationEnc",
+    "9749|s[W0": "string",
+    "21308|9urW": "hostLocationEnc",
+    "14346|0vo)": "clientUpdateLedgerInitialized",
+    "22210|JT7O": "fingerprintChromiumPath",
+    "13433|OpDQ": "string",
+    "14995|*VhR": "fingerprintChromiumPath"
+  },
+  "f3554": {
+    "7185|qP]&": "mkdirSync",
+    "14281|rMir": "app",
+    "9743|zBnB": "getPath",
+    "2235|nWFp": "userData",
+    "19612|A@un": ".tmp-",
+    "16446|UaF#": "pid",
+    "9979|S)Et": "now",
+    "10931|k([I": "toString",
+    "21841|rMir": "writeFileSync",
+    "3294|A@un": "stringify",
+    "13066|0vo)": "utf8",
+    "17743|jg)a": "renameSync",
+    "11899|rkuw": "unlinkSync",
+    "20388|ZYwv": "renameSync",
+    "13075|9urW": "unlinkSync"
+  },
+  "f3555": {
+    "21344|Y(mF": "pinnedOnTop"
+  },
+  "f3556": {
+    "17519|7u]a": "isDestroyed",
+    "12817|PLJe": "setAlwaysOnTop",
+    "10458|OpDQ": "setVisibleOnAllWorkspaces",
+    "12426|]TXZ": "setSkipTaskbar",
+    "17917|o^v]": "moveTop",
+    "22777|JT7O": "setAlwaysOnTop",
+    "4579|9urW": "setVisibleOnAllWorkspaces",
+    "12596|0vo)": "setSkipTaskbar"
   }
 }

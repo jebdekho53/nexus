@@ -62,6 +62,7 @@ const formsCsv=require('../storage/forms-csv.cjs');
 const formNormalization=require('../storage/form-normalization.cjs');
 const recordCodecs=require('../storage/record-codecs.cjs');
 const backupIpc=require('../ipc/backup-ipc.cjs');
+const settingsStore=require('../storage/settings-store.cjs');
 const {definitionFingerprint}=require('./recovered-contract.cjs');
 const contracts=require('../payment/recovered-contract.json');
 
@@ -620,6 +621,14 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     f422:({readBinding})=>function(input){return recordCodecs.parseProxy(input,line=>readBinding(263)(line));},
     f423:({readBinding})=>function(input,id,now){return recordCodecs.proxyFromInput(input,id,now,line=>readBinding(263)(line));},
     f424:()=>recordCodecs.scalarText,
+    f3552:({readBinding})=>function(){return settingsStore.autoUpdate(()=>readBinding(1768)());},
+    f3553:({readBinding})=>function(){return settingsStore.readSettings({fs:()=>readBinding(18,'y'),path:()=>readBinding(1766)()});},
+    f3554:({readBinding})=>function(value){return settingsStore.writeSettings(value,{
+      fs:()=>readBinding(18,'y'),path:()=>readBinding(1766)(),userData:()=>readBinding(22,'x').app.getPath('userData'),
+      pid:()=>dependencies.processObject?.pid??process.pid,now:()=>(dependencies.now??(()=>Date.now()))(),
+    });},
+    f3555:({readBinding})=>function(){return settingsStore.windowPinned(()=>readBinding(1768)());},
+    f3556:()=>settingsStore.applyWindowPin,
     f472:({readBinding})=>function(value,id,now){return formNormalization.normalizeForm(value,id,now,{
       defaults:(...args)=>readBinding(327)(...args),isRecord:value=>readBinding(297)(value),
       string:value=>readBinding(298)(value),label:(...args)=>readBinding(281)(...args),

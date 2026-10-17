@@ -37,6 +37,7 @@ The migration is **not** complete.
 | `src/ts/main/storage/form-normalization.ts` | Legacy/nested form schema conversion and defaults; reuses existing rules validation helpers | f472, f487 | `form-normalization-reconstruction` |
 | `src/ts/main/storage/record-codecs.ts` | Saved login/proxy text and object conversion, UPI-record validation/normalization and stored method mapping | f414-f424 | `record-codecs-reconstruction` |
 | `src/ts/main/ipc/backup-ipc.ts` | Backup selection/info and user-requested encrypted backup/restore orchestration using unchanged crypto/store helpers | f4031-f4033 | `backup-ipc-reconstruction` |
+| `src/ts/main/storage/settings-store.ts` | Settings JSON read/atomic replacement and standard Electron window pin operations; secret values remain opaque | f3552-f3556 | `settings-store-reconstruction` |
 | --- | --- | --- | --- |
 | `src/ts/main/booking/provider-page.ts` | Wait for the operator to return to the provider site | f2255, f2256, f2257 | `ts-misc` |
 | `src/ts/main/booking/rules.ts` | Booking rules, berth limits, opening/availability times, mode routing | f425, f426, f427, f428, f429, f431, f433, f435, f436, f437, f438, f439, f440, f441, f444, f445, f446, f447, f448, f449, f450, f451, f452, f453, f454, f455, f456 | `ts-rules` |
