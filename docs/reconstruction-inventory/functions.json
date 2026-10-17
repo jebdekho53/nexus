@@ -50,7 +50,7 @@
         "functions": 59,
         "instructions": 149579,
         "instructionPercent": 29.17,
-        "nativeEntries": 9,
+        "nativeEntries": 10,
         "pinnedSupport": 0
       }
     },
@@ -80,7 +80,7 @@
         "functions": 53,
         "instructions": 81107,
         "instructionPercent": 15.81,
-        "nativeEntries": 8,
+        "nativeEntries": 9,
         "pinnedSupport": 0
       },
       "extreme": {
@@ -93,10 +93,10 @@
     },
     "byStatus": {
       "native_entry": {
-        "functions": 155,
-        "instructions": 54764,
-        "instructionPercent": 10.68,
-        "nativeEntries": 155,
+        "functions": 156,
+        "instructions": 57635,
+        "instructionPercent": 11.24,
+        "nativeEntries": 156,
         "pinnedSupport": 0
       },
       "pinned_support": {
@@ -107,9 +107,9 @@
         "pinnedSupport": 250
       },
       "recovered_other": {
-        "functions": 3949,
-        "instructions": 451086,
-        "instructionPercent": 87.96,
+        "functions": 3948,
+        "instructions": 448215,
+        "instructionPercent": 87.4,
         "nativeEntries": 0,
         "pinnedSupport": 0
       }
@@ -310,7 +310,7 @@
         "suspensions": 6,
         "closures": 4,
         "calls": 285,
-        "status": "recovered_other"
+        "status": "native_entry"
       },
       {
         "id": "f3797",
@@ -760,7 +760,7 @@
         "suspensions": 6,
         "closures": 4,
         "calls": 285,
-        "status": "recovered_other"
+        "status": "native_entry"
       },
       {
         "id": "f3790",
@@ -51243,7 +51243,7 @@
       "suspensions": 6,
       "closures": 4,
       "calls": 285,
-      "status": "recovered_other"
+      "status": "native_entry"
     },
     {
       "id": "f3133",

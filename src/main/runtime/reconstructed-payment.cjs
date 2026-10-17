@@ -45,6 +45,7 @@ const {attachDuplicateLoginWatch,aiResolve,ensureAuthToken,relaunchIfLoggedOut,d
 const {runUiBooking}=require('../booking/ui-booking.cjs');
 const {runBrowserBooking}=require('../booking/browser-booking.cjs');
 const {runRailOne}=require('../booking/railone-booking.cjs');
+const {callTransport}=require('../booking/transport-retry.cjs');
 const {getFinalPaytmStatus}=require('../payment/paytm-final-status.cjs');
 const {fingerprint,phonePeHeaders,phonePeRedirect,razorpayRedirect,phonePeQr,pollPhonePe}=require('../payment/phonepe-transport.cjs');
 const {definitionFingerprint}=require('./recovered-contract.cjs');
@@ -117,6 +118,24 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
         validVpa:call(1417),bankList:call(1386),bankOffered:call(1385),upiAmount:call(1382),maskedVpa:call(1418),
         upiBody:call(1367),upiRawBody:call(1370),orderInfo:call(1373),verifyBody:call(1371),ordersView:call(1398),
         prefView:call(1399),transactionView:call(1400),statusView:call(1401),initRejection:call(1383),terminalBody:call(1384),
+      });
+    },
+    f3132:({readBinding})=>function(method,url,opts){
+      const call=slot=>(...args)=>readBinding(slot,undefined,1)(...args);
+      const val=slot=>readBinding(slot,undefined,1);
+      return callTransport(this,method,url,opts,{
+        formatPathStep:call(365),
+        formatPathShape:call(368),
+        formatHdr:call(1428),
+        formatBody:call(1429),
+        ewLimit:val(581),
+        highloadText:val(598),
+        jeSet:val(1404),
+        znSet:val(1405),
+        isNotAvail:call(1411),
+        isQuarantined:call(1421),
+        isInvalidToken:call(1422),
+        maxOpt:call(364),
       });
     },
     f2161:({readBinding})=>function(job,options){
