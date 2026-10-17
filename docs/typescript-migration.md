@@ -1,6 +1,6 @@
 # TypeScript migration
 
-Status: **in progress**. 53 modules are real TypeScript reconstructions (listed below). Everything else — the generated
+Status: **in progress**. 55 modules are real TypeScript reconstructions (listed below). Everything else — the generated
 definitions in `src/main/generated`, the compiled bundle, the interpreter, the engine, the exclusions listed below and
 the remaining `.cjs` modules — is unchanged. No completion percentage is claimed; the migration is **not** complete.
 
@@ -33,6 +33,7 @@ the remaining `.cjs` modules — is unchanged. No completion percentage is claim
 | --- | --- | --- | --- |
 | `src/ts/main/booking/provider-page.ts` | Wait for the operator to return to the provider site | f2255, f2256, f2257 | `ts-misc` |
 | `src/ts/main/booking/rules.ts` | Booking rules, berth limits, opening/availability times, mode routing | f425, f426, f427, f428, f429, f431, f433, f435, f436, f437, f438, f439, f440, f441, f444, f445, f446, f447, f448, f449, f450, f451, f452, f453, f454, f455, f456 | `ts-rules` |
+| `src/ts/main/booking/run-controls.ts` | Run controls: cancel/stop, browser window handling, live-form edits, sign-in waiting, session-drop and duplicate-login detection, AI hand-off, print control | f2046, f2047, f2049, f2055, f2057, f2059, f2079, f2081, f2083, f2087, f2094, f2128 (re-exported by `controls.cjs`) | `ts-run-controls` |
 | `src/ts/main/booking/server-time.ts` | Server clock offset and sync | f2272, f2274, f2276, f2278 | `ts-server-time` |
 | `src/ts/main/booking/time-helpers.ts` | Scheduling, IST clock, quota families, failure text | f432, f2271, f2367, f2368, f2369, f2373, f2375, f2376, f2377, f2379, f2380, f2381, f2383, f2385 | `ts-time-helpers` |
 | `src/ts/main/payment/bank-response.ts` | Bank response confirmation chain | f1611, f1681, f1717 | `ts-payment-settlement` |
@@ -82,6 +83,7 @@ the remaining `.cjs` modules — is unchanged. No completion percentage is claim
 | `src/ts/main/runtime/qr-delivery.ts` | QR delivery to the right panel | f3734, f3743, f3746, f4021, f3740 (interceptors) | `ts-runtime + qr-delivery.test` |
 | `src/ts/main/runtime/recovered-contract.ts` | Definition contract fingerprint | — | `ts-misc` |
 | `src/ts/main/runtime/ticket-docking.ts` | Ticket window docking | — | `existing ticket-docking.test` |
+| `src/ts/main/runtime/runtime-support.ts` | Lexical contexts, constants, literals, class definition and runtime intrinsics shared by the interpreter and the compiled runtime | engine / compiled-runtime support | `ts-runtime-support` + full suite + compiler differential |
 | `src/ts/main/runtime/updates.ts` | Verified update download and Updates IPC | — | `ts-misc + updates.test` |
 | `src/ts/main/runtime/window-readiness.ts` | Windows stay hidden until the renderer is ready | — | `ts-runtime` |
 
@@ -112,7 +114,7 @@ These were deliberately **not** migrated or modified:
   (`x-browser-fingerprint`, `_[shield][fhash]`) for the providers' fraud-detection fields.
 * **`payment-init.cjs`** — passes `max510`/`infinite511` retry options to the request layer for the provider's rate-limit
   responses.
-* **`booking/controls.cjs`** — `cookieF5` cookie filtering and proxy-routing of the gateway (mixed with ordinary controls).
+* **`booking/controls.cjs` (remaining part)** — the ordinary run controls were extracted to `run-controls.ts`. Still JavaScript and unchanged: `controlProxyContext` and `routeGatewayThroughFormProxy` (proxy routing with `cookieF5` cookie filtering), `highLoadDelay` (retry delay used by the high-load gating) and `dumpAuthState`/`collectAuthState` (debug dump that logs token prefixes).
 * **Booking controllers** `booking/browser-booking.cjs` (f2161–f2169), `ui-booking.cjs` (f2102–f2115),
   `railone-booking.cjs`/`railone-submit.cjs`/`railone-payment.cjs` (f3149–f3175): consume anti-bot sensor tokens and
   call captcha-solver hooks. **f3132** (the RailOne request method, never reconstructed) selects TLS client profiles,
@@ -122,7 +124,7 @@ These were deliberately **not** migrated or modified:
   `runtime/development-policy.cjs` (stubs the vendor licence IPC), `runtime/legacy-services.cjs`, `services/control-plane/*`
   (licensing server), `DEVELOPMENT-CHECKS.md` overrides (f2539/f2549, f3370, f3383, f2595 … f2835). Not touched.
 * **Core runtime kept as JavaScript on purpose:** `runtime/engine.cjs` (interpreter fallback), `compiled-runtime.cjs`,
-  `runtime-support.cjs`, `reconstructed-payment.cjs` (the factory table), `offline-smoke.cjs`, `src/main/index.cjs`
+  `reconstructed-payment.cjs` (the factory table), `offline-smoke.cjs`, `src/main/index.cjs`
   (Electron entry; cannot be exercised here) and `src/main/generated`, `src/main/compiled`.
 
 ## Remaining generated/interpreted business logic
@@ -137,6 +139,14 @@ mechanisms above are not reconstructed in TypeScript. Migrated modules cover onl
 * The merged loop in `bank-response.ts` serves both recovered chains (`bankResponse`, `paytmBankResponse`); the
   differential test proves the same traces, but the structure differs from the recovered code.
 
+## Windows verification
+
+Windows verification of `aabf9cd` is recorded in `docs/typescript-windows-verification.md` (merged from
+`origin/verify/typescript-windows`, commit 527e47d): 2241/2241 tests in both modes, default and interpreter smoke,
+both launchers in smoke mode, an independently installed installer payload's smoke, packaging executed. Normal visual UI,
+interactive launcher startup and live provider flows were not verified. Later commits (this section's batches) have **not**
+been re-verified on Windows yet.
+
 ## Commands actually run and results
 
 Environment: Linux cloud container, Node 22.22, TypeScript 5.9.3 (local devDependency).
@@ -146,10 +156,11 @@ Environment: Linux cloud container, Node 22.22, TypeScript 5.9.3 (local devDepen
 | baseline on `main` (aa0a6b5): `node --test test/*.test.cjs` | 2165 tests, 2162 pass, 3 fail (known Windows-path tests) |
 | `npm run check:ts` / `npm run build:ts` | clean |
 | clean clone, `npm install --no-package-lock`, `npm run build:ts`, `node scripts/ensure-ts-build.cjs`, `node --test test/ts-*.test.cjs` | built; build current; passed |
-| `node --test test/*.test.cjs` (final head) | 2241 tests, 2238 pass, the same 3 fail, 0 cancelled |
-| `MATRIX_COMPILED=1 node --test test/*.test.cjs` (final head) | 2241 tests, 2238 pass, the same 3 fail, 0 cancelled |
+| `node --test test/*.test.cjs` (head after the Windows-verification merge and the run-controls / runtime-support batch) | 2256 tests, 2253 pass, the same 3 fail (they pass on Windows per the verification doc), 0 cancelled |
+| `MATRIX_COMPILED=1 node --test test/*.test.cjs` (same head) | 2256 tests, 2253 pass, the same 3 fail, 0 cancelled |
 | `node tools/compiler/differential-parallel.cjs --seeds 24` | 4354 checked, only f1556 seed 23 differs (the known baseline) |
 | `node scripts/run.cjs` with `build/` removed | builds `build/ts` before looking for Electron (binary absent here) |
+| `npm ci --ignore-scripts` with the merged lockfile | 0 vulnerabilities; `check:ts`/`build:ts` clean |
 | `python3 -m py_compile tools/build_installer.py tools/package_project.py` | compile only; not executed |
 
 The 3 failures are the known Windows-path tests: "Matrix development/release keeps live handlers and restarts in its
@@ -174,12 +185,21 @@ against live services without authorisation).
 
 ## Continuation checkpoint
 
+Done in the latest batch: `booking/run-controls.ts` (extracted from `controls.cjs`) and `runtime/runtime-support.ts`
+(shared by the interpreter and compiled runtime; the default `import()` stays in `runtime-support.cjs` because TypeScript's
+CommonJS output would turn an `import()` into `require()`).
+
+Re-verify on Windows before relying on the latest head: `npm ci --ignore-scripts`, the full suite in both modes, the default
+and `--interpreter-runtime` smoke tests, and the launchers, because `runtime-support` sits under every recovered function.
+
 Next eligible work, in order:
-1. `runtime/offline-smoke.cjs` and `runtime/runtime-support.cjs` — core, no flagged mechanisms; need careful typing of
-   dynamic engine values and a Windows smoke run before replacing.
-2. Split the benign parts out of the mixed modules (`controls.cjs`: `cancelPayment`, `stoppedResult`, `highLoadDelay`,
-   `focusBrowser`, `hideBrowser`, `minimizeBrowser`, `collectAuthState`; `gateway-lifecycle.cjs`: dispose/proxy-setter/`sleep`
-   helpers) into their own modules, leaving the flagged parts untouched, then migrate those.
-3. `src/main/index.cjs` after the Windows smoke test has been run, since it cannot be exercised here.
-4. Decide on the excluded list above before any further work on the booking controllers and gateway transports.
+1. `src/main/index.cjs` (Electron entry) — only together with a Windows smoke run; it cannot be exercised on Linux.
+2. `runtime/offline-smoke.cjs` — a test harness that monkey-patches `http`, `net`, `fetch` and `child_process`; migrate only with a
+   Windows smoke run, since a Linux fake cannot prove it.
+3. `src/renderer` and `src/preload`: the renderer is HTML with inline script and `src/preload/*.js` are tiny; inspect before
+   deciding whether anything is worth converting.
+4. The excluded list above needs an explicit decision. I did not extract helpers from the gateway modules
+   (`gateway-lifecycle`, `gateway-routing`, `gateway-session`, `gateway-headers`, `gateway-tls`): their ordinary helpers are
+   entangled with the cookie filtering, header emulation and TLS-gateway transport, so extraction would restructure those
+   mechanisms rather than separate them.
 Do not remove the legacy fixtures, the interpreter fallback or `src/main/generated` while any of this is open.
