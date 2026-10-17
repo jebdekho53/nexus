@@ -1,6 +1,6 @@
 # TypeScript migration
 
-Status: **in progress**. 60 modules are real TypeScript reconstructions (listed below). Everything else — the generated
+Status: **in progress**. 62 modules are real TypeScript reconstructions (listed below). Everything else — the generated
 definitions in `src/main/generated`, the compiled bundle, the interpreter, the engine, the exclusions listed below and
 the remaining `.cjs` modules — is unchanged. No completion percentage is claimed; the migration is **not** complete.
 
@@ -89,6 +89,8 @@ the remaining `.cjs` modules — is unchanged. No completion percentage is claim
 | `src/ts/main/runtime/startup-support.ts` | Startup diagnostics log with secret redaction, error details, `.jsc` guard, ESM import bridge | extracted from `index.cjs` | `ts-startup-support` |
 | `src/ts/main/runtime/development-windows.ts` | Development profile selection and window diagnostics | extracted from `index.cjs` | `ts-development-windows` |
 | `src/ts/main/runtime/invoke-observer.ts` | `onInvoke` observer: activity events, action trace, live-test diagnostics | extracted from `index.cjs` | `ts-invoke-observer` |
+| `src/ts/main/runtime/compiled-runtime.ts` | Compiled-bundle runtime (function creation, hooks, native factories) | the default runtime | `ts-compiled-runtime` + full suite + differential |
+| `src/ts/main/runtime/engine.ts` | The archived instruction interpreter (fallback runtime) | `--interpreter-runtime` | full suite (recovered-vs-native oracles) + compiler differential (it is the oracle) |
 | `src/ts/main/runtime/updates.ts` | Verified update download and Updates IPC | — | `ts-misc + updates.test` |
 | `src/ts/main/runtime/window-readiness.ts` | Windows stay hidden until the renderer is ready | — | `ts-runtime` |
 
@@ -128,8 +130,7 @@ These were deliberately **not** migrated or modified:
 * **Licensing / activation:** `runtime/activation.cjs`, `runtime/id-check.cjs`, `runtime/development.cjs`,
   `runtime/development-policy.cjs` (stubs the vendor licence IPC), `runtime/legacy-services.cjs`, `services/control-plane/*`
   (licensing server), `DEVELOPMENT-CHECKS.md` overrides (f2539/f2549, f3370, f3383, f2595 … f2835). Not touched.
-* **Core runtime kept as JavaScript on purpose:** `runtime/engine.cjs` (interpreter fallback), `compiled-runtime.cjs`,
-  `reconstructed-payment.cjs` (the factory table), `offline-smoke.cjs`, `src/main/index.cjs`
+* **Core runtime kept as JavaScript on purpose:** `reconstructed-payment.cjs` (the factory table), `offline-smoke.cjs`, `src/main/index.cjs`
   (Electron entry: the activation gate, engine boot and the live-test hooks stay inline; its smoke run, startup log,
   development windows and invoke observer were extracted to TypeScript) and `src/main/generated`, `src/main/compiled`.
 
@@ -199,7 +200,7 @@ smoke commands and the launchers there.
 
 ## Continuation checkpoint
 
-Done in the latest batch: `offline-smoke.ts`, and four helpers extracted from `src/main/index.cjs`
+Done in the latest batches: `compiled-runtime.ts` and `engine.ts` (both keep a real `import()` in their `.cjs` entry points; a bug caught on the way: `require('../compiled/…')` inside TypeScript resolves from `build/ts`, so such paths must be written from the project root), `offline-smoke.ts`, and four helpers extracted from `src/main/index.cjs`
 (`smoke-run.ts`, `startup-support.ts`, `development-windows.ts`, `invoke-observer.ts`). The `import()` calls stay in
 `index.cjs` (`globalThis.__esmImport`) because TypeScript's CommonJS output would turn them into `require()`.
 
@@ -212,8 +213,7 @@ Not migrated, with reasons:
 * The nine small renderer scripts (`src/renderer/matrix-*.js`, about 160 lines): they are browser scripts loaded by
   `<script>` tags (and `matrix-payments.js` is also `require`d by the main process); migrating them needs a browser-target
   build and a visual check of the UI, neither available here.
-* `src/main/generated`, `src/main/compiled` (generated), `runtime/engine.cjs` (interpreter fallback),
-  `compiled-runtime.cjs`, `reconstructed-payment.cjs` (factory table), `runtime/legacy-services.cjs` (retired reporting stays
+* `src/main/generated`, `src/main/compiled` (generated), `reconstructed-payment.cjs` (factory table), `runtime/legacy-services.cjs` (retired reporting stays
   disabled), `development.cjs`, `development-policy.cjs`, `activation.cjs`, `id-check.cjs`, `services/control-plane`
   (licensing).
 * Everything in "Excluded or blocked" above.
@@ -221,5 +221,5 @@ Not migrated, with reasons:
 Possible next steps:
 1. Decide on the excluded list; that gates the largest remaining pieces of business logic.
 2. If wanted, a browser-target TypeScript build for the small renderer scripts, with a visual check on Windows.
-3. `compiled-runtime.cjs` and `engine.cjs` typing, only with the full differential and Windows smoke runs.
+3. `reconstructed-payment.cjs` (the factory table) once the modules it routes to are all decided.
 Do not remove the legacy fixtures, the interpreter fallback or `src/main/generated` while any of this is open.
