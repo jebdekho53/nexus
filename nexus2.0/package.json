@@ -1,0 +1,14 @@
+{
+  "name": "nexus2.0",
+  "version": "2.0.0",
+  "description": "Clean, standalone, un-obfuscated booking and payment engine",
+  "main": "index.cjs",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node index.cjs",
+    "test": "node test.cjs"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
