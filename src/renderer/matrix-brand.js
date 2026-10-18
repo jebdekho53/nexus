@@ -26,10 +26,10 @@
     for(const record of records){if(record.type==='characterData'||record.type==='attributes')cleanNode(record.target);for(const node of record.addedNodes)cleanNode(node);}
   });
   observer.observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['title','aria-label','alt','placeholder']});
-  for(const element of document.querySelectorAll('.center,.splash .logo')) {
+  for(const element of document.querySelectorAll('.splash .logo')) {
     const image=document.createElement('img');image.src=logo;image.alt='Matrix';image.className='matrix-mark';element.replaceChildren(image);
   }
-  for(const dot of document.querySelectorAll('.topbar .brand > .dot, .matrix-header-logo, .verlogo, .m-logo')){dot.remove();}
+  for(const dot of document.querySelectorAll('.topbar .brand > .dot, .matrix-header-logo, .verlogo, .m-logo, .center')){dot.remove();}
   if(page==='app-lock'){const box=document.querySelector('.al-lock');if(box){const image=document.createElement('img');image.src=logo;image.alt='Matrix';image.className='matrix-mark';box.replaceChildren(image);}}
   const vendor=document.getElementById('tgHandle')?.closest('section');if(vendor)vendor.classList.add('matrix-vendor-channel');
   const failBrand=document.getElementById('failBrand');if(failBrand)failBrand.textContent='MATRIX';
