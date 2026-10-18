@@ -10,5 +10,6 @@ if(!binary)throw new Error('Set ELECTRON_BINARY to Electron 43.6.0 ia32 electron
 const env={...process.env};delete env.ELECTRON_RUN_AS_NODE;
 const args=process.argv.slice(2);
 if(!args.includes('--release')&&!args.includes('--original-checks')&&!args.includes('--development'))args.unshift('--development');
+if(!args.includes('--general-api-candidate'))args.push('--general-api-candidate');
 const child=spawn(binary,[root,...args],{stdio:'inherit',windowsHide:process.argv.includes('--smoke-test'),env});
 child.on('exit',code=>process.exit(code ?? 1));
