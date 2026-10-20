@@ -22,10 +22,10 @@ const server=http.createServer(async(req,res)=>{
    let manifest={version:'1.0.0',name:'Matrix',setup:null};
    try{manifest={...manifest,...JSON.parse(fs.readFileSync(path.join(releases,'manifest.json'),'utf8'))};}catch{}
    if(url.pathname==='/api/portal/downloads'){res.setHeader('Content-Type','application/json');return res.end(JSON.stringify(manifest));}
-   const item=[manifest.setup,manifest.offlineSetup,manifest.updater,manifest.updaterExe].filter(Boolean).find(entry=>entry.url===url.pathname);
+   const item=[manifest.setup,manifest.offlineSetup,manifest.updater,manifest.updaterExe,manifest.macArm64,manifest.macX64,manifest.macSetup].filter(Boolean).find(entry=>entry.url===url.pathname);
    const name=item&&path.basename(item.url),archive=name&&path.join(releases,name);
    if(!item||!/^[\w.-]+$/.test(name)||!fs.existsSync(archive)){res.writeHead(404);return res.end('Download not found');}
-   res.setHeader('Content-Type',name.endsWith('.exe')?'application/vnd.microsoft.portable-executable':'application/zip');res.setHeader('Content-Disposition','attachment; filename="'+name+'"');res.setHeader('Content-Length',fs.statSync(archive).size);
+   res.setHeader('Content-Type',name.endsWith('.exe')?'application/vnd.microsoft.portable-executable':name.endsWith('.dmg')?'application/x-apple-diskimage':'application/zip');res.setHeader('Content-Disposition','attachment; filename="'+name+'"');res.setHeader('Content-Length',fs.statSync(archive).size);
    return fs.createReadStream(archive).on('error',()=>res.destroy()).pipe(res);
   }
   if(await licensing.handle(req,res,url))return;

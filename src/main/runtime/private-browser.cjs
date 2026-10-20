@@ -45,6 +45,20 @@ function privateBrowser(log=()=>{},dependencies={}) {
     async f184(original,[options={}]) {
       const state=loginScope.getStore();
       if(state?.denied)throw new Error(denialMessage);
+      if(process.platform==='darwin'){
+        if(!options.executablePath||options.executablePath.endsWith('.exe')){
+          const darwinPaths=[
+            '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+            '/Applications/Brave Browser.app/Contents/MacOS/Brave Browser',
+            '/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge',
+            (process.env.HOME||'')+'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+            (process.env.HOME||'')+'/Applications/Brave Browser.app/Contents/MacOS/Brave Browser'
+          ];
+          const syncFs=require('node:fs');
+          const found=darwinPaths.find(p=>p&&syncFs.existsSync(p));
+          if(found)options.executablePath=found;
+        }
+      }
       // A selected browser gets one launch per login. Recovered catch/retry
       // branches must not silently rotate through other installed browsers.
       if(state?.launches)throw Object.assign(new Error('The selected browser login failed. Automatic browser switching is disabled. Retry explicitly after checking the error.'),{code:'MATRIX_BROWSER_RETRY_STOPPED'});
