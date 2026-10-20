@@ -20,16 +20,22 @@
     }
   };
   cleanNode(document.body);
-  const title=()=>{const next=brand(document.title);const full=next.startsWith('Matrix')?next:'Matrix · '+next;if(document.title!==full)document.title=full;};
+  const title=()=>{
+    if(page==='booking-box'){if(document.title!=='Booking')document.title='Booking';return;}
+    const next=brand(document.title);const full=next.startsWith('Matrix')?next:'Matrix · '+next;if(document.title!==full)document.title=full;
+  };
   title();new MutationObserver(title).observe(document.querySelector('title'),{childList:true,subtree:true,characterData:true});
   const observer=new MutationObserver(records=>{
     for(const record of records){if(record.type==='characterData'||record.type==='attributes')cleanNode(record.target);for(const node of record.addedNodes)cleanNode(node);}
   });
   observer.observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['title','aria-label','alt','placeholder']});
-  for(const element of document.querySelectorAll('.splash .logo')) {
+  for(const dot of document.querySelectorAll('.topbar .brand > .dot, .verlogo')){dot.remove();}
+  for(const element of document.querySelectorAll('.center, .m-logo, .splash .logo')) {
     const image=document.createElement('img');image.src=logo;image.alt='Matrix';image.className='matrix-mark';element.replaceChildren(image);
   }
-  for(const dot of document.querySelectorAll('.topbar .brand > .dot, .matrix-header-logo, .verlogo, .m-logo, .center')){dot.remove();}
+  for(const headerLogo of document.querySelectorAll('.matrix-header-logo')) {
+    headerLogo.src=logo;
+  }
   if(page==='app-lock'){const box=document.querySelector('.al-lock');if(box){const image=document.createElement('img');image.src=logo;image.alt='Matrix';image.className='matrix-mark';box.replaceChildren(image);}}
   const vendor=document.getElementById('tgHandle')?.closest('section');if(vendor)vendor.classList.add('matrix-vendor-channel');
   const failBrand=document.getElementById('failBrand');if(failBrand)failBrand.textContent='MATRIX';
