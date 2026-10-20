@@ -27,19 +27,19 @@
     "install": "diagnostics/local-1.0.10-update.json"
   },
   "release": {
-    "version": "1.0.11",
+    "version": "1.0.13",
     "name": "Matrix",
     "distribution": "windows-offline-installer",
-    "notes": "Add private payment-stage and request timing diagnostics; improve login readiness settle budget. Required booking waits and gateway validations are preserved. QR speed improvement is not yet verified.",
+    "notes": "Add ticket panel scheduler with preset opening times (08:00, 10:00, 11:00), custom scheduling, submit offset delay controls, and automated WebLogin trigger on selected browsers. QR popup docking and positioning parity preserved.",
     "offlineSetup": {
-      "url": "/downloads/Matrix-Setup-1.0.11.exe",
-      "bytes": 264686518,
-      "sha256": "c0f0d62407d8c5040603a278dcc1e7ae5ec4f616e4dbfd3a5ec13b5107c54607"
+      "url": "/downloads/Matrix-Setup-1.0.13.exe",
+      "bytes": 271638025,
+      "sha256": "3bedaf25b7ebabda60cf94ac25723ad1820e4e3057daaaec495b936e53c2d6f8"
     },
     "updaterExe": {
-      "url": "/downloads/Matrix-Updater-1.0.11.exe",
-      "bytes": 27270957,
-      "sha256": "edd642ad108fedc1b6eac07739c2564db73d56c89d9b6629a0bafdcd93a8f065"
+      "url": "/downloads/Matrix-Updater-1.0.13.exe",
+      "bytes": 29658393,
+      "sha256": "9dafc47db141f1ebcb936781dc44b391cbb208b852f470ecbc1f999ba8055e50"
     }
   },
   "audit": {

@@ -6,9 +6,10 @@
       http-equiv="Content-Security-Policy"
       content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"
     />
-    <title>Matrix · Booking</title>
+    <title>Booking</title>
     <script defer src="./matrix-book-now.js"></script>
     <script defer src="./matrix-booking-timer.js"></script>
+    <script defer src="./matrix-scheduler.js"></script>
 
 
     <script type="module" crossorigin src="./assets/booking-box-Bsv5-yxI.js"></script>
@@ -47,6 +48,11 @@
       <button type="button" class="bb-edit hidden" id="editBtn" title="Edit this form (locks ~20s before the slot)">✎</button>
       <button type="button" class="win-close bb-close" id="winClose" title="Close">✕</button>
     </header>
+
+    <div id="schedBanner" class="sched-banner hidden">
+      <span id="schedBannerText">⏰ Scheduled</span>
+      <button type="button" id="schedBannerCancel" class="sched-banner-cancel-btn">Cancel</button>
+    </div>
 
     <main class="bb-body">
       <!-- MANUAL LOGIN: shows the account's credentials so the operator can copy/paste them into the visible
@@ -155,6 +161,7 @@
         <button type="button" class="act act-railone coming-soon" data-mode="railone" title="RailOne — coming soon">RailOne</button>
         <button type="button" class="act act-weblogin" data-mode="weblogin">WebLogin</button>
         <button type="button" class="act act-uilogin" data-mode="uilogin">UI Login</button>
+        <button type="button" class="act act-schedule" id="scheduleBtn" title="Schedule WebLogin booking at 8:00, 10:00, 11:00 or custom time">⏰ Schedule</button>
         <!-- Shown only while a run is active (alongside Pair + Stop): which login is running. The proxy status is
              already the info-row PROXY chip (#proxyPick) — NO duplicate here (operator 2026-07-11). -->
         <span class="act-runmode hidden" id="runMode" title="Login method running">● Running</span>
@@ -201,6 +208,84 @@
         <span class="cn-lbl">Check Now</span>
       </button>
       <div class="bb-timebox" title="Current time and booking countdown"><span class="bb-clock" id="clock">--:--:--</span><span id="matrixGeneralTimer" role="timer" hidden></span></div>
+    </div>
+
+    <div id="scheduleModal" class="modal-overlay hidden">
+      <div class="modal-card schedule-card">
+        <div class="modal-head">
+          <div class="modal-title">⏰ Schedule Booking &amp; Submit</div>
+          <button type="button" class="modal-x" id="schedClose">✕</button>
+        </div>
+        <div class="sched-body">
+          <!-- Schedule Type -->
+          <div class="sched-section-title">SCHEDULE TYPE</div>
+          <div class="sched-seg" id="schedTypeSeg">
+            <button type="button" class="sched-seg-btn active" data-type="auto">🔄 Login + Submit</button>
+            <button type="button" class="sched-seg-btn" data-type="submit">⚡ Submit Only</button>
+            <button type="button" class="sched-seg-btn" data-type="login">🌐 WebLogin</button>
+          </div>
+
+          <!-- Quick Presets -->
+          <div class="sched-section-title">SLOT OPENING PRESETS</div>
+          <div class="sched-presets">
+            <button type="button" class="sched-preset-btn" data-time="08:00:00">
+              <span class="preset-time">08:00 AM</span>
+              <span class="preset-label">General (GN)</span>
+            </button>
+            <button type="button" class="sched-preset-btn" data-time="10:00:00">
+              <span class="preset-time">10:00 AM</span>
+              <span class="preset-label">Tatkal (AC)</span>
+            </button>
+            <button type="button" class="sched-preset-btn" data-time="11:00:00">
+              <span class="preset-time">11:00 AM</span>
+              <span class="preset-label">Tatkal (Non-AC)</span>
+            </button>
+          </div>
+
+          <!-- Custom Time Selection -->
+          <div class="sched-section-title">CUSTOM SCHEDULE TIME (HH:MM:SS)</div>
+          <div class="sched-custom-row">
+            <input type="time" id="schedCustomTime" class="sched-input-time" step="1" />
+            <div class="sched-quick-adjust">
+              <button type="button" class="sched-adj-btn" data-mins="1">+1m</button>
+              <button type="button" class="sched-adj-btn" data-mins="5">+5m</button>
+              <button type="button" class="sched-adj-btn" data-mins="10">+10m</button>
+              <button type="button" class="sched-adj-btn" data-mins="15">+15m</button>
+            </div>
+          </div>
+
+          <!-- Submit Offset Selection -->
+          <div class="sched-section-title">SUBMIT OFFSET (SLOT OPENING DELAY)</div>
+          <div class="sched-seg sched-offset-seg" id="schedOffsetSeg">
+            <button type="button" class="sched-seg-btn active" data-offset="0">Exact (0s)</button>
+            <button type="button" class="sched-seg-btn" data-offset="500">+0.5s</button>
+            <button type="button" class="sched-seg-btn" data-offset="1000">+1.0s</button>
+            <button type="button" class="sched-seg-btn" data-offset="1500">+1.5s</button>
+            <button type="button" class="sched-seg-btn" data-offset="2000">+2.0s</button>
+          </div>
+
+          <!-- Browser Selection -->
+          <div class="sched-section-title">TRIGGER BROWSER (WebLogin)</div>
+          <div class="sched-browser-row">
+            <select id="schedBrowserSel" class="sched-select">
+              <option value="chrome" selected>Google Chrome</option>
+              <option value="brave">Brave Browser</option>
+              <option value="edge">Microsoft Edge</option>
+              <option value="chrome-advance">Chrome Advance</option>
+              <option value="gologin">GoLogin</option>
+            </select>
+          </div>
+
+          <!-- Preview summary -->
+          <div class="sched-summary" id="schedSummary">
+            Select schedule options to arm.
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn" id="schedCancel">Cancel</button>
+          <button type="button" class="btn primary" id="schedArmBtn">🚀 Submit &amp; Arm Schedule</button>
+        </div>
+      </div>
     </div>
 
     <div id="pairModal" class="modal-overlay hidden">

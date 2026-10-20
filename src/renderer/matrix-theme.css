@@ -65,3 +65,45 @@ body.matrix-splash .bg,body.matrix-splash .scrim{display:none!important}body.mat
 .matrix-booking-box .picker-opt:not(:disabled):not(.blocked):hover{background:#2c4260!important;border-color:#80b4ff!important}.matrix-booking-box .picker-opt.active{background:#245bac!important;color:#fff!important;-webkit-text-fill-color:#fff!important;border-color:#80b4ff!important}
 .matrix-booking-box .picker-opt.blocked,.matrix-booking-box .picker-opt:disabled{background:#25242c!important;color:#b49aa4!important;-webkit-text-fill-color:#b49aa4!important;opacity:.65!important;cursor:not-allowed!important}
 .matrix-booking-box .pay-tag{background:#293d55!important;color:#dceaff!important;-webkit-text-fill-color:#dceaff!important;border:1px solid #496481!important}.matrix-booking-box .pay-tag-weblogin{background:#193e36!important;color:#9cebd1!important;-webkit-text-fill-color:#9cebd1!important}.matrix-booking-box .pay-tag-uilogin{background:#352b51!important;color:#dcc5ff!important;-webkit-text-fill-color:#dcc5ff!important}.matrix-booking-box .pay-tag-railone{background:#233e65!important;color:#b4d4ff!important;-webkit-text-fill-color:#b4d4ff!important}
+
+/* Booking Scheduler Styles */
+.act-schedule{background:#1d2b3e!important;color:#8ebdeb!important;border:1px solid #3a5474!important}
+.act-schedule:hover{background:#273b52!important;color:#fff!important;border-color:#3d8bff!important}
+.act-schedule.armed{background:#173826!important;color:#7ee787!important;border-color:#3fb950!important;animation:matrix-pulse-sched 2s infinite ease-in-out!important}
+@keyframes matrix-pulse-sched{0%,100%{border-color:#3fb950;box-shadow:0 0 0 0 rgba(63,185,80,0.4)}50%{border-color:#7ee787;box-shadow:0 0 8px 2px rgba(63,185,80,0.3)}}
+
+.sched-banner{display:flex;align-items:center;justify-content:space-between;padding:5px 10px;background:#13281d;border-bottom:1px solid #245738;color:#7ee787;font-size:10.5px;line-height:14px;box-sizing:border-box}
+.sched-banner.hidden{display:none!important}
+.sched-banner strong{color:#a8f5b2}
+.sched-banner-cancel-btn{padding:2px 7px!important;font-size:9.5px!important;height:auto!important;background:#3b1e22!important;color:#ff9b9f!important;border:1px solid #5c2d33!important;border-radius:4px!important;cursor:pointer}
+.sched-banner-cancel-btn:hover{background:#54252b!important;color:#fff!important;border-color:#ff8c92!important}
+
+.schedule-card{width:320px;max-width:94vw;padding:12px;background:#191e2a!important;border:1px solid #2c333d!important;border-radius:10px!important;color:#e8ecf1!important}
+.sched-section-title{font-size:9px;letter-spacing:.08em;color:#8b9bab;font-weight:700;margin-top:9px;margin-bottom:5px;text-transform:uppercase}
+.sched-presets{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.sched-preset-btn{background:#141d2a!important;border:1px solid #2b394b!important;border-radius:6px!important;padding:6px 2px!important;color:#e8ecf1!important;display:flex;flex-direction:column;align-items:center;cursor:pointer;transition:all .15s}
+.sched-preset-btn:hover{background:#202e42!important;border-color:#3d8bff!important}
+.sched-preset-btn.active{background:#1d3b61!important;border-color:#3d8bff!important;box-shadow:0 0 8px rgba(61,139,255,0.35)!important}
+.preset-time{font-size:11px;font-weight:750;color:#80b7ef}
+.preset-label{font-size:8px;color:#9ca4ae;margin-top:2px}
+
+.sched-custom-row{display:flex;gap:6px;align-items:center}
+.sched-input-time{flex:1;padding:5px 8px;font-size:12.5px;background:#111621!important;color:#80b7ef!important;border:1px solid #374251!important;border-radius:6px!important;font-family:monospace,'Segoe UI',sans-serif!important}
+.sched-quick-adjust{display:flex;gap:3px}
+.sched-adj-btn{padding:4px 6px!important;font-size:9.5px!important;background:#172230!important;border:1px solid #304154!important;border-radius:5px!important;color:#9cb2c7!important;cursor:pointer}
+.sched-adj-btn:hover{background:#23374e!important;color:#fff!important;border-color:#3d8bff!important}
+
+.sched-browser-row{width:100%}
+.sched-select{width:100%;padding:6px 8px;font-size:11px;background:#111621!important;color:#e8ecf1!important;border:1px solid #374251!important;border-radius:6px!important}
+
+.sched-summary{margin-top:9px;padding:6px 8px;background:#121a25;border:1px dashed #2a3c50;border-radius:6px;font-size:10px;color:#9cb5ce;line-height:1.4;text-align:center}
+.sched-summary strong{color:#80b7ef}
+
+#browserModal.sched-auto-pick{opacity:0!important;pointer-events:none!important}
+
+.sched-seg{display:flex;gap:4px;width:100%}
+.sched-seg-btn{flex:1;padding:5px 4px!important;font-size:10px!important;background:#141d2a!important;border:1px solid #2b394b!important;border-radius:6px!important;color:#9ca4ae!important;cursor:pointer;text-align:center;transition:all .15s}
+.sched-seg-btn:hover{background:#202e42!important;color:#fff!important;border-color:#3d8bff!important}
+.sched-seg-btn.active{background:#1d3b61!important;color:#80b7ef!important;border-color:#3d8bff!important;font-weight:750!important}
+.sched-offset-seg .sched-seg-btn{font-size:9.5px!important;padding:4px 2px!important}
+
