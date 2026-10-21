@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>MATRIX Mobile Controller</title>
+  <meta name="theme-color" content="#0b0f17">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="/admin/manifest.json">
+  <link rel="icon" type="image/png" href="/assets/matrix-mark.png">
+  <link rel="apple-touch-icon" href="/assets/matrix-mark.png">
+  <link rel="stylesheet" href="/admin/mobile.css">
+  <script src="/admin/mobile.js" defer></script>
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header class="mobile-header">
+    <div class="brand-wrapper">
+      <img src="/assets/matrix-logo.svg" alt="MATRIX" class="brand-logo">
+      <span class="brand-title">CONTROLLER</span>
+    </div>
+    <div id="statusPill" class="header-status-pill">
+      <span id="statusDot" class="status-dot"></span>
+      <span id="statusText">CONNECTING</span>
+    </div>
+  </header>
+
+  <!-- Main Scrollable Content -->
+  <main class="mobile-main">
+
+    <!-- Active Engine Status & Actions Card -->
+    <section class="card">
+      <div class="card-title-row">
+        <span class="card-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Tatkal Scheduler & Run
+        </span>
+        <span id="countdownBadge" style="font-size:11px;font-weight:700;color:var(--accent-amber);display:none;">ARMED: 00:00:00</span>
+      </div>
+
+      <!-- Opening Time Presets -->
+      <div class="form-group">
+        <label class="form-label">Opening Time Preset</label>
+        <div class="preset-chips">
+          <button type="button" class="preset-chip active" data-time="08:00:00">08:00 AM</button>
+          <button type="button" class="preset-chip" data-time="10:00:00">10:00 AM</button>
+          <button type="button" class="preset-chip" data-time="11:00:00">11:00 AM</button>
+          <button type="button" class="preset-chip" data-time="custom">CUSTOM</button>
+        </div>
+        <div id="customTimeGroup" style="display:none;margin-top:8px;">
+          <input type="time" id="customTimeInput" step="1" class="form-input" value="13:45:00">
+        </div>
+      </div>
+
+      <!-- Browser & Submit Offset Grid -->
+      <div class="input-row">
+        <div class="form-group">
+          <label class="form-label">Target Browser</label>
+          <select id="browserSelect" class="form-select">
+            <option value="chrome" selected>Google Chrome</option>
+            <option value="brave">Brave Browser</option>
+            <option value="edge">Microsoft Edge</option>
+            <option value="gologin">GoLogin</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Submit Offset</label>
+          <select id="offsetSelect" class="form-select">
+            <option value="0" selected>0.0s (Direct)</option>
+            <option value="500">+0.5s</option>
+            <option value="1000">+1.0s</option>
+            <option value="1500">+1.5s</option>
+            <option value="2000">+2.0s</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="control-grid" style="margin-top:8px;">
+        <button id="btnArm" class="btn-action btn-arm">
+          <span>⚡ ARM SCHEDULER</span>
+          <span style="font-size:10px;font-weight:400;opacity:0.8;">Auto-fires at target time</span>
+        </button>
+        <button id="btnStartNow" class="btn-action btn-start">
+          <span>🚀 BOOK NOW</span>
+          <span style="font-size:10px;font-weight:400;opacity:0.8;">Instant manual trigger</span>
+        </button>
+      </div>
+      <button id="btnStop" class="btn-action btn-stop" style="width:100%;margin-top:8px;padding:10px;">
+        <span>⛔ STOP ACTIVE RUN</span>
+      </button>
+    </section>
+
+    <!-- Quick Form Manager Card -->
+    <section class="card">
+      <div class="card-title-row">
+        <span class="card-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Journey & Passenger Details
+        </span>
+        <button id="btnSaveForm" style="background:transparent;border:none;color:var(--accent-cyan);font-size:12px;font-weight:700;cursor:pointer;">SAVE FORM</button>
+      </div>
+
+      <div class="input-row">
+        <div class="form-group">
+          <label class="form-label">Train Number</label>
+          <input type="text" id="trainNo" class="form-input" placeholder="e.g. 12301" value="12301">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Journey Date</label>
+          <input type="date" id="journeyDate" class="form-input">
+        </div>
+      </div>
+
+      <div class="input-row">
+        <div class="form-group">
+          <label class="form-label">From Station</label>
+          <input type="text" id="fromStation" class="form-input" placeholder="NDLS" value="NDLS">
+        </div>
+        <div class="form-group">
+          <label class="form-label">To Station</label>
+          <input type="text" id="toStation" class="form-input" placeholder="HWH" value="HWH">
+        </div>
+      </div>
+
+      <div class="input-row">
+        <div class="form-group">
+          <label class="form-label">Quota</label>
+          <select id="quotaSelect" class="form-select">
+            <option value="TQ" selected>Tatkal (TQ)</option>
+            <option value="PT">Premium Tatkal (PT)</option>
+            <option value="GN">General (GN)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Class</label>
+          <select id="classSelect" class="form-select">
+            <option value="3A" selected>3rd AC (3A)</option>
+            <option value="SL">Sleeper (SL)</option>
+            <option value="2A">2nd AC (2A)</option>
+            <option value="1A">1st AC (1A)</option>
+            <option value="CC">AC Chair Car (CC)</option>
+            <option value="2S">Second Sitting (2S)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Passengers list container -->
+      <div class="form-group" style="margin-top:6px;">
+        <label class="form-label">Passenger 1</label>
+        <div class="input-row">
+          <input type="text" id="paxName" class="form-input" placeholder="Full Name" value="Passenger One">
+          <input type="number" id="paxAge" class="form-input" placeholder="Age" value="28" style="max-width:80px;">
+        </div>
+      </div>
+    </section>
+
+    <!-- Live Logs & Progress Stream -->
+    <section class="card">
+      <div class="card-title-row">
+        <span class="card-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+          Live Engine Feed
+        </span>
+        <button id="btnClearLogs" style="background:transparent;border:none;color:var(--text-dim);font-size:11px;cursor:pointer;">Clear</button>
+      </div>
+      <div id="logBox" class="log-box">
+        <div class="log-entry">[ready] MATRIX Mobile Controller initialized.</div>
+      </div>
+    </section>
+
+    <!-- App Settings Drawer (Collapsible) -->
+    <section class="card">
+      <div class="card-title-row">
+        <span class="card-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Engine Connection Settings
+        </span>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Matrix Engine Host URL</label>
+        <input type="text" id="engineHostInput" class="form-input" placeholder="http://192.168.1.100:8085 or /">
+        <p style="font-size:11px;color:var(--text-dim);margin-top:6px;">Leave empty or '/' if using hosted cloud, or enter your PC's Wi-Fi IP and port 8085.</p>
+      </div>
+      <button id="btnInstallPwa" style="display:none;width:100%;padding:10px;background:#1e293b;border:1px solid var(--accent-cyan);color:var(--accent-cyan);border-radius:10px;font-weight:700;font-size:12px;margin-top:8px;">
+        📲 INSTALL APP TO HOME SCREEN
+      </button>
+    </section>
+
+  </main>
+
+  <!-- Instant QR Code & 1-Tap UPI Payment Modal -->
+  <div id="qrModal" class="qr-modal">
+    <div class="qr-card">
+      <span class="qr-badge">⚡ INSTANT PAYMENT ARRIVED</span>
+      <h3 style="font-size:18px;font-weight:800;color:#fff;">Scan or Tap to Pay</h3>
+      <p id="qrCaption" style="font-size:12px;color:var(--text-dim);margin-top:4px;">PayTM / PhonePe QR</p>
+
+      <div class="qr-image-frame">
+        <img id="qrImage" src="" alt="Payment QR Code">
+      </div>
+
+      <div id="qrAmount" class="qr-amount">₹0.00</div>
+
+      <!-- One-Click UPI Intent button for Android & iOS -->
+      <a id="btnUpiIntent" href="#" class="btn-upi-pay" style="text-decoration:none;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+        <span>TAP TO PAY VIA UPI APP</span>
+      </a>
+
+      <button id="btnCloseQr" class="btn-close-modal">Dismiss Window</button>
+    </div>
+  </div>
+
+  <!-- Audio Chime for QR arrival (silent synthesized audio) -->
+  <audio id="qrAudio" preload="auto">
+    <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcHCqS2/LDkFclJpPY8sOQVyUmk9jyw5BXJSWJ2fTEkVsk..." type="audio/wav">
+  </audio>
+
+</body>
+</html>

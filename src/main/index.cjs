@@ -27,6 +27,7 @@ const log = (event, details = {}) => {
   activity?.record(event,details);
 };
 process.on('uncaughtExceptionMonitor',error=>log('matrix-uncaught-error',{error:String(error?.stack||error)}));
+try { require('./runtime/mobile-bridge.cjs').createMobileBridge(electron, projectRoot, log); } catch (e) { log('mobile-bridge-init-error', { error: String(e.message) }); }
 if (isDevelopment && !isSmoke) {
   const profile=process.argv.includes('--release-activation-test')?path.join(diagnostics,'release-qa-profile'):process.argv.includes('--isolated-live-test')?path.join(diagnostics,'live-e2e-profile'):managedRelease?require('./runtime/profile.cjs').releaseProfile(electron.app,projectRoot):path.join(diagnostics,'development-profile');
   fs.mkdirSync(profile,{recursive:true});
@@ -213,4 +214,16 @@ if(process.argv.includes('--brand-check')&&!isSmoke) {
 }
 if(process.argv.includes('--ui-diagnostic')&&!isSmoke) {
   setTimeout(()=>require(path.join(projectRoot,'test/ui-diagnostic.cjs')).run(electron,projectRoot,log),25000);
+}
+if(process.argv.includes('--dev-check')) {
+  setTimeout(async () => {
+    try {
+      const res = await require(path.join(projectRoot,'test/developer-mode-check.cjs')).run(electron,projectRoot,log);
+      log('developer-mode-check-done', { success: res.success });
+      if (process.argv.includes('--exit-after-check')) electron.app.exit(res.success ? 0 : 1);
+    } catch(err) {
+      log('developer-mode-check-error', { error: String(err.message) });
+      if (process.argv.includes('--exit-after-check')) electron.app.exit(1);
+    }
+  }, 12000);
 }

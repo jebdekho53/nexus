@@ -24,3 +24,30 @@ test('QR fallback is restricted to its local booking profile and avoids duplicat
  windows.splice(0,windows.length,make('one',undefined,true));await hook(original,[{imageBase64:png},'one']);assert.equal(events.length,0,'already visible QR is retained');
  assert.equal(imageUrl('not-an-image'),null);assert.ok(imageUrl(png).startsWith('data:image/png;base64,'));
 });
+test('QR popup docks directly below single active booking box even if id is omitted',async()=>{
+ const {EventEmitter}=require('node:events'),root=path.resolve(__dirname,'..');
+ const parent=new EventEmitter();parent.isDestroyed=()=>false;parent.getBounds=()=>({x:50,y:40,width:270,height:390});
+ parent.webContents={getURL:()=>pathToFileURL(path.join(root,'src/renderer/booking-box.html')).href+'?id=unnamed',executeJavaScript:async()=>false,send:()=>{}};
+ const popup=new EventEmitter();let bounds={x:0,y:0,width:250,height:310};popup.isDestroyed=()=>false;popup.getBounds=()=>bounds;popup.setBounds=b=>{bounds=b;};
+ const hook=qrDelivery({BrowserWindow:{getAllWindows:()=>[parent]},screen:{getDisplayMatching:()=>({workArea:{x:0,y:0,width:1920,height:1080}})}},root);
+ hook.f3746(()=>null,[popup,undefined]);
+ assert.equal(bounds.x,50);
+ assert.equal(bounds.y,40+390+8);
+});
+test('when QR popup is OFF, no separate popup is created and QR is sent to in-box panel',async()=>{
+ const {EventEmitter}=require('node:events'),root=path.resolve(__dirname,'..'),events=[];
+ const parent=new EventEmitter();parent.isDestroyed=()=>false;parent.getBounds=()=>({x:50,y:40,width:270,height:390});
+ parent.webContents={getURL:()=>pathToFileURL(path.join(root,'src/renderer/booking-box.html')).href+'?id=form-test',executeJavaScript:async()=>false,send:(ch,val)=>events.push({ch,val})};
+ const hook=qrDelivery({BrowserWindow:{getAllWindows:()=>[parent]}},root);
+ hook.f3734(()=>false,[]); // Turned OFF in tools
+ const popupResult=hook.f3743(()=>({isDestroyed:()=>false}),['form-test']);
+ assert.equal(popupResult,null,'f3743 does not spawn popup window when qrPopup is off');
+ await hook.f3740(async()=>true,[{imageBase64:png,caption:'Test',amount:200},'form-test']);
+ assert.equal(events.length,1);
+ assert.equal(events[0].ch,'app:qr');
+ assert.equal(events[0].val.formId,'form-test');
+ assert.equal(events[0].val.amount,200);
+ assert.ok(events[0].val.dataUrl);
+});
+
+

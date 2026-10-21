@@ -1,0 +1,24 @@
+{
+  "name": "MATRIX Mobile Controller",
+  "short_name": "MATRIX",
+  "description": "Cross-Platform Remote Tatkal Booking & Payment Controller for MATRIX",
+  "start_url": "/mobile",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b0f17",
+  "theme_color": "#0b0f17",
+  "icons": [
+    {
+      "src": "/assets/matrix-mark.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/matrix-mark.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

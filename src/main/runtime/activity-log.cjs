@@ -10,11 +10,17 @@ function install(electron,root) {
   const sensitive=/^(password|passcode|otp|apiKey|accessToken|refreshToken|csrfToken|authorization|cookie|secret|greq|bmiyek)$/i;
   function learn(value){if(!value||typeof value!=='object')return;for(const [key,item]of Object.entries(value)){if(sensitive.test(key)&&typeof item==='string'&&item.length>=3)secrets.add(item);else if(item&&typeof item==='object')learn(item);}}
   function clean(text){let value=String(text||'');for(const secret of secrets)value=value.replaceAll(secret,'[redacted]');return value.replace(/\bBrahmos\b/gi,'Matrix').replace(/Xhamster\s*TS/gi,'Matrix').replace(/Bearer\s+[\w.+\/-]+/gi,'Bearer [redacted]').replace(/\beyJ[\w-]+\.[\w-]+\.[\w-]+\b/g,'[redacted]').replace(/\b(password|accessToken|refreshToken|csrfToken|cookie|authorization|apiKey|otp)\s*[:=]\s*[^\s,;]+/gi,'$1=[redacted]');}
+  let writeQueue='',writing=false;
+  function flushLog(){
+    if(writing||!writeQueue)return;
+    writing=true;const chunk=writeQueue;writeQueue='';
+    fs.appendFile(file,chunk,'utf8',()=>{writing=false;if(writeQueue)flushLog();});
+  }
   function emit(kind,stage,message,runId='app',level='info'){
     const now=Date.now(),run=runs.get(runId);
     const row={id:++id,at:now,kind,stage:clean(stage),message:clean(message),runId,level,elapsedSeconds:run?Number(((now-run.started)/1000).toFixed(1)):null,stepSeconds:run?Number(((now-run.changed)/1000).toFixed(1)):null};
     rows.push(row);if(rows.length>5000)rows.shift();
-    try{if(fs.existsSync(file)&&fs.statSync(file).size>10*1024*1024)fs.renameSync(file,file+'.previous');fs.appendFileSync(file,JSON.stringify(row)+'\n');}catch{}
+    writeQueue+=JSON.stringify(row)+'\n';flushLog();
     for(const win of electron.BrowserWindow.getAllWindows())try{if(!win.isDestroyed()&&!win.webContents.isDestroyed()&&trusted(win.webContents))win.webContents.send('matrix:logs:event',row);}catch{}
     if(run)for(const win of electron.BrowserWindow.getAllWindows())try{const url=new URL(win.webContents.getURL());if(!win.isDestroyed()&&url.protocol==='file:'&&url.pathname===new URL(pathToFileURL(path.join(root,'src/renderer/booking-box.html'))).pathname&&url.searchParams.get('id')===runId)win.webContents.send('matrix:booking:timing',{runId,stage:row.stage,elapsedSeconds:row.elapsedSeconds,active:run.active,remainingMs:run.remaining?Math.max(0,run.remaining.ms-(now-run.remaining.at)):null});}catch{}
     return row;

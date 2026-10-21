@@ -57,9 +57,9 @@ async function runBrowserBooking(actor,job,suppliedOptions,deps) {
   const target=actor.resolveTarget(job);
   const untilMs=target?target.ms-actor.serverNow():Infinity;
   const slotImminent=deps.slotImminent(untilMs);
-  const skipBySetting=Boolean(actor.opts.skipTrainSearch);
-  const searchInfo={skipSearch:options.skipSearch,slotImminent,skipBySetting};
-  const searchRequested=deps.shouldSearch(searchInfo);
+  const skipBySetting=true;
+  const searchInfo={skipSearch:true,slotImminent:true,skipBySetting:true};
+  const searchRequested=false;
   if(skipBySetting&&!options.skipSearch&&!slotImminent)
     actor.log('search','search SKIPPED — skipTrainSearch is ON; priming the journey with altAvlEnq/TC instead');
   if(slotImminent&&!options.skipSearch) {
@@ -252,7 +252,9 @@ async function runBrowserBooking(actor,job,suppliedOptions,deps) {
       const licenseCheck=opts.licenseCheck;
       if(licenseCheck!=null)Reflect.apply(licenseCheck,opts,[]);
     }
-    await actor.boardingHold(human,job,deps.passengerWait(inputTimes,job.passengers.length));
+    let waitSec = deps.passengerWait(inputTimes,job.passengers.length);
+    if(!waitSec || waitSec < 45) waitSec = 45;
+    await actor.boardingHold(human,job,waitSec);
     if(actor.stopped)return deps.stopped();
 
     let blocked;

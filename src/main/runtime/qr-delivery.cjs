@@ -157,6 +157,15 @@ function qrDelivery(electron,root,log=()=>{}){
    if(!formId&&allBoxes.length>1)return original(...args);
    const target=booking(formId);
    const fid=formId||(allBoxes.length===1?new URL(allBoxes[0].webContents.getURL()).searchParams.get('id'):null);
+   if(dataUrl && globalThis.__matrixMobileBridge?.broadcastQr){
+    globalThis.__matrixMobileBridge.broadcastQr({
+     formId: formId || fid,
+     dataUrl,
+     amount: payload?.amount,
+     caption: payload?.caption,
+     upiString: payload?.upiString || (payload?.amount ? `upi://pay?pn=IRCTC&am=${payload.amount}&cu=INR` : '')
+    });
+   }
    if(popupMode && payload?.forcePopup !== false){
     const result=await original(...args);
     if(target)target.webContents.send('app:qr',{closed:true,formId:fid});
