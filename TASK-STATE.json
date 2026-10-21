@@ -27,19 +27,19 @@
     "install": "diagnostics/local-1.0.10-update.json"
   },
   "release": {
-    "version": "1.0.13",
+    "version": "1.0.14",
     "name": "Matrix",
-    "distribution": "windows-offline-installer",
-    "notes": "Add ticket panel scheduler with preset opening times (08:00, 10:00, 11:00), custom scheduling, submit offset delay controls, and automated WebLogin trigger on selected browsers. QR popup docking and positioning parity preserved.",
+    "distribution": "cross-platform",
+    "notes": "Side-by-side multi-form window tiling, PNR privacy masking (last 3 digits), overhauled Cyber Emerald Status UI, illuminated controller dock toolbar icons, and streamlined tools window.",
     "offlineSetup": {
-      "url": "/downloads/Matrix-Setup-1.0.13.exe",
-      "bytes": 271638025,
-      "sha256": "3bedaf25b7ebabda60cf94ac25723ad1820e4e3057daaaec495b936e53c2d6f8"
+      "url": "/downloads/Matrix-Setup-1.0.14.exe",
+      "bytes": 282596701,
+      "sha256": "ebf593a699951fae86ac35b251d1bc4e6a271076a3c16fca045cc36efcf50cac"
     },
     "updaterExe": {
-      "url": "/downloads/Matrix-Updater-1.0.13.exe",
-      "bytes": 29658393,
-      "sha256": "9dafc47db141f1ebcb936781dc44b391cbb208b852f470ecbc1f999ba8055e50"
+      "url": "/downloads/Matrix-Updater-1.0.14.exe",
+      "bytes": 39646367,
+      "sha256": "24509641988e224fabc3439ddaa4a7503f38acd3ee4e787379c564c534783896"
     }
   },
   "audit": {
