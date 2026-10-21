@@ -33,13 +33,13 @@
     "notes": "Side-by-side multi-form window tiling, PNR privacy masking (last 3 digits), overhauled Cyber Emerald Status UI, illuminated controller dock toolbar icons, and streamlined tools window.",
     "offlineSetup": {
       "url": "/downloads/Matrix-Setup-1.0.14.exe",
-      "bytes": 282596701,
-      "sha256": "ebf593a699951fae86ac35b251d1bc4e6a271076a3c16fca045cc36efcf50cac"
+      "bytes": 276873946,
+      "sha256": "998b7b3ce4082cca0a5ca8cd182b3194fd0d4fce8b33eb19d9999416b2d08f08"
     },
     "updaterExe": {
       "url": "/downloads/Matrix-Updater-1.0.14.exe",
-      "bytes": 39646367,
-      "sha256": "24509641988e224fabc3439ddaa4a7503f38acd3ee4e787379c564c534783896"
+      "bytes": 39260584,
+      "sha256": "915c02c70bddad8fb93e170ea66e3871f49521d97db4543fd5e0dac854bd5368"
     }
   },
   "audit": {
