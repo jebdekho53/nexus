@@ -30,7 +30,7 @@ function install(electron,root) {
       const b=win.getBounds();
       if(b.width!==974||b.height!==80)return;
       fitting=true;
-      const w=660,h=58,area=electron.screen.getDisplayMatching(b).workArea;
+      const w=970,h=58,area=electron.screen.getDisplayMatching(b).workArea;
       const x=Math.min(Math.max(b.x+Math.round((b.width-w)/2),area.x),area.x+area.width-w);
       win.setBounds({x,y:b.y+b.height-h,width:w,height:h});
       fitting=false;

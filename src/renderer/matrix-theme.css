@@ -56,7 +56,76 @@ body.matrix-splash .bg,body.matrix-splash .scrim{display:none!important}body.mat
 .cal-day:disabled,.cal-day.past{background:#151b25!important;color:#657185!important;cursor:not-allowed!important;opacity:.65}
 .cal-day:hover:not(:disabled):not(.past):not(.sel){background:#2c4260!important;color:#fff!important}
 .cal-title,.cal-dow span{color:#c8d8ee!important}.cal-pop,.bb-calpop{background:#191e2a!important;color:#e8ecf1!important;z-index:1000!important}
-.matrix-controller .box .ic,.matrix-controller .box .ic svg{width:24px!important;height:24px!important}.matrix-controller .box .ic svg{stroke-width:1.9}
+.matrix-controller /* Controller toolbar buttons & logo styling */
+.matrix-controller .bar {
+  background: rgba(10, 15, 25, 0.96) !important;
+  border: 1px solid #1e293b !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), 0 0 20px rgba(16, 185, 129, 0.1) !important;
+}
+
+.matrix-controller .box {
+  padding: 0 10px 0 8px !important;
+  gap: 6px !important;
+  border-radius: 12px !important;
+  transition: all 0.2s ease !important;
+}
+
+.matrix-controller .box .lb {
+  max-width: 90px !important;
+  opacity: 0.92 !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.3px !important;
+  margin-left: 2px !important;
+  color: #cbd5e1 !important;
+}
+
+.matrix-controller .box:hover {
+  background: rgba(30, 41, 59, 0.8) !important;
+  transform: translateY(-1px) !important;
+}
+
+.matrix-controller .box:hover .lb {
+  color: #ffffff !important;
+}
+
+/* Distinct Vibrant Logo Colors for Each Toolbar Option */
+.matrix-controller .box[data-action="new-form"] .ic svg {
+  stroke: #10b981 !important;
+  filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.5));
+}
+.matrix-controller .box[data-action="open-form"] .ic svg {
+  stroke: #f59e0b !important;
+  filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.5));
+}
+.matrix-controller .box[data-action="login-data"] .ic svg {
+  stroke: #38bdf8 !important;
+  filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.5));
+}
+.matrix-controller .box[data-action="proxy"] .ic svg {
+  stroke: #a855f7 !important;
+  filter: drop-shadow(0 0 6px rgba(168, 85, 247, 0.5));
+}
+.matrix-controller .box[data-action="payment"] .ic svg {
+  stroke: #ec4899 !important;
+  filter: drop-shadow(0 0 6px rgba(236, 72, 153, 0.5));
+}
+.matrix-controller .box[data-action="history"] .ic svg {
+  stroke: #14b8a6 !important;
+  filter: drop-shadow(0 0 6px rgba(20, 184, 166, 0.5));
+}
+.matrix-controller .box[data-action="tools"] .ic svg {
+  stroke: #94a3b8 !important;
+  filter: drop-shadow(0 0 6px rgba(148, 163, 184, 0.5));
+}
+.matrix-controller .box[data-action="updates"] .ic svg {
+  stroke: #6366f1 !important;
+  filter: drop-shadow(0 0 6px rgba(99, 102, 241, 0.5));
+}
+.matrix-controller .box[data-action="logs"] .ic svg {
+  stroke: #22c55e !important;
+  filter: drop-shadow(0 0 6px rgba(34, 197, 94, 0.5));
+}
 .matrix-booking-box .bb-timebox{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:1px}
 #matrixGeneralTimer{font-size:10px;line-height:12px;color:#b9d7ff;font-variant-numeric:tabular-nums;white-space:nowrap}#matrixGeneralTimer[hidden]{display:none}
 .matrix-header-logo{width:26px;height:26px;object-fit:contain;flex-shrink:0}.matrix-app-lock .al-lock{background:transparent!important}.matrix-app-lock .al-lock .matrix-mark{width:48px;height:48px}
