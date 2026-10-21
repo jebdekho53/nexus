@@ -2,10 +2,40 @@
 const path=require('node:path'),{fileURLToPath}=require('node:url');
 function install(electron,root){
  const route=win=>{try{const u=new URL(win.webContents.getURL());return (u.pathname.includes('booking-box.html')||path.resolve(fileURLToPath(u))===path.join(root,'src/renderer/booking-box.html'))?u:null;}catch{return null;}};
+ const isFormEditor=win=>{try{const u=new URL(win.webContents.getURL());return (u.pathname.includes('form.html')||path.resolve(fileURLToPath(u))===path.join(root,'src/renderer/form.html'))&&!u.pathname.includes('open-form.html');}catch{return false;}};
+
  electron.app.on('browser-window-created',(_event,ticket)=>{
-  let parent,popupParent,placing=false,attached=false,popupAttached=false;
+  let parent,popupParent,placing=false,attached=false,popupAttached=false,tiled=false;
   const nativeBounds=ticket.setBounds.bind(ticket);
   const isTicket=()=>route(ticket)?.searchParams.get('view')==='ticket';
+  const isPair=()=>{const r=route(ticket);return r&&r.searchParams.get('view')!=='ticket';};
+  const isForm=()=>isFormEditor(ticket);
+
+  // Side-by-side layout: when multiple forms or pair windows open, place them side-by-side rather than overlapping.
+  function tileSideBySide(){
+   if(tiled||ticket.isDestroyed()||isTicket())return false;
+   const pair=isPair(),form=isForm();
+   if(!pair&&!form)return false;
+   const all=electron.BrowserWindow.getAllWindows().filter(w=>w!==ticket&&!w.isDestroyed()&&w.isVisible!==false&&(typeof w.isVisible!=='function'||w.isVisible())&&(pair?route(w)?.searchParams.get('view')!=='ticket':isFormEditor(w)));
+   if(!all.length)return false;
+   all.sort((a,b)=>a.getBounds().x-b.getBounds().x);
+   const last=all[all.length-1],bLast=last.getBounds(),area=electron.screen.getDisplayMatching(bLast).workArea;
+   const cur=ticket.getBounds(),w=cur.width||(pair?380:480),h=cur.height||(pair?260:540),gap=14;
+   let nextX=bLast.x+bLast.width+gap,nextY=bLast.y;
+   if(nextX+w>area.x+area.width){
+    const first=all[0].getBounds();
+    nextX=first.x;nextY=bLast.y+bLast.height+gap;
+    if(nextY+h>area.y+area.height){
+     const off=(all.length*28)%140;
+     nextX=area.x+20+off;nextY=area.y+30+off;
+    }
+   }
+   tiled=true;
+   ticket.__matrixTiledPos={x:nextX,y:nextY};
+   nativeBounds({...cur,x:nextX,y:nextY,width:w,height:h});
+   return true;
+  }
+
   const findPopup=(id,pb)=>{
    if(id&&electron.__qrPopups?.has(id)){
     const p=electron.__qrPopups.get(id);
@@ -47,9 +77,28 @@ function install(electron,root){
   }
   function detachPopup(){if(popupAttached){popupParent?.removeListener('move',place);popupParent?.removeListener('resize',place);popupParent?.removeListener('closed',place);popupParent=null;}popupAttached=false;}
   function detach(){detachPopup();if(attached){parent?.removeListener('move',place);parent?.removeListener('resize',place);parent=null;}attached=false;}
-  ticket.setBounds=(bounds,...args)=>{const result=nativeBounds(bounds,...args);place();return result;};
-  if(typeof ticket.setPosition==='function'){const native=ticket.setPosition.bind(ticket);ticket.setPosition=(...args)=>{const result=native(...args);place();return result;};}
-  ticket.webContents.on('did-finish-load',place);ticket.on('show',place);ticket.on('resize',place);ticket.on('closed',detach);
+  ticket.setBounds=(bounds,...args)=>{
+   if(ticket.__matrixTiledPos&&!isTicket()){
+    if(bounds&&typeof bounds.x==='number'&&bounds.x<=30&&ticket.__matrixTiledPos.x>30){
+     bounds={...bounds,x:ticket.__matrixTiledPos.x,y:ticket.__matrixTiledPos.y};
+    }
+   }
+   const result=nativeBounds(bounds,...args);place();return result;
+  };
+  if(typeof ticket.setPosition==='function'){
+   const native=ticket.setPosition.bind(ticket);
+   ticket.setPosition=(...args)=>{
+    if(ticket.__matrixTiledPos&&!isTicket()&&typeof args[0]==='number'&&args[0]<=30&&ticket.__matrixTiledPos.x>30){
+     args[0]=ticket.__matrixTiledPos.x;args[1]=ticket.__matrixTiledPos.y;
+    }
+    const result=native(...args);place();return result;
+   };
+  }
+  ticket.webContents.on('did-finish-load',()=>{place();tileSideBySide();});
+  ticket.on('show',()=>{place();tileSideBySide();});
+  ticket.on('ready-to-show',()=>{place();tileSideBySide();});
+  ticket.on('resize',place);
+  ticket.on('closed',detach);
  });
 }
 module.exports={install};

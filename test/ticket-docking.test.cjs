@@ -35,3 +35,18 @@ test('when QR popup is open below booking panel, success ticket docks below QR p
  ticket.emit('closed');
 });
 
+test('multiple pair or form windows tile side-by-side instead of stacking on top of each other',()=>{
+ const root=path.resolve(__dirname,'..'),url=pathToFileURL(path.join(root,'src/renderer/booking-box.html')).href,app=new EventEmitter(),windows=[];
+ const make=(query,bounds)=>{const win=new EventEmitter();win.webContents=new EventEmitter();win.webContents.getURL=()=>url+query;win.isDestroyed=()=>false;win.isVisible=()=>true;win.getBounds=()=>({...bounds});win.setBounds=b=>{bounds={...b};win.emit('resize');};win.setPosition=(x,y)=>{bounds={...bounds,x,y};};windows.push(win);return win;};
+ const pair1=make('?id=p1',{x:20,y:40,width:380,height:260});
+ const pair2=make('?id=p2',{x:20,y:40,width:380,height:260});
+ require('../src/main/runtime/ticket-docking.cjs').install({app,BrowserWindow:{getAllWindows:()=>windows},screen:{getDisplayMatching:()=>({workArea:{x:0,y:0,width:1920,height:1080}})}},root);
+ app.emit('browser-window-created',{},pair2);
+ pair2.webContents.emit('did-finish-load');
+ // pair2 should be positioned side-by-side to the right of pair1 (20 + 380 + 14 = 414), not on top of it (20)
+ assert.equal(pair2.getBounds().x,414);
+ assert.equal(pair2.getBounds().y,40);
+ pair1.emit('closed');pair2.emit('closed');
+});
+
+

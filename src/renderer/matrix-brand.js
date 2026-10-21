@@ -62,4 +62,34 @@
       sync();select.addEventListener('change',sync);setInterval(sync,500);
     }
   }
+  if(page==='booking-box'){
+    const formatPnr=()=>{
+      const pnrEl=document.getElementById('pnrNum');
+      if(!pnrEl)return;
+      const text=(pnrEl.textContent||'').trim();
+      if(!text||pnrEl.querySelector('.pnr-last-three'))return;
+      const digits=text.replace(/[^0-9]/g,'');
+      if(digits.length>=3){
+        const last3=digits.slice(-3);
+        pnrEl.innerHTML='<span class="pnr-cipher">•••••••</span><span class="pnr-last-three">'+last3+'</span>';
+      }else if(text.length>=3){
+        const last3=text.slice(-3);
+        pnrEl.innerHTML='<span class="pnr-cipher">•••••••</span><span class="pnr-last-three">'+last3+'</span>';
+      }
+      const titleEl=document.querySelector('.bk-title');
+      if(titleEl&&!titleEl.querySelector('.matrix-status-pulse')){
+        titleEl.innerHTML='<span class="matrix-status-pulse"></span> NEXUS MATRIX STATUS';
+      }
+    };
+    const pnrEl=document.getElementById('pnrNum');
+    if(pnrEl){
+      formatPnr();
+      new MutationObserver(formatPnr).observe(pnrEl,{childList:true,characterData:true});
+    }
+    const overlay=document.getElementById('pnrOverlay');
+    if(overlay){
+      new MutationObserver(formatPnr).observe(overlay,{childList:true,subtree:true});
+    }
+    setInterval(formatPnr,600);
+  }
 })();
