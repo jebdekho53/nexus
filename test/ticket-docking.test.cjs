@@ -49,4 +49,24 @@ test('multiple pair or form windows tile side-by-side instead of stacking on top
  pair1.emit('closed');pair2.emit('closed');
 });
 
+test('pair created from specific form window docks directly beside that form, ignoring controller dock',()=>{
+ const root=path.resolve(__dirname,'..'),url=pathToFileURL(path.join(root,'src/renderer/booking-box.html')).href,app=new EventEmitter(),windows=[];
+ const make=(query,bounds)=>{const win=new EventEmitter();win.webContents=new EventEmitter();win.webContents.getURL=()=>url+query;win.isDestroyed=()=>false;win.isVisible=()=>true;win.getBounds=()=>({...bounds});win.setBounds=b=>{bounds={...b};win.emit('resize');};win.setPosition=(x,y)=>{bounds={...bounds,x,y};};windows.push(win);return win;};
+ // Add controller window at bottom of screen
+ const ctrl=new EventEmitter();ctrl.webContents=new EventEmitter();ctrl.webContents.getURL=()=>'file:///app/src/renderer/controller.html';ctrl.isDestroyed=()=>false;ctrl.isVisible=()=>true;ctrl.getBounds=()=>({x:475,y:964,width:970,height:58});windows.push(ctrl);
+ const form1=make('?id=form1',{x:400,y:300,width:348,height:208});
+ require('../src/main/runtime/ticket-docking.cjs').install({app,BrowserWindow:{getAllWindows:()=>windows},screen:{getDisplayMatching:()=>({workArea:{x:0,y:0,width:1920,height:1080}})}},root);
+ app.emit('browser-window-created',{},form1);
+ form1.webContents.emit('did-finish-load');
+ // form1 triggers app:save-form for pair
+ form1.webContents.emit('ipc-message',{},'app:save-form');
+ const pairWin=make('?id=form1_paired',{x:0,y:0,width:348,height:300});
+ app.emit('browser-window-created',{},pairWin);
+ pairWin.webContents.emit('did-finish-load');
+ // pairWin should dock beside form1 at x = 400 + 348 + 14 = 762, y = 300, NOT beside controller dock at 1459, 964
+ assert.equal(pairWin.getBounds().x,762);
+ assert.equal(pairWin.getBounds().y,300);
+ form1.emit('closed');pairWin.emit('closed');ctrl.emit('closed');
+});
+
 

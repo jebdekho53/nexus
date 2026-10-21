@@ -227,3 +227,13 @@ if(process.argv.includes('--dev-check')) {
     }
   }, 12000);
 }
+if(process.argv.includes('--pair-check')) {
+  setTimeout(async () => {
+    try {
+      await require(path.join(projectRoot,'test/live-pair-debug.cjs'))(electron,projectRoot,log);
+    } catch(err) {
+      log('pair-check-error', { error: String(err.message) });
+      process.exit(1);
+    }
+  }, 5000);
+}
