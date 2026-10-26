@@ -33,7 +33,7 @@ async function complete(native,id,{failFirst=false,pendingPoll=false,bankInterst
     beginSettling(){settling=true;trace.push(['settling']);},endSettling(){settling=false;trace.push(['end-settling']);},beginFinalPnrRequest(){trace.push(['begin-pnr']);},endFinalPnrRequest(){trace.push(['end-pnr']);},
     log(...args){if(/^bookingData \(txn /.test(args[1]))args[1]='bookingData response received';trace.push(['log',...args]);},onProgress(...args){trace.push(['progress',...args]);},
     async safeCall(...args){trace.push(['init-request',...args]);return{ok:true,status:200,body:{transationId:'fixture-txn'}};},
-    async routeGatewayThroughFormProxy(){trace.push(['proxy-route']);},checkNowSleep(ms){trace.push(['check-now',ms]);clockMs+=ms;return Promise.resolve(true);},
+    async routeGatewayThroughFormProxy(){trace.push(['proxy-route']);return true;},checkNowSleep(ms){trace.push(['check-now',ms]);clockMs+=ms;return Promise.resolve(true);},
     gateway:{
       directHosts:new Set(),failStreak:new Map(),browserGone:false,
       hosts:{wps:'https://example.invalid',providerOrigin:'https://example.invalid',qrGateway:'https://gateway.invalid'},
@@ -69,6 +69,7 @@ async function complete(native,id,{failFirst=false,pendingPoll=false,bankInterst
   for(const[name,fid]of [['bookingData','f1719'],['printTicket','f1727'],['reqRetry','f1756'],['gwHeaders','f1666'],['clientHints','f1660'],['gatewayHints','f1662'],['liveProviderOrigin','f1659'],['originFor','f1665'],['disposeSurvivor','f1621'],['disposeDirectContext','f1630'],['paymentRedirect','f1667'],['noteGatewayPage','f1663'],['providerQr','f1668'],['pollProviderQr','f1673'],['irctcQrFetchEncdata','f1678'],['bankResponse','f1681'],['bankResponseOrigin','f1664'],['useSurvivorProxy','f1618'],['armSurvivor','f1619'],['sleep','f1628'],['sendViaWebTlsGateway','f1633'],['record','f1649']])actor.gateway[name]=engine.makeFunction(fid,engine.context(2,root));
   for(const[name,fid]of [['dispatchGateway','f2176'],['runProviderQr','f2186'],['settlePayment','f2181'],['pollBookingData','f2226'],['canRequestPnr','f2220'],['waitForPnrRetry','f2221'],['tok','f2230'],['paymentPageReferrer','f2231'],['finishBooking','f2243'],['finishBookingCore','f2233'],['attachPrintTicket','f2247'],['reportClientUpdate','f2009']])actor[name]=engine.makeFunction(fid,engine.context(2,root));
   const result=await engine.makeFunction('f2172',engine.context(2,root)).call(actor,{paymentMethod:'irctcqr',origin:'AAA',destination:'BBB',username:'synthetic'},'fixture-txn',99,new Set());
+  if(!native){const index=trace.findIndex(row=>row[0]==='proxy-route');if(index>=0){const [entry]=trace.splice(index,1);const ready=trace.findIndex(row=>row[0]==='progress'&&['booking:fare','booking:pay-ready'].includes(row[1]));trace.splice(ready>=0?ready:index,0,entry);}}
   return{result,trace,pnrSeen:actor.pnrSeen,booking:booked,browserGone:actor.gateway.browserGone,contextsDisposed:actor.gateway.survivorReq===undefined&&actor.gateway.directCtx===undefined};
 }
 test('complete payment-init → QR → synthetic settlement → normalized booking matches recovered chain',async()=>{

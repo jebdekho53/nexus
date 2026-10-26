@@ -19,8 +19,10 @@
     <script defer src="./matrix-build.js"></script>
     <script defer src="./matrix-payments.js"></script>
     <script defer src="./matrix-brand.js"></script>
-  </head>
-  <body>
+      <link rel="stylesheet" href="./matrix-panels.css">
+    <link rel="stylesheet" href="./matrix-visual.css">
+</head>
+  <body class="matrix-updates">
     <header class="topbar">
       <div class="brand">
         <span class="dot"></span>
@@ -32,8 +34,8 @@
       <button type="button" class="win-close" id="winClose" title="Close">✕</button>
     </header>
 
-    <main class="panel-wrap">
-      <section class="card">
+    <main class="panel-wrap release-workspace">
+      <section class="card release-tile release-tile-0">
         <div class="card-head">
           <span class="ic">⟳</span>
           <div>
@@ -49,7 +51,7 @@
         <div class="kv"><span class="k">Note</span><span class="v" id="reason">—</span></div>
       </section>
 
-      <section class="card">
+      <section class="card release-tile release-tile-1">
         <div class="card-head">
           <span class="ic">⤓</span>
           <div>
@@ -70,7 +72,7 @@
       <!-- OFFICIAL TELEGRAM (operator 2026-07-29): the same channel as the controller pill, given a proper card here
            since Updates is where a user looks for news. Same card grammar as the others (icon + title + sub), with the
            handle shown so it is verifiable BEFORE clicking, and one unmistakable Follow action. -->
-      <section class="card">
+      <section class="card release-tile release-tile-2">
         <div class="card-head">
           <span class="ic tg-ic-card">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.94 4.6l-2.9 13.68c-.22 1-.82 1.24-1.66.77l-4.6-3.39-2.22 2.14c-.24.24-.45.45-.92.45l.33-4.68 8.5-7.68c.37-.33-.08-.51-.57-.18L6.4 12.9 1.9 11.5c-.98-.3-1-.98.2-1.45l18.1-6.98c.82-.3 1.54.2 1.27 2.03z"/></svg>
@@ -92,7 +94,7 @@
         </div>
       </section>
 
-      <section class="card">
+      <section class="card release-tile release-tile-3">
         <div class="card-head">
           <span class="ic">↺</span>
           <div>

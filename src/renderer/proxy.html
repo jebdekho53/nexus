@@ -22,8 +22,10 @@
     <script defer src="./matrix-build.js"></script>
     <script defer src="./matrix-payments.js"></script>
     <script defer src="./matrix-brand.js"></script>
-  </head>
-  <body>
+      <link rel="stylesheet" href="./matrix-panels.css">
+  <script defer src="./matrix-workspace.js"></script>  <link rel="stylesheet" href="./matrix-visual.css">
+</head>
+  <body class="matrix-proxy">
     <header class="topbar">
       <div class="brand">
         <span class="dot"></span>
@@ -122,7 +124,7 @@
           </button>
           <button type="button" class="imp-opt" id="addPaste">
             <div class="l">Paste</div>
-            <div class="r">Paste proxies — one per line, IP:PORT:USERNAME:PASSWORD.</div>
+            <div class="r">Import Proxy List — one per line, IP:PORT:USERNAME:PASSWORD.</div>
           </button>
         </div>
       </div>
@@ -152,17 +154,17 @@
     <div id="pasteModal" class="modal-overlay hidden">
       <div class="modal-card">
         <div class="modal-head">
-          <div class="modal-title">Paste proxies</div>
+          <div class="modal-title">Import Proxy List</div>
           <button type="button" class="modal-x" id="pasteClose">✕</button>
         </div>
-        <div class="paste-body">
+        <div class="paste-body paste-workspace"><aside class="paste-guide"><span class="workspace-kicker">BULK CONNECTIONS</span><h2>Bring your<br>proxy list.</h2><p>Paste your connections in the editor. Each line becomes one saved proxy.</p><div class="paste-guide-steps"><b>01 <span>Paste one proxy per line</span></b><b>02 <span>Review the format</span></b><b>03 <span>Add to your library</span></b></div></aside><div class="paste-editor"><div class="paste-editor-label"><span>CONNECTION LIST</span><span id="pasteLineCount">0 lines</span></div>
           <div class="paste-hint">One proxy per line, format: <code>IP:PORT:USERNAME:PASSWORD</code> &nbsp;(or <code>IP:PORT</code> for no auth)</div>
           <textarea id="pasteArea" class="paste-area" rows="8" spellcheck="false" placeholder="192.23.2.2:8990:user1:password&#10;45.12.9.7:3128:user2:pass2&#10;103.4.5.6:8080"></textarea>
           <div id="pasteErr" class="paste-err hidden"></div>
           <div class="modal-actions">
             <button type="button" class="btn" id="pasteCancel">Cancel</button>
-            <button type="button" class="btn primary" id="pasteGo">Add</button>
-          </div>
+            <button type="button" class="btn primary" id="pasteGo">Add connections →</button>
+          </div></div>
         </div>
       </div>
     </div>

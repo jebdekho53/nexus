@@ -1,2 +1,2 @@
 const {contextBridge,ipcRenderer}=require('electron');
-contextBridge.exposeInMainWorld('matrixActivation',{state:()=>ipcRenderer.invoke('matrix:activation:state'),activate:key=>ipcRenderer.invoke('matrix:activation:activate',key),admin:()=>ipcRenderer.invoke('matrix:activation:admin'),seller:()=>ipcRenderer.invoke('matrix:activation:seller')});
+contextBridge.exposeInMainWorld('matrixActivation',{state:()=>ipcRenderer.invoke('matrix:activation:state'),trial:()=>ipcRenderer.invoke('matrix:activation:trial'),activate:key=>ipcRenderer.invoke('matrix:activation:activate',key),admin:()=>ipcRenderer.invoke('matrix:activation:admin'),seller:()=>ipcRenderer.invoke('matrix:activation:seller')});

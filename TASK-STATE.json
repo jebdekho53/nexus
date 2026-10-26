@@ -1,6 +1,6 @@
 {
   "status": "in_progress",
-  "progress": "Phases1–29: 91 native entries plus booking controllers f2102, f2161, f3149, f3132, f2064, f2269 (src/main/booking), 422 contract pins, 2194-test full suite passes cleanly. Compiled runtime is the default; --interpreter-runtime keeps the interpreter. Differential matches. Windows verification passed (2194 tests passing). Public 1.0.11 unchanged; no live service/build/deployment.",
+  "progress": "Phases1\u201329: 91 native entries plus booking controllers f2102, f2161, f3149, f3132, f2064, f2269 (src/main/booking), 422 contract pins, 2194-test full suite passes cleanly. Compiled runtime is the default; --interpreter-runtime keeps the interpreter. Differential matches. Windows verification passed (2194 tests passing). Public 1.0.11 unchanged; no live service/build/deployment.",
   "task": "Reconstruct recovered Matrix payment logic into maintainable JavaScript",
   "completedLatestTask": {
     "task": "Fix WebLogin Chrome selection closing another independent pair panel",
@@ -27,19 +27,19 @@
     "install": "diagnostics/local-1.0.10-update.json"
   },
   "release": {
-    "version": "1.0.14",
+    "version": "1.0.21",
     "name": "Matrix",
     "distribution": "cross-platform",
-    "notes": "Side-by-side multi-form window tiling, PNR privacy masking (last 3 digits), overhauled Cyber Emerald Status UI, illuminated controller dock toolbar icons, and streamlined tools window.",
+    "notes": "Seamless Chromium and Matrix Browser launch resolution, full-bleed PDF download fix, and permanent cross-profile/cross-update device identity and activation key persistence.",
     "offlineSetup": {
-      "url": "/downloads/Matrix-Setup-1.0.14.exe",
-      "bytes": 276873946,
-      "sha256": "998b7b3ce4082cca0a5ca8cd182b3194fd0d4fce8b33eb19d9999416b2d08f08"
+      "url": "/downloads/Matrix-Setup-1.0.21.exe",
+      "bytes": 282668164,
+      "sha256": "370da18cf8f81ff3670463a32a03d5e05ba6bd563a8a4b05607601666a7d71c3"
     },
     "updaterExe": {
-      "url": "/downloads/Matrix-Updater-1.0.14.exe",
-      "bytes": 39260584,
-      "sha256": "915c02c70bddad8fb93e170ea66e3871f49521d97db4543fd5e0dac854bd5368"
+      "url": "/downloads/Matrix-Updater-1.0.21.exe",
+      "bytes": 39711253,
+      "sha256": "35345debb7e300011f2867647297583e08ad0d54f6d06246e2858f760b6ada36"
     }
   },
   "audit": {
@@ -252,5 +252,49 @@
       "externalPushPerformed": false
     }
   },
-  "continuationSchedule": "First16Oct2026at18:42IST, then every5h30m (330min). Existing general unfinished-task fallback remains active."
+  "continuationSchedule": "First16Oct2026at18:42IST, then every5h30m (330min). Existing general unfinished-task fallback remains active.",
+  "localBuild": {
+    "version": "1.0.21",
+    "status": "verified_local_only",
+    "date": "2026-10-23",
+    "published": false,
+    "serverUploaded": false,
+    "installer": "..\\matrix-build\\local-1.0.21\\Matrix-Setup-1.0.21.exe",
+    "updater": "..\\matrix-build\\local-1.0.21\\Matrix-Updater-1.0.21.exe",
+    "sha256": "f09d7a1aaed2c202ee1511576b907185fb48a3814efb8ec5cb6147d67ed54434",
+    "tests": 2219,
+    "testsFailed": 0,
+    "dedicatedChromiumLaunch": true,
+    "dedicatedMatrixEngineLaunch": true,
+    "accountsCloseVerifiedWidths": [
+      480,
+      700,
+      1000
+    ],
+    "installerPayloadVerified": true,
+    "updaterPayloadVerified": true,
+    "liveBookingTested": false
+  },
+  "sellerKeyVisibility": {
+    "deployed": true,
+    "host": "103.109.183.247",
+    "url": "https://matrix.vaidya-gpt.com/seller",
+    "tests": 15,
+    "previousRegistryMigrated": false
+  },
+  "pendingChanges": {
+    "date": "2026-10-23",
+    "status": "source_verified_not_packaged",
+    "items": [
+      "QR always inside its booking panel, ignoring legacy separate-popup preference",
+      "Success reuses the matching booking native window and preserves bounds",
+      "Payment-app logos removed; 260px QR image verified in 480x420 viewport",
+      "Browser selection uses a three-column two-row grid"
+    ],
+    "tests": 2220,
+    "failed": 0,
+    "electronDiagnostic": "diagnostics/single-box-flow/qa.json",
+    "newInstallerBuilt": false,
+    "serverUploaded": false
+  }
 }

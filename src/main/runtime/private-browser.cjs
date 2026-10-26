@@ -4,6 +4,7 @@ const os=require('node:os');
 const path=require('node:path');
 const {AsyncLocalStorage}=require('node:async_hooks');
 const loginScope=new AsyncLocalStorage();
+const browserChoice=new AsyncLocalStorage();
 const denialMessage='IRCTC denied this browser session at its security challenge. Login was stopped; an IP block has not been confirmed.';
 function canonicalEntry(value){
   try{
@@ -29,19 +30,92 @@ async function withPrivateLogin(invoke){
   });
 }
 
+function getFingerprintEngineArgs(options = {}) {
+  const seed = Math.floor(Math.random() * 2147483646) + 1;
+  const platform = process.env.FINGERPRINT_PLATFORM || 'windows';
+  const concurrency = options.hardwareConcurrency || (os.cpus ? os.cpus().length : 4);
+  const tz = options.timezone || (typeof Intl !== 'undefined' ? Intl.DateTimeFormat().resolvedOptions().timeZone : 'Asia/Kolkata');
+  const langs = options.langs || 'en-US,en';
+
+  const args = [
+    `--fingerprint=${seed}`,
+    '--fingerprint-brand=Chrome',
+    `--fingerprint-platform=${platform}`,
+  ];
+  if (platform !== 'windows') {
+    args.push('--disable-spoofing=gpu');
+  }
+  if (concurrency) {
+    args.push(`--fingerprint-hardware-concurrency=${concurrency}`);
+  }
+  if (tz) {
+    args.push(`--timezone=${tz}`);
+  }
+  if (langs) {
+    const primary = langs.split(',')[0];
+    args.push(`--lang=${primary}`, `--accept-lang=${langs}`);
+  }
+  return args;
+}
+
 // Native Chromium providers share f184. Keep browser discovery/proxy/process
 // ownership in the recovered launcher, but never browse in its disk profile.
 function privateBrowser(log=()=>{},dependencies={}) {
   const files=dependencies.fs||fs;
   const ownedPages=new WeakSet();
   const freshLogin=(original,[credentials,options={}])=>{
-    const invoke=()=>original(credentials,{...options,cookieState:undefined,cookieStatePool:undefined,launchHidden:false});
+    const selected=browserChoice.getStore();
+    const invoke=()=>original(credentials,{...options,...(selected?{provider:selected}:{}),cookieState:undefined,cookieStatePool:undefined,launchHidden:false});
     return loginScope.getStore()?invoke():withPrivateLogin(invoke);
   };
-  return {
+  const hooks={
+    // The recovered app login handler rewrites fingerprint to brahmos before
+    // launching. Preserve the user's Chromium choice through that handler and
+    // retain it on the session record for the subsequent booking/re-login.
+    async f3797(original,[record,request]){
+      if(request?.provider!=='fingerprint')return original(record,request);
+      const result=await browserChoice.run('fingerprint',()=>original(record,request));
+      if(record)record.provider='fingerprint';
+      return result;
+    },
     // A fresh private context must not subsequently receive a saved cookie jar.
     f811:freshLogin,
     f829:freshLogin,
+    async f240(original,[options={}]){
+      if(process.platform!=='win32')return original(options);
+      const executablePath=require('./browser-engines.cjs').matrixEngine();
+      if(!executablePath)throw Error('Matrix Browser engine is not installed. Install Matrix Browser before selecting it.');
+      log('matrix-browser-engine',{browser:executablePath});
+      const chromium=(dependencies.chromium||require('../../../vendor/node_modules/patchright').chromium);
+      return hooks.f184(async launch=>{
+        const context=await chromium.launchPersistentContext(launch.userDataDir,{executablePath:launch.executablePath,headless:false,viewport:null,...(launch.proxy?{proxy:launch.proxy}:{}),timeout:30000});
+        return{context,dispose:()=>context.close()};
+      },[{...options,executablePath}]);
+    },
+    async f93(original,args){
+      // f93 is the shared executable resolver, including native discovery.
+      // Restrict the dedicated engine only inside a Chromium login request.
+      if(process.platform!=='win32'||browserChoice.getStore()!=='fingerprint')return original(...args);
+      const executable=require('./browser-engines.cjs').chromiumEngine();
+      if(!executable)throw Error('Chromium engine is not installed. Install Chromium before selecting it.');
+      return executable;
+    },
+    async f83(original,args){
+      if(process.platform==='win32'){
+        if(args[0]==='brahmos'){
+          const installed=!!require('./browser-engines.cjs').matrixEngine();
+          return{type:'brahmos',label:'Matrix Browser',installed,...(!installed?{reason:'Matrix Browser engine is not installed',downloadAvailable:false}:{})};
+        }
+        if(args[0]==='fingerprint'||args[0]==='chromium'){
+          const installed=!!require('./browser-engines.cjs').chromiumEngine();
+          return{type:args[0],label:'Chromium',installed,...(!installed?{reason:'Chromium engine is not installed',downloadAvailable:false}:{})};
+        }
+        if(args[0]==='gologin'){
+          return{type:'gologin',label:'GoLogin',installed:false,downloadAvailable:false,hidden:true};
+        }
+      }
+      return original(...args);
+    },
     async f184(original,[options={}]) {
       const state=loginScope.getStore();
       if(state?.denied)throw new Error(denialMessage);
@@ -75,7 +149,15 @@ function privateBrowser(log=()=>{},dependencies={}) {
         log('matrix-private-session-closed');
       });
       try {
-        session=await original({...options,userDataDir:directory,launchHidden:false,windowPosition:undefined});
+        const isFingerprint = browserChoice.getStore() === 'fingerprint' || options.provider === 'fingerprint' || options.nativeBrowser === 'fingerprint';
+        const fpArgs = isFingerprint ? getFingerprintEngineArgs(options) : [];
+        session = await original({
+          ...options,
+          userDataDir: directory,
+          launchHidden: false,
+          windowPosition: undefined,
+          ...(fpArgs.length ? { args: [...(options.args || []), ...fpArgs] } : {}),
+        });
         const browser=session?.context?.browser();
         if(typeof browser?.newContext!=='function')throw new Error('Native browser cannot create a private session');
         // Browser.newContext is Chromium's off-the-record (Incognito) context.
@@ -124,5 +206,6 @@ function privateBrowser(log=()=>{},dependencies={}) {
       }
     },
   };
+  return hooks;
 }
-module.exports={privateBrowser,withPrivateLogin,checkAccessDenied,denialMessage,canonicalEntry};
+module.exports={privateBrowser,withPrivateLogin,checkAccessDenied,denialMessage,canonicalEntry,getFingerprintEngineArgs};

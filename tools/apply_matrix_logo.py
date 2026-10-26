@@ -1,17 +1,29 @@
-"""Convert Futuristic Blue Matrix Software Logo into all application, installer, and website assets."""
+"""Convert the approved Matrix logo into application, installer and portal assets."""
 import base64
 import io
 import struct
 from pathlib import Path
-from PIL import Image
+from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parent.parent
-src_img_path = ROOT / 'Futuristic Blue Matrix Software Logo.png'
+src_img_path = ROOT / 'updatedlogo.png'
 if not src_img_path.exists():
     raise FileNotFoundError(f"Missing source logo: {src_img_path}")
 
 im = Image.open(src_img_path).convert('RGBA')
 print(f"Loaded logo: {im.size}, mode: {im.mode}")
+
+# A light backplate keeps the dark green artwork readable on Windows desktops.
+# Portal/renderer artwork below retains the original transparent logo.
+icon = Image.new('RGBA', (1024, 1024), (0, 0, 0, 0))
+ImageDraw.Draw(icon).rounded_rectangle((16, 16, 1007, 1007), radius=176,
+    fill=(239, 255, 245, 255), outline=(123, 207, 159, 255), width=12)
+art = im.crop(im.getbbox())
+art.thumbnail((900, 900), Image.Resampling.LANCZOS)
+icon.alpha_composite(art, ((1024-art.width)//2, (1024-art.height)//2))
+icon_512 = icon.resize((512, 512), Image.Resampling.LANCZOS)
+icon_png = io.BytesIO()
+icon_512.save(icon_png, format='PNG')
 
 # 1. Generate 512x512 RGBA PNG
 im_512 = im.resize((512, 512), Image.Resampling.LANCZOS)
@@ -34,7 +46,7 @@ png_1024_data = b1024.getvalue()
 # 4. Generate multi-resolution Windows .ico
 ico_sizes = [(16, 16), (24, 24), (32, 32), (48, 48), (64, 64), (128, 128), (256, 256)]
 b_ico = io.BytesIO()
-im.save(b_ico, format='ICO', sizes=ico_sizes)
+icon.save(b_ico, format='ICO', sizes=ico_sizes)
 ico_data = b_ico.getvalue()
 print(f"Generated ICO: {len(ico_data):,} bytes")
 
@@ -73,11 +85,12 @@ jpg_data = b_jpg.getvalue()
 
 # Write to all destinations
 destinations = {
-    ROOT / 'resources' / 'icon.png': png_512_data,
+    ROOT / 'resources' / 'icon.png': icon_png.getvalue(),
     ROOT / 'resources' / 'matrix.ico': ico_data,
     ROOT / 'resources' / 'Matrix.icns': bytes(icns_data),
     ROOT / 'src' / 'renderer' / 'assets' / 'matrix-mark.png': png_512_data,
     ROOT / 'src' / 'renderer' / 'assets' / 'matrix-mark.svg': svg_content.encode('utf-8'),
+    ROOT / 'src' / 'renderer' / 'icons' / 'brahmos.svg': svg_content.encode('utf-8'),
     ROOT / 'src' / 'renderer' / 'assets' / 'matrix-logo.jpg': jpg_data,
     ROOT / 'services' / 'control-plane' / 'assets' / 'matrix-logo.svg': svg_content.encode('utf-8'),
     ROOT / 'services' / 'control-plane' / 'assets' / 'matrix-mark.png': png_512_data,

@@ -98,3 +98,66 @@ test('only the bare HTTPS IRCTC entry becomes the SPA entry; security challenges
   assert.equal(canonicalEntry('https://www.irctc.co.in'),'https://www.irctc.co.in/nget/');
   for(const url of ['https://www.irctc.co.in/_sec/cpr/challenge?x=1','https://www.irctc.co.in/nget/train-search','https://www.irctc.co.in/?x=1','https://other.example/','http://www.irctc.co.in/'])assert.equal(canonicalEntry(url),url);
 });
+
+test('missing dedicated engines cannot silently open an unrelated installed browser',async()=>{
+  if(process.platform!=='win32')return;
+  const engines=require('../src/main/runtime/browser-engines.cjs');
+  const saved={matrixEngine:engines.matrixEngine,chromiumEngine:engines.chromiumEngine,anyChromiumEngine:engines.anyChromiumEngine};
+  try{
+    engines.matrixEngine=()=>undefined;engines.chromiumEngine=()=>undefined;
+    engines.anyChromiumEngine=()=>{throw Error('Unexpected fallback');};
+    const hooks=privateBrowser();
+    await assert.rejects(hooks.f240(()=>{throw Error('Unexpected launch');},[{}]),/Matrix Browser engine is not installed/);
+    assert.equal(await hooks.f93(()=>'/native/chrome.exe',[{}]),'/native/chrome.exe');
+    await assert.rejects(hooks.f3797(()=>hooks.f93(()=>{throw Error('Unexpected launch');},[]),[{}, {provider:'fingerprint'}]),/Chromium engine is not installed/);
+    for(const type of ['brahmos','fingerprint'])assert.equal((await hooks.f83(()=>{},[type])).installed,false);
+  }finally{Object.assign(engines,saved);}
+});
+
+test('recovered login routing cannot replace a selected Chromium with Matrix',async()=>{
+  const hooks=privateBrowser(),record={session:{}};
+  await hooks.f3797(async state=>{
+    state.provider='brahmos';
+    await hooks.f811(async(_credentials,options)=>assert.equal(options.provider,'fingerprint'),['synthetic',{provider:'brahmos'}]);
+  },[record,{provider:'fingerprint'}]);
+  assert.equal(record.provider,'fingerprint');
+  await hooks.f811(async(_credentials,options)=>assert.equal(options.provider,'brahmos'),['synthetic',{provider:'brahmos'}]);
+});
+
+test('getFingerprintEngineArgs generates valid anti-detect command line arguments matching TS 1.0.78', () => {
+  const { getFingerprintEngineArgs } = require('../src/main/runtime/private-browser.cjs');
+  const args = getFingerprintEngineArgs({ hardwareConcurrency: 8, timezone: 'Asia/Kolkata', langs: 'en-US,en' });
+
+  assert.ok(args.some(a => a.startsWith('--fingerprint=')), 'must include --fingerprint=<seed>');
+  assert.ok(args.includes('--fingerprint-brand=Chrome'), 'must include --fingerprint-brand=Chrome');
+  assert.ok(args.some(a => a.startsWith('--fingerprint-platform=')), 'must include --fingerprint-platform');
+  assert.ok(args.includes('--fingerprint-hardware-concurrency=8'), 'must include concurrency');
+  assert.ok(args.includes('--timezone=Asia/Kolkata'), 'must include timezone');
+  assert.ok(args.includes('--lang=en-US'), 'must include lang');
+  assert.ok(args.includes('--accept-lang=en-US,en'), 'must include accept-lang');
+});
+
+test('f184 injects fingerprint args when launching Chrome Advance / fingerprint browser', async () => {
+  const f = fixture();
+  const options = { nativeBrowser: 'fingerprint' };
+  await f.hook(f.original, [options]);
+  const launchArgs = f.launches[0].args;
+  assert.ok(Array.isArray(launchArgs), 'args must be an array');
+  assert.ok(launchArgs.some(a => a.startsWith('--fingerprint=')), 'must pass fingerprint seed');
+  assert.ok(launchArgs.includes('--fingerprint-brand=Chrome'), 'must pass fingerprint brand');
+});
+
+test('chromiumEngine honors FINGERPRINT_CHROMIUM_PATH override', () => {
+  const engines = require('../src/main/runtime/browser-engines.cjs');
+  const tempDummy = require('node:path').join(require('node:os').tmpdir(), 'dummy-fingerprint-chrome.exe');
+  require('node:fs').writeFileSync(tempDummy, '');
+  const oldEnv = process.env.FINGERPRINT_CHROMIUM_PATH;
+  try {
+    process.env.FINGERPRINT_CHROMIUM_PATH = tempDummy;
+    assert.equal(engines.chromiumEngine(), tempDummy);
+  } finally {
+    if (oldEnv !== undefined) process.env.FINGERPRINT_CHROMIUM_PATH = oldEnv;
+    else delete process.env.FINGERPRINT_CHROMIUM_PATH;
+    try { require('node:fs').unlinkSync(tempDummy); } catch {}
+  }
+});

@@ -32,6 +32,11 @@
 //   berthPreferenceUnmet(r)   [415 f568], notConfirmed(r)    [416 f569], passengerWait(times, count) [927 f2368]
 const NOT_BOOKABLE=/REGRET|DEPARTED|CANCELLED/i;
 const CANNOT_BOOK=/WL|REGRET|NOT AVAIL/i;
+const {resyncCurrentCsrf,pendingCsrfRefresh}=require('./csrf-recovery.cjs');
+function resyncCsrf(actor) {
+  if(typeof actor.refreshCsrfFromSpa==='function')resyncCurrentCsrf(actor);
+  else actor.api.resyncCsrf(actor.session.tokens.csrfToken);
+}
 
 const ignore=()=>undefined; // f2162 f2163 f2164 f2167
 
@@ -43,6 +48,7 @@ function killPair(actor) {
 }
 
 async function runBrowserBooking(actor,job,suppliedOptions,deps) {
+  actor.specialProbeState=null;
   const options=suppliedOptions!==undefined?suppliedOptions:{};
   const page=actor.session.page;
   const human=deps.humanFor(page);
@@ -89,7 +95,7 @@ async function runBrowserBooking(actor,job,suppliedOptions,deps) {
   }
   const hide=actor.opts.hideBrowser;
   if(hide==null||hide)await actor.hideBrowser().catch(ignore);
-  actor.api.resyncCsrf(actor.session.tokens.csrfToken);
+  resyncCsrf(actor);
   await actor.ensureCsrfEstablished(page,human,job,!actor.opts.manual);
   if(actor.stopped)return deps.stopped();
   actor.log('time','syncing server time (ensureServerTimeSynced)');
@@ -115,22 +121,41 @@ async function runBrowserBooking(actor,job,suppliedOptions,deps) {
 
   const probe=await actor.preTargetProbe(job,20000);
   if(actor.stopped)return deps.stopped();
+  if(typeof actor.refreshCsrfFromSpa === 'function') {
+    actor.csrfPreSlotArmed = true;
+    if(actor.csrfPreSlot == null) actor.csrfPreSlot = 'pending';
+  }
   actor.setTokenOwnership(true);
   if(probe!=='early') {
     const slot=actor.resolveTarget(job);
     if(slot&&actor.serverNow()<slot.ms) {
       let polls=0; // f2165 / f2166 share one counter per wait
-      const cover=()=>{const poll=actor.pollWindowCover;const index=polls;polls=index+1;return Reflect.apply(poll,actor,[human,index]);};
+      const cover=()=>{
+        const poll=actor.pollWindowCover;
+        const index=polls;
+        polls=index+1;
+        return Reflect.apply(poll,actor,[human,index]);
+      };
       await actor.waitUntilTarget(slot,cover,activity=>actor.safeBrowseActivity(human,activity));
       if(actor.stopped)return deps.stopped();
     }
   }
 
-  actor.api.resyncCsrf(actor.session.tokens.csrfToken);
+  await pendingCsrfRefresh(actor);
+  resyncCsrf(actor);
   if(!actor.api.csrfToken()) {
     actor.log('api','no browser-captured csrf before availability — re-establishing','warn');
     await actor.ensureCsrfEstablished(page,human,job,!actor.opts.manual).catch(ignore);
-    actor.api.resyncCsrf(actor.session.tokens.csrfToken);
+    resyncCsrf(actor);
+  }
+  if(typeof actor.refreshCsrfFromSpa === 'function') {
+    if(actor.csrfPreSlot === 'refreshed') {
+      actor.log('api','csrf already refreshed on the countdown — going straight to availability');
+    } else if(actor.csrfPreSlot === 'too-close') {
+      actor.log('api','csrf refresh skipped (slot was imminent) — going straight to availability on the token in hand','warn');
+    } else if(!target) {
+      await actor.refreshCsrfFromSpa('before availability').catch(ignore);
+    }
   }
   {
     const log=actor.log;
@@ -267,7 +292,7 @@ async function runBrowserBooking(actor,job,suppliedOptions,deps) {
       return{success:false,message:blocked};
     }
 
-    actor.api.resyncCsrf(actor.session.tokens.csrfToken);
+    resyncCsrf(actor);
     actor.onProgress('booking:submit','Submitting passengers');
     let submitted=null;
     let submitCovers=0; // f2169 counter

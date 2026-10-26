@@ -5,22 +5,26 @@
 // reasonType 'S' seat allotment checks, train cancellation handling,
 // and bounded adaptive retry intervals.
 
+const special = require('./special-train-probe.cjs');
+
 async function pollAvailability(actor, journey, trainNumber, quota, callOptions, deps = {}) {
   const options = callOptions || {};
   const random = deps.random || Math.random;
   const newSiteFlowAvail = Boolean(actor.opts?.newSiteFlowAvail);
-  const target = actor.resolveTarget ? actor.resolveTarget(journey) : null;
+  const canonical = special.canonicalizeJourney(journey);
+  const target = actor.resolveTarget ? actor.resolveTarget(canonical) : null;
 
-  if (!options.skipWait) {
+  // A stale caller skip flag must never move the first request before opening.
+  if (!options.skipWait || target?.ms > (actor.serverNow?.() ?? Date.now())) {
     if (!target) {
-      actor.log?.('availability', `NO slot gating: quota=${journey?.quota} class=${journey?.classCode} (slotKeyFor null / timing missing) — polling now`, 'warn');
+      actor.log?.('availability', `NO slot gating: quota=${canonical?.quota} class=${canonical?.classCode} (slotKeyFor null / timing missing) — polling now`, 'warn');
     } else {
       const serverNow = actor.serverNow ? actor.serverNow() : Date.now();
       const diffMs = target.ms - serverNow;
       const targetIstDate = new Date(target.ms + 19800000);
       const timeStr = targetIstDate.toISOString().slice(11, 23);
 
-      if (diffMs <= 1000) {
+      if (diffMs <= 0) {
         const passedSec = Math.round((-diffMs) / 1000);
         actor.log?.('availability', `slot ${target.label} (${timeStr} IST) ALREADY PASSED ${passedSec}s ago — polling immediately (set a future avail time to see the wait)`, 'warn');
       } else {
@@ -47,20 +51,37 @@ async function pollAvailability(actor, journey, trainNumber, quota, callOptions,
 
   let optStep = (actor.opts?.initialFlag || actor.opts?.masterCache) ? 1 : 0;
   let firstNetFailureTime = 0;
+  const key = special.journeyKey(journey, trainNumber);
+  const overallAnchorMs = Math.max(target?.ms ?? startServerNow, startServerNow);
+  const windowMs = deps.slotTimeoutWindowMs ?? 600000;
+  let specialActive = false;
 
   while (true) {
     if (actor.stopped) return null;
     if (actor.session?.page?.isClosed?.()) return null;
 
+    const current = actor.serverNow?.() ?? Date.now();
+    const existing = actor.specialProbeState;
+    if (existing?.journeyKey === key && current >= (existing.overallAnchorMs ?? overallAnchorMs) + windowMs) return null;
+    let probeJourney = canonical, shifted = false;
+    const guard = !newSiteFlowAvail && special.specialGuard(actor, canonical, target);
+    const baseDate = special.getJourneyDate(journey);
+    if (specialActive && guard && existing?.journeyKey === key && !special.checkFallbackDeadline(actor, existing)) {
+      const date = special.calculateShiftedDate(baseDate, current, existing.dateIndex);
+      if (date && date !== baseDate) {
+        probeJourney = { ...canonical, date, journeyDate: date };
+        shifted = true;
+      }
+    }
     const attemptStartNow = actor.now ? actor.now() : Date.now();
     attempt++;
 
     const body = !newSiteFlowAvail
-      ? (deps.buildBody ? deps.buildBody(journey, trainNumber) : null)
-      : deps.newSiteBody;
+      ? (deps.buildBody ? deps.buildBody(probeJourney, trainNumber) : null)
+      : (typeof deps.newSiteBody==='function'?deps.newSiteBody(journey,trainNumber):deps.newSiteBody);
     const url = !newSiteFlowAvail
-      ? (deps.buildUrl ? deps.buildUrl(journey, trainNumber) : null)
-      : (deps.newSiteUrl ? deps.newSiteUrl(journey, trainNumber) : null);
+      ? (deps.buildUrl ? deps.buildUrl(probeJourney, trainNumber) : null)
+      : (typeof deps.newSiteUrl==='function'?deps.newSiteUrl(journey,trainNumber):deps.newSiteUrl??null);
 
     if (actor.onProviderPage && !actor.onProviderPage()) {
       const ok = await actor.ensureOnProviderPage('check availability');
@@ -72,14 +93,14 @@ async function pollAvailability(actor, journey, trainNumber, quota, callOptions,
       }
     }
 
-    const res = await actor.safeCall('api', 'POST', body, url, {
+    const res = await actor.safeCall('api', 'POST', url, body, {
       terminalOn503: true,
       optVar: true,
       optShape: 'eticket',
       optStep
     });
 
-    if (actor.terminal) return null;
+    if (actor.terminal || actor.stopped || actor.session?.page?.isClosed?.()) return null;
 
     if (res) {
       firstNetFailureTime = 0;
@@ -89,10 +110,14 @@ async function pollAvailability(actor, journey, trainNumber, quota, callOptions,
       }
     }
 
-    if (res && deps.highloadStatuses?.has?.(res.status)) {
+    const hlStatuses = deps.highloadStatuses || new Set([429, 502, 504, 510, 511]);
+    if (res && (hlStatuses.has?.(res.status) || res.status === 510 || res.status === 511)) {
       actor.onProgress?.('booking:availability', `Check #${attempt} - checking…`);
       actor.log?.('availability', `High load (${res.status}) — retrying (check #${attempt})`, 'warn');
-      const delay = Math.floor(random() * 2000);
+      let delay = Math.floor(random() * 2000);
+      if (shifted && existing?.fallbackAtMs) {
+        delay = Math.max(0, Math.min(delay, existing.fallbackAtMs - (actor.serverNow?.() ?? Date.now())));
+      }
       if (actor.session?.page?.waitForTimeout) {
         await actor.session.page.waitForTimeout(delay);
       }
@@ -111,11 +136,53 @@ async function pollAvailability(actor, journey, trainNumber, quota, callOptions,
           ? (deps.parseResponse ? deps.parseResponse(res.body) : res.body)
           : (deps.parseNewSiteResponse ? deps.parseNewSiteResponse(res.body, journey) : res.body);
 
+        if (actor.bookingNotAllowedTerminal?.()) {
+          const rawErr = deps.extractErrorText ? deps.extractErrorText(res.body) : '';
+          if (/booking not allowed/i.test(rawErr)) {
+            actor.terminal = rawErr || 'booking not allowed';
+            return null;
+          }
+          if (parsed?.errorMessage && /booking not allowed/i.test(parsed.errorMessage)) {
+            actor.terminal = parsed.errorMessage;
+            return null;
+          }
+        }
+
         const reasonStr = parsed?.reason ? ` reason="${parsed.reason}"` : '';
         actor.log?.('availability', `status="${parsed?.status}" reasonType="${parsed?.reasonType}"${reasonStr} amount=${parsed?.totalCollectibleAmount}`);
         const statusText = parsed?.status || 'checking…';
         actor.onProgress?.('booking:availability', `Check #${attempt} - ${statusText}`);
 
+        if (shifted) {
+          const state = actor.specialProbeState;
+          if (!special.checkFallbackDeadline(actor, state)) {
+            const highLoadBody = deps.isHighLoadBody ? deps.isHighLoadBody(parsed) : null;
+            if (highLoadBody) {
+              actor.log?.('availability', `Special shifted-date high load in 200 body — retrying: ${highLoadBody}`, 'warn');
+              actor.onProgress?.('booking:availability', `Check #${attempt} - checking…`);
+              const delay = Math.max(0, Math.min(Math.floor(random() * 2000), (state.fallbackAtMs ?? 0) - (actor.serverNow?.() ?? Date.now())));
+              if (actor.session?.page?.waitForTimeout) {
+                await actor.session.page.waitForTimeout(delay);
+              }
+              continue;
+            }
+            if (special.recordSpecialEnquiryOutcome(actor, state, parsed, probeJourney.date)) {
+              return { ...parsed, reasonType: 'S', status: '', totalCollectibleAmount: 0 };
+            }
+          }
+          // Rejected alternate responses never terminate the original journey.
+          await actor.session?.page?.waitForTimeout?.(Math.min(1500, Math.max(0, state.fallbackAtMs - (actor.serverNow?.() ?? Date.now()))));
+          continue;
+        }
+        if (guard && special.canStartSpecial(parsed)) {
+          const state = special.getOrCreateSpecialProbeState(actor, key, { overallAnchorMs });
+          if (!special.checkFallbackDeadline(actor, state)) {
+            state.completed = false;
+            specialActive = true;
+            actor.log?.('availability', 'Usable original-date W after the opening guard — starting shifted enquiries', 'warn');
+            continue;
+          }
+        }
         if (parsed?.reasonType === 'S') {
           return parsed;
         }

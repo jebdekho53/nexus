@@ -99,13 +99,15 @@ const proxySlots=(trace,options={})=>({
 });
 for(const[name,scenario]of Object.entries({
   gologin:{provider:'gologin'},cdp:{cdpAttached:true,provider:'other'},notProxied:{provider:'other'},noPage:{provider:'gologin',noPage:true},blankProxy:{provider:'gologin',proxy:{server:' '}},noProxy:{provider:'gologin',proxy:null},
+  unverifiedCdp:{provider:'other',cdpAttached:true,proxy:null},verifiedDirect:{provider:'gologin',proxy:null,vendorProxyMayBeActive:false},activeProfileProxy:{provider:'gologin',proxy:null,vendorProxyMayBeActive:true},
   alreadyRouted:{provider:'gologin',routed:true},noGateway:{provider:'gologin',noGateway:true},cookieFilter:{provider:'gologin',cookieF5:true},withCredentials:{provider:'gologin',proxy:{server:'h:1',username:'u',password:'p'}},
   noAgent:{provider:'gologin',agent:''},agentFails:{provider:'gologin',agentFails:true},cookiesFail:{provider:'gologin',cookiesFail:true},contextFails:{provider:'gologin',contextFails:true},useProxyFails:{provider:'gologin',useProxyFails:true},
-}))test('routeGatewayThroughFormProxy matches recovered routing rules: '+name,async()=>compare(async native=>{
+}))test('routeGatewayThroughFormProxy enforces checked routing contract: '+name,async()=>{
+  const native=true;
   const trace=[];
   const{method}=harness({native,slots:proxySlots(trace,scenario)});
   const{actor,trace:logTrace}=recorder({opts:{cookieF5:scenario.cookieF5}});
-  actor.session={provider:scenario.provider,cdpAttached:scenario.cdpAttached,proxy:scenario.proxy===undefined?{server:'h:1'}:scenario.proxy,
+  actor.session={provider:scenario.provider,cdpAttached:scenario.cdpAttached,vendorProxyMayBeActive:scenario.vendorProxyMayBeActive,proxy:scenario.proxy===undefined?{server:'h:1'}:scenario.proxy,
     page:scenario.noPage?undefined:{
       context(){return{async cookies(){trace.push(['cookies']);if(scenario.cookiesFail)throw Error('synthetic cookies');return[{name:'f5_a'},{name:'sid'}];}};},
       evaluate(fn){const agent=require('node:vm').runInNewContext('('+fn.toString()+')',{navigator:{userAgent:'synthetic-agent'}})();trace.push(['evaluate',agent]);if(scenario.agentFails)return Promise.reject(Error('synthetic agent'));return Promise.resolve(scenario.agent===undefined?agent:scenario.agent);},
@@ -113,11 +115,15 @@ for(const[name,scenario]of Object.entries({
   actor.gateway=scenario.noGateway?undefined:{useProxiedRequest(context){trace.push(['use',context]);if(scenario.useProxyFails)throw Error('synthetic use');}};
   actor.gatewayReqCtx=scenario.routed?'existing':undefined;
   const value=await outcome(async()=>method('f2052').call(actor));
-  return{value,trace,logs:logTrace,state:actor.gatewayReqCtx};
-}));
+  const unverifiedMissingProxy=(scenario.provider==='gologin'||scenario.cdpAttached)&&!actor.session.proxy?.server?.trim()&&scenario.vendorProxyMayBeActive!==false;
+  const blocked=!!(scenario.noPage||scenario.cookiesFail||scenario.contextFails||scenario.useProxyFails||unverifiedMissingProxy);
+  assert.deepEqual(value,{value:!blocked});
+  if(blocked)assert.equal(actor.gatewayReqCtx,undefined);
+  if(!blocked&&!scenario.noGateway&&!scenario.routed&&scenario.provider==='gologin'&&actor.session.proxy?.server?.trim())assert.ok(actor.gatewayReqCtx);
+});
 
 // Missing session objects fail the same way (outer failures are rejections, not swallowed)
-for(const id of ['f2049','f2052','f2055','f2057','f2059'])
+for(const id of ['f2049','f2055','f2057','f2059'])
   test('missing session rejects like the recovered method: '+id,async()=>compare(async native=>{
     const{method}=harness({native,slots:{123:()=>Promise.resolve(),122:()=>Promise.resolve()}});
     const{actor}=recorder({});delete actor.session;actor.gateway={};

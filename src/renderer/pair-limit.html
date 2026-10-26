@@ -14,16 +14,18 @@
     <script defer src="./matrix-build.js"></script>
     <script defer src="./matrix-payments.js"></script>
     <script defer src="./matrix-brand.js"></script>
-  </head>
-  <body>
+      <link rel="stylesheet" href="./matrix-panels.css">
+    <link rel="stylesheet" href="./matrix-visual.css">
+</head>
+  <body class="matrix-pair-limit">
     <div class="card">
       <button type="button" class="x" id="closeX" title="Close">✕</button>
-      <div class="icon">⛔</div>
-      <div class="tt">Limit Reached</div>
+      <div class="capacity-art" aria-hidden="true"><span></span><span></span><span></span><span></span><b>FULL</b></div><div class="capacity-copy"><span class="workspace-kicker">WORKSPACE CAPACITY</span>
+      <div class="tt">Your workspace<br>is at capacity.</div>
       <div class="msg">A maximum of <b id="maxN">4 pairs</b> can be open at a time.</div>
       <div class="hint">Close one of the open boxes to open another.</div>
-      <div class="actions">
-        <button type="button" class="btn" id="okBtn">Got it</button>
+      </div><div class="actions">
+        <button type="button" class="btn" id="okBtn">Understood</button>
       </div>
     </div>
 

@@ -1,17 +1,12 @@
 const test=require('node:test'),assert=require('node:assert/strict'),path=require('node:path'),{pathToFileURL}=require('node:url'),{qrDelivery,imageUrl}=require('../src/main/runtime/qr-delivery.cjs');
 const png='iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Wl6hAAAAABJRU5ErkJggg==';
-test('popup QR hides panel copy and follows its matching booking panel; toggling restores panel',async()=>{
- const {EventEmitter}=require('node:events'),root=path.resolve(__dirname,'..'),events=[];
- const parent=new EventEmitter();parent.isDestroyed=()=>false;parent.getBounds=()=>({x:100,y:100,width:300,height:180});
- parent.webContents={getURL:()=>pathToFileURL(path.join(root,'src/renderer/booking-box.html')).href+'?id=one',executeJavaScript:async()=>false,send:(channel,payload)=>events.push(payload)};
- const popup=new EventEmitter();let bounds={x:0,y:0,width:300,height:300};popup.isDestroyed=()=>false;popup.getBounds=()=>bounds;popup.setBounds=b=>{bounds=b;};
- const hook=qrDelivery({BrowserWindow:{getAllWindows:()=>[parent]},screen:{getDisplayMatching:()=>({workArea:{x:0,y:0,width:1920,height:1080}})}},root);
- hook.f3734(()=>true,[]);hook.f3743(()=>popup,['one']);await hook.f3740(async()=>true,[{imageBase64:png},'one']);
- assert.deepEqual(events,[{closed:true,formId:'one'}]);assert.equal(bounds.y,288);assert.equal(bounds.x,100);
- let parentBounds={x:100,y:900,width:300,height:180};parent.getBounds=()=>parentBounds;parent.setBounds=value=>{parentBounds=value;parent.emit('move');};
- parent.emit('move');assert.equal(parentBounds.y,592);assert.equal(bounds.y,parentBounds.y+parentBounds.height+8);assert.equal(bounds.y+bounds.height,1080);
- events.length=0;await hook.f4021(async()=>({ok:true}),[{},false]);assert.equal(events.length,1);assert.ok(events[0].dataUrl);assert.equal(events[0].formId,'one');
- popup.emit('closed');assert.equal(parent.listenerCount('move'),0);assert.equal(parent.listenerCount('resize'),0);
+test('legacy popup preference and forced popup payload still render inside the booking window',async()=>{
+ const root=path.resolve(__dirname,'..'),events=[];
+ const parent={isDestroyed:()=>false,webContents:{getURL:()=>pathToFileURL(path.join(root,'src/renderer/booking-box.html')).href+'?id=one',executeJavaScript:async()=>false,send:(channel,payload)=>events.push({channel,payload})}};
+ const hooks=qrDelivery({BrowserWindow:{getAllWindows:()=>[parent]}},root);let created=0;
+ assert.equal(hooks.f3734(()=>true,[]),false);assert.equal(hooks.f3743(()=>{created++;},['one']),null);
+ await hooks.f3740(async payload=>{assert.equal(payload.forcePopup,false);return true},[{imageBase64:png,forcePopup:true},'one']);assert.equal(created,0);assert.equal(events.length,1);assert.ok(events[0].payload.dataUrl);assert.equal(events[0].payload.formId,'one');
+ let saved;await hooks.f4021(async(...args)=>{saved=args[1];return{ok:true}},[{},true]);assert.equal(saved,false);
 });
 test('QR fallback is restricted to its local booking profile and avoids duplicate display',async()=>{
  const root=path.resolve(__dirname,'..'),events=[];
@@ -51,3 +46,15 @@ test('when QR popup is OFF, no separate popup is created and QR is sent to in-bo
 });
 
 
+
+test('UPI collect receives a native window without enabling QR popups for other runs',()=>{
+ const hooks=qrDelivery({BrowserWindow:{getAllWindows:()=>[]}},path.resolve(__dirname,'..'));
+ const loaded=[];let created=0;
+ const factory=()=>{created++;return {loadURL:url=>loaded.push(url),show:()=>{}};};
+ const collect=()=>{const win=hooks.f3743(factory,['collect-form']);win.loadURL('data:text/html,collect');win.show();};
+ hooks.f3745(collect,[]);
+ assert.deepEqual(loaded,['data:text/html,collect']);assert.equal(created,1);
+ assert.equal(hooks.f3743(factory,['qr-form']),null);
+ assert.throws(()=>hooks.f3745(()=>{throw Error('collect failed');},[]),/collect failed/);
+ assert.equal(hooks.f3743(factory,['qr-form']),null,'failed collect restores QR suppression');
+});

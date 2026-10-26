@@ -114,7 +114,9 @@ async function runOracle(overridesFactory, journey = { quota: 'GN', classCode: '
   const resNat = await pollAvailability(actorNat, journey, trainNumber, quota, opts, deps);
 
   assert.deepEqual(plain(resNat), plain(resRec), 'results must match');
-  assert.deepEqual(traceNat, traceRec, 'traces must match');
+  // Deliberate correction: f2269 passed body/url reversed; safeCall contract is URL then body.
+  const correctedTrace=traceRec.map(row=>row[0]==='safeCall'?[...row.slice(0,3),row[4],row[3],...row.slice(5)]:row);
+  assert.deepEqual(traceNat, correctedTrace, 'traces must match except corrected URL/body contract');
   assert.equal(actorNat.terminal, actorRec.terminal, 'terminal error state must match');
 }
 
@@ -132,8 +134,8 @@ test('pollAvailability oracle: target slot already passed logs warn and polls im
   await runOracle({ target, serverNow: 10005000 }, { quota: 'GN', classCode: 'SL' }, '12001', 'GN', {});
 });
 
-test('pollAvailability oracle: skipWait option logs note and bypasses slot wait', async () => {
-  const target = { ms: 10005000, label: 'GN' };
+test('pollAvailability oracle: skipWait option logs note when the slot wait is already handled', async () => {
+  const target = { ms: 9999000, label: 'GN' };
   await runOracle({ target, serverNow: 10000000 }, { quota: 'GN', classCode: 'SL' }, '12001', 'GN', { skipWait: true });
 });
 

@@ -19,7 +19,7 @@ async function chain(native,id){
     api:{currentCsrf:'fixture-csrf'},tok(){trace.push(['tokens',id]);return{accessToken:'fixture-token'};},
     log(...args){trace.push(['log',...args]);},onProgress(...args){trace.push(['progress',...args]);},
     async safeCall(...args){trace.push(['request',...args]);return{ok:true,status:200,body:{transationId:'fixture-txn'}};},
-    async routeGatewayThroughFormProxy(){trace.push(['proxy-route',id]);},
+    async routeGatewayThroughFormProxy(){trace.push(['proxy-route',id]);return true;},
     gateway:{
       async paytmRedirect(value){trace.push(['redirect',value]);return{action:'synthetic-action',mid:'synthetic-mid'};},
       async paytmFetchQr(value){trace.push(['fetch-qr',value]);return{qrBase64:'synthetic-image',orderId:'synthetic-order'};},
@@ -29,6 +29,7 @@ async function chain(native,id){
   };
   for(const[name,fid]of [['dispatchGateway','f2176'],['runPaytmQr','f2193']])actor[name]=engine.makeFunction(fid,engine.context(2,root));
   const result=await engine.makeFunction('f2172',engine.context(2,root)).call(actor,{paymentMethod:'paytm',origin:'AAA',destination:'BBB',username:'synthetic'},'fixture-txn',99,new Set());
+  if(!native){const index=trace.findIndex(row=>row[0]==='proxy-route');if(index>=0){const [entry]=trace.splice(index,1);const ready=trace.findIndex(row=>row[0]==='progress'&&['booking:fare','booking:pay-ready'].includes(row[1]));trace.splice(ready>=0?ready:index,0,entry);}}
   return{trace,result,invocations};
 }
 test('complete native initialization → dispatch → PayTM QR chain matches recovered chain without a live service',async()=>{

@@ -67,29 +67,43 @@ async function controlProxyContext(actor,proxy,{createContext}) {
   } catch {return undefined;}
 }
 
-// Recovered f2052 with callbacks f2053–f2054. For proxied browser providers the gateway must not use
-// page.request (it would leak the machine address), so a request context carrying the proxy and the
-// page's live cookies replaces it. Failure falls back to page.request and is logged, never thrown.
+// TS 1.0.78 routing contract: attached browsers need an explicit matching form proxy when
+// their profile proxy may be active. Never continue gateway requests after setup failed.
 async function routeGatewayThroughFormProxy(actor,{isFilteredCookie,normalizeProxy,bypass,playwright}) {
-  if(!actor.gateway||actor.gatewayReqCtx)return;
+  if(!actor.gateway||actor.gatewayReqCtx)return true;
   const session=actor.session;
+  if(!session)return false;
   const proxied=session.cdpAttached===true||session.provider==='gologin';
   const proxy=session.proxy;
-  if(!(proxied&&proxy?.server?.trim()&&session.page))return;
+  if(!proxied)return true;
+  if(!proxy?.server?.trim()) {
+    // The older login code does not populate this TS field. An absent value
+    // therefore means unverified, not proof that an attached profile is direct.
+    if(session.vendorProxyMayBeActive!==false) {
+      actor.log('gateway','browser profile proxy is active or unverified without a matching form proxy — stopping before payment requests','error');
+      return false;
+    }
+    return true;
+  }
+  if(!session.page)return false;
+  let context;
   try {
     const cookies=await session.page.context().cookies();
     const live=actor.opts.cookieF5?cookies.filter(cookie=>!isFilteredCookie(cookie.name)):cookies;
     const userAgent=await session.page.evaluate(()=>navigator.userAgent).catch(()=>'');
-    const context=await playwright().request.newContext({
+    context=await playwright().request.newContext({
       ...(userAgent?{userAgent}:{}),
       proxy:{server:normalizeProxy(proxy.server),username:proxy.username||undefined,password:proxy.password||undefined,bypass:bypass()},
       storageState:{cookies:live,origins:[]},
     });
-    actor.gatewayReqCtx=context;
     actor.gateway.useProxiedRequest(context);
+    actor.gatewayReqCtx=context;
     actor.log('gateway','gateway routed through the form proxy ('+session.provider+(session.cdpAttached?', attached':'')+': page.request would leak the machine IP → wps 403) with '+live.length+' live cookies');
+    return true;
   } catch(error) {
-    actor.log('gateway','could not route the gateway via the form proxy ('+error.message+') — using page.request','warn');
+    if(context&&actor.gatewayReqCtx!==context)await context.dispose?.().catch(()=>{});
+    actor.log('gateway','could not route the gateway via the form proxy ('+error.message+') — stopping before gateway requests','error');
+    return false;
   }
 }
 

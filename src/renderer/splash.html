@@ -11,11 +11,23 @@
     <script type="module" crossorigin src="./assets/splash-KCQ4zlcg.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/splash-DvB6yHI5.css">
     <link rel="stylesheet" href="./matrix-theme.css">
+    <style>
+      body.matrix-splash .splash{inset:12px;border-radius:18px}
+      body.matrix-splash .content{gap:8px;padding:18px}
+      body.matrix-splash .logo{width:48px;height:48px;flex-shrink:0}
+      body.matrix-splash .splash .logo img{width:46px;height:46px}
+      body.matrix-splash .title{font-size:26px!important;gap:8px}
+      body.matrix-splash .title .ver{font-size:10px;padding:3px 7px}
+      body.matrix-splash .tagline{display:none}
+      body.matrix-splash .loader{width:180px;margin-top:2px;flex-shrink:0}
+      body.matrix-splash .status{font-size:11px;margin-top:2px}
+    </style>
     <script defer src="./matrix-build.js"></script>
     <script defer src="./matrix-payments.js"></script>
     <script defer src="./matrix-brand.js"></script>
-  </head>
-  <body>
+    <link rel="stylesheet" href="./matrix-visual.css">
+</head>
+  <body class="matrix-splash">
     <div class="splash">
       <video class="bg" muted loop playsinline aria-hidden="true"></video>
       <!-- Full-page real Vande Bharat footage as a faded watermark behind the UI. NO `autoplay` — splash.ts plays it

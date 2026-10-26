@@ -1,5 +1,5 @@
 'use strict';
-const CACHE_NAME = 'matrix-mobile-v1';
+const CACHE_NAME = 'matrix-mobile-logo-v2';
 const ASSETS = [
   '/mobile',
   '/admin/mobile.css',

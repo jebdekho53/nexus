@@ -1,1 +1,33 @@
-<!doctype html><html><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'"><title>Matrix · Activation</title><link rel="icon" href="assets/matrix-mark.png"><link rel="stylesheet" href="matrix-theme.css"><script defer src="activation.js"></script></head><body style="padding:30px"><img src="assets/matrix-mark.png" alt="Matrix" width="64" height="64"><h1>Matrix</h1><p>Activate this release with your administrator or seller key.</p><form id="activation"><label for="key">Activation key</label><input id="key" type="password" autocomplete="off" required minlength="6" maxlength="128" style="width:100%;margin:14px 0"><button id="submit" type="submit">Activate Matrix</button></form><p id="status" role="status" aria-live="polite"></p><button id="admin">Administrator</button> <button id="seller">Seller</button></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
+<title>Matrix · Activation</title>
+<link rel="icon" href="assets/matrix-mark.png">
+<link rel="stylesheet" href="matrix-theme.css">
+<script defer src="activation.js"></script>
+<style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;}body.matrix-activation{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(ellipse at center,#132b32 0,#0d131e 65%)!important;font-family:Matrix,'Segoe UI',sans-serif}.activation-card{width:100%;max-width:400px;text-align:center;padding:32px 28px 24px;background:#111b27;border:1px solid #294653;border-radius:18px;box-shadow:0 20px 70px #0005}.activation-logo{width:78px;height:78px;object-fit:contain;margin-bottom:10px;border-radius:50%;background:#0b141c;padding:8px;box-shadow:0 0 0 2px #294653,0 0 24px #37dbb640}.activation-card h1{margin:0 0 10px;font-size:27px;color:#edfaff}.activation-card .intro{font-size:14px;color:#a8becb;margin:0 0 26px;line-height:1.5}#activation{text-align:left}#activation label{display:block;font-size:12px;font-weight:650;margin-bottom:9px;color:#c8dce6}#key{display:block;width:100%;height:45px;padding:0 13px;font:inherit;border:1px solid #365365;outline:none}#key:focus{border-color:#37dbb6!important;box-shadow:0 0 0 3px #37dbb620!important}#submit{display:block;width:100%;margin-top:16px;padding:13px;border:1px solid #60f4c5;border-radius:9px;background:linear-gradient(120deg,#26dfb0,#15b9ce);color:#05212b;font:700 14px Matrix,'Segoe UI',sans-serif;cursor:pointer}#submit:disabled{opacity:.65;cursor:wait}#status{font-size:12px;line-height:1.5;color:#a8c9d6;min-height:18px;margin:16px 0 0;overflow-wrap:anywhere}
+.activation-card .hint{font-size:11px;line-height:1.5;color:#a8becb;margin:12px 0}#trial{display:block;width:100%;padding:12px;margin-top:14px;border:1px solid #365365;border-radius:9px;background:#163a42;color:#c5fff0;cursor:pointer}
+</style>
+  <link rel="stylesheet" href="./matrix-visual.css">
+</head>
+<body class="matrix-activation">
+<main class="activation-card">
+<img class="activation-logo" src="assets/matrix-mark.png" alt="Matrix">
+<h1>Activate Matrix</h1>
+<p class="intro">Enter your activation key to get started.</p>
+<form id="activation">
+<label for="key">Activation key</label>
+<input id="key" type="password" autocomplete="off" required minlength="6" maxlength="128" placeholder="Enter activation key" autofocus>
+<button id="submit" type="submit">Activate Matrix</button>
+</form><p class="hint">Successful booking PNR, IRCTC username and journey details are reported to your Matrix administrator against this client key. Passwords and passenger details are not included in this report.</p>
+<button id="trial" type="button">Start free trial — 2 days or 3 PNR</button>
+<p class="intro" style="margin:12px 0">Whichever comes first. Requires internet and device verification. After the trial, purchase a key from your seller.</p>
+<p class="intro" style="font-size:11px;margin:8px 0">Trial eligibility uses hashed device identifiers and successful PNR counts stored on Matrix servers. Raw hardware serials are not uploaded. Activation IP and first/last seen times are recorded for license administration. Virtual machines require a seller key.</p>
+<p id="status" role="status" aria-live="polite"></p>
+</main>
+</body>
+</html>

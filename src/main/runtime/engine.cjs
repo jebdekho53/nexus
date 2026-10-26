@@ -43,7 +43,7 @@ function createEngine(definitions, options = {}) {
         return Reflect.apply(options.functionOverrides[id], that, args);
       }
       if (Object.hasOwn(options.functionInterceptors || {}, id)) {
-        return options.functionInterceptors[id]((...nextArgs)=>invokeOriginal(that,nextArgs,newTarget),args);
+        return options.functionInterceptors[id]((...nextArgs)=>invokeOriginal(that,nextArgs,newTarget),args,that);
       }
       return invokeOriginal(that,args,newTarget);
     };

@@ -1,0 +1,119 @@
+/* Shared desktop brand and action colours. Loaded after page-specific styles. */
+:root,html body[class]{--matrix-accent:#22d6a1;--matrix-accent-hover:#4ce4b8;--matrix-action-text:#03261e;--matrix-secondary:#123039;--matrix-border:#2c6269;--blue:#22d6a1!important;--blue-600:#14b88c!important;--blue-700:#129877!important;--blue-50:#0b302b!important;--blue-100:#20554a!important;--ok:#22d6a1!important}
+html body .topbar .brand::before{content:none!important;display:none!important}
+html body .topbar .brand{display:flex;align-items:center;gap:8px}
+html body .topbar .brand>.matrix-header-logo,html body .fail-brand>.matrix-header-logo{display:inline-block!important;width:34px!important;height:34px!important;object-fit:contain!important;box-sizing:border-box;padding:2px;background:#effff5;border:1px solid #86cfa2;border-radius:8px!important;filter:none!important;flex-shrink:0;margin:0!important}
+html body .workspace-brand>img{width:64px!important;height:64px!important;object-fit:contain;padding:4px;background:#effff5;border:1px solid #86cfa2;border-radius:12px}
+html body .payment-matrix-brand>span,html body .receipt-matrix-brand>span,html body .bb-matrix-title{display:none!important}
+html body .payment-matrix-brand>img,html body .receipt-matrix-brand>img{object-fit:contain!important;background:#effff5;border:1px solid #86cfa2;border-radius:5px;padding:1px}
+html body .bb-head::before{background:#effff5 url('./assets/matrix-mark.png') center/contain no-repeat!important;border:1px solid #86cfa2;filter:none!important}
+body.matrix-splash .splash .content .logo{width:96px!important;height:96px!important;background:#effff5!important;border:1px solid #86cfa2!important;border-radius:18px!important}
+body.matrix-splash .splash .content .logo img{width:86px!important;height:86px!important;object-fit:contain}
+body.matrix-splash .title{font-size:12px!important;letter-spacing:.06em!important;text-shadow:none!important}
+html body[class] :is(.btn,.al-btn,.ow-btn){background:var(--matrix-secondary)!important;border-color:var(--matrix-border)!important;color:#e0f8f0!important;box-shadow:none!important;border-radius:8px!important}
+html body[class] :is(.btn,.al-btn,.ow-btn):hover{background:#1b4148!important;border-color:var(--matrix-accent)!important}
+html body[class] :is(.btn.primary,.btn.save,.btn.safe,.act-weblogin,.act-start,.act-startnow,.act-uilogin,.act-railone,.al-btn.primary,.ow-btn.primary,.m-expand,.wc-pin.pinned,#submit,#trial,#okBtn):not(.danger):not(.del):not(.act-stop){background:var(--matrix-accent)!important;border-color:var(--matrix-accent)!important;color:var(--matrix-action-text)!important;box-shadow:none!important;border-radius:8px!important}
+html body[class] :is(.btn.primary,.btn.save,.btn.safe,.act-weblogin,.act-start,.act-startnow,.act-uilogin,.act-railone,.al-btn.primary,.ow-btn.primary,.m-expand,.wc-pin.pinned,#submit,#trial,#okBtn):not(.danger):not(.del):not(.act-stop):hover{background:var(--matrix-accent-hover)!important;border-color:var(--matrix-accent-hover)!important}
+html body[class] :is(.btn.danger,.btn.del,.row-del,.act-stop,.btn.quit,#stopBtn){background:#40232c!important;border-color:#80404d!important;color:#ffb3bf!important}
+html body[class] :is(.btn.danger,.btn.del,.row-del,.act-stop,.btn.quit,#stopBtn):hover{background:#5a2937!important;border-color:#d9657e!important}
+html body[class] :is(button,input,select,textarea):focus-visible{outline-color:var(--matrix-accent)!important}
+html body[class] :is(input[type=checkbox],input[type=radio]){accent-color:var(--matrix-accent)!important}
+html body[class] .matrix-controller .box:hover,.matrix-controller .box:hover{color:var(--matrix-accent)!important}
+
+html body.matrix-activation .activation-logo{background:#effff5!important;border:1px solid #86cfa2!important;border-radius:16px!important;padding:6px!important;box-shadow:none!important}
+html body.matrix-app-lock .al-lock{background:#effff5!important;border:1px solid #86cfa2!important;border-radius:14px!important;padding:5px!important}
+
+/* Keep every normal booking control and the footer inside 348 x 241. */
+@media(max-height:260px){
+ body.matrix-booking-box .bb-card{display:flex!important;flex-direction:column!important}
+ body.matrix-booking-box .bb-head{height:30px!important;min-height:30px!important;max-height:30px!important;flex:0 0 30px!important;padding:3px 8px!important;gap:4px!important}
+ body.matrix-booking-box .bb-cyber-subheader{height:22px!important;min-height:22px!important;flex:0 0 22px!important;padding:3px 8px!important;font-size:10px!important}
+ body.matrix-booking-box .bb-body{flex:1 1 auto!important;min-height:0!important;padding:5px 8px!important;gap:4px!important}
+ body.matrix-booking-box .bb-grid{gap:6px!important;flex-shrink:0}
+ body.matrix-booking-box .bb-box{padding:4px 6px!important;gap:2px!important}
+ body.matrix-booking-box .bb-box .bb-k{font-size:8px!important;line-height:10px!important}
+ body.matrix-booking-box .bb-box .bb-pick{height:24px!important;min-height:24px!important;padding:2px 5px!important;line-height:16px!important}
+ body.matrix-booking-box .bb-info{flex-wrap:nowrap!important;gap:3px!important;flex-shrink:0;min-width:0}
+ body.matrix-booking-box .bb-info .bb-chip{height:22px!important;min-height:22px!important;padding:2px 4px!important;font-size:9px!important;line-height:14px!important;min-width:0}
+ body.matrix-booking-box .bb-actions{gap:4px!important;margin-top:0!important;flex-shrink:0}
+ body.matrix-booking-box .bb-primary-actions{height:30px;display:flex;gap:4px}
+ body.matrix-booking-box .act-weblogin,body.matrix-booking-box .act-stop{height:30px!important;min-height:30px!important;font-size:10px!important;line-height:16px!important;padding:4px 6px!important;transform:none!important}
+ body.matrix-booking-box .bb-actions-aux{gap:5px!important;min-height:24px}
+ body.matrix-booking-box .bb-actions-aux .act{height:24px!important;min-height:24px!important;padding:3px 5px!important;font-size:9px!important;line-height:16px!important}
+ body.matrix-booking-box .bb-telemetry-bar{flex:0 0 18px!important;height:18px!important;min-height:18px!important;max-height:18px!important;padding:2px 8px!important;font-size:8px!important;line-height:12px!important;position:relative;z-index:2}
+}
+body.matrix-booking-box .bb-winctl-group,body.matrix-booking-box .bb-winctl-group button{-webkit-app-region:no-drag!important}
+body.matrix-booking-box #boxMinBtn{pointer-events:auto!important;cursor:pointer!important;width:20px;min-width:20px;height:20px;line-height:1}
+body.matrix-booking-box .bb-matrix-icon{background:#effff5;border-radius:4px;object-fit:contain}
+/* QR visibility controls never stop or cancel the booking. */
+#matrixQrClose{position:absolute;top:5px;right:6px;z-index:20;width:25px;height:25px;padding:0;border:1px solid #466073;border-radius:6px;background:#152633;color:#fff;cursor:pointer;-webkit-app-region:no-drag;pointer-events:auto}
+#matrixQrClose:hover{background:#b73545}
+#matrixQrReopen{flex:0 0 auto;border:1px solid #22d6a1;border-radius:5px;background:#16312e;color:#b5ffed;font-size:10px;padding:0 6px;cursor:pointer;-webkit-app-region:no-drag}
+#matrixQrReopen[hidden]{display:none!important}
+/* Running state is already shown in the status row; avoid a duplicate start label. */
+body.matrix-booking-box #runMode{display:none!important}
+body.matrix-booking-box .bb-telem-left{display:flex;align-items:center;gap:8px;min-width:0}
+body.matrix-booking-box .bb-footer-pax{display:inline-flex;align-items:center;gap:2px;white-space:nowrap;color:#c6f6eb;font-size:9px;line-height:12px}
+/* Give Pair its own accessible row below the main booking controls. */
+body.matrix-booking-box .bb-pair-actions{display:flex!important;width:100%;justify-content:center;flex:0 0 auto}
+body.matrix-booking-box .bb-pair-actions .act-pair{width:100%!important;min-width:0!important;height:24px!important;min-height:24px!important;padding:3px 8px!important;line-height:16px!important;font-size:10px!important;margin:0!important}
+body.matrix-booking-box .bb-actions-aux{display:flex!important;width:100%;justify-content:stretch!important}
+body.matrix-booking-box .bb-actions-aux>.act{flex:1 1 0!important;min-width:0!important}
+body.matrix-booking-box .bb-info>.bb-chip{flex:1 1 auto!important;justify-content:center!important}
+/* Five controls now occupy the full row; passenger count lives in the footer. */
+body.matrix-booking-box .bb-info{display:grid!important;width:100%;box-sizing:border-box;grid-template-columns:minmax(0,1.4fr) minmax(0,1.1fr) minmax(0,1.1fr) minmax(0,.75fr) minmax(0,1fr)!important;gap:4px!important}
+body.matrix-booking-box .bb-info>.bb-chip{width:100%!important;max-width:none!important;box-sizing:border-box;justify-content:center!important}
+/* Schedule stays inside the compact booking window, with actions always reachable. */
+body.matrix-booking-box #scheduleModal{position:fixed!important;inset:0!important;padding:5px!important;box-sizing:border-box!important;align-items:stretch!important;justify-content:center!important;overflow:hidden!important}
+body.matrix-booking-box #scheduleModal .schedule-card{display:flex!important;flex-direction:column!important;width:100%!important;max-width:100%!important;height:100%!important;max-height:100%!important;min-height:0!important;margin:0!important;box-sizing:border-box!important;overflow:hidden!important;padding:0!important}
+body.matrix-booking-box #scheduleModal .modal-head{flex:0 0 auto!important;padding:6px 8px!important;min-height:28px;box-sizing:border-box}
+body.matrix-booking-box #scheduleModal .modal-title{font-size:12px!important}
+body.matrix-booking-box #scheduleModal .sched-body{flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain;padding:6px 8px!important;box-sizing:border-box;scrollbar-width:thin}
+body.matrix-booking-box #scheduleModal .modal-actions{flex:0 0 auto!important;display:flex!important;gap:6px!important;padding:6px 8px!important;margin:0!important;border-top:1px solid #344655;background:#111e29}
+body.matrix-booking-box #scheduleModal .modal-actions .btn{min-height:27px!important;padding:4px 7px!important;font-size:10px!important;white-space:normal}
+body.matrix-booking-box #scheduleModal .modal-actions .primary{flex:1}
+body.matrix-booking-box #scheduleModal .sched-section-title{font-size:9px!important;margin:8px 0 4px!important}
+body.matrix-booking-box #scheduleModal .sched-seg{display:flex!important;gap:3px!important;flex-wrap:wrap}
+body.matrix-booking-box #scheduleModal .sched-seg-btn{flex:1 1 auto;min-width:0!important;font-size:9px!important;padding:5px 3px!important;white-space:nowrap}
+body.matrix-booking-box #scheduleModal .sched-custom-row{display:flex;flex-wrap:wrap;gap:5px}
+body.matrix-booking-box #scheduleModal .sched-summary{font-size:10px!important;overflow-wrap:anywhere}
+/* Keep the trial badge out of the collapsed controller capsule. */
+body:has(#mini.show) #matrix-trial-status,
+body:has(.bar.collapsed) #matrix-trial-status{display:none!important}
+@media(max-width:200px){body:has(#mini) #matrix-trial-status{display:none!important}}
+/* Pair form scrolls independently; footer actions never fall below the window. */
+body.matrix-booking-box #pairModal{position:fixed!important;inset:0!important;padding:5px!important;box-sizing:border-box!important;overflow:hidden!important}
+body.matrix-booking-box #pairModal .pair-card{display:flex!important;flex-direction:column!important;min-height:0!important;box-sizing:border-box!important;padding:0!important;margin:0!important}
+body.matrix-booking-box #pairModal .pair-intro{display:none!important}
+body.matrix-booking-box #pairModal .modal-head{flex:0 0 auto!important;min-height:28px;padding:6px 30px 6px 8px!important;box-sizing:border-box}
+body.matrix-booking-box #pairModal .modal-title{font-size:12px!important}
+body.matrix-booking-box #pairModal .matrix-pair-body{flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain;scrollbar-width:thin;padding:6px 8px!important}
+body.matrix-booking-box #pairModal .bb-field{margin-bottom:7px!important}
+body.matrix-booking-box #pairModal .modal-actions{flex:0 0 auto!important;display:flex!important;gap:6px!important;padding:6px 8px!important;margin:0!important;background:#111e29;border-top:1px solid #344655}
+body.matrix-booking-box #pairModal .modal-actions .btn{min-height:27px!important;padding:4px 8px!important;font-size:10px!important}
+body.matrix-booking-box #pairModal .modal-actions .primary{flex:1}
+/* New Form: three setup cards, then passengers, proxy and preferences. */
+body.matrix-form .editor-workspace{display:block!important}
+body.matrix-form .editor-canvas{max-width:none!important;padding:14px 18px 24px!important}
+body.matrix-form .editor-intro{margin-bottom:12px!important}
+body.matrix-form .editor-intro h1{font-size:22px!important;margin:4px 0!important}
+body.matrix-form #form{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px!important;align-items:start}
+body.matrix-form #form>.editor-section{min-width:0!important;width:auto!important;margin:0!important;box-sizing:border-box}
+body.matrix-form #form>.editor-section:nth-of-type(n+4){grid-column:1/-1}
+body.matrix-form #form>.editor-section:nth-of-type(-n+3){align-self:stretch;padding:12px!important}
+body.matrix-form #form>.editor-section:nth-of-type(-n+3) .grid{grid-template-columns:minmax(0,1fr)!important;gap:8px!important}
+body.matrix-form #form>.editor-section:nth-of-type(-n+3) .field{grid-column:1!important;min-width:0!important}
+body.matrix-form #form>.editor-section .card-head .t{font-size:15px!important}
+body.matrix-form #form>.matrix-form-timing-legacy{display:none!important}
+@media(max-width:760px){body.matrix-form #form{grid-template-columns:minmax(0,1fr)}body.matrix-form #form>.editor-section{grid-column:1!important}}
+/* Retain the original Journey fields; trim only the bottom action spacing. */
+body.matrix-form #editor-section-1 .checks{margin-top:4px!important;margin-bottom:0!important}
+body.matrix-form #editor-section-1 #matrixCheckAvailability{margin-top:4px!important;margin-bottom:0!important;padding:5px 10px!important;min-height:28px}
+body.matrix-form #editor-section-1 #matrixAvailabilityHint:empty{display:none!important}
+/* Browser management replaces Automatic Fixer in the upper-left Tools panel. */
+@media(min-width:801px){body.matrix-tools .tools-workspace{grid-template-areas:"browsers services" "browsers speed" "lock speed" "backup key"!important;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)!important}}
+@media(max-width:800px){body.matrix-tools .tools-workspace{grid-template-areas:"browsers" "services" "speed" "lock" "backup" "key"!important}}
+body.matrix-tools .tools-browsers{min-height:0;align-self:stretch}
+body.matrix-tools .browser-download-row{padding:8px 0!important;gap:5px}
+body.matrix-tools .browser-download-row small{overflow-wrap:anywhere;display:block;line-height:1.4}
+body.matrix-tools .browser-download-row .btn{flex:0 0 auto}

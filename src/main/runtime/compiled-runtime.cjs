@@ -45,7 +45,7 @@ function createCompiledRuntime(options = {}) {
       if (options.onInvoke) options.onInvoke(id, args, captured);
       if (options.functionOverrides && Object.hasOwn(options.functionOverrides, id)) return Reflect.apply(options.functionOverrides[id], that, args);
       if (options.functionInterceptors && Object.hasOwn(options.functionInterceptors, id)) {
-        return options.functionInterceptors[id]((...nextArgs) => invokeOriginal(that, nextArgs, newTarget), args);
+        return options.functionInterceptors[id]((...nextArgs) => invokeOriginal(that, nextArgs, newTarget), args, that);
       }
       return invokeOriginal(that, args, newTarget);
     };

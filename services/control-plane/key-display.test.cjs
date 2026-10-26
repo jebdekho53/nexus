@@ -1,0 +1,20 @@
+const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),os=require('node:os'),path=require('node:path'),http=require('node:http');
+const {createLicensing}=require('./licensing.cjs');
+test('management lists reveal full keys only to their owner; client metadata and storage do not expose plaintext',async t=>{
+ const directory=fs.mkdtempSync(path.join(os.tmpdir(),'matrix-key-display-'));const service=createLicensing({directory,adminPassword:'display-test-admin'});
+ const server=http.createServer((req,res)=>service.handle(req,res,new URL(req.url,'http://localhost')));await new Promise(r=>server.listen(0,'127.0.0.1',r));
+ t.after(async()=>{server.closeAllConnections();await new Promise(r=>server.close(r));fs.rmSync(directory,{recursive:true,force:true})});
+ const call=async(route,body,cookie)=>{const r=await fetch('http://127.0.0.1:'+server.address().port+'/api/'+route,{method:body===undefined?'GET':'POST',headers:{'Content-Type':'application/json',...(cookie?{Cookie:cookie}:{})},body:body===undefined?undefined:JSON.stringify(body)});return{status:r.status,data:await r.json(),cookie:r.headers.get('set-cookie')?.split(';')[0]}};
+ const admin=(await call('admin/login',{password:'display-test-admin'})).cookie;
+ const seller=async username=>(await call('admin/seller-create',{name:username,username,password:'FixtureSeller123',rate:1,maxKeys:3,maxDevices:1},admin)).data.seller;
+ const a=await seller('display_a');await seller('display_b');const ca=(await call('seller/login',{username:'display_a',password:'FixtureSeller123'})).cookie,cb=(await call('seller/login',{username:'display_b',password:'FixtureSeller123'})).cookie;
+ const issued=service.issue({customer:'Fixture',sellerId:a.id,preferredKey:'DISPLAY-FIXTURE-123456'});
+ assert.equal((await call('seller/keys',undefined,ca)).data.keys[0].key,issued.key);
+ assert.equal((await call('seller/keys',undefined,cb)).data.keys.length,0);assert.equal((await call('seller/keys')).status,401);
+ const data=(await call('admin/keys',undefined,admin)).data.keys[0];assert.equal(data.key,issued.key);assert.equal(data.keyHash,undefined);assert.equal(data.keyCiphertext,undefined);
+ const activated=service.activate(issued.key,'fixture-device');assert.equal(activated.license.key,undefined);assert.equal(service.sessionLicense(activated.token).keyCiphertext,undefined);
+ assert(!fs.readFileSync(path.join(directory,'registry.json'),'utf8').includes(issued.key));
+ const file=path.join(directory,'registry.json'),legacy=JSON.parse(fs.readFileSync(file));delete legacy.keys[0].keyCiphertext;fs.writeFileSync(file,JSON.stringify(legacy));
+ const recovered=createLicensing({directory});recovered.activate(issued.key,'fixture-device');assert(JSON.parse(fs.readFileSync(file)).keys[0].keyCiphertext);
+ const changed=recovered.changeKey({currentKey:issued.key,newKey:'DISPLAY-UPDATED-654321'},recovered.activate(issued.key,'fixture-device').token);assert.equal(changed.key,'DISPLAY-UPDATED-654321');assert(!fs.readFileSync(file,'utf8').includes(changed.key));
+});

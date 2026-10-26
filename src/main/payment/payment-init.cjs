@@ -51,12 +51,19 @@ async function initializePayment(actor,journey,transactionId,amount,excluded,hel
     }
   }
   actor.opts.onProxyOutcome?.('working');
+  const routed=await actor.routeGatewayThroughFormProxy();
+  if(!routed) {
+    const attached=actor.session?.cdpAttached===true||actor.session?.provider==='gologin';
+    const missingProfileProxy=attached&&actor.session?.vendorProxyMayBeActive!==false&&!actor.session?.proxy?.server?.trim();
+    return actor.stopWith(missingProfileProxy?
+      'Payment stopped: this browser profile may use its own proxy. Set and verify that proxy on the form, then Try Again':
+      'Payment failed: form proxy could not be set up — check proxy settings and Try Again',{noRelaunch:true});
+  }
   if(amount||actor.lastAvail)actor.onProgress('booking:fare',actor.lastAvail+'|'+(amount||''));
   actor.onProgress('booking:pay-ready','Reached payment — ready to pay (₹'+(amount||'—')+')');
   if(/^(paytm|phonepay|phonepe|providerqr|irctcqr|razorpayqr)$/i.test(method)){
     actor.onProgress('booking:payment','Redirecting to QR…');actor.opts.onQrPrepare?.();
   }
-  await actor.routeGatewayThroughFormProxy();
   // Minimize is deliberately not awaited in the original flow.
   if(actor.opts.hideBrowser??true)actor.minimizeBrowser().catch(()=>{});
   const result=await actor.dispatchGateway(journey,transactionId,amount,method,response);

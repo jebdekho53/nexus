@@ -34,6 +34,7 @@
         font-weight: 600;
       }
     </style>
+    <script defer src="./matrix-log-policy.js"></script>
     <script defer src="./matrix-logs.js"></script>
     <link rel="modulepreload" crossorigin href="./assets/tamperLock-C-XpNF9g.js">
     <link rel="modulepreload" crossorigin href="./assets/chrome-Cyb3f76v.js">
@@ -46,7 +47,8 @@
     <script defer src="./matrix-build.js"></script>
     <script defer src="./matrix-payments.js"></script>
     <script defer src="./matrix-brand.js"></script>
-  </head>
+    <link rel="stylesheet" href="./matrix-visual.css">
+</head>
   <body>
     <header class="topbar">
       <div class="brand">
@@ -69,7 +71,7 @@
 
     <main class="logs-wrap">
       <div id="logList" class="log-list"></div>
-      <div id="empty" class="log-empty">Waiting for activity… run a booking to see live logs here.</div>
+      <div id="empty" class="log-empty">Complete booking activity appears here, from start through login, retries and payment to success or cancellation.</div>
     </main>
 
     <!-- Download picker: choose which minibox(es) to export (default All). Export = one JSON grouped + sorted by pair. -->

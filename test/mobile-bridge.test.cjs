@@ -24,12 +24,21 @@ test('matrix mobile bridge serves mobile app and handles status/actions', async 
     }
   };
 
-  process.env.MATRIX_MOBILE_PORT = 8089;
-  const bridge = createMobileBridge(mockElectron, root);
-  const port = bridge.getPort();
-
-  t.after(() => {
-    bridge.server.close();
+  // Keep all relay traffic in this test on an ephemeral local server.
+  const relay=http.createServer((_req,res)=>res.end('{"ok":true,"pendingActions":[]}'));
+  await new Promise(resolve=>relay.listen(0,'127.0.0.1',resolve));
+  const oldPort=process.env.MATRIX_MOBILE_PORT,oldUrl=process.env.MATRIX_PUBLIC_URL;
+  process.env.MATRIX_MOBILE_PORT='0';process.env.MATRIX_PUBLIC_URL='http://127.0.0.1:'+relay.address().port;
+  const hadSmoke=process.argv.includes('--smoke-test');if(!hadSmoke)process.argv.push('--smoke-test');
+  const bridge=createMobileBridge(mockElectron,root);
+  if(!hadSmoke)process.argv.splice(process.argv.indexOf('--smoke-test'),1);
+  await new Promise((resolve,reject)=>{bridge.server.once('listening',resolve);bridge.server.once('error',reject)});
+  const port=bridge.server.address().port;
+  t.after(async()=>{
+    bridge.server.closeAllConnections();relay.closeAllConnections();
+    await Promise.all([new Promise(resolve=>bridge.server.close(resolve)),new Promise(resolve=>relay.close(resolve))]);
+    if(oldPort===undefined)delete process.env.MATRIX_MOBILE_PORT;else process.env.MATRIX_MOBILE_PORT=oldPort;
+    if(oldUrl===undefined)delete process.env.MATRIX_PUBLIC_URL;else process.env.MATRIX_PUBLIC_URL=oldUrl;
   });
 
   // Test GET /mobile

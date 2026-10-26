@@ -3,12 +3,14 @@ const http=require('node:http'),fs=require('node:fs'),path=require('node:path');
 const port=Number(process.env.MATRIX_PORT||8082),base=process.env.MATRIX_PUBLIC_URL||'http://127.0.0.1:'+port;
 const directory=process.env.MATRIX_DATA||path.join(__dirname,'data');
 process.env.MATRIX_ALLOWED_ORIGINS=base;
-const licensing=require('./licensing.cjs').createLicensing({directory,adminPassword:process.env.MATRIX_ADMIN_PASSWORD,port});
+let trials;
+const licensing=require('./licensing.cjs').createLicensing({directory,adminPassword:process.env.MATRIX_ADMIN_PASSWORD,port,trialSummary:()=>trials?.listAdmin()||[]});
+trials=require('./trials.cjs').createTrials({directory,adminAuthenticated:req=>licensing.authenticated(String(req.headers.cookie||'').split(';').map(x=>x.trim()).find(x=>x.startsWith('matrix_admin='))?.slice('matrix_admin='.length))});
 const pages={'/':['portal.html','text/html'],'/portal':['portal.html','text/html'],'/signup':['signup.html','text/html'],'/downloads':['downloads.html','text/html'],'/client':['client.html','text/html'],'/admin':['index.html','text/html'],'/seller':['seller.html','text/html'],'/mobile':['mobile.html','text/html'],'/manifest.json':['manifest.json','application/manifest+json'],'/sw.js':['sw.js','application/javascript'],'/public/portal.css':['public.css','text/css'],'/public/portal.js':['public.js','application/javascript']};
 const assets={'/password-fields.css':['password-fields.css','text/css'],'/password-fields.js':['password-fields.js','application/javascript'],'/assets/matrix-logo.svg':['assets/matrix-logo.svg','image/svg+xml'],'/assets/matrix-mark.png':['assets/matrix-mark.png','image/png'],'/assets/matrix-logo.jpg':['assets/matrix-logo.jpg','image/jpeg'],'/assets/matrix.ico':['assets/matrix.ico','image/x-icon']};
-for(const file of ['admin.js','style.css','portal.js','client.js','usdt.js','mobile.js','mobile.css','manifest.json','sw.js'])pages['/admin/'+file]=[file,file.endsWith('.css')?'text/css':file.endsWith('.json')?'application/manifest+json':'application/javascript'];
+for(const file of ['network.js','network.css','trials.js','admin.js','style.css','portal.js','client.js','usdt.js','mobile.js','mobile.css','manifest.json','sw.js'])pages['/admin/'+file]=[file,file.endsWith('.css')?'text/css':file.endsWith('.json')?'application/manifest+json':'application/javascript'];
 pages['/client/client.js']=['client.js','application/javascript'];
-for(const role of ['admin','seller'])for(const page of ['overview','create-seller','sellers','create-key','keys','connections','ledger','activity','usdt','signup-requests','notice'])pages['/'+role+'/'+page]=pages['/'+role];
+for(const role of ['admin','seller'])for(const page of ['network','overview','create-seller','sellers','create-key','keys','connections','ledger','activity','usdt','signup-requests','notice'])pages['/'+role+'/'+page]=pages['/'+role];
 const server=http.createServer(async(req,res)=>{
  res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Cache-Control','no-store');res.setHeader('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'");
  const setHeader=res.setHeader.bind(res);res.setHeader=(name,value)=>setHeader(name,name.toLowerCase()==='set-cookie'&&base.startsWith('https:')?(Array.isArray(value)?value.map(x=>x+'; Secure'):value+'; Secure'):value);
@@ -22,13 +24,15 @@ const server=http.createServer(async(req,res)=>{
    let manifest={version:'1.0.0',name:'Matrix',setup:null};
    try{manifest={...manifest,...JSON.parse(fs.readFileSync(path.join(releases,'manifest.json'),'utf8'))};}catch{}
    if(url.pathname==='/api/portal/downloads'){res.setHeader('Content-Type','application/json');return res.end(req.method==='HEAD'?'':JSON.stringify(manifest));}
-   const item=[manifest.setup,manifest.offlineSetup,manifest.updater,manifest.updaterExe,manifest.macArm64,manifest.macX64,manifest.macSetup].filter(Boolean).find(entry=>entry.url===url.pathname);
+   let browser=null;try{browser=JSON.parse(fs.readFileSync(path.join(releases,'browser-manifest.json'),'utf8'));}catch{}
+   const item=[browser,manifest.setup,manifest.offlineSetup,manifest.updater,manifest.updaterExe,manifest.macArm64,manifest.macX64,manifest.macSetup].filter(Boolean).find(entry=>entry.url===url.pathname);
    const name=item&&path.basename(item.url),archive=name&&path.join(releases,name);
    if(!item||!/^[\w.-]+$/.test(name)||!fs.existsSync(archive)){res.writeHead(404);return res.end('Download not found');}
    res.setHeader('Content-Type',name.endsWith('.exe')?'application/vnd.microsoft.portable-executable':name.endsWith('.dmg')?'application/x-apple-diskimage':'application/zip');res.setHeader('Content-Disposition','attachment; filename="'+name+'"');res.setHeader('Content-Length',fs.statSync(archive).size);
    if(req.method==='HEAD')return res.end();
    return fs.createReadStream(archive).on('error',()=>res.destroy()).pipe(res);
   }
+  if(await trials.handle(req,res,url))return;
   if(await licensing.handle(req,res,url))return;
   if(['GET','HEAD'].includes(req.method)&&assets[url.pathname]){const [file,type]=assets[url.pathname];res.setHeader('Content-Type',type);return res.end(req.method==='HEAD'?'':fs.readFileSync(path.join(__dirname,file)));}
   const page=pages[url.pathname.replace(/\/$/,'')||'/'];

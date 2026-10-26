@@ -1,10 +1,11 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
+const {clientAddress,recordAccess}=require('./client-address.cjs');
 const hash = value => crypto.createHash('sha256').update(value).digest('hex');
 const safeEqual = (a, b) => { const x = Buffer.from(String(a)), y = Buffer.from(String(b)); return x.length === y.length && crypto.timingSafeEqual(x, y); };
 
-function createLicensing({ directory = path.join(__dirname, 'license-data'), adminPassword, port = 8081, desktopPolicy = null } = {}) {
+function createLicensing({ directory = path.join(__dirname, 'license-data'), adminPassword, port = 8081, desktopPolicy = null,trialSummary=()=>[] } = {}) {
   fs.mkdirSync(directory, { recursive: true });
   const file = path.join(directory, 'registry.json');
   let registry;
@@ -18,7 +19,11 @@ function createLicensing({ directory = path.join(__dirname, 'license-data'), adm
   }
   const sessions = new Map(), attempts = new Map(), activationAttempts = new Map(), requestAttempts = new Map();
   function persist() { fs.writeFileSync(file + '.tmp', JSON.stringify(registry, null, 2), { mode: 0o600 }); fs.renameSync(file + '.tmp', file); }
-  const publicKey = item => { const { keyHash, devices, ...rest } = item; return { ...rest, hint:String(item.hint||'').slice(-3), devicesUsed: devices.length, status: item.revoked ? 'REVOKED' : item.pending ? 'PENDING' : item.paid===false ? 'UNPAID' : !hierarchy.activeOwner(item) ? 'SELLER_DISABLED' : Date.parse(item.expiresAt) <= Date.now() ? 'EXPIRED' : 'ACTIVE' }; };
+  const bookingLedger=require('./booking-ledger.cjs').createBookingLedger({registry,persist});
+  const displaySecret=crypto.createHash('sha256').update('matrix-license-display\0').update(registry.signingKey).digest();
+  function sealKey(value){const iv=crypto.randomBytes(12),cipher=crypto.createCipheriv('aes-256-gcm',displaySecret,iv);const data=Buffer.concat([cipher.update(value,'utf8'),cipher.final()]);return Buffer.concat([iv,cipher.getAuthTag(),data]).toString('base64');}
+  function revealKey(item){try{if(!item.keyCiphertext)return null;const data=Buffer.from(item.keyCiphertext,'base64'),decipher=crypto.createDecipheriv('aes-256-gcm',displaySecret,data.subarray(0,12));decipher.setAuthTag(data.subarray(12,28));return Buffer.concat([decipher.update(data.subarray(28)),decipher.final()]).toString('utf8');}catch{return null;}}
+  const publicKey = (item,options={}) => { const { keyHash, keyCiphertext, devices,deviceAccess, ...rest } = item; return { ...rest, ...(options.revealKey?{key:revealKey(item)}:{}),...(options.includeDeviceAccess?{deviceAccess:deviceAccess||[]}:{}), hint:String(item.hint||'').slice(-3), devicesUsed: devices.length, status: item.revoked ? 'REVOKED' : item.pending ? 'PENDING' : item.paid===false ? 'UNPAID' : !hierarchy.activeOwner(item) ? 'SELLER_DISABLED' : Date.parse(item.expiresAt) <= Date.now() ? 'EXPIRED' : 'ACTIVE' }; };
   function login(password, remote = 'local', username = '') {
     const attempt = attempts.get(remote);
     if (attempt?.count >= 8 && Date.now() - attempt.since < 15 * 60 * 1000) throw Error('Too many attempts. Try again in 15 minutes.');
@@ -35,7 +40,8 @@ function createLicensing({ directory = path.join(__dirname, 'license-data'), adm
     if(current.count>=8)throw Error('Too many activation attempts. Try again in 15 minutes.');
     try{const result=operation();activationAttempts.delete(remote);return result;}catch(error){current.count++;activationAttempts.set(remote,current);throw error;}
   }
-  function issue({ customer, days = 30, maxDevices = 2, preferredKey = '', sellerId = null, paid = true, plan = 'custom' } = {}) {
+  function issue({ customer, days = 30, maxDevices = 2, preferredKey = '', sellerId = null, paid = true, plan = 'custom',accessType='paid' } = {}) {
+    if(!['paid','free'].includes(accessType))throw Error('Choose paid or free access');
     customer = String(customer || '').trim(); days = Number(days); maxDevices = Number(maxDevices);
     if (!customer || customer.length > 100) throw Error('Enter a customer name (maximum 100 characters)');
     if (!Number.isInteger(days) || days < 1 || days > 3650) throw Error('Validity must be 1–3650 days');
@@ -44,6 +50,8 @@ function createLicensing({ directory = path.join(__dirname, 'license-data'), adm
     if(value.length<6||value.length>64||/\s/.test(value))throw Error('Key must contain 6–64 characters without spaces');
     if(registry.keys.some(item=>safeEqual(item.keyHash,hash(value))))throw Error('That key is already in use');
     const key = { id: crypto.randomUUID(), customer, sellerId, paid, plan, keyHash: hash(value), hint: value.slice(-3), issuedAt: new Date().toISOString(), expiresAt: new Date(Date.now() + days * 86400000).toISOString(), maxDevices, devices: [], revoked: false };
+    key.keyCiphertext=sealKey(value);
+    key.accessType=accessType;
     registry.keys.unshift(key); persist(); return { key: value, license: publicKey(key) };
   }
   function revoke(id) { const item = registry.keys.find(x => x.id === id); if (!item) throw Error('License not found'); item.revoked = true; persist(); return publicKey(item); }
@@ -54,7 +62,7 @@ function createLicensing({ directory = path.join(__dirname, 'license-data'), adm
     newKey=String(newKey||'').trim();if(newKey.length<6||newKey.length>64||/\s/.test(newKey))throw Error('Personal key must contain 6–64 characters without spaces');
     if(safeEqual(item.keyHash,hash(newKey)))throw Error('Choose a different personal key');
     if(registry.keys.some(other=>safeEqual(other.keyHash,hash(newKey))))throw Error('That key is unavailable. Choose another.');
-    item.keyHash=hash(newKey);item.hint=newKey.slice(-3);item.keyVersion=(item.keyVersion||0)+1;item.personalizedAt=new Date().toISOString();persist();
+    item.keyHash=hash(newKey);item.keyCiphertext=sealKey(newKey);item.hint=newKey.slice(-3);item.keyVersion=(item.keyVersion||0)+1;item.personalizedAt=new Date().toISOString();persist();
     return {...activate(newKey,session.device),key:newKey};
   }
   function check(value, device, bind = false) {
@@ -71,6 +79,7 @@ function createLicensing({ directory = path.join(__dirname, 'license-data'), adm
       if (item.devices.length >= item.maxDevices) throw Error('Device limit reached');
       item.devices.push(device); persist();
     }
+    if(!item.keyCiphertext){item.keyCiphertext=sealKey(String(value||'').trim());persist();}
     return item;
   }
   function activate(value, device) {
@@ -98,8 +107,9 @@ function createLicensing({ directory = path.join(__dirname, 'license-data'), adm
     try {
       const auth = cookies(req).matrix_admin;
       if (url.pathname.startsWith('/api/admin/') && url.pathname !== '/api/admin/login' && !authenticated(auth)) { json(401, { error: 'Administrator login required' }); return true; }
-      if (req.method === 'GET' && url.pathname === '/api/admin/keys') { json(200, { keys: registry.keys.map(publicKey) }); return true; }
+      if (req.method === 'GET' && url.pathname === '/api/admin/keys') { json(200, { keys: registry.keys.map(item=>publicKey(item,{revealKey:true})) }); return true; }
       if (req.method === 'GET' && url.pathname === '/api/admin/session') { json(200, { authenticated: true }); return true; }
+      if (req.method === 'GET' && url.pathname === '/api/admin/network') { json(200,require('./booking-ledger.cjs').snapshot(registry,trialSummary()));return true; }
       if (req.method === 'GET' && ['/api/admin/notice','/api/license/notice'].includes(url.pathname)) { json(200, {notice:registry.desktopNotice||require('./app/notice-payload').defaults}); return true; }
       if (req.method === 'GET' && url.pathname === '/api/license/state') { const license = sessionLicense(cookies(req).matrix_license); json(200, { activated: !!license, license, details:license?hierarchy.clientSummary(license.id):null }); return true; }
       if (req.method !== 'POST') { json(405, { error: 'Method not allowed' }); return true; }
@@ -109,7 +119,8 @@ function createLicensing({ directory = path.join(__dirname, 'license-data'), adm
         case '/api/admin/notice': { registry.desktopNotice=require('./app/notice-payload').validateNotice(body);persist();json(200,{ok:true,notice:registry.desktopNotice});break; }
         case '/api/admin/login': { const token = login(body.password, req.socket.remoteAddress, body.username); res.setHeader('Set-Cookie', `matrix_admin=${token}; HttpOnly; SameSite=Strict; Path=/api/admin; Max-Age=28800`); json(200, { ok: true }); break; }
         case '/api/admin/logout': sessions.delete(auth); res.setHeader('Set-Cookie', 'matrix_admin=; HttpOnly; SameSite=Strict; Path=/api/admin; Max-Age=0'); json(200, { ok: true }); break;
-        case '/api/admin/issue': json(200, issue({customer:body.customer,days:body.days,maxDevices:body.maxDevices,preferredKey:body.preferredKey})); break;
+        case '/api/admin/issue': json(200, issue({customer:body.customer,days:body.days,maxDevices:body.maxDevices,preferredKey:body.preferredKey,accessType:body.accessType||'paid'})); break;
+        case '/api/license/booking-success':json(200,bookingLedger.record(body.bookingToken,body.booking));break;
         case '/api/admin/revoke': json(200, revoke(body.id)); break;
         case '/api/license/renew-request': json(200,hierarchy.requestRenewal(cookies(req).matrix_license));break;
         case '/api/license/request': json(403,{error:'An administrator must issue your first key. Activate it, then personalize your key.'}); break;
@@ -117,9 +128,10 @@ function createLicensing({ directory = path.join(__dirname, 'license-data'), adm
         case '/api/license/activate': {
           const required=require('./desktop-version-policy.cjs').desktopUpdateRequirement(req,body,typeof desktopPolicy==='function'?desktopPolicy():desktopPolicy);if(required){json(426,required);break;}
           const result=limitedLicenseCheck(req.socket.remoteAddress,()=>activate(body.key,String(body.device||'')));
-          res.setHeader('Set-Cookie', `matrix_license=${result.token}; HttpOnly; SameSite=Strict; Path=/; Max-Age=31536000`); json(200, { ok: true, license: result.license }); break;
+          const item=registry.keys.find(k=>k.id===result.license.id);recordAccess(item,String(body.device||''),clientAddress(req));persist();
+          res.setHeader('Set-Cookie', `matrix_license=${result.token}; HttpOnly; SameSite=Strict; Path=/; Max-Age=31536000`); json(200, { ok: true, license: result.license,bookingToken:bookingLedger.token(result.license.id,String(body.device||'')) }); break;
         }
-        case '/api/license/verify': { const required=require('./desktop-version-policy.cjs').desktopUpdateRequirement(req,body,typeof desktopPolicy==='function'?desktopPolicy():desktopPolicy);if(required){json(426,required);break;}const item = limitedLicenseCheck(req.socket.remoteAddress,()=>check(body.key, String(body.device || ''), false)); json(200, { ok: true, license: publicKey(item) }); break; }
+        case '/api/license/verify': { const required=require('./desktop-version-policy.cjs').desktopUpdateRequirement(req,body,typeof desktopPolicy==='function'?desktopPolicy():desktopPolicy);if(required){json(426,required);break;}const item = limitedLicenseCheck(req.socket.remoteAddress,()=>check(body.key, String(body.device || ''), false)); recordAccess(item,String(body.device||''),clientAddress(req));persist(); json(200, { ok: true, license: publicKey(item),bookingToken:bookingLedger.token(item.id,String(body.device||'')) }); break; }
         default: json(404, { error: 'Unknown endpoint' });
       }
     } catch (error) { json(400, { error: error.message }); }

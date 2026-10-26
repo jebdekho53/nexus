@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Reflection;
+using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -14,6 +16,37 @@ static class Installer {
     const bool UpdateOnly = false;
 #endif
     static string Log = Path.Combine(Path.GetTempPath(), "matrix-install.log");
+    static string CleanupPath(string dest,string relative) {
+        if (String.IsNullOrWhiteSpace(relative) || Path.IsPathRooted(relative) || relative.Contains(":") || relative.Contains("\\") || relative.Split('/').Length < 2) throw new InvalidDataException("Unsafe cleanup path");
+        foreach(string part in relative.Split('/')) if(part==".." || part=="." || part.Length==0) throw new InvalidDataException("Unsafe cleanup component");
+        if (!(relative.StartsWith("test/",StringComparison.Ordinal) || relative.StartsWith("src/main/generated/",StringComparison.Ordinal) || relative.StartsWith("vendor/node_modules/",StringComparison.Ordinal) || relative.StartsWith(".runtime/locales/",StringComparison.Ordinal) || relative.StartsWith("resources/",StringComparison.Ordinal) || relative.StartsWith(".runtime/resources/",StringComparison.Ordinal))) throw new InvalidDataException("Cleanup outside application code");
+        string target=Path.GetFullPath(Path.Combine(dest,relative.Replace('/','\\')));
+        if(!target.StartsWith(dest+"\\",StringComparison.OrdinalIgnoreCase))throw new InvalidDataException("Cleanup outside installation");
+        return target;
+    }
+    static bool HasLink(string dest,string target) {
+        for(string p=target;p!=null&&p.Length>=dest.Length;p=Path.GetDirectoryName(p)) {
+            if((File.Exists(p)||Directory.Exists(p)) && (File.GetAttributes(p)&FileAttributes.ReparsePoint)!=0)return true;
+            if(String.Equals(p,dest,StringComparison.OrdinalIgnoreCase))break;
+        }
+        return false;
+    }
+    static void Cleanup(string dest,List<string[]> records,HashSet<string> current) {
+        int removed=0,kept=0;var parents=new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach(var record in records){string relative=record[0],target=CleanupPath(dest,relative);
+            if(current.Contains(relative)||HasLink(dest,target)||!File.Exists(target)){kept++;continue;}
+            try {
+                string digest;using(var sha=SHA256.Create())using(var file=File.OpenRead(target))digest=BitConverter.ToString(sha.ComputeHash(file)).Replace("-","").ToLowerInvariant();
+                if(!String.Equals(digest,record[1],StringComparison.Ordinal)){kept++;continue;}
+                File.Delete(target);removed++;parents.Add(Path.GetDirectoryName(target));
+            } catch(IOException){kept++;} catch(UnauthorizedAccessException){kept++;}
+        }
+        var directories=new List<string>(parents);directories.Sort((a,b)=>b.Length.CompareTo(a.Length));
+        foreach(string start in directories)for(string dir=start;dir!=null&&dir.Length>dest.Length;dir=Path.GetDirectoryName(dir)) {
+            try{if(HasLink(dest,dir)||!Directory.Exists(dir)||Directory.GetFileSystemEntries(dir).Length!=0)break;Directory.Delete(dir,false);}catch{break;}
+        }
+        Directory.CreateDirectory(Path.Combine(dest,"diagnostics"));File.AppendAllText(Path.Combine(dest,"diagnostics","installer-cleanup.log"),DateTime.UtcNow.ToString("o")+" removed="+removed+" preserved="+kept+Environment.NewLine);
+    }
     // Downloads may receive an executable wrapper/prefix. ZIP offsets then
     // refer to the original payload position, not the physical file position.
     // Locate the actual central directory and give .NET a relative view.
@@ -99,8 +132,12 @@ static class Installer {
         dest = Path.GetFullPath(dest);
         if (!verifyOnly && UpdateOnly && (!File.Exists(Path.Combine(dest, ".runtime", "electron.exe")) || !File.Exists(Path.Combine(dest, "package.json")))) throw new InvalidOperationException("Install Matrix with the full Setup first, then run this updater.");
         using (var zip = OpenPayload(payloadFile)) {
+        var cleanup=new List<string[]>();var current=new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var cleanupEntry=zip.GetEntry("matrix-cleanup.txt");
+        if(cleanupEntry!=null)using(var reader=new StreamReader(cleanupEntry.Open())){string line;while((line=reader.ReadLine())!=null){if(line.Length==0)continue;var record=line.Split('|');if(record.Length!=2||record[1].Length!=64)throw new InvalidDataException("Bad cleanup manifest");CleanupPath(dest,record[0]);foreach(char c in record[1])if(!((c>='0'&&c<='9')||(c>='a'&&c<='f')))throw new InvalidDataException("Bad cleanup hash");cleanup.Add(record);}}
         // Validate the directory and all destination paths before stopping apps.
         foreach (var entry in zip.Entries) {
+            current.Add(entry.FullName);
             string target = Path.GetFullPath(Path.Combine(dest, entry.FullName.Replace('/', '\\')));
             if (!target.StartsWith(dest + "\\", StringComparison.OrdinalIgnoreCase)) throw new InvalidDataException("Bad path " + entry.FullName);
         }
@@ -121,6 +158,7 @@ static class Installer {
                 Directory.CreateDirectory(Path.GetDirectoryName(target));
                 entry.ExtractToFile(target, true);
             }
+            Cleanup(dest,cleanup,current);
         }
         File.WriteAllText(Path.Combine(dest, "Uninstall.cmd"),
             "@echo off\r\ndel \"%USERPROFILE%\\Desktop\\Matrix.lnk\" 2>nul\r\ndel \"%APPDATA%\\Microsoft\\Windows\\Start Menu\\Programs\\Matrix.lnk\" 2>nul\r\ncd /d \"%TEMP%\"\r\nrmdir /s /q \"%LOCALAPPDATA%\\Matrix\"\r\n");

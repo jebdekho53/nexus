@@ -10,8 +10,8 @@ async function run(electron,root){
   while(Date.now()<deadline){panel=electron.BrowserWindow.getAllWindows().find(w=>w.webContents.getURL().includes('booking-box.html?id='+form.id));if(panel&&!panel.webContents.isLoading()){state=await panel.webContents.executeJavaScript("({account:document.querySelector('#acctPick .bb-pick-label')?.textContent,payment:document.getElementById('paySel')?.value,paymentLabel:document.querySelector('#payPick .bb-pick-label')?.textContent,modeLabelPresent:!!document.getElementById('loginModeVal'),status:document.getElementById('statusText')?.textContent})");if(state.account?.startsWith(form.account.username.slice(0,4))&&state.paymentLabel==='Paytm QR')break;}await new Promise(resolve=>setTimeout(resolve,200));}
   if(panel){
    panel.show();await new Promise(resolve=>setTimeout(resolve,300));
-   const visual=await panel.webContents.executeJavaScript(`(()=>{const read=id=>{const el=document.getElementById(id),s=getComputedStyle(el);return{text:el.textContent.trim(),color:s.color,fill:s.webkitTextFillColor,visible:!!el.getClientRects().length&&s.visibility!=='hidden'&&s.opacity!=='0'};};return{mode:read('loginModeVal'),payment:read('payPick'),timer:read('matrixGeneralTimer')};})()`);
-   if(!visual.mode.text||!visual.mode.visible||!visual.payment.visible||!visual.timer.visible)throw Error('Panel selected labels/timer are not visible');
+   const visual=await panel.webContents.executeJavaScript(`(()=>{const read=id=>{const el=document.getElementById(id),s=getComputedStyle(el);return{text:el.textContent.trim(),color:s.color,fill:s.webkitTextFillColor,visible:!!el.getClientRects().length&&s.visibility!=='hidden'&&s.opacity!=='0'};};return{mode:read('loginModeVal'),payment:read('payPick'),clock:read('cyberClock')};})()`);
+   if(!visual.mode.text||!visual.mode.visible||!visual.payment.visible||!visual.clock.visible)throw Error('Panel selected labels/clock are not visible');
    state.visual=visual;
    fs.writeFileSync(path.join(root,'diagnostics/packaged-panel.png'),(await panel.webContents.capturePage()).toPNG());
    for(const id of ['payPick','loginModeChip']){

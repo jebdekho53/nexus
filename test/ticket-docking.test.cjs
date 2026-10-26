@@ -1,5 +1,13 @@
 'use strict';
 const test=require('node:test'),assert=require('node:assert/strict'),{EventEmitter}=require('node:events'),path=require('node:path'),{pathToFileURL}=require('node:url');
+test('six and eight compact booking boxes wrap to empty rows without overlap',()=>{
+ const {freePosition}=require('../src/main/runtime/ticket-docking.cjs'),area={x:0,y:0,width:1920,height:1040},size={width:348,height:241},boxes=[{x:8,y:8,...size}];
+ for(let n=1;n<8;n++){
+  const pos=freePosition(area,size,boxes,boxes.at(-1));assert(pos,'No free slot for box '+(n+1));
+  const b={...pos,...size};assert(boxes.every(a=>!(b.x<a.x+a.width&&b.x+b.width>a.x&&b.y<a.y+a.height&&b.y+b.height>a.y)));boxes.push(b);
+ }
+ assert.equal(boxes[5].x,8);assert.equal(boxes[5].y,263);assert(boxes.every(b=>b.x+b.width<=area.width&&b.y+b.height<=area.height));
+});
 test('success ticket docks below its matching pair, survives legacy reposition, follows movement and cleans listeners',()=>{
  const root=path.resolve(__dirname,'..'),url=pathToFileURL(path.join(root,'src/renderer/booking-box.html')).href,app=new EventEmitter(),windows=[];
  const make=(query,bounds)=>{const win=new EventEmitter();win.webContents=new EventEmitter();win.webContents.getURL=()=>url+query;win.isDestroyed=()=>false;win.getBounds=()=>({...bounds});win.setBounds=b=>{bounds={...b};win.emit('resize');};win.setPosition=(x,y)=>{bounds={...bounds,x,y};};windows.push(win);return win;};
@@ -8,8 +16,8 @@ test('success ticket docks below its matching pair, survives legacy reposition, 
  const ticket=make('?view=ticket&id=one',{x:640,y:160,width:380,height:540});
  require('../src/main/runtime/ticket-docking.cjs').install({app,BrowserWindow:{getAllWindows:()=>windows},screen:{getDisplayMatching:()=>({workArea:{x:0,y:0,width:1200,height:864}})}},root);
  app.emit('browser-window-created',{},ticket);ticket.webContents.emit('did-finish-load');
- assert.equal(ticket.getBounds().x,10);assert.equal(parent.getBounds().y,116);assert.equal(ticket.getBounds().y,324);assert.equal(unrelated.getBounds().y,100);
- ticket.setPosition(640,160);assert.equal(ticket.getBounds().x,10);assert.equal(ticket.getBounds().y,324);
+ assert.equal(ticket.getBounds().x,10);assert.equal(parent.getBounds().y,415);assert.equal(ticket.getBounds().y,623);assert.equal(ticket.getBounds().width,348);assert.equal(ticket.getBounds().height,241);assert.equal(unrelated.getBounds().y,100);
+ ticket.setPosition(640,160);assert.equal(ticket.getBounds().x,10);assert.equal(ticket.getBounds().y,623);
  parent.setBounds({...parent.getBounds(),x:100,y:20});parent.emit('move');assert.equal(ticket.getBounds().x,100);assert.equal(ticket.getBounds().y,228);
  ticket.emit('closed');assert.equal(parent.listenerCount('move'),0);assert.equal(parent.listenerCount('resize'),0);
 });

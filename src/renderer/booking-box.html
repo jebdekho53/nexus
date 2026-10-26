@@ -23,31 +23,55 @@
     <link rel="stylesheet" crossorigin href="./assets/booking-box-D9W7nPM1.css">
     <link rel="stylesheet" crossorigin href="./assets/form-Cq-Qz7YX.css">
     <link rel="stylesheet" href="./matrix-theme.css">
+    <link rel="stylesheet" href="./matrix-ticket-reference.css">
     <script defer src="./matrix-build.js"></script>
     <script defer src="./matrix-payments.js"></script>
+    <script defer src="./matrix-qr-amount.js"></script>
     <script defer src="./matrix-brand.js"></script>
-  </head>
-  <body>
+<script defer src="./matrix-receipt.js"></script>
+<script defer src="./matrix-qr-controls.js"></script>
+<script defer src="./matrix-success-download.js"></script>
+      <link rel="stylesheet" href="./matrix-panels.css">
+    <link rel="stylesheet" href="./matrix-visual.css">
+</head>
+  <body class="matrix-booking-box">
     <div class="bb-card">
     <header class="bb-head">
+      <div class="bb-brand-head">
+        <img src="./assets/matrix-mark.png" class="bb-matrix-icon" alt="Matrix" />
+        <span class="bb-matrix-title">Matrix</span>
+      </div>
       <div class="bb-route">
         <!-- A custom form NAME (operator 2026-09-29): shown INSTEAD of the route when the operator explicitly
              renamed the form. #from/.arrow/#to stay in the DOM (hidden via .bb-route.named) because the success
              and fail cards read the real route back out of them for their context chips. -->
         <span id="formName" class="bb-formname hidden"></span>
-        <span id="from">—</span><span class="arrow">→</span><span id="to">—</span>
+        <span id="from">—</span><span class="arrow">⇄</span><span id="to">—</span>
         <span id="trainNo" class="bb-trainno" title="Train number"></span>
         <span id="runDot" class="bb-livedot hidden" title="Running — login active"></span>
         <span id="pairNum" class="bb-pairnum hidden" title="Pair number — P1 is the first box opened"></span>
       </div>
-      <img id="browserLogo" class="bb-blogo hidden" alt="" title="Browser" />
-      <span id="acctTag" class="bb-acct hidden" title="Browser"></span>
-      <button type="button" class="bb-pin" id="pinBtn" title="Pin on top (stays above other apps)">
-        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5"/><path d="M15 9.34V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v3.34a2 2 0 0 1-.86 1.64l-1.28.9A2 2 0 0 0 6 13.5V15a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-1.5a2 2 0 0 0-.86-1.64l-1.28-.9A2 2 0 0 1 15 9.34z"/></svg>
-      </button>
-      <button type="button" class="bb-edit hidden" id="editBtn" title="Edit this form (locks ~20s before the slot)">✎</button>
-      <button type="button" class="win-close bb-close" id="winClose" title="Close">✕</button>
+      <div class="bb-winctl-group">
+        <button type="button" class="bb-head-pair" id="headPairBtn">PAIR</button>
+        <img id="browserLogo" class="bb-blogo hidden" alt="" title="Browser" />
+        <span id="acctTag" class="bb-acct hidden" title="Browser"></span>
+        <button type="button" class="bb-pin" id="pinBtn" title="Pin on top (stays above other apps)">
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5"/><path d="M15 9.34V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v3.34a2 2 0 0 1-.86 1.64l-1.28.9A2 2 0 0 0 6 13.5V15a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-1.5a2 2 0 0 0-.86-1.64l-1.28-.9A2 2 0 0 1 15 9.34z"/></svg>
+        </button>
+        <button type="button" class="bb-min" id="boxMinBtn" title="Minimize">—</button>
+        <button type="button" class="bb-edit hidden" id="editBtn" title="Edit this form (locks ~20s before the slot)">✎</button>
+        <button type="button" class="win-close bb-close" id="winClose" title="Close">✕</button>
+      </div>
     </header>
+
+    <!-- Cyber Subheader Status Bar -->
+    <div class="bb-cyber-subheader">
+      <div class="bb-cyber-status">
+        <span class="bb-cyber-dot"></span>
+        <span id="cyberStatusText">Ready | WebLogin Armed</span>
+      </div>
+      <div class="bb-cyber-clock" id="cyberClock"><span class="bb-clock" id="clock">--:--:--</span></div>
+    </div>
 
     <div id="schedBanner" class="sched-banner hidden">
       <span id="schedBannerText">⏰ Scheduled</span>
@@ -89,10 +113,7 @@
             <option value="phonepay">PhonePe QR</option>
             <option value="razorpayqr">Razorpay QR</option>
             <option value="irctcqr">IRCTC QR</option>
-            <option value="wallet">RailOne Wallet</option>
             <option value="webwallet">WebLogin Wallet</option>
-            <option value="railoneqr">RailOne QR</option>
-            <option value="railoneupi">RailOne UPI</option>
             <option value="paytmupi">Razorpay UPI</option>
           </select>
         </div>
@@ -104,11 +125,10 @@
         <button type="button" class="bb-chip bb-chip-pick bb-login" id="loginModeChip" title="WebLogin login mode — tap to pick: AUTO (full warm-up, app logs in) · MANUAL (you do the warm-up + log in in the window) · DIRECT (no warm-up — settle then book at the target time)"><b id="loginModeVal">AUTO</b><span class="bb-chip-caret">▾</span></button>
         <!-- PROXY (operator 2026-07-10): a COMPACT chip IN the info row (NOT a separate row) — tap → popup to pick a
              saved proxy; a rerouting proxy turns the chip GREEN + ✓, a fail reverts + "Invalid Proxy". Direct = no tag. -->
-        <button type="button" class="bb-chip bb-chip-pick bb-proxychip" id="proxyPick" title="Proxy for this pair — tap to select + test (Direct = machine IP)"><b id="kProxy">PROXY</b><span class="bb-proxy-tick" id="proxyTick">✓</span><span class="bb-chip-caret">▾</span></button>
+        <button type="button" class="bb-chip bb-chip-pick bb-proxychip" id="proxyPick" title="Proxy for this account — tap to select + test (Direct = machine IP)"><b id="kProxy">PROXY</b><span class="bb-proxy-tick" id="proxyTick">✓</span><span class="bb-chip-caret">▾</span></button>
         <button type="button" class="bb-chip bb-chip-pick" id="datePick" title="Journey date — tap to pick"><b id="date">—</b><span class="bb-chip-caret">▾</span></button>
         <button type="button" class="bb-chip bb-chip-pick" id="classPick" title="Class — tap to pick"><b id="classBox">—</b><span class="bb-chip-caret">▾</span></button>
         <button type="button" class="bb-chip bb-chip-pick" id="quotaPick" title="Quota — tap to pick"><b id="quotaBox">—</b><span class="bb-chip-caret">▾</span></button>
-        <span class="bb-chip" title="Passengers"><span class="bb-pax">👤</span><b id="paxCount">—</b></span>
       </div>
       <!-- hidden value-sources for the Date/Class/Quota + Proxy pickers (operator 2026-07-10). The Date uses the
            shared calendar (ui/calendar.ts) rendered into #boxCalPop; Class/Quota/Proxy reuse the openPicker() modal. -->
@@ -150,40 +170,59 @@
       <div id="boxCalPop" class="bb-calpop"></div>
 
       <div class="bb-actions">
-        <!-- RAILONE PHONE PROMPT (operator 2026-07-30): the pair's login is done, but tokens are minted ON DEMAND by
-             the phone's own "TOKEN START". That instruction used to be crammed into the one-line status bar (which
-             ellipsized it away), so it lives here instead: a full-width, BLINKING two-line prompt that says exactly
-             what to press on the phone, then what to press here, with the live token-stream state on the 2nd line. -->
-        <div class="act-hint hidden" id="r1Hint">
-          <span class="hint-l1" id="r1HintL1"></span>
-          <span class="hint-l2" id="r1HintL2"></span>
+        <div style="display:none !important" aria-hidden="true">
+          <div class="act-hint hidden" id="r1Hint">
+            <span class="hint-l1" id="r1HintL1"></span>
+            <span class="hint-l2" id="r1HintL2"></span>
+          </div>
+          <button type="button" class="act act-startnow hidden" id="r1StartNow">▶ Start now</button>
+          <span class="act-ready hidden" id="r1Ready">✓ Ready</span>
+          <button type="button" class="act act-start hidden" id="r1Start">▶ START</button>
         </div>
-        <button type="button" class="act act-railone coming-soon" data-mode="railone" title="RailOne — coming soon">RailOne</button>
-        <button type="button" class="act act-weblogin" data-mode="weblogin">WebLogin</button>
-        <button type="button" class="act act-uilogin" data-mode="uilogin">UI Login</button>
-        <button type="button" class="act act-schedule" id="scheduleBtn" title="Schedule WebLogin booking at 8:00, 10:00, 11:00 or custom time">⏰ Schedule</button>
-        <!-- Shown only while a run is active (alongside Pair + Stop): which login is running. The proxy status is
-             already the info-row PROXY chip (#proxyPick) — NO duplicate here (operator 2026-07-11). -->
+        <div class="bb-primary-actions"><button type="button" class="act act-weblogin" data-mode="weblogin">🎯 START BOOKING [F9]</button><button type="button" class="act act-stop hidden" id="stopBtn" title="Stop this booking and close its browser">■ Stop Booking</button></div>
         <span class="act-runmode hidden" id="runMode" title="Login method running">● Running</span>
-        <!-- RailOne: "Start now" — arm with the tokens collected SO FAR + run immediately (operator's choice that
-             the current count is enough). Shown only during RailOne collection once login + ≥1 token are in. -->
-        <button type="button" class="act act-startnow hidden" id="r1StartNow" title="Use the tokens collected so far and start the booking now">▶ Start now</button>
-        <!-- RAILONE READY (operator 2026-07-29): the phone's Login is done for this pair, so the pair is READY but has
-             no tokens yet — the phone sends them on demand (its "TOKEN START"). We therefore do NOT auto-run: show a
-             ✓ Ready tick and an explicit START, and hide WebLogin / UI Login (a RailOne pair is RailOne-only). START
-             begins the run, which then waits for the token stream to come alive. -->
-        <span class="act-ready hidden" id="r1Ready" title="Login done for this pair — press START when the phone is minting">✓ Ready</span>
-        <button type="button" class="act act-start hidden" id="r1Start" title="Start this RailOne pair (waits for the phone's tokens)">▶ START</button>
-        <button type="button" class="act act-pair" id="pairBtn">Pair</button>
+        <div class="bb-pair-actions">
+          <button type="button" class="act act-pair" id="pairBtn" title="Manage pairs, including while a booking is running">Pair</button>
+        </div>
+        <div class="bb-actions-aux">
+          <button type="button" class="act act-uilogin" data-mode="uilogin">UI Login</button>
+          <button type="button" class="act act-schedule" id="scheduleBtn" title="Schedule WebLogin booking at 8:00, 10:00, 11:00 or custom time">⏰ Schedule</button>
+        </div>
         <button type="button" class="act act-handover hidden" id="handoverBtn" title="Take over now">⇥ Hand Over to App</button>
-        <button type="button" class="act act-stop hidden" id="stopBtn" title="Stop this run and close its browser">■ Stop</button>
+        
       </div>
 
       <!-- The in-box payment QR lives INSIDE .bb-body so it fills ONLY the area between the header and the status
            bar — the status bar (with "Check Now") stays visible + clickable during the QR, and the QR is never
            clipped by it (operator 2026-09-24). -->
-      <div id="qrOverlay" class="qr-panel hidden">
-        <img id="qrImg" class="qr-img" alt="Payment QR" title="Click to enlarge" />
+      <div id="qrOverlay" class="qr-panel hidden"><div class="payment-matrix-brand"><img src="./assets/matrix-mark.png" alt="Matrix logo"><span>MATRIX</span></div>
+        <button type="button" id="matrixQrClose" aria-label="Hide payment QR" title="Hide QR; payment checking continues">✕</button>
+        <div class="qr-cyber-top">
+          <div class="qr-cyber-badge">Scan the QR code with any UPI app</div>
+          <div class="qr-cyber-clock" id="qrClock">--:--:--</div>
+        </div>
+        <div class="qr-cyber-chips">
+          <span class="qr-c-chip" id="qrRouteChip">NDLS-BCT</span>
+          <span class="qr-c-chip" id="qrTrainChip">12952</span>
+          <span class="qr-c-chip qr-c-tq" id="qrQuotaChip">TATKAL</span>
+        </div>
+        <div class="qr-amount-wrap">
+          <span class="qr-amount-lbl">Booking Amount</span>
+          <span class="qr-amount-val" id="qrAmountVal">₹ 0.00</span>
+        </div>
+        <div class="qr-box-wrap">
+          <img id="qrImg" class="qr-img" alt="Payment QR" title="Click to enlarge" />
+          <div class="qr-laser-line"></div>
+        </div>
+
+        <div class="qr-status-pill">
+          <span class="qr-scan-lbl">SCAN TO PAY</span>
+          <span class="qr-autopoll-tag">● AUTO POLL ON</span>
+        </div>
+        <div class="qr-waiting-btn">
+          <span class="qr-spinner"></span>
+          <span class="qr-poll-copy">Auto Polling for Payment…<small>Please do not close this window</small></span>
+        </div>
       </div>
     </main>
     <!-- the status+time bar is a DIRECT child of the window (a sibling of .bb-head/.bb-body), so it reaches
@@ -207,7 +246,18 @@
         <span class="cn-spin" aria-hidden="true"></span>
         <span class="cn-lbl">Check Now</span>
       </button>
-      <div class="bb-timebox" title="Current time and booking countdown"><span class="bb-clock" id="clock">--:--:--</span><span id="matrixGeneralTimer" role="timer" hidden></span></div>
+      <div class="bb-timebox" title="Current time and booking countdown"><span id="matrixGeneralTimer" role="timer" hidden></span></div>
+    </div>
+
+    <!-- Matrix Cyber Telemetry Footer Bar -->
+    <div class="bb-telemetry-bar">
+      <div class="bb-telem-left">
+        <span id="telemPg">Payment</span>
+        <span class="bb-footer-pax" title="Passengers" aria-label="Passenger count"><span aria-hidden="true">👤</span> <b id="paxCount">—</b></span>
+      </div>
+      <div class="bb-telem-right">
+        <span id="telemAvl">—</span><span class="telem-sep">|</span><span id="telemClock">--:--:--</span>
+      </div>
     </div>
 
     <div id="scheduleModal" class="modal-overlay hidden">
@@ -272,7 +322,6 @@
               <option value="brave">Brave Browser</option>
               <option value="edge">Microsoft Edge</option>
               <option value="chrome-advance">Chrome Advance</option>
-              <option value="gologin">GoLogin</option>
             </select>
           </div>
 
@@ -289,19 +338,20 @@
     </div>
 
     <div id="pairModal" class="modal-overlay hidden">
-      <div class="modal-card pair-card">
+      <div class="modal-card pair-card"><div class="pair-intro"><span class="workspace-kicker">MULTI-ACCOUNT SETUP</span><h2>Add Booking<br>Account</h2><p>Add an independent account to this booking.</p></div>
         <div class="modal-head">
-          <div class="modal-title">Create a Pair</div>
+          <div class="modal-title">Add Booking Account</div>
           <button type="button" class="modal-x" id="pairClose">✕</button>
         </div>
+        <div class="matrix-pair-body">
         <div class="bb-field">
-          <label class="bb-lbl" for="pairUser">Saved login</label>
-          <select id="pairUser"><option value="">— Manual entry —</option></select>
+          <div class="pair-step"><b>01</b><span>Choose an account</span></div><label class="bb-lbl" for="pairUser">IRCTC Account</label>
+          <select id="pairUser"><option value="">Choose an IRCTC ID</option></select>
         </div>
         <div class="pair-grid">
           <div class="bb-field">
-            <label class="bb-lbl" for="pairUsername">Username</label>
-            <input type="text" id="pairUsername" placeholder="Username" autocomplete="off" />
+            <label class="bb-lbl" for="pairUsername">IRCTC User ID</label>
+            <input type="text" id="pairUsername" placeholder="IRCTC User ID" autocomplete="off" />
           </div>
           <div class="bb-field">
             <label class="bb-lbl" for="pairPassword">Password</label>
@@ -309,20 +359,21 @@
           </div>
         </div>
         <div class="bb-field">
-          <label class="bb-lbl">If another pair books first</label>
+          <div class="pair-step"><b>02</b><span>Set the outcome</span></div><label class="bb-lbl">When another account books successfully</label>
           <div class="pair-seg" id="pairConflict" data-value="backup">
-            <button type="button" class="pseg" data-v="stop"><span class="pseg-ic">■</span> Stop this run</button>
-            <button type="button" class="pseg active" data-v="backup"><span class="pseg-ic">＋</span> Book a backup</button>
+            <button type="button" class="pseg" data-v="stop"><span class="pseg-ic">■</span> Stop this booking</button>
+            <button type="button" class="pseg active" data-v="backup"><span class="pseg-ic">＋</span> Continue this booking</button>
           </div>
         </div>
         <div class="bb-field">
-          <label class="bb-lbl" for="pairProxy">Proxy for this pair</label>
-          <select id="pairProxy"><option value="">— Same as this form —</option></select>
+          <div class="pair-step"><b>03</b><span>Choose a connection</span></div><label class="bb-lbl" for="pairProxy">Proxy for this account</label>
+          <select id="pairProxy"><option value="">Use this form’s proxy</option></select>
           <div id="pairProxyResult" class="pair-proxy-result hidden"></div>
+        </div>
         </div>
         <div class="modal-actions">
           <button type="button" class="btn" id="pairCancel">Cancel</button>
-          <button type="button" class="btn primary" id="pairCreate">Create Pair</button>
+          <button type="button" class="btn primary" id="pairCreate">Add Account</button>
         </div>
       </div>
     </div>
@@ -334,7 +385,7 @@
           <button type="button" class="modal-x" id="pickClose">✕</button>
         </div>
         <div class="picker-sub" id="pickSub">For WebLogin</div>
-        <input type="text" id="glFilter" class="gl-filter hidden" placeholder="🔍 Filter profiles…" autocomplete="off" />
+        <input type="text" id="glFilter" class="gl-filter hidden" style="display:none !important;" placeholder="🔍 Filter profiles…" autocomplete="off" />
         <div id="browserList" class="browser-list"></div>
       </div>
     </div>
@@ -442,7 +493,14 @@
          rows (name + age), the waitlist screen when no berth confirmed, Download-E-Ticket + fingerprint. -->
     <section id="pnrOverlay" class="tk-view hidden">
       <div class="bk-container">
-        <div class="bk-card state-cnf" id="pnrCard">
+        <div class="bk-card state-cnf" id="pnrCard"><div class="receipt-matrix-brand"><img src="./assets/matrix-mark.png" alt="Matrix logo"><span>MATRIX</span></div>
+          <div class="bk-success-hero">
+            <div class="bk-check-circle">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#22c55e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <h2 class="bk-success-title">Booking Successful!</h2>
+            <p class="bk-success-sub">Your ticket has been confirmed.</p>
+          </div>
           <!-- Anti-copy watermark (operator 2026-09-02): ~200-300 tiled "Matrix" marks (mixed white+gold, faint,
                rotated) over the WHOLE card, so a screenshot of a genuine success can't be cleanly reused / AI-faked.
                pointer-events:none → never blocks the Download button or ✕. -->
@@ -450,7 +508,7 @@
           <!-- Top half (operator 2026-08-28): the two things you actually scan for — PNR + route — promoted into the
                coloured header. Station CODES only (fromCode/toCode, the fields kept "for the redacted short-code
                ticket"), never the full names, which stay masked in the grid below. -->
-          <div class="bk-header">
+          <div class="bk-header"><svg class="ticket-train-icon" viewBox="0 0 32 40" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><rect x="5" y="5" width="22" height="26" rx="5"/><path d="M11 5V2h10v3M5 20h22M8 38l5-7m11 7-5-7M9 35h14"/><rect x="9" y="10" width="14" height="8" rx="1"/><circle cx="11" cy="25" r="1"/><circle cx="21" cy="25" r="1"/></svg>
             <div class="bk-hrow">
               <div class="bk-title">Matrix STATUS</div>
               <div class="bk-badge confirmed" id="pnrBadge">CONFIRMED</div>
@@ -501,8 +559,8 @@
             </div>
           </div>
           <div class="bk-footer" id="pnrFooter">
-            <div class="bk-fbtns">
-              <button type="button" class="bk-dl" id="pnrPrint">Download E-Ticket</button>
+            <div id="successDownloadStatus" role="status" aria-live="polite">Ticket will save automatically</div><div class="bk-fbtns">
+              <button type="button" class="bk-dl" id="pnrPrint" hidden style="display:none!important">Download E-Ticket</button>
               <span class="bk-ver" id="pnrVer"></span>
             </div>
             <div class="bk-fp" id="pnrFp"></div>
@@ -602,3 +660,8 @@
 
   </body>
 </html>
+
+
+
+
+

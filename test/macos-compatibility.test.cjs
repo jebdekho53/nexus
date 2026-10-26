@@ -37,16 +37,17 @@ test('macOS compatibility and release assets suite', async (t) => {
     assert.ok(code.includes('/Applications/Brave Browser.app'), 'Must fallback to macOS Brave');
   });
 
-  await t.test('server.cjs and downloads.html serve macOS releases', () => {
+  await t.test('legacy macOS serving remains compatible while public downloads are Windows-only', () => {
     const serverCode = fs.readFileSync(path.join(root, 'services/control-plane/server.cjs'), 'utf8');
     assert.ok(serverCode.includes('manifest.macArm64'), 'Server must serve manifest.macArm64');
     assert.ok(serverCode.includes('manifest.macX64'), 'Server must serve manifest.macX64');
 
     const html = fs.readFileSync(path.join(root, 'services/control-plane/admin/downloads.html'), 'utf8');
-    assert.ok(html.includes('macArm64-download'), 'Downloads HTML must have macArm64 button');
-    assert.ok(html.includes('macX64-download'), 'Downloads HTML must have macX64 button');
+    assert.ok(!html.includes('macArm64-download'), 'Public downloads must not advertise macOS');
+    assert.ok(!html.includes('macX64-download'), 'Public downloads must not advertise macOS');
+    assert.ok(html.includes('offlineSetup-download')&&html.includes('updater-download'));
 
     const publicJs = fs.readFileSync(path.join(root, 'services/control-plane/admin/public.js'), 'utf8');
-    assert.ok(publicJs.includes('macArm64'), 'public.js must process macArm64 link');
+    assert.ok(publicJs.includes("['offlineSetup','updater']"), 'Public downloads process only Windows setup/updater');
   });
 });

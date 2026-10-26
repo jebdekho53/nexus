@@ -8,6 +8,10 @@ const {createEngine} = require('./runtime/engine.cjs');
 const {createCompiledRuntime} = require('./runtime/compiled-runtime.cjs');
 
 const projectRoot = path.resolve(__dirname, '../..');
+if(process.argv.includes('--booking-window-check'))require(path.join(projectRoot,'test/booking-window-qa.cjs')).install(electron);
+require('./runtime/window-size-audit.cjs').install(electron,projectRoot);
+require('./runtime/desktop-rendering.cjs').configure(electron.app);
+require('./runtime/trial-access.cjs').installStateHandler(electron,projectRoot);
 require('./runtime/matrix-brand.cjs').install(electron,projectRoot);
 const vendorRequire = createRequire(path.join(projectRoot, 'vendor', 'package.json'));
 const isSmoke = process.argv.includes('--smoke-test');
@@ -29,7 +33,7 @@ const log = (event, details = {}) => {
 process.on('uncaughtExceptionMonitor',error=>log('matrix-uncaught-error',{error:String(error?.stack||error)}));
 try { require('./runtime/mobile-bridge.cjs').createMobileBridge(electron, projectRoot, log); } catch (e) { log('mobile-bridge-init-error', { error: String(e.message) }); }
 if (isDevelopment && !isSmoke) {
-  const profile=process.argv.includes('--release-activation-test')?path.join(diagnostics,'release-qa-profile'):process.argv.includes('--isolated-live-test')?path.join(diagnostics,'live-e2e-profile'):managedRelease?require('./runtime/profile.cjs').releaseProfile(electron.app,projectRoot):path.join(diagnostics,'development-profile');
+  const profile=process.argv.includes('--booking-window-check')?path.join(diagnostics,'booking-window-check-profile'):process.argv.includes('--release-activation-test')?path.join(diagnostics,'release-qa-profile'):process.argv.includes('--isolated-live-test')?path.join(diagnostics,'live-e2e-profile'):managedRelease?require('./runtime/profile.cjs').releaseProfile(electron.app,projectRoot):path.join(diagnostics,'development-profile');
   fs.mkdirSync(profile,{recursive:true});
   const setPath=electron.app.setPath.bind(electron.app);
   setPath('userData',profile);
@@ -73,12 +77,16 @@ globalThis.__esmImport = specifier => {
 const baseElectron = isSmoke ? require('./runtime/offline-smoke.cjs').install(electron,projectRoot,log) : electron;
 const appElectron=require('./runtime/window-readiness.cjs').install(baseElectron,projectRoot,log);
 require('./runtime/ticket-docking.cjs').install(appElectron,projectRoot);
+require('./runtime/booking-window-controls.cjs').install(appElectron,projectRoot);
+const successDownloads=require('./runtime/success-download.cjs').install(appElectron,projectRoot,log);
 if(!isSmoke)require('./runtime/legacy-services.cjs').install(appElectron,log);
 require('./runtime/portal-links.cjs').install(appElectron,projectRoot);
+require('./runtime/browser-downloads.cjs').install(appElectron,projectRoot);
 activity=require('./runtime/activity-log.cjs').install(appElectron,projectRoot);
 for(const secret of testSecrets)activity.learn({password:secret});
 const actionTrace={active:false,calls:new Map()};
-const developmentPolicy = isDevelopment ? require('./runtime/development-policy.cjs').install(appElectron,projectRoot,log,{managedRelease,generalApiCandidate:!managedRelease&&process.argv.includes('--general-api-candidate'),trace:actionTrace,learnSecrets:value=>activity.learn(value),observePayment:(...args)=>activity.observePayment(...args),stopActivity:id=>activity.stop(id)}) : null;
+const specialTrainSelection=require('./runtime/special-train-selection.cjs').install(appElectron,projectRoot);
+const developmentPolicy = isDevelopment ? require('./runtime/development-policy.cjs').install(appElectron,projectRoot,log,{managedRelease,generalApiCandidate:!managedRelease&&process.argv.includes('--general-api-candidate'),trace:actionTrace,learnSecrets:value=>activity.learn(value),registerTicketExporter:handler=>successDownloads.setExporter(handler),withTicketExport:invoke=>successDownloads.withExport(invoke),observeSuccess:(...args)=>successDownloads.observe(...args),observePayment:(...args)=>activity.observePayment(...args),stopActivity:id=>activity.stop(id)}) : null;
 const matrixUpdates=require('./runtime/updates.cjs').install(appElectron,projectRoot,{managedRelease,finish:code=>developmentPolicy?developmentPolicy.finishSmoke(code):electron.app.exit(code)});
 const appRequire = new Proxy(vendorRequire,{apply(target,that,args){return args[0]==='electron'?appElectron:Reflect.apply(target,that,args);}});
 
@@ -95,11 +103,20 @@ function bootRecovered(){try {
   const legacyServices=require('./runtime/legacy-services.cjs').hooks(log);
   const functionOverrides = {...(isDevelopment ? require('./runtime/development.cjs').developmentOverrides(log) : {}),...legacyServices.overrides};
   const functionFactories=require('./runtime/reconstructed-payment.cjs').reconstructedPayment({development:isDevelopment,managedRelease,enabled:process.argv.includes('--reconstructed-payment')});
+  Object.assign(functionFactories,require('./runtime/web-booking-upgrades.cjs').webBookingUpgrades({dependencies:{onResponse:require('./runtime/api-diagnostics.cjs').create(projectRoot)}}));
   if(Object.keys(functionFactories).length)log('matrix-reconstructed-payment',{functions:Object.keys(functionFactories)});
   log('development-mode', {enabled:isDevelopment, overrides:Object.keys(functionOverrides)});
   const privateOptions=process.argv.includes('--private-access-probe')||process.argv.includes('--private-flow-probe')?{onCreated:session=>require(path.join(projectRoot,'test/private-access-probe.cjs')).run(session,projectRoot,code=>developmentPolicy.finishSmoke(code))}:{};
   const functionInterceptors={...legacyServices.interceptors,...require('./runtime/general-api-candidate.cjs').interceptors(),...require('./runtime/private-browser.cjs').privateBrowser(log,privateOptions),...require('./runtime/login-performance.cjs').loginPerformance(log),...require('./runtime/booking-timing.cjs').bookingTiming(),...require('./runtime/qr-delivery.cjs').qrDelivery(appElectron,projectRoot,log)};
   Object.assign(functionInterceptors,require('./runtime/payment-timing.cjs').paymentTiming(log));
+  Object.assign(functionInterceptors,require('./runtime/warmup-timing.cjs').warmupTiming(log));
+  Object.assign(functionInterceptors,require('./runtime/csrf-timing.cjs').csrfTiming(log));
+  Object.assign(functionInterceptors,specialTrainSelection.interceptors);
+  Object.assign(functionInterceptors,require('./runtime/trial-access.cjs').hooks());
+  for(const [id,hook]of Object.entries(require('./runtime/booking-report.cjs').hooks())){
+    const previous=functionInterceptors[id];
+    functionInterceptors[id]=(original,args,actor)=>hook((...next)=>previous?previous(original,next,actor):original(...next),args,actor);
+  }
   const engineOptions = {functionOverrides,functionInterceptors,functionFactories,onInvoke:(id,args,captured)=>{
     if(id==='f3740'&&process.argv.includes('--isolated-live-test'))log('e2e-qr-publisher',{keys:Object.keys(args[0]||{}),imageBase64Length:args[0]?.imageBase64?.length||0,payloadLength:typeof args[0]?.payload==='string'?args[0].payload.length:0});
     if(actionTrace.active)actionTrace.calls.set(id,(actionTrace.calls.get(id)||0)+1);
@@ -126,6 +143,7 @@ function bootRecovered(){try {
   wrapper.call(appModule.exports,appModule.exports,appRequire,appModule,__filename,__dirname);
   module.exports = appModule.exports;
   log('main-module-initialized');
+  if(process.argv.includes('--booking-window-check'))void require(path.join(projectRoot,'test/booking-window-qa.cjs')).run(electron,projectRoot).then(()=>developmentPolicy.finishSmoke(0)).catch(error=>{log('booking-window-qa-error',{error:String(error.message)});developmentPolicy.finishSmoke(1);});
 } catch(error) {
   log('main-module-error',errorDetails(error));
   console.error(error.stack || error);

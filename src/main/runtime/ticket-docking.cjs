@@ -1,5 +1,13 @@
 'use strict';
 const path = require('node:path'), { fileURLToPath } = require('node:url');
+function freePosition(area,size,occupied,reference,gap=14){
+  const fits=p=>p.x>=area.x&&p.y>=area.y&&p.x+size.width<=area.x+area.width&&p.y+size.height<=area.y+area.height&&!occupied.some(b=>p.x<b.x+b.width+gap&&p.x+size.width+gap>b.x&&p.y<b.y+b.height+gap&&p.y+size.height+gap>b.y);
+  const candidates=[{x:reference.x+reference.width+gap,y:reference.y},{x:reference.x-size.width-gap,y:reference.y}];
+  const startX=Math.max(area.x,Math.min(...occupied.map(b=>b.x))),startY=Math.max(area.y,Math.min(...occupied.map(b=>b.y)));
+  const stepY=Math.max(size.height,...occupied.map(b=>b.height))+gap;
+  for(const origin of [{x:startX,y:startY},{x:area.x,y:area.y}])for(let y=origin.y;y+size.height<=area.y+area.height;y+=stepY)for(let x=origin.x;x+size.width<=area.x+area.width;x+=size.width+gap)candidates.push({x,y});
+  return candidates.find(fits)||null;
+}
 
 function install(electron, root) {
   let lastPairSourceWindow = null;
@@ -39,6 +47,13 @@ function install(electron, root) {
   electron.app.on('browser-window-created', (_event, ticket) => {
     let parent, popupParent, placing = false, attached = false, popupAttached = false, tiled = false;
     const nativeBounds = ticket.setBounds.bind(ticket);
+    function fitCompactTicket() {
+      if(ticket.__matrixSingleFlow)return;
+      if (ticket.isDestroyed() || !isTicket(ticket)) return;
+      const b=ticket.getBounds(),area=electron.screen.getDisplayMatching(b).workArea;
+      const width=Math.min(348,area.width),height=Math.min(241,area.height);
+      if(b.width!==width||b.height!==height)nativeBounds({...b,width,height});
+    }
 
     // Track if this window triggers a pair creation (app:save-form)
     ticket.webContents.on('ipc-message', (_e, channel) => {
@@ -50,6 +65,7 @@ function install(electron, root) {
     // Side-by-side layout: when multiple forms or pair windows open, place them side-by-side rather than overlapping.
     function tileSideBySide() {
       if (ticket.isDestroyed() || isTicket(ticket)) return false;
+      if(tiled)return true;
       const pair = isPairBox(ticket), form = isFormEditor(ticket);
       if (!pair && !form) return false;
 
@@ -77,27 +93,9 @@ function install(electron, root) {
       const bRef = refWin.getBounds();
       const area = electron.screen.getDisplayMatching(bRef).workArea;
 
-      // Try placing to the right of the reference window
-      let nextX = bRef.x + bRef.width + gap;
-      let nextY = bRef.y;
-
-      if (nextX + w > area.x + area.width) {
-        // Try placing to the left of the reference window
-        if (bRef.x - w - gap >= area.x) {
-          nextX = bRef.x - w - gap;
-          nextY = bRef.y;
-        } else {
-          // Wrap to next row below the lowest window in column
-          const first = all[0].getBounds();
-          nextX = first.x;
-          nextY = bRef.y + bRef.height + gap;
-          if (nextY + h > area.y + area.height) {
-            const off = (all.length * 28) % 140;
-            nextX = area.x + 20 + off;
-            nextY = area.y + 30 + off;
-          }
-        }
-      }
+      const position=freePosition(area,{width:w,height:h},all.map(win=>win.getBounds()),bRef,gap);
+      if(!position)return false;
+      const nextX=position.x,nextY=position.y;
 
       tiled = true;
       ticket.__matrixTiledPos = { x: nextX, y: nextY };
@@ -118,6 +116,7 @@ function install(electron, root) {
     };
 
     function place() {
+      if(ticket.__matrixSingleFlow)return;
       if (placing || ticket.isDestroyed() || !isTicket(ticket)) return false;
       const id = route(ticket)?.searchParams?.get('id');
       const all = electron.BrowserWindow.getAllWindows().filter(w => w !== ticket && !w.isDestroyed() && isPairBox(w));
@@ -204,13 +203,13 @@ function install(electron, root) {
       };
     }
 
-    ticket.on('moved', () => { ticket.__userDragged = true; });
-    ticket.webContents.on('did-finish-load', () => { place(); tileSideBySide(); });
-    ticket.on('show', () => { place(); tileSideBySide(); });
-    ticket.on('ready-to-show', () => { place(); tileSideBySide(); });
+    ticket.on('will-move', () => { ticket.__userDragged = true; });
+    ticket.webContents.on('did-finish-load', () => { fitCompactTicket(); place(); tileSideBySide(); });
+    ticket.on('show', () => { fitCompactTicket(); place(); tileSideBySide(); });
+    ticket.on('ready-to-show', () => { fitCompactTicket(); place(); tileSideBySide(); });
     ticket.on('resize', place);
     ticket.on('closed', detach);
   });
 }
 
-module.exports = { install };
+module.exports = { install,freePosition };

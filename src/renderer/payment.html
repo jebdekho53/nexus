@@ -23,23 +23,25 @@
     <script defer src="./matrix-build.js"></script>
     <script defer src="./matrix-payments.js"></script>
     <script defer src="./matrix-brand.js"></script>
-  </head>
+  <link rel="stylesheet" href="./matrix-library.css">
+  <link rel="stylesheet" href="./matrix-visual.css">
+</head>
   <body class="pm-page">
     <header class="topbar">
       <div class="brand">
         <span class="dot"></span>
-        <span>Payment</span>
+        <span>UPI Collection</span>
       </div>
       <span class="spacer"></span>
       <button type="button" id="deleteAllBtn" class="btn danger sm" title="Delete every saved payment method">Delete All</button>
-      <button type="button" id="addBtn" class="btn primary sm" title="Add a new payment method">+ New Payment Method</button>
-      <button type="button" id="closeBtn" class="btn sm">Close</button>
+      <button type="button" id="addBtn" class="btn primary sm" title="Add a new payment method">+ Add UPI ID</button>
+      <button type="button" class="win-close" id="closeBtn" title="Close" onclick="window.close()">✕</button>
     </header>
 
     <main class="ld-wrap">
       <div id="list"></div>
       <div id="empty" class="empty hidden">
-        No saved payment methods yet. Click <b>+ New Payment Method</b> to save a UPI ID once and pick it in any form.
+        Your UPI collection is empty. Add a UPI ID to use it in your bookings.
       </div>
     </main>
 
@@ -48,21 +50,16 @@
     <div id="payModal" class="modal-overlay hidden">
       <div class="modal-card">
         <div class="modal-head">
-          <div class="modal-title" id="modalTitle">New Payment Method</div>
+          <div class="modal-title" id="modalTitle">Add UPI ID</div>
           <button type="button" class="modal-x" id="modalClose">✕</button>
         </div>
-        <div class="pm-tabs" role="tablist">
-          <button type="button" class="pm-tab active" id="tabUpi" role="tab" aria-selected="true">UPI</button>
-        </div>
+        <button type="button" id="tabUpi" hidden aria-hidden="true" style="display:none!important">UPI</button>
         <div class="modal-fields">
           <div class="field">
             <label class="lbl" for="pmUpi">UPI ID</label>
             <input type="text" id="pmUpi" placeholder="name@okhdfc" autocomplete="off" spellcheck="false" />
           </div>
-          <div class="field">
-            <label class="lbl" for="pmLabel">Name <span class="pm-opt">(optional)</span></label>
-            <input type="text" id="pmLabel" placeholder="e.g. HDFC personal" autocomplete="off" />
-          </div>
+          <input type="hidden" id="pmLabel" value="" />
           <div class="pm-note" id="pmNote"></div>
         </div>
         <div class="modal-actions">

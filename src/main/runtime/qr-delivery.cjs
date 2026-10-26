@@ -12,20 +12,7 @@ function imageUrl(value){
  return 'data:'+mime+';base64,'+raw;
 }
 function qrDelivery(electron,root,log=()=>{}){
- function getStoredQrPopup(){
-  try{
-   const userData=electron.app?.getPath?.('userData');
-   if(userData){
-    const p=path.join(userData,'settings.json');
-    if(require('node:fs').existsSync(p)){
-     const s=JSON.parse(require('node:fs').readFileSync(p,'utf8'));
-     if(typeof s?.qrPopup==='boolean')return s.qrPopup;
-    }
-   }
-  }catch{}
-  return false;
- }
- let popupMode=getStoredQrPopup();
+ let popupMode=false,collectDepth=0;
  const popups=new Map(),cached=new Map();let publisher,hooks;
  electron.__qrPopups=popups;
  const booking=id=>{
@@ -75,50 +62,18 @@ function qrDelivery(electron,root,log=()=>{}){
   }finally{placing=false;}
  };
  return hooks={
-  f3734(original,args){popupMode=original(...args);return popupMode;},
+  f3734(original,args){original(...args);popupMode=false;return false;},
   f3735(original,args){
    const found=booking(args[0]);
    if(found)return found;
    return original(...args);
   },
-  f3743(original,args){
-   if(!popupMode)return null;
-   const id=args[0]||args[1]||args[2];
-   const fid=typeof id==='string'?id:id;
-   const targetBooking=booking(fid);
-   if(targetBooking){
-    try{
-     let b=targetBooking.getBounds();
-     const area=electron.screen.getDisplayMatching(b).workArea;
-     const pw=260,ph=330;
-     const ticket=ticketWin(fid),t=ticket?.getBounds();
-     const totalHeight=b.height+8+ph+(t?8+t.height:0);
-     if(totalHeight<=area.height){const y=Math.max(area.y,Math.min(b.y,area.y+area.height-totalHeight));if(y!==b.y){b={...b,y};targetBooking.setBounds(b);}}
-     const initX=Math.max(area.x,Math.min(b.x,area.x+area.width-pw));
-     const initY=Math.max(area.y,Math.min(b.y+b.height+8,area.y+area.height-ph));
-     if(typeof args[1]==='object'&&args[1]!==null){
-      args[1].x=initX;args[1].y=initY;
-     }
-    }catch{}
-   }
-   const popup=original(...args);
-   if(popup){
-    if(id&&typeof id==='string')popup.__formId=id;
-    const actualFid=popup.__formId||fid;
-    if(actualFid)popups.set(actualFid,popup);
-    const parent=booking(actualFid),follow=()=>place(popup,actualFid);
-    parent?.on?.('move',follow);
-    parent?.on?.('resize',follow);
-    popup.on?.('show',follow);
-    place(popup,actualFid);
-    popup.on?.('closed',()=>{
-     parent?.removeListener?.('move',follow);
-     parent?.removeListener?.('resize',follow);
-     if(actualFid)popups.delete(actualFid);
-     cached.delete(actualFid);
-    });
-   }
-   return popup;
+  f3743(original,args){return collectDepth?original(...args):null;},
+  f3745(original,args){
+   // Collect renders HTML into a native window; only QR images are inline.
+   // Scope this synchronous renderer so other forms retain inline QR delivery.
+   collectDepth++;
+   try{return original(...args);}finally{collectDepth--;}
   },
   f3746(original,args){
    const [popup,id]=args;
@@ -131,9 +86,9 @@ function qrDelivery(electron,root,log=()=>{}){
    return original(...args);
   },
   async f4021(original,args){
-   const active=[...cached];const result=await original(...args);
+   const active=[...cached];args=[...args];args[1]=false;const result=await original(...args);
    if(result?.ok){
-    popupMode=args[1]===true;
+    popupMode=false;
     if(!popupMode){
      for(const [,p]of popups){try{if(!p.isDestroyed()){p.hide();p.close();}}catch{}}
      popups.clear();
@@ -145,6 +100,7 @@ function qrDelivery(electron,root,log=()=>{}){
   async f3740(original,args){
    publisher=original;
    const [payload,formId]=args,dataUrl=imageUrl(payload?.imageBase64);
+   if(dataUrl)args=[{...payload,forcePopup:false},...args.slice(1)];
    if(typeof formId==='string'&&imageUrl(payload?.imageBase64))cached.set(formId,payload);
    if(!dataUrl)return original(...args);
    const allBoxes=electron.BrowserWindow.getAllWindows().filter(win=>{

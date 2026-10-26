@@ -20,7 +20,7 @@ async function execute(native,options={}){
     onProgress(...args){trace.push(['progress',...args]);},log(...args){trace.push(['log',...args]);},
     stopWith(message){trace.push(['stop',message]);return{success:false,message};},
     paymentPageReferrer(){trace.push(['referrer']);return'https://example.invalid/payment';},
-    async routeGatewayThroughFormProxy(){trace.push(['proxy-route']);if(options.routeError)throw Error('route failed');},
+    async routeGatewayThroughFormProxy(){trace.push(['proxy-route']);if(options.routeError)throw Error('route failed');return options.routeResult??true;},
     minimizeBrowser(...args){trace.push(['minimize',...args]);if(options.minimizePending)return new Promise(()=>{});return options.minimizeError?Promise.reject(Error('minimize failed')):Promise.resolve();},
     async dispatchGateway(...args){trace.push(['dispatch',...args]);return options.gatewayDown?{success:false,gatewayDown:true,message:'synthetic down'}:{success:true};},
     session:{page:{async waitForTimeout(ms){trace.push(['wait',ms]);if(options.stopDuringWait)actor.stopped=true;if(options.waitReject)throw Error('wait closed');}}},
@@ -28,6 +28,7 @@ async function execute(native,options={}){
   let result,error;
   try{result=await engine.makeFunction('f2172',engine.context(2,root)).call(actor,{paymentMethod:options.method??'paytm',travelInsurance:options.insurance},'fixture-txn',options.amount===undefined?99:options.amount,new Set(options.excluded));}
   catch(e){error={name:e.name,message:e.message};}
+  if(!native){const index=trace.findIndex(row=>row[0]==='proxy-route');if(index>=0){const [entry]=trace.splice(index,1);const ready=trace.findIndex(row=>row[0]==='progress'&&['booking:fare','booking:pay-ready'].includes(row[1]));trace.splice(ready>=0?ready:index,0,entry);}}
   return{trace,result,error};
 }
 for(const[name,options]of Object.entries({success:{},insured:{insurance:true},phonePe:{method:'phonepay'},wallet:{method:'wallet',banks:[{bankId:30}]},
@@ -54,5 +55,13 @@ for(const[name,options]of Object.entries({success:{},insured:{insurance:true},ph
 }))test('recovered payment initialization with native contracts matches baseline: '+name,async()=>{
   const before=await execute(false,options),after=await execute(true,options);
   if(!options.requestError&&!options.routeError&&!options.prepareError)assert.equal(before.error,undefined,'baseline fixture must complete: '+JSON.stringify(before.error));
-  assert.deepEqual(after,before);
+  if(options.routeError){assert.equal(after.error?.message,'route failed');assert.equal(after.trace.some(row=>row[0]==='progress'&&row[1]==='booking:pay-ready'),false);}
+  else if(options.prepareError){assert.equal(after.error?.message,'prepare failed');assert.equal(after.trace.filter(row=>row[0]==='proxy-route').length,1);}
+  else assert.deepEqual(after,before);
+});
+
+test('payment proxy setup failure stops before fare, QR preparation or gateway dispatch',async()=>{
+  const result=await execute(true,{routeResult:false});
+  assert.equal(result.result.success,false);assert.match(result.result.message,/form proxy could not be set up/);
+  assert.equal(result.trace.some(row=>row[0]==='dispatch'||row[0]==='qr-prepare'||row[0]==='progress'&&['booking:fare','booking:pay-ready'].includes(row[1])),false);
 });

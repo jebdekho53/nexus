@@ -67,13 +67,26 @@ const cases={normal:{},post:{method:'post'},strip:{strip:true},stripRejected:{st
   resetFailures:{initialFailures:2},zeroTimeout:{input:{timeout:0}},nullTimeout:{input:{timeout:null}},falseTimeout:{input:{timeout:false}},
   nullInput:{input:null},stringInput:{input:'xy'},timeoutGetter:{timeoutGetter:true},invalidUrl:{url:'invalid relative URL'},
 };
-for(const[name,options]of Object.entries(cases))test('gateway request routing matches recovered policy/order: '+name,async()=>assert.deepEqual(await run(true,options),await run(false,options)));
-test('gateway routing retains captured raw request and requires configured fallback threshold',async()=>{
+for(const[name,options]of Object.entries(cases).filter(([,options])=>!options.direct&&!options.proxy))test('gateway request routing matches recovered policy/order: '+name,async()=>assert.deepEqual(await run(true,options),await run(false,options)));
+test('proxy failures stay on configured transport and report once without direct fallback',async()=>{
   const snapshot=await run(true,{replaceAfterSnapshot:true});assert.equal(snapshot.result[0].route,'base');
-  const fallback=await run(true,{fail:true,proxy:true,calls:4});assert.deepEqual(fallback.result.map(value=>value.route??value.error),['Error','Error','direct','direct']);
-  assert.equal(fallback.trace.filter(row=>row[0]==='fallback').length,1);assert.deepEqual(fallback.directHosts,['example.invalid']);
-  const blocked=await run(true,{fail:true,proxy:true,fallbackEligible:false,calls:4});assert.equal(blocked.directHosts.length,0);assert.equal(blocked.trace.some(row=>row[0]==='direct-context'),false);
+  const failure=await run(true,{fail:true,proxy:true,calls:4});
+  assert.deepEqual(failure.result.map(value=>value.route??value.error),['Error','Error','Error','Error']);
+  assert.equal(failure.trace.filter(row=>row[0]==='fallback').length,1);
+  assert.deepEqual(failure.directHosts,[]);assert.equal(failure.trace.some(row=>row[0]==='direct-context'),false);
+  assert.equal(failure.trace.filter(row=>row[0]==='request'&&row[1]==='base').length,4);
 });
+
+test('stale direct-host state cannot bypass the selected request transport',async()=>{
+  const result=await run(true,{direct:true,method:'post'});
+  assert.equal(result.result[0].route,'base');assert.equal(result.trace.some(row=>row[0]==='direct-context'),false);
+});
+
+test('proxy failure reporting callback cannot replace the original request error',async()=>{
+  const result=await run(true,{fail:true,proxy:true,threshold:1,fallbackThrow:true,calls:2});
+  assert.ok(result.result.every(row=>row.sameFailure));assert.equal(result.trace.filter(row=>row[0]==='fallback').length,1);
+});
+
 test('browser-close continuation uses survivor without triggering direct-host fallback',async()=>{
   const result=await run(true,{closed:true,fail:true,survivor:true,proxy:true,calls:2});assert.equal(result.browserGone,true);
   assert.deepEqual(result.result.map(value=>value.route),['survivor','survivor']);assert.deepEqual(result.directHosts,[]);

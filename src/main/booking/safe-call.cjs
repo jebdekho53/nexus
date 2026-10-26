@@ -43,6 +43,7 @@ async function safeCall(actor, target, method, url, body, callOptions, deps = {}
   let count511 = 0;        // r11: 511 counter
   let networkRetries = 0;  // r12: network failure counter
   let count403 = 0;        // r13: 403 counter
+  let csrfRetries = 0;     // r14: csrf mismatch retry counter (TS 1.0.78 part-05.js:10169)
 
   while (true) {
     if (actor.stopped) return null;
@@ -56,6 +57,7 @@ async function safeCall(actor, target, method, url, body, callOptions, deps = {}
     try {
       res = await actor.api.call(method, pathForCall, body, undefined, options.referrer);
     } catch (err) {
+      try{deps.onResponse?.({method,path:url,category:'network'});}catch{}
       if (actor.stopped) return null;
       if (actor.session?.page?.isClosed?.()) {
         actor.terminal = deps.terminalClosed;
@@ -71,6 +73,9 @@ async function safeCall(actor, target, method, url, body, callOptions, deps = {}
       actor.log(target, `${method} ${pathSuffix} network error — retry ${networkRetries}/${maxRetry} after ${Math.round(delay)}ms: ${err.message}`, 'warn');
       actor.onProgress?.('booking:highload', deps.highloadText);
       await sleep(delay);
+      if (networkRetries === 1 && typeof actor.refreshCsrfFromSpa === 'function') {
+        await actor.refreshCsrfFromSpa('after a lost response').catch(() => {});
+      }
       continue;
     }
 
@@ -79,7 +84,12 @@ async function safeCall(actor, target, method, url, body, callOptions, deps = {}
       actor.akamai.record(akScore);
     }
 
-    const statusCat = deps.classifyResponse(res.status, res.body, res.headers);
+    const statusCat = deps.classifyResponse
+      ? deps.classifyResponse(res.status, res.body, res.headers, {
+          bookingNotAllowedTerminal: Boolean(actor.bookingNotAllowedTerminal?.()),
+        })
+      : (res.ok ? 'ok' : 'other');
+    try{deps.onResponse?.({method,path:url,status:res.status,category:statusCat});}catch{}
 
     if (res.status === 510 || (actor.opts?.masterCache && (statusCat === 'highload' || statusCat === 'retry'))) {
       const shape = options.optShape ?? 'trail';
@@ -110,6 +120,15 @@ async function safeCall(actor, target, method, url, body, callOptions, deps = {}
     }
 
     if (statusCat === 'terminal') {
+      if (actor.bookingNotAllowedTerminal?.()) {
+        const errorText = deps.extractErrorText
+          ? deps.extractErrorText(res.body)
+          : (deps.describeFailure ? deps.describeFailure(res.status, res.body) : '');
+        if (/booking not allowed/i.test(errorText)) {
+          actor.terminal = errorText;
+          return null;
+        }
+      }
       if (res.status !== 403) {
         actor.terminal = deps.describeFailure ? deps.describeFailure(res.status, res.body) : String(res.status);
         return null;
@@ -129,6 +148,21 @@ async function safeCall(actor, target, method, url, body, callOptions, deps = {}
     }
 
     if (statusCat === 'csrf') {
+      const maxCsrfRetries = deps.maxCsrfRetries ?? options.maxCsrfRetries ?? (typeof actor.refreshCsrfFromSpa === 'function' ? 3 : 0);
+      if (csrfRetries < maxCsrfRetries) {
+        if (!actor.stopped) {
+          csrfRetries++;
+          actor.log(target, `${method} ${pathSuffix} csrf MISMATCH — refreshing the token and retrying (${csrfRetries}/${maxCsrfRetries})`, 'warn');
+          actor.onProgress?.('booking:highload', deps.highloadText);
+          if (typeof actor.refreshCsrfFromSpa === 'function') {
+            await actor.refreshCsrfFromSpa(`csrf mismatch ${csrfRetries}/${maxCsrfRetries}`).catch(() => {});
+          }
+          continue;
+        }
+      }
+      if (csrfRetries > 0) {
+        actor.log(target, `${method} ${pathSuffix} csrf MISMATCH persisted after ${csrfRetries} refresh(es) — a second live session`, 'error');
+      }
       actor.terminal = deps.duplicateLoginMessage;
       return null;
     }
@@ -173,7 +207,6 @@ async function safeCall(actor, target, method, url, body, callOptions, deps = {}
     }
 
     if (statusCat === 'highload' && res.status === 511 && options.infinite511) {
-      count510 = 0;
       count511++;
       actor.log(target, `${cleanUrl}: 511 high load — retry ${count511}`, 'warn');
       actor.onProgress?.('booking:retry', deps.highloadText);
@@ -196,7 +229,6 @@ async function safeCall(actor, target, method, url, body, callOptions, deps = {}
     }
 
     if (statusCat !== 'retry') {
-      count510 = 0;
       if (retryLoop < retries) {
         if (statusCat !== 'highload') {
           if (statusCat === 'csrf') {
@@ -233,7 +265,6 @@ async function safeCall(actor, target, method, url, body, callOptions, deps = {}
         return res;
       }
     } else {
-      count510 = 0;
       if (options.boundedRetry != null && retryLoop >= options.boundedRetry) {
         return res;
       }

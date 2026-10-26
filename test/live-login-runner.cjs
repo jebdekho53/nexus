@@ -6,6 +6,7 @@ async function run(electron,root,log) {
   const directory=path.join(root,'diagnostics');
   const testMode=process.argv.find(arg=>arg.startsWith('--test-mode='))?.split('=')[1];
   const testTrain=process.argv.find(arg=>arg.startsWith('--test-train='))?.split('=')[1];
+  const testDate=process.argv.find(arg=>arg.startsWith('--test-date='))?.split('=')[1];
   if(testTrain&&!/^\d{5}$/.test(testTrain))throw new Error('Invalid test train number');
   if(testMode&&!['auto','direct','direct2'].includes(testMode))throw new Error('Unsupported automated test mode');
   const reportPath=path.join(directory,testMode?'live-e2e-'+(testTrain?testTrain+'-':'')+testMode+'.json':'live-login-report.json');
@@ -43,6 +44,8 @@ async function run(electron,root,log) {
     const form=loaded.data;
     report.savedQuota=form.journey?.quota;
     form.account={...form.account,...account};
+    if(testDate&&form.journey)form.journey.journeyDate=testDate;
+    else if(form.journey&&(!form.journey.journeyDate||form.journey.journeyDate<'2026-10-22'))form.journey.journeyDate='2026-10-31';
     if(testMode){
       const flags=await execute("import('./assets/types-B0-2ZUtm.js').then(module=>module.p("+JSON.stringify(testMode)+"))");
       Object.assign(form,flags);form.journey.quota='GN';

@@ -1,0 +1,231 @@
+/* Shared collection workspace: booking setups, accounts, UPI and journeys. */
+body{font-family:Inter,"Segoe UI",sans-serif!important;background:radial-gradient(ellipse at 0 0,#07352f 0,transparent 55%),#04131c!important;color:#def8f4!important}
+.topbar{background:#061b23!important;border-bottom:1px solid #20615f!important}
+main.list-wrap,main.ld-wrap,main.hist-wrap{width:100%;max-width:1180px;margin:0 auto;padding:16px 20px!important;box-sizing:border-box}
+main.hist-wrap{height:calc(100vh - 58px)}
+
+/* Universally Remove Intro Banners & Search Bars */
+.library-intro{display:none!important}
+.searchbar,.search-field,.date-field{display:none!important}
+
+#list{gap:12px!important}
+
+/* Compact UI Card Components - Reduced Height, Preserved Width, Minimal Vertical Spacing */
+.card,.user-row,.proxy-row,.hcard{
+  background:linear-gradient(125deg,#0b2930,#071b25)!important;
+  border:1px solid #26525c!important;
+  border-radius:14px!important;
+  padding:10px 14px!important;
+  box-shadow:0 4px 16px #0002!important;
+  min-height:auto!important;
+  gap:6px!important;
+}
+
+.card{
+  border-top:2.5px solid #39e7bd!important;
+}
+.card .route,.hcard .route{
+  font-size:15px!important;
+  color:#65f9d5!important;
+  letter-spacing:.2px!important;
+  margin-bottom:2px!important;
+}
+.card .label{
+  font-size:13.5px!important;
+  color:#effffb!important;
+  margin-bottom:2px!important;
+}
+.card .meta{
+  margin-top:2px!important;
+  gap:6px!important;
+  font-size:11.5px!important;
+}
+
+/* Reduced Spacing between Content and Action Buttons */
+.card .acts,.user-row .acts,.proxy-row .acts{
+  border-top:1px solid #1f454c!important;
+  margin-top:6px!important;
+  padding-top:6px!important;
+  gap:6px!important;
+  flex-wrap:wrap!important;
+}
+.card .acts .btn,.user-row .acts .btn,.proxy-row .acts .btn{
+  flex:1 1 80px!important;
+  min-width:0;
+  white-space:nowrap!important;
+  padding:3px 8px!important;
+  font-size:11px!important;
+  height:26px!important;
+  min-height:26px!important;
+  line-height:1.2!important;
+}
+
+.cards{
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr))!important;
+  gap:12px!important;
+}
+.hcard{
+  border-left:3px solid #35e5c2!important;
+  padding:10px 14px!important;
+}
+.hc-detail{
+  border-color:#2b5a60!important;
+  padding-top:6px!important;
+  margin-top:6px!important;
+}
+.hc-train,.hc-pnr,.hc-foot,.pax,.hc-meta2{color:#9fc1ca!important}
+.hc-acct,.pax .pname,.hc-meta2 b{color:#e0f8f4!important}
+.day{color:#59dfc6!important;margin:12px 0 8px!important}
+.day .line{background:#245257!important}
+
+.btn{
+  border-radius:8px!important;
+  padding:6px 12px!important;
+  background:#10323b!important;
+  border-color:#2c6269!important;
+  color:#d8f7f0!important;
+  font-weight:650!important;
+}
+.btn.primary{background:linear-gradient(100deg,#00e5a3,#00d5e5)!important;color:#00252b!important;border-color:#35efd0!important}
+.btn.danger{color:#ff9ba9!important;background:#351d2b!important;border-color:#613443!important}
+.empty{margin-top:12px!important;padding:28px 20px!important;border:1px dashed #2a6667!important;border-radius:14px!important;background:#09232b!important;color:#a6c7cf!important}
+.drop-hint{display:none!important}
+
+.modal-card{border-radius:20px!important;border:1px solid #287269!important;background:linear-gradient(145deg,#0b3034,#071b27)!important;padding:24px!important}
+.modal-head{padding-bottom:15px!important;border-bottom:1px solid #285058!important;margin-bottom:16px!important}
+.modal-title{color:#83ffdb!important;letter-spacing:.2px}
+.modal-actions{gap:12px!important;padding-top:18px!important}
+
+/* IRCTC Accounts Clean Grid, ID Unmasking & 5-Button Header */
+.matrix-login-data .topbar,.matrix-payment .topbar,.matrix-open-form .topbar,.matrix-history .topbar,.matrix-proxy .topbar {
+  display:flex!important;
+  align-items:center!important;
+  gap:10px!important;
+  padding:10px 18px!important;
+  flex-wrap:wrap!important;
+  padding-right:60px!important;
+  position:relative!important;
+}
+.matrix-login-data .topbar .brand,.matrix-payment .topbar .brand,.matrix-open-form .topbar .brand,.matrix-history .topbar .brand,.matrix-proxy .topbar .brand {
+  font-size:15px!important;
+  font-weight:800!important;
+  color:#ffffff!important;
+  white-space:nowrap!important;
+}
+.matrix-login-data .topbar .brand::before,.matrix-payment .topbar .brand::before,.matrix-open-form .topbar .brand::before,.matrix-history .topbar .brand::before,.matrix-proxy .topbar .brand::before {
+  display:none!important;
+}
+.matrix-login-data .topbar .btn,.matrix-payment .topbar .btn,.matrix-open-form .topbar .btn,.matrix-history .topbar .btn,.matrix-proxy .topbar .btn {
+  white-space:nowrap!important;
+  flex-shrink:0!important;
+}
+.win-close,.matrix-login-data .topbar .win-close,.matrix-payment .topbar .win-close,.matrix-open-form .topbar .win-close,.matrix-history .topbar .win-close,.matrix-proxy .topbar .win-close {
+  position:absolute!important;
+  right:14px!important;
+  top:9px!important;
+  margin-left:6px!important;
+  width:32px!important;
+  height:32px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  background:#112d35!important;
+  border:1px solid #23545e!important;
+  color:#8fb1be!important;
+  border-radius:8px!important;
+  font-size:14px!important;
+  font-weight:700!important;
+  cursor:pointer!important;
+  transition:all .15s ease!important;
+  flex-shrink:0!important;
+}
+.win-close:hover,.matrix-login-data .topbar .win-close:hover,.matrix-payment .topbar .win-close:hover,.matrix-open-form .topbar .win-close:hover,.matrix-history .topbar .win-close:hover,.matrix-proxy .topbar .win-close:hover {
+  background:#e11d48!important;
+  border-color:#f43f5e!important;
+  color:#ffffff!important;
+}
+
+.matrix-login-data #list,.matrix-payment #list {
+  display:grid!important;
+  grid-template-columns:repeat(auto-fill, minmax(min(100%,300px), 1fr))!important;
+  gap:12px!important;
+  align-content:start!important;
+}
+.matrix-login-data .user-row,.matrix-payment .user-row {
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  justify-content:space-between!important;
+  gap:6px!important;
+  min-height:auto!important;
+  padding:10px 14px!important;
+  background:linear-gradient(135deg,#0b2930,#071b25)!important;
+  border:1px solid #26525c!important;
+  border-radius:14px!important;
+  box-shadow:0 4px 16px #0002!important;
+}
+.matrix-login-data .user-row .main,.matrix-payment .user-row .main {
+  display:flex!important;
+  flex-wrap:wrap!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:4px 8px!important;
+  width:100%!important;
+}
+.matrix-login-data .user-row .uname {
+  font-size:15px!important;
+  font-weight:800!important;
+  color:#38efc8!important;
+  letter-spacing:0.2px!important;
+  white-space:normal!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  word-break:break-all!important;
+  max-width:none!important;
+  flex:0 1 auto!important;
+  min-width:0!important;
+}
+.matrix-login-data .user-row .id-tag {
+  margin-left:auto!important;
+  flex-shrink:0!important;
+  font-weight:800!important;
+  padding:2px 8px!important;
+  border-radius:6px!important;
+  font-size:10.5px!important;
+}
+.matrix-login-data .user-row .umobile {
+  width:100%!important;
+  margin-top:2px!important;
+  color:#8cb5c2!important;
+  font-size:12px!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:6px!important;
+}
+.matrix-login-data .user-row .ulock {
+  font-size:12px!important;
+  opacity:0.9!important;
+}
+.matrix-login-data .user-row .otp-stat {
+  font-size:10.5px!important;
+  font-weight:700!important;
+  padding:2px 6px!important;
+  border-radius:6px!important;
+  background:#0f393b!important;
+  border:1px solid #206d6e!important;
+  color:#55efc4!important;
+}
+
+@media(max-width:620px){
+  main.list-wrap,main.ld-wrap,main.hist-wrap{padding:12px!important}
+  .cards{grid-template-columns:1fr!important}
+}
+
+/* Booking setup cards match the compact IRCTC account cards. */
+.matrix-open-form #list{grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))!important}
+.matrix-open-form #list>.card{box-sizing:border-box;height:134px;min-height:134px!important;gap:3px!important}
+.matrix-open-form #list>.card .card-top{min-width:0;flex-shrink:0}
+.matrix-open-form #list>.card .route{margin-bottom:0!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0}
+.matrix-open-form #list>.card .meta{margin-top:0!important;flex-wrap:nowrap;white-space:nowrap;overflow:hidden;flex-shrink:0}
+.matrix-open-form #list>.card .acts{display:grid!important;grid-template-columns:minmax(0,1.35fr) minmax(0,1.2fr) minmax(0,.75fr) minmax(0,.7fr);margin-top:auto!important;gap:6px!important;flex-shrink:0}
+.matrix-open-form #list>.card .acts .btn{width:100%;min-width:0!important;padding:3px 4px!important;font-size:11px!important}

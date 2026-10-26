@@ -1,13 +1,16 @@
 {
   "name": "matrix-source",
-  "version": "1.0.14",
+  "version": "1.0.28",
   "description": "Editable Matrix recovered source project",
   "private": true,
   "main": "src/main/index.cjs",
   "scripts": {
     "start": "node scripts/run.cjs",
     "smoke": "node scripts/run.cjs --smoke-test",
-    "test": "node --test test/*.test.cjs"
+    "test": "node tools/run-tests.cjs",
+    "test:admin": "node tools/run-tests.cjs admin",
+    "test:booking": "node tools/run-tests.cjs booking",
+    "test:full": "node --test --test-concurrency=4 test/*.test.cjs services/control-plane/*.test.cjs"
   },
   "engines": {
     "node": ">=22.12.0"

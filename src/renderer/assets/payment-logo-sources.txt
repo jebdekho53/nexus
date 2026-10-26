@@ -1,0 +1,5 @@
+Payment logo sources (downloaded 22 October 2026):
+Google Pay: https://www.gstatic.com/marketing-cms/assets/images/14/6f/70e084cc414c818f22522adb5895/header-logo.svg (linked from https://pay.google.com/about/)
+PhonePe: https://www.phonepe.com/static/pp-logo-4991b763165c94bfc95669f6dc28ad5f.svg
+Navi: https://navi.com/static/media/naviLogo.c2380d7b.svg
+Matrix: existing bundled matrix-mark.png

@@ -43,7 +43,9 @@ function install(electron,root,log=()=>{},options={}) {
   };
   electron.app.on('browser-window-created',(_event,win)=>protectWindow(win));
   const nativeHandle=electron.ipcMain.handle.bind(electron.ipcMain);
-  patch(electron.ipcMain,'handle',(channel,handler)=>nativeHandle(channel,async(event,...args)=>{
+  patch(electron.ipcMain,'handle',(channel,handler)=>{
+   if(channel==='app:print-ticket')options.registerTicketExporter?.(handler);
+   return nativeHandle(channel,async(event,...args)=>{
     for(const value of args)options.learnSecrets?.(value);
     if(channel==='app:close-aux-windows')return require('./aux-windows.cjs').closeAuxWindows(electron,root,event,log);
     if(/app:(controller-action|login|start-booking|stop-run|logout|save-form)/.test(channel))log('action-start',{page:channel+(channel==='app:controller-action'?' '+String(args[0]):''),formId:typeof args[0]==='string'?args[0]:args[0]?.formId||args[0]?.id,profileId:args[0]?.profileId,senderId:event.sender.id});
@@ -61,15 +63,23 @@ function install(electron,root,log=()=>{},options={}) {
       if(channel==='app:get-login-target'&&args[0]?.mode==='weblogin'){
         try{const sender=new URL(event.sender.getURL());if(sender.protocol==='file:'&&path.resolve(require('node:url').fileURLToPath(sender))===path.join(root,'src/renderer/booking-box.html'))return{ok:true,data:null};}catch{}
       }
+      args=require('./automatic-mobile.cjs').prepareMobile(channel,args);
       args=bookNow.prepare(channel,args);
       if(channel==='app:start-booking')options.observePayment?.(channel,args);
       if(channel==='app:stop-run'||channel==='app:logout')options.stopActivity?.(typeof args[0]==='string'?args[0]:args[0]?.formId);
       if(channel==='app:login'&&options.trace){options.trace.active=true;options.trace.calls=new Map();}
       let result;
-      try{const invoke=()=>Reflect.apply(handler,undefined,[event,...args]);result=await(channel==='app:login'?require('./private-browser.cjs').withPrivateLogin(()=>require('./booking-timing.cjs').withImmediateLogin(invoke)):channel==='app:start-booking'?require('./general-api-candidate.cjs').withCandidate(()=>require('./private-browser.cjs').withPrivateLogin(invoke),args[0],options.generalApiCandidate):invoke());}catch(error){if(channel!=='app:check-id-status')throw error;result={ok:false,error:'Primary ID check unavailable'};}
+      try{const invoke=()=>Reflect.apply(handler,undefined,[event,...args]);result=await(channel==='app:print-ticket'&&options.withTicketExport?options.withTicketExport(invoke):channel==='app:login'?require('./private-browser.cjs').withPrivateLogin(()=>require('./booking-timing.cjs').withImmediateLogin(invoke)):channel==='app:start-booking'?require('./general-api-candidate.cjs').withCandidate(()=>require('./private-browser.cjs').withPrivateLogin(invoke),args[0],options.generalApiCandidate):invoke());}catch(error){if(channel!=='app:check-id-status')throw error;result={ok:false,error:'Primary ID check unavailable'};}
       // The provider intermittently rejects Chromium HTTP/2. Node's bundled
       // fetch uses its own HTTP transport and needs no machine-installed curl.
       if(channel==='app:check-id-status')result=await require('./id-check.cjs').fallbackIds(args[0],result,(url,init)=>globalThis.fetch(url,init));
+      options.observeSuccess?.(channel,args,result,event);
+      if(/browser/i.test(channel)&&/detect/i.test(channel)&&Array.isArray(result?.data))result={...result,data:result.data.filter(browser=>browser.type!=='gologin'&&!browser.hidden).map(browser=>{
+        if(process.platform!=='win32'||!['brahmos','fingerprint'].includes(browser.type))return browser;
+        const engines=require('./browser-engines.cjs');
+        const installed=!!(browser.type==='brahmos'?engines.matrixEngine():engines.chromiumEngine());
+        return {...browser,installed,...(!installed?{reason:(browser.type==='brahmos'?'Matrix Browser':'Chromium')+' engine is not installed',downloadAvailable:false}:{})};
+      })};
       bookNow.observe(channel,args,result);
       if(channel!=='app:start-booking')options.observePayment?.(channel,args,result);
       if(result?.ok===false&&(channel==='app:login'||channel==='app:start-booking'))options.stopActivity?.(args[0]?.formId);
@@ -77,8 +87,9 @@ function install(electron,root,log=()=>{},options={}) {
       return result;
     } catch(error){log('development-ipc-error',{channel,error:String(error.message).slice(0,400)});throw error;}
     finally{if(channel==='app:login'&&options.trace){options.trace.active=false;log('matrix-login-function-trace',{calls:Object.fromEntries(options.trace.calls)});}}
-  }));
+  });});
   log('matrix-runtime-installed',{network:'enabled',childProcesses:'enabled',nativeClients:'enabled',vendorLicenseGate:false});
   return {stats,finishSmoke:code=>nativeExit(code),restore:()=>{for(const restore of undo.reverse())restore();}};
 }
 module.exports={install,localPages};
+

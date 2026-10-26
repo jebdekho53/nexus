@@ -1,7 +1,8 @@
 'use strict';
 
-function gatewayRequest(actor, {prepareCookies,isTlsHost,isBrowserClosed,isProxyNetworkError,canFallbackRequest,getConfig}) {
+function gatewayRequest(actor, {prepareCookies,isTlsHost,isBrowserClosed,isProxyNetworkError,getConfig}) {
   const request=actor.proxiedReq ?? actor.page.request;
+  const reportedProxyFailures=actor.reportedProxyFailures??=new Set();
 
   async function prepare() {
     if (actor.stripF5 && !actor.proxiedReq) {
@@ -14,10 +15,6 @@ function gatewayRequest(actor, {prepareCookies,isTlsHost,isBrowserClosed,isProxy
     const options={...(input??{}),timeout:input?.timeout??0};
     let host='';
     try { host=new URL(url).hostname.toLowerCase(); } catch {}
-    if (actor.directHosts.has(host)) {
-      const direct=await actor.directContext();
-      return direct[method](url,options);
-    }
     if (actor.browserGone && actor.survivorReq) return actor.survivorReq[method](url,options);
 
     if (actor.webTlsGateway && isTlsHost(host) && !actor.browserGone) {
@@ -46,15 +43,19 @@ function gatewayRequest(actor, {prepareCookies,isTlsHost,isBrowserClosed,isProxy
         }
         throw error;
       }
-      if (!actor.proxyActive || !isProxyNetworkError(error) || !canFallbackRequest(url)) throw error;
+      if (!actor.proxyActive || !isProxyNetworkError(error)) throw error;
       const failures=(actor.failStreak.get(host)??0)+1;
       actor.failStreak.set(host,failures);
-      if (failures<getConfig().FALLBACK_AFTER) throw error;
-      actor.directHosts.add(host);
-      actor.log('PROXY FALLBACK: '+host+' is unreachable through your proxy — that host is going direct for this run','error');
-      actor.onFallback?.(host);
-      const direct=await actor.directContext();
-      return direct[method](url,options);
+      const config=getConfig();
+      const reportAfter=config.REPORT_AFTER??config.FALLBACK_AFTER??3;
+      if(failures>=reportAfter&&!reportedProxyFailures.has(host)) {
+        reportedProxyFailures.add(host);
+        actor.log('Payment gateway '+host+' cannot be reached through the configured proxy — retrying on that proxy','error');
+        // Older actors expose this health callback under onFallback; it reports the
+        // proxy outcome and no longer authorizes a change to the direct route.
+        try {(actor.onProxyFailure??actor.onFallback)?.call(actor,host);} catch {}
+      }
+      throw error;
     }
   }
 

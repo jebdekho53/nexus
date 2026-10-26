@@ -22,8 +22,10 @@
     <script defer src="./matrix-brand.js"></script>
     <script defer src="./matrix-portals.js"></script>
     <script defer src="./matrix-services.js"></script>
-  </head>
-  <body>
+    <script defer src="./matrix-browser-downloads.js"></script>
+  <script defer src="./matrix-trial-status.js"></script>  <link rel="stylesheet" href="./matrix-visual.css">
+</head>
+  <body class="matrix-tools">
     <header class="topbar">
       <div class="brand">
         <span class="dot"></span>
@@ -34,8 +36,6 @@
       <button type="button" class="win-close" id="winClose" title="Close">✕</button>
     </header>
 
-    <section style="padding:16px"><strong>License &amp; Key Portal</strong><p style="margin-top:8px"><button class="btn primary" data-matrix-portal="client" style="display:inline-flex;align-items:center;gap:6px">🔑 My key</button></p></section>
-    <section style="padding:16px"><strong>Matrix services</strong><p id="matrix-service-status" role="status">Checking service status…</p><p>WebLogin: available · CAPTCHA: manual entry. RailOne requires a supported official integration.</p><p>Server clock is diagnostic only; booking timers use the existing clock.</p><button class="btn" id="matrix-services-check" type="button">Check services</button></section>
     <style>
       .opt-row {
         display: flex;
@@ -277,20 +277,29 @@
       .st-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 8px; }
       .st-via { font-size: 11px; color: #6b7a90; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
       .st-foot .btn { flex: 0 0 auto; }
+      /* Use the full workspace instead of a narrow stacked settings column. */
+      .matrix-tools{height:100vh;display:flex;flex-direction:column;overflow:auto}
+      .matrix-tools>.topbar{flex:none}
+      .matrix-tools .tools-workspace{box-sizing:border-box;width:100%;max-width:none;margin:0;padding:18px 24px 22px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);grid-template-areas:"options services" "lock speed" "backup speed" "key speed" "browsers browsers";gap:12px 16px;align-content:start}
+      .matrix-tools .tools-workspace>.card{min-width:0;margin:0!important;padding:14px 16px!important}
+      .tools-options{grid-area:options}.tools-lock{grid-area:lock}.tools-backup{grid-area:backup}.tools-key{grid-area:key}.tools-services{grid-area:services}.tools-speed{grid-area:speed}
+      .matrix-tools .tools-services p{margin:7px 0;font-size:12px;line-height:1.45;overflow-wrap:anywhere}
+      .matrix-tools .tools-key p{margin:8px 0 0!important}
+      .matrix-tools .opt-label{font-size:13px}.matrix-tools .opt-sub{font-size:11.5px;line-height:1.45}
+      .matrix-tools .opt-row{gap:10px}.matrix-tools .opt-row+.opt-row{margin-top:8px;padding-top:9px}
+      .matrix-tools .st-rating{padding:8px 10px}.matrix-tools .st-metric{padding:8px 4px}.matrix-tools .st-val{font-size:21px}
+      @media(max-width:800px){.matrix-tools .tools-workspace{grid-template-columns:minmax(0,1fr);grid-template-areas:"options" "lock" "backup" "key" "services" "speed" "browsers";padding:14px;gap:12px}}
+      .tools-browsers{grid-area:browsers}.matrix-tools .tools-workspace>.tools-browsers{padding:10px 14px!important}
+      .browser-download-note{font-size:10px;line-height:1.4;color:#9abfce;margin:4px 0 6px}
+      .browser-download-row{display:flex;align-items:center;gap:8px;padding:3px 0;border-top:1px solid #24434b}.browser-download-row>div{flex:1;min-width:0}.browser-download-row strong{font-size:11px}.browser-download-row small{font-size:9px;color:#92b5c4;margin-left:8px}.browser-download-row .btn{height:23px;padding:2px 8px!important;font-size:10px!important}.browser-download-row button:disabled{opacity:.45;cursor:not-allowed}
+      #browserDownloadStatus{font-size:10px;min-height:0}.matrix-tools .tools-workspace{padding-top:12px;padding-bottom:12px;gap:8px 14px}.matrix-tools .tools-workspace>.card{padding:10px 14px!important}.matrix-tools .tools-options{min-height:0}
+      @media(min-width:801px){.matrix-tools .tools-workspace{grid-template-areas:"options services" "lock speed" "backup speed" "key browsers";grid-template-columns:minmax(0,1fr) minmax(0,1.1fr)}.browser-download-row{gap:5px}.browser-download-row small{display:block;margin-left:0;font-size:8px}.browser-download-row strong{font-size:10px}.browser-download-row .btn{padding:2px 5px!important;font-size:9px!important}.browser-download-note{font-size:9px}.tools-key{align-self:start}}
     </style>
-    <main class="panel-wrap">
-      <section class="card">
-        <div class="opt-row">
-          <span class="opt-label">Automatic Fixer</span>
-          <label class="switch"><input type="checkbox" id="aiToggle" /><span class="slider"></span></label>
-        </div>
-        <div class="opt-row">
-          <span class="opt-label">QR Popup <span class="opt-sub">(separate window)</span></span>
-          <label class="switch"><input type="checkbox" id="qrPopupToggle" /><span class="slider"></span></label>
-        </div>
-      </section>
+    <main class="panel-wrap tools-workspace">
+      <input type="checkbox" id="aiToggle" hidden aria-hidden="true" tabindex="-1" />
+      <input type="checkbox" id="qrPopupToggle" hidden disabled aria-hidden="true" tabindex="-1" />
 
-      <section class="card">
+      <section class="card tools-lock">
         <div class="opt-row">
           <span class="opt-label">Password To Open App <span class="opt-sub">(6-digit passcode)</span></span>
           <label class="switch"><input type="checkbox" id="appLockToggle" /><span class="slider"></span></label>
@@ -298,22 +307,10 @@
         <div id="appLockStatus" class="gl-status"></div>
       </section>
 
-      <section class="card">
-        <div class="gl-head">
-          <span class="opt-label">GoLogin API Key</span>
-          <span class="opt-sub">paste your token to launch your GoLogin profiles</span>
-        </div>
-        <div class="gl-row">
-          <input type="password" id="glKey" class="gl-input" placeholder="Paste GoLogin API key (JWT)…" autocomplete="off" spellcheck="false" />
-          <button type="button" id="glSave" class="btn primary sm">Save</button>
-        </div>
-        <div id="glStatus" class="gl-status"></div>
-      </section>
-
-      <section class="card">
+      <section class="card tools-backup">
         <div class="gl-head">
           <span class="opt-label">Backup &amp; Restore</span>
-          <span class="opt-sub">save all forms, login data &amp; GoLogin config to a password-protected file</span>
+          <span class="opt-sub">save all forms &amp; login data to a password-protected file</span>
         </div>
         <div class="gl-row">
           <button type="button" id="backupBtn" class="btn primary sm">Backup…</button>
@@ -322,7 +319,7 @@
         <div id="bkStatus" class="gl-status"></div>
       </section>
 
-      <section class="card">
+      <section class="card tools-speed">
         <div class="gl-head">
           <span class="opt-label">Speed Test</span>
           <span class="opt-sub">check your connection &amp; that IRCTC is reachable — before a run</span>
@@ -343,6 +340,9 @@
         </div>
         <div id="stStatus" class="gl-status"></div>
       </section>
+      <section class="card tools-key"><strong>License &amp; Key Portal</strong><p style="margin-top:8px"><button class="btn primary" data-matrix-portal="client" style="display:inline-flex;align-items:center;gap:6px">🔑 My key</button></p></section>
+      <section class="card tools-services"><strong>Matrix services</strong><p id="matrix-service-status" role="status">Checking service status…</p><p>WebLogin: available · CAPTCHA: manual entry.</p><p>Server clock is diagnostic only; booking timers use the existing clock.</p><button class="btn" id="matrix-services-check" type="button">Check services</button></section>
+      <section class="card tools-browsers"><strong>Browsers</strong><p class="browser-download-note">Install missing browsers or match the tested version. Close the browser first. Exact versions depend on package availability; personal browser profiles are retained.</p><div id="browserDownloads"></div><div id="browserDownloadStatus" role="status"></div></section>
     </main>
 
     <div id="pwModal" class="pw-overlay hidden">
@@ -374,7 +374,6 @@
           <label class="bk-item"><input type="checkbox" id="bkProxies" checked /><span class="bk-name">Proxies</span><span class="bk-count" id="bkProxiesCount"></span></label>
           <label class="bk-item"><input type="checkbox" id="bkPayments" checked /><span class="bk-name">Payment (UPI)</span><span class="bk-count" id="bkPaymentsCount"></span></label>
           <label class="bk-item"><input type="checkbox" id="bkHistory" checked /><span class="bk-name">Tickets (booking history)</span><span class="bk-count" id="bkHistoryCount"></span></label>
-          <label class="bk-item"><input type="checkbox" id="bkGologin" checked /><span class="bk-name">GoLogin API Key</span><span class="bk-count" id="bkGologinCount"></span></label>
           <label class="bk-item"><input type="checkbox" id="bkAadhaar" checked /><span class="bk-name">Aadhaar OTP registrations</span><span class="bk-count" id="bkAadhaarCount"></span></label>
           <label class="bk-item"><input type="checkbox" id="bkAppLock" checked /><span class="bk-name">App passcode</span><span class="bk-count" id="bkAppLockCount"></span></label>
         </div>

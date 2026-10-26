@@ -21,38 +21,37 @@
     <script defer src="./matrix-build.js"></script>
     <script defer src="./matrix-payments.js"></script>
     <script defer src="./matrix-brand.js"></script>
-  </head>
+  <link rel="stylesheet" href="./matrix-library.css">
+  <link rel="stylesheet" href="./matrix-visual.css">
+</head>
   <body>
     <header class="topbar">
       <div class="brand">
         <span class="dot"></span>
-        <span>Saved Forms</span>
-        <span class="sub">· open, edit, duplicate or delete</span>
+        <span>Booking Library</span>
+        <span class="sub">· saved journey setups</span>
       </div>
       <span class="spacer"></span>
       <button type="button" id="deleteAllBtn" class="btn danger sm">🗑 Delete All</button>
       <button type="button" id="importBtn" class="btn sm" title="Bulk import multiple forms from CSV / JSON files">⤓ Bulk Import</button>
       <button type="button" id="exportBtn" class="btn sm">⤒ Export</button>
-      <button type="button" id="newFormBtn" class="btn primary sm">+ New Form</button>
+      <button type="button" id="newFormBtn" class="btn primary sm">+ Create Booking</button>
       <button type="button" class="win-close" id="winClose" title="Close">✕</button>
     </header>
 
     <main class="list-wrap">
-      <div class="searchbar">
-        <div class="search-field">
-          <span class="search-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="20" y1="20" x2="16.5" y2="16.5"></line></svg></span>
-          <input id="search" type="search" placeholder="Search route, login or passenger…" autocomplete="off" spellcheck="false" />
-          <span id="searchCount" class="search-count"></span>
-        </div>
+      <div class="searchbar" style="display:none!important;" aria-hidden="true">
+        <input id="search" type="search" />
+        <span id="searchCount"></span>
       </div>
       <div class="drop-hint" aria-hidden="true">
         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
         <span>Tip — <b>drag &amp; drop</b> CSV or JSON form files anywhere here to import (invalid files are skipped).</span>
       </div>
       <div id="list"></div>
-      <div id="noMatch" class="empty hidden">No forms match your search.</div>
+      <div id="noMatch" class="empty hidden">No saved journeys found. Try another route or account.</div>
       <div id="empty" class="empty hidden">
-        No saved forms yet. Click <b>+ New Form</b> to create one, <b>Bulk Import</b> CSV / JSON files, or just
+        No saved forms yet. Click <b>+ Create Booking</b> to create one, <b>Bulk Import</b> CSV / JSON files, or just
         <b>drag &amp; drop</b> form files onto this window.
       </div>
     </main>
@@ -70,10 +69,10 @@
     <div id="exportModal" class="modal-overlay hidden">
       <div class="modal-card">
         <div class="modal-head">
-          <div class="modal-title">Export a form</div>
+          <div class="modal-title">Download a booking setup</div>
           <button type="button" class="modal-x" id="exportClose">✕</button>
         </div>
-        <div class="modal-sub">Pick which form to download as JSON.</div>
+        <div class="modal-sub">Choose a saved setup to export as JSON.</div>
         <div id="exportList" class="export-list"></div>
       </div>
     </div>

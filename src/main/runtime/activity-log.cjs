@@ -2,6 +2,7 @@
 const fs=require('node:fs'),path=require('node:path');
 const {pathToFileURL}=require('node:url');
 const payments=require('../../renderer/matrix-payments.js');
+const {isBookingRecord:bookingRecord,isBookingStage}=require('../../renderer/matrix-log-policy.js');
 function install(electron,root) {
   const rows=[],runs=new Map(),secrets=new Set(),choices=new Map();let id=0;
   const file=path.join(root,'diagnostics/activity.jsonl');
@@ -26,14 +27,14 @@ function install(electron,root) {
     return row;
   }
   function stage(name,message,runId='app',level='info'){
-    if(!/^(weblogin|booking|search|ui|railone|payment|gologin|browser)(:|$)/.test(name))return;
+    if(!isBookingStage(name))return;
     const now=Date.now();let run=runs.get(runId);
     if(!run){run={started:now,changed:now};runs.set(runId,run);}
     if(run.stage!==name){run.changed=now;run.stage=name;}
     const countdown=name==='booking:countdown'&&String(message).match(/^([^|]+)\|(\d+)$/);
     run.remaining=countdown?{label:countdown[1],ms:Number(countdown[2]),at:now}:null;
     const failed=/(?:error|failed)$/.test(name)||/(?:re-?login|login|booking) failed:|target (?:page|browser|context).*closed/i.test(String(message));
-    const terminal=failed||/(?:cancelled|closed|stopped|logout)$/.test(name)||/^booking:done/.test(name)||name==='weblogin:done';
+    const terminal=failed||/(?:success|cancelled|canceled|cancellation|closed|stopped|logout)$/.test(name)||/^booking:done/.test(name)||name==='weblogin:done';
     const levelName=['info','warn','error','success'].includes(level)?level:'info';
     run.message=clean(message);run.active=levelName!=='error'&&!terminal;
     if(name==='ui:pay'){const match=String(message).match(/^Selecting payment:\s*(\w+)$/i);if(match)message='Selecting '+payments.label(match[1])+' ('+match[1]+')';}
@@ -43,12 +44,11 @@ function install(electron,root) {
   const allowed=event=>trusted(event.sender);
   electron.ipcMain.handle('matrix:logs:snapshot',event=>allowed(event)?rows:[]);
   electron.ipcMain.handle('matrix:logs:clear',event=>{if(allowed(event))rows.length=0;return {ok:allowed(event)};});
-  emit('event','app:ready','Matrix activity log ready');
   function observePayment(channel,args,result){
     if(channel==='app:get-form'&&result?.ok&&result.data?.id){choices.set(result.data.id,result.data.payment?.method);return;}
     if(channel==='app:save-form'&&result?.ok){const form=args[0],before=choices.get(form?.id),after=form?.payment?.method;if(before&&after&&before!==after)emit('event','payment:changed',payments.label(before)+' → '+payments.label(after),form.id,'warn');if(form?.id)choices.set(form.id,after);}
     if(channel==='app:start-booking'){const form=args[0]?.form||{},id=args[0]?.formId||'app',selected=form.paymentMethodDisplay||form.payment?.method||form.paymentMethod;emit('event','payment:request','Selected '+payments.label(selected)+'; request code '+(form.paymentMethod||selected||'missing'),id);}
   }
-  return {learn,stage,recovered(args){const runId=typeof args[2]==='string'&&/^[0-9a-f-]{36}$/i.test(args[2])?args[2]:'app';stage(String(args[0]||''),String(args[1]||''),runId,String(args[3]||'info'));},observePayment,redact:clean,record(event,details={}){if(/security|check-skipped|function-trace|definitions-loaded|version-gate|window-show-suppressed/.test(event))return;emit('event',event,details.error||details.page||details.check||event);},stop(runId){if(runs.has(runId))runs.get(runId).active=false;},dispose(){clearInterval(timer);}};
+  return {learn,stage,recovered(args){const runId=typeof args[2]==='string'&&/^[0-9a-f-]{36}$/i.test(args[2])?args[2]:'app';stage(String(args[0]||''),String(args[1]||''),runId,String(args[3]||'info'));},observePayment,redact:clean,record(event,details={}){if(!bookingRecord(event,details))return;emit('event',event,details.error||details.page||details.check||event,details.formId||'app');},stop(runId){if(runs.has(runId))runs.get(runId).active=false;},dispose(){clearInterval(timer);}};
 }
 module.exports={install};

@@ -1,0 +1,331 @@
+/* Reference-inspired ticket and UPI payment presentation. Live data IDs stay intact. */
+#pnrOverlay:not(.hidden){padding:12px!important;background:radial-gradient(at top,#06352d,#020f19 65%)!important}
+#pnrOverlay .bk-card{border:1px solid #52e5a1!important;border-radius:16px!important;background:linear-gradient(145deg,#032322,#02121e 65%)!important;box-shadow:0 0 18px #26e68a35,inset 0 0 18px #26e68a12!important;overflow:hidden!important}
+#pnrOverlay .bk-success-hero{display:none!important}
+#pnrOverlay .bk-header{position:relative!important;background:transparent!important;padding:20px 16px 12px 62px!important;border-bottom:1px solid #225565!important}
+#pnrOverlay .bk-header:before{content:'▣';position:absolute;left:17px;top:28px;font-size:33px;color:#91ffc1;text-shadow:0 0 12px #20f097}
+#pnrOverlay .bk-hrow{margin:0!important;position:absolute;right:12px;top:14px}
+#pnrOverlay .bk-title{display:none!important}
+#pnrOverlay .bk-badge{background:linear-gradient(#16743b,#054720)!important;color:#baffd0!important;border:1px solid #77eca5!important;box-shadow:0 0 10px #27ef7850!important;font-size:10px!important}
+#pnrOverlay .bk-pnrlabel{font-size:11px!important;color:#c5e5ef!important;letter-spacing:0!important}
+#pnrOverlay .bk-pnrbig{font-size:29px!important;color:#85ffaf!important;text-shadow:0 0 12px #35ec8d70!important;margin:4px 0 15px!important}
+#pnrOverlay .pnr-last-three{background:none!important;border:0!important;color:#85ffaf!important;padding:0!important}
+#pnrOverlay .bk-route{margin-left:-46px!important;background:transparent!important;border:0!important;border-top:1px solid #24546a!important;border-radius:0!important;padding:14px 0 0!important}
+#pnrOverlay .bk-rstn>span{color:#ecfbff!important;font-size:25px!important}
+#pnrOverlay .bk-rline{background:#48e9f2!important;box-shadow:0 0 9px #27ddf5!important;height:2px!important}
+#pnrOverlay .bk-rmeta{border-left:1px solid #255467!important;padding-left:12px!important}
+#pnrOverlay .bk-content{padding:12px 14px!important;background:transparent!important}
+#pnrOverlay .bk-grid{gap:0!important;border-bottom:1px solid #235466!important;background:transparent!important}
+#pnrOverlay .bk-item{background:transparent!important;border:0!important;border-radius:0!important;border-bottom:1px solid #173c4b!important;padding:10px 8px!important}
+#pnrOverlay .bk-label{color:#afcddd!important;letter-spacing:0!important;font-size:10px!important}
+#pnrOverlay .bk-value{color:#83e7ff!important;font-size:13px!important}
+#pnrOverlay .bk-sec-title{color:#d7f5ff!important;border-bottom:1px solid #245066!important;padding:12px 0 8px!important;letter-spacing:0!important}
+#pnrOverlay .bk-table{border:0!important;background:transparent!important}
+#pnrOverlay .bk-trow{background:transparent!important;border:0!important;border-bottom:1px solid #1c4352!important;border-radius:0!important;color:#91e6fc!important}
+#pnrOverlay .bk-footer{padding:12px!important;background:transparent!important;border-top:1px solid #285363!important}
+#pnrOverlay .bk-dl{background:linear-gradient(#24ee94,#00ae67)!important;color:#edfff7!important;border:1px solid #83ffc0!important;border-radius:16px!important;box-shadow:0 0 16px #00f39b65,inset 0 1px #c0ffda!important;font-size:15px!important;padding:13px!important}
+#pnrOverlay .bk-ver{font-size:9px!important;background:transparent!important;color:#7fa4b2!important}
+#pnrOverlay .bk-close{z-index:3!important;top:0!important;right:0!important;width:19px!important;height:19px!important;font-size:12px!important}
+#qrOverlay:not(.hidden){background:radial-gradient(ellipse at 50% 38%,#05333d,#020d20 65%)!important;gap:13px!important;padding:18px 14px!important;overflow-y:auto!important;justify-content:center!important}
+#qrOverlay .qr-cyber-top{background:transparent!important;justify-content:center!important;padding:0!important}
+#qrOverlay .qr-cyber-badge{font-size:13px!important;color:#d7edf8!important}
+#qrOverlay .qr-cyber-clock{display:none!important}
+#qrOverlay .qr-cyber-chips{order:5!important}
+#qrOverlay .qr-amount-wrap{width:100%!important;display:flex!important;flex-direction:column-reverse!important;background:linear-gradient(90deg,transparent,#06423770,transparent)!important;padding:6px!important}
+#qrOverlay .qr-amount-val{font-size:clamp(30px,9vw,46px)!important;color:#a0ffc1!important;text-shadow:0 0 15px #45ef8270!important;line-height:1.2!important}
+#qrOverlay .qr-amount-lbl{font-size:11px!important;color:#c0dcea!important;letter-spacing:0!important;text-transform:none!important}
+#qrOverlay .qr-box-wrap{width:min(250px,68vw)!important;height:auto!important;aspect-ratio:1!important;min-height:0!important;padding:9px!important;border:3px solid #6cffff!important;border-radius:18px!important;box-shadow:0 0 9px #0ff,0 0 26px #00dbf580!important;flex-shrink:0!important}
+#qrOverlay .qr-img{border-radius:4px!important;image-rendering:pixelated}
+#qrOverlay .qr-laser-line{display:none!important}
+#qrOverlay .qr-status-pill{border:0!important;background:transparent!important;padding:0!important;gap:6px!important;flex-wrap:wrap!important;justify-content:center!important}
+#qrOverlay .qr-scan-lbl{display:none!important}
+#qrOverlay .qr-autopoll-tag{font-size:11px!important}
+.qr-apps{display:flex;gap:7px;justify-content:center;width:100%}
+.qr-apps span{flex:1;text-align:center;padding:8px 3px;border:1px solid #315074;border-radius:8px;background:linear-gradient(#102844,#09182e);color:#edf6ff;font-size:12px;font-weight:750;box-shadow:inset 0 1px #7595c033}
+#qrOverlay .qr-waiting-btn{padding:16px 12px!important;justify-content:flex-start!important;gap:14px!important;background:#061725!important;border:1px solid #23495b!important;color:#e7f9ff!important;border-radius:12px!important;box-shadow:0 0 12px #00e69918!important;font-size:13px!important}
+#qrOverlay .qr-spinner{width:27px!important;height:27px!important;border-width:3px!important;flex-shrink:0!important;filter:drop-shadow(0 0 4px #1bec85)}
+.qr-poll-copy{display:flex;flex-direction:column;gap:5px}.qr-poll-copy small{font-size:11px;color:#acbfce;font-weight:400}
+@media(max-height:540px){#qrOverlay:not(.hidden){gap:7px!important;padding:9px 12px!important}#qrOverlay .qr-box-wrap{width:170px!important}#qrOverlay .qr-amount-val{font-size:30px!important}#qrOverlay .qr-waiting-btn{padding:9px!important}.qr-apps span{padding:5px 2px}}
+#pnrOverlay .bk-header:before{display:none!important}
+.ticket-train-icon{position:absolute;left:16px;top:24px;width:31px;height:40px;color:#9bffc5;filter:drop-shadow(0 0 6px #20ef8a)}
+/* Compact receipt layout matching the supplied screen. */
+#pnrOverlay:not(.hidden){justify-content:flex-start!important;padding:4px!important}
+#pnrOverlay .bk-container{max-width:430px!important;margin:0 auto!important;gap:0!important}
+#pnrOverlay .bk-card{border-radius:13px!important;flex:none!important;min-height:0!important}
+#pnrOverlay .bk-header{padding:16px 12px 0 60px!important}
+#pnrOverlay .bk-pnrbig{font-size:29px!important;margin:2px 0 12px!important;letter-spacing:1px!important}
+#pnrOverlay .bk-pnrlabel{font-size:10px!important}
+#pnrOverlay .bk-route{margin-left:-48px!important;padding:12px 0!important;gap:10px!important;min-height:72px!important}
+#pnrOverlay .bk-rstn>span{font-size:23px!important}
+#pnrOverlay .bk-rstn small{font-size:10px!important;text-transform:none!important}
+#pnrOverlay .bk-rline{width:25px!important;min-width:25px!important;flex:0 0 25px!important;position:relative!important}
+#pnrOverlay .bk-rline:after{content:'➜';position:absolute;top:-13px;left:0;color:#7effff;font-size:25px;text-shadow:0 0 8px #00cce8}
+#pnrOverlay .bk-rmeta{margin-left:auto!important;max-width:135px!important;gap:5px!important;align-items:flex-start!important;text-align:left!important}
+#pnrOverlay .bk-rmeta>span{font-size:11px!important}
+#pnrOverlay #pnrClassQuota{display:none!important}
+#receiptTrain{font-size:10px!important;color:#b6d3e5!important;line-height:1.4!important}
+#pnrOverlay .bk-content{padding:0 12px!important;flex:none!important}
+#pnrOverlay #pnrContent{display:block!important;flex:none!important}
+#pnrOverlay .bk-grid,#pnrOverlay .bk-sec-title,#pnrOverlay .bk-table,#pnrOverlay .bk-browser{display:none!important}
+.receipt-passenger{display:flex;align-items:center;gap:10px;color:#baf4ff;font-size:12px;padding:9px 2px;border-bottom:1px solid #235264}
+.receipt-seat{display:flex;gap:12px;padding:10px 3px;border-bottom:1px solid #235264;color:#70ddff}
+.receipt-symbol{font-size:27px;line-height:1;color:#68d8ff;text-shadow:0 0 7px #09bff7}
+.receipt-seat small{display:block;font-size:11px;color:#adcbdc;margin-bottom:5px}.receipt-seat strong{display:block;font-size:15px;color:#6edfff;line-height:1.3;overflow-wrap:anywhere}
+.receipt-facts{display:grid;grid-template-columns:1fr 1fr 1.2fr;padding:11px 0;gap:0}
+.receipt-facts>div{display:grid;grid-template-columns:26px 1fr;border-right:1px solid #255269;padding:0 7px;gap:3px}.receipt-facts>div:last-child{border:0}
+.receipt-facts i{grid-row:span 2;font-style:normal;font-size:25px;color:#6bbfff;text-shadow:0 0 8px #32a3ff;align-self:center}.receipt-facts small{font-size:10px;color:#b3cde0}.receipt-facts b{font-size:12px;color:#e3f8ff}
+.receipt-speed{border:1px solid #6fffb9;border-radius:12px;box-shadow:0 0 9px #00f19c40,inset 0 0 10px #00ec8d18;display:flex;align-items:center;gap:12px;padding:9px 13px;background:linear-gradient(110deg,#06482c50,#051927);margin-bottom:3px}
+.receipt-speed>span{font-size:36px;color:#eeff6c;line-height:1;text-shadow:0 0 8px #ccf050}.receipt-speed>strong{font-size:26px;white-space:nowrap;color:#f1fa70;text-shadow:0 0 7px #deed6060}.receipt-speed>div{font-size:11px;color:#d5e7f5}.receipt-speed small{display:block;margin-top:4px;font-size:10px;color:#b7cddd}
+#pnrOverlay .bk-footer{padding:8px 12px 0!important;border:0!important;flex:none!important}
+#pnrOverlay .bk-fbtns{display:block!important}
+#pnrOverlay .bk-dl{width:100%!important;min-height:40px!important;padding:10px!important;font-size:14px!important}
+#pnrOverlay .bk-ver,#pnrOverlay .bk-fp{display:none!important}
+.receipt-thanks{font-size:8px;text-align:center;color:#608ba0;padding:7px 0 0}
+#qrOverlay:not(.hidden){justify-content:flex-start!important;gap:12px!important;padding:12px 14px!important}
+#qrOverlay .qr-amount-wrap{position:relative!important;padding-bottom:20px!important}
+#qrOverlay .qr-amount-lbl{position:absolute;bottom:0;left:5px;font-size:11px!important}
+#qrOverlay .qr-amount-wrap:after{content:'(Including GST)';position:absolute;bottom:0;right:5px;font-size:11px;color:#c2dbeb}
+#qrOverlay .qr-box-wrap{width:min(270px,72vw)!important;overflow:visible!important;margin:6px auto!important}
+#qrOverlay .qr-img{border-radius:8px!important}
+#qrOverlay .qr-laser-line{display:block!important;animation:none!important;top:48%!important;left:-28px!important;right:-28px!important;background:linear-gradient(90deg,transparent,#74ff47 20%,#d0ffa8 50%,#74ff47 80%,transparent)!important;box-shadow:0 0 10px #75ff49!important;pointer-events:none}
+#qrOverlay .qr-status-pill,#qrOverlay .qr-cyber-chips{display:none!important}
+#qrOverlay .qr-waiting-btn{margin-top:4px!important;border-radius:12px 12px 0 0!important;border-bottom:0!important;padding:14px 16px 9px!important;flex-shrink:0!important}
+.qr-elapsed{width:100%;box-sizing:border-box;margin-top:-12px;border:1px solid #23495b;border-top:1px solid #244151;border-radius:0 0 12px 12px;text-align:center;padding:9px;background:#061725}
+.qr-elapsed strong{font-size:27px;color:#61ffa4;text-shadow:0 0 10px #2ae782;letter-spacing:2px;font-variant-numeric:tabular-nums}.qr-elapsed small{display:block;color:#91b5c8;font-size:9px;margin-top:2px}
+@media(max-height:560px){#qrOverlay:not(.hidden){gap:8px!important}#qrOverlay .qr-box-wrap{width:min(220px,60vw)!important}#qrOverlay .qr-amount-val{font-size:34px!important}.qr-apps span{padding:6px 2px}.qr-elapsed{margin-top:-8px;padding:5px}.qr-elapsed strong{font-size:23px}}
+.payment-matrix-brand,.receipt-matrix-brand{display:flex;align-items:center;justify-content:center;gap:8px;color:#c5f8ff;font-size:13px;font-weight:800;letter-spacing:3px;flex-shrink:0}
+.payment-matrix-brand img,.receipt-matrix-brand img{width:34px;height:34px;object-fit:contain;filter:drop-shadow(0 0 7px #00deff55)}
+.receipt-matrix-brand{padding:8px 12px 4px;border-bottom:1px solid #1d514a;background:linear-gradient(90deg,transparent,#09513b33,transparent)}
+.qr-apps>span{display:flex;align-items:center;justify-content:center;gap:5px;min-width:0;height:40px;box-sizing:border-box;padding:7px!important;background:#f5f7fc;border-color:#b6d5e4}
+.qr-apps img{display:block;max-width:100%;height:25px;object-fit:contain}.qr-apps .upi-phonepe img{width:26px;height:26px}.qr-apps b{font-size:13px;color:#5f259f}.qr-apps .upi-navi img{height:29px}.qr-apps .upi-google img{width:100%;height:auto;max-height:26px}
+@media(max-height:560px){.payment-matrix-brand img{width:24px;height:24px}.payment-matrix-brand{font-size:11px}.qr-apps>span{height:34px;padding:5px!important}#qrOverlay .qr-box-wrap{width:min(190px,57vw)!important}}
+#qrOverlay:not(.hidden){gap:10px!important}
+#qrOverlay .qr-box-wrap{width:min(245px,68vw)!important}
+@media(max-height:560px){#qrOverlay .qr-box-wrap{width:min(185px,55vw)!important}}
+/* Route separator: one centered arrow, with no underlying rule. */
+#pnrOverlay .bk-rline{height:26px!important;align-self:center!important;background:transparent!important;box-shadow:none!important;border:0!important;display:flex!important;align-items:center!important;justify-content:center!important}
+#pnrOverlay .bk-rline:before{display:none!important}
+#pnrOverlay .bk-rline:after{position:static!important;display:block!important;line-height:1!important;transform:none!important;margin:0!important}
+/* Keep the duration placeholder and measured value on the same baseline. */
+.receipt-speed{display:grid!important;grid-template-columns:28px minmax(84px,max-content) minmax(0,1fr)!important;align-items:center!important;column-gap:10px!important}
+.receipt-speed>span{display:flex!important;align-items:center!important;justify-content:center!important;height:38px!important;line-height:1!important}
+.receipt-speed>strong{display:flex!important;align-items:center!important;justify-content:center!important;min-height:38px!important;line-height:1!important;font-variant-numeric:tabular-nums!important;margin:0!important}
+.receipt-speed>div{align-self:center!important;line-height:1.35!important}
+@media(max-width:360px){.receipt-speed{grid-template-columns:22px minmax(65px,max-content) minmax(0,1fr)!important;column-gap:7px!important}.receipt-speed>strong{font-size:22px!important}}
+/* Class and quota facts; duration is shown once in its dedicated row. */
+.receipt-facts{grid-template-columns:1fr 1fr!important}
+/* Running booking: keep the original start/stop controls in a 70 / 30 action row. */
+/* Keep every fact, including passenger count after quota, in one stable row. */
+.matrix-booking-box .bb-info{display:grid!important;grid-template-columns:minmax(0,1.5fr) minmax(0,1.05fr) minmax(0,1.05fr) minmax(0,.7fr) minmax(0,.95fr) minmax(0,.65fr)!important;grid-template-rows:24px!important;gap:4px!important;flex:none!important}
+.matrix-booking-box .bb-info>.bb-chip{box-sizing:border-box!important;min-width:0!important;width:100%!important;height:100%!important;padding:3px 4px!important;white-space:nowrap!important;overflow:hidden!important;justify-content:center!important}
+.matrix-booking-box .bb-info>.bb-chip:has(#paxCount){grid-column:6!important;grid-row:1!important}
+.matrix-booking-box .bb-info>.bb-chip>b{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.matrix-booking-box #loginModeVal[data-display]{font-size:0!important}
+.matrix-booking-box #loginModeVal[data-display]::after{content:attr(data-display);font-size:9px!important;line-height:16px;letter-spacing:0}
+.bb-primary-actions{display:grid;grid-template-columns:minmax(0,1fr);gap:6px;width:100%;align-items:stretch}
+.bb-primary-actions:has(#stopBtn:not(.hidden)){grid-template-columns:minmax(0,7fr) minmax(0,3fr)}
+.bb-primary-actions>.act{width:100%!important;min-width:0!important;min-height:34px!important;margin:0!important;box-sizing:border-box!important;justify-content:center!important;align-items:center!important;white-space:nowrap!important}
+.bb-primary-actions>.act-weblogin{padding:8px 5px!important;letter-spacing:.15px!important;font-size:11.5px!important}
+.bb-primary-actions>#stopBtn:not(.hidden){display:flex!important;background:linear-gradient(120deg,#642832,#461c28)!important;color:#ffbdc6!important;border:1px solid #d65f72!important;border-radius:8px!important;padding:7px 4px!important;font-size:11px!important;font-weight:800!important;cursor:pointer!important;box-shadow:0 0 12px #fc53651a!important}
+.bb-primary-actions>#stopBtn:hover{border-color:#ff93a4!important;background:#772c3d!important}
+#cyberClock>#clock{font:inherit!important;color:inherit!important;line-height:inherit!important;letter-spacing:inherit!important;font-variant-numeric:tabular-nums!important;display:inline!important}
+@media(max-width:360px){.bb-primary-actions>.act-weblogin{font-size:9.5px!important;letter-spacing:0!important}.bb-primary-actions>#stopBtn:not(.hidden){font-size:9px!important;letter-spacing:0!important;padding:7px 2px!important}}
+/* Approved compact success receipt: complete content inside a 480 x 420 window. */
+#pnrOverlay:not(.hidden){padding:5px!important;overflow:auto!important;background:#03141b!important;justify-content:flex-start!important}
+#pnrOverlay .bk-container{max-width:480px!important;height:100%!important;min-height:0!important;gap:0!important}
+#pnrOverlay .bk-card{display:flex!important;flex-direction:column!important;width:100%!important;height:100%!important;max-height:420px!important;min-height:0!important;flex:none!important;border:1px solid #3bffcc!important;border-radius:13px!important;background:radial-gradient(ellipse at top left,#05372e,#03141f 72%)!important;box-shadow:0 0 16px #05eaa322!important}
+#pnrOverlay .receipt-matrix-brand{padding:5px 10px!important;min-height:37px!important;border-color:#1c6970!important;letter-spacing:4px!important;font-size:15px!important;flex-shrink:0!important}
+#pnrOverlay .receipt-matrix-brand img{height:28px!important;width:34px!important}
+#pnrOverlay .bk-header{padding:9px 13px 0 59px!important;flex-shrink:0!important}
+#pnrOverlay .ticket-train-icon{left:14px!important;top:12px!important;width:29px!important;height:36px!important;color:#85ffbc!important;filter:drop-shadow(0 0 7px #23f69c)!important}
+#pnrOverlay .bk-pnrlabel{font-size:10px!important;line-height:1.2!important}
+#pnrOverlay .bk-pnrbig{font-family:Matrix,'Segoe UI',sans-serif!important;font-size:27px!important;line-height:1.1!important;margin:3px 0 9px!important;letter-spacing:1px!important;color:#8effb3!important}
+#pnrOverlay .bk-pnrbig .pnr-cipher{font-size:22px!important;letter-spacing:2px!important;color:#78ffaf!important;opacity:1!important}
+#pnrOverlay .bk-pnrbig .pnr-last-three{font-family:inherit!important;font-size:inherit!important;letter-spacing:1px!important}
+#pnrOverlay .bk-hrow{top:13px!important;right:13px!important}
+#pnrOverlay .bk-badge{font-size:10px!important;border-radius:14px!important;padding:4px 9px!important}
+#pnrOverlay .bk-route{margin-left:-46px!important;min-height:61px!important;padding:8px 0!important;gap:10px!important;align-items:center!important}
+#pnrOverlay .bk-rstn>span{font-size:24px!important;line-height:1.1!important}
+#pnrOverlay .bk-rstn small{font-size:10px!important;letter-spacing:.4px!important;margin-top:3px!important}
+#pnrOverlay .bk-rline{flex:0 0 28px!important;width:28px!important}
+#pnrOverlay .bk-rline:after{font-size:27px!important}
+#pnrOverlay .bk-rmeta{max-width:150px!important;gap:3px!important;padding-left:14px!important}
+#pnrOverlay .bk-rmeta>span{font-size:11px!important}
+#pnrOverlay #receiptTrain{font-size:10px!important;padding:3px 7px!important;background:#0b2b39!important;border-radius:4px!important}
+#pnrOverlay .bk-content{padding:0 12px!important;flex:1 1 auto!important;min-height:0!important;overflow:auto!important}
+#pnrOverlay #pnrContent{height:100%!important;min-height:0!important}
+#pnrOverlay .receipt-details{display:flex;flex-direction:column;min-height:0;height:100%}
+#pnrOverlay .receipt-passenger{padding:7px 1px!important;font-size:12px!important;line-height:1.2!important;min-height:30px!important;flex-shrink:0!important;border-color:#226271!important}
+#pnrOverlay .receipt-passenger svg{width:16px;height:16px;fill:#64dcf5;flex-shrink:0}
+#pnrOverlay .receipt-seat{padding:7px 2px!important;gap:11px!important;flex-shrink:0!important;min-height:48px!important;align-items:center!important;border-color:#226271!important}
+#pnrOverlay .receipt-symbol{display:flex!important;align-items:center!important;font-size:23px!important}
+#pnrOverlay .receipt-symbol svg{width:24px;height:28px;stroke:#66d6ff;fill:none;stroke-width:1.7;filter:drop-shadow(0 0 4px #05c7ff70)}
+#pnrOverlay .receipt-seat small{font-size:10px!important;margin-bottom:4px!important}
+#pnrOverlay .receipt-seat strong{font-size:16px!important;line-height:1.15!important;max-height:37px;overflow:auto}
+#pnrOverlay .receipt-facts{padding:6px 0!important;flex-shrink:0!important;min-height:39px!important}
+#pnrOverlay .receipt-facts>div{grid-template-columns:25px 1fr!important;gap:1px 7px!important;padding:0 7px!important}
+#pnrOverlay .receipt-facts i{font-size:24px!important}
+#pnrOverlay .receipt-facts small{font-size:10px!important}
+#pnrOverlay .receipt-facts b{font-size:13px!important}
+#pnrOverlay .receipt-speed{grid-template-columns:25px minmax(88px,max-content) minmax(0,1fr)!important;padding:6px 11px!important;column-gap:11px!important;min-height:48px!important;margin:2px 0 0!important;flex:1 0 48px!important;max-height:56px!important;border-color:#73ffc3!important;border-radius:11px!important}
+#pnrOverlay .receipt-speed>span,#pnrOverlay .receipt-speed>strong{min-height:30px!important;height:30px!important}
+#pnrOverlay .receipt-speed>strong{font-family:Matrix,'Segoe UI',sans-serif!important;font-size:27px!important;font-weight:800!important}
+#pnrOverlay .receipt-speed>div{padding-left:11px;border-left:1px solid #b4cfc5;color:#e1f4f5;font-size:11px!important}
+#pnrOverlay .receipt-speed small{font-size:9px!important;margin-top:3px!important}
+#pnrOverlay .bk-footer{padding:8px 12px 10px!important;flex-shrink:0!important}
+#pnrOverlay .bk-dl{padding:9px!important;min-height:36px!important;border-radius:11px!important;font-size:16px!important;font-weight:800!important;line-height:1!important}
+#pnrOverlay .receipt-thanks{display:none!important}
+#pnrOverlay .bk-close{width:23px!important;height:23px!important;top:7px!important;right:8px!important;font-size:16px!important;border:1px solid #2f5d6b!important;border-radius:7px!important;background:#08212d!important;color:#9db7ce!important}
+@media(max-width:390px){#pnrOverlay .bk-pnrbig{font-size:24px!important}#pnrOverlay .bk-badge{font-size:8px!important;padding:3px 6px!important}#pnrOverlay .bk-rstn>span{font-size:21px!important}#pnrOverlay .bk-route{gap:6px!important}#pnrOverlay .bk-rmeta{max-width:115px!important;padding-left:8px!important}#pnrOverlay .receipt-speed>strong{font-size:23px!important}}
+#pnrOverlay .receipt-seat strong{line-height:20px!important;max-height:40px!important}
+#pnrOverlay .receipt-seat>div{min-width:0;flex:1}
+#pnrOverlay .bk-fbtns{display:none!important}
+#successDownloadStatus{padding:4px 0;text-align:center;color:#8affc4;font-size:10px;line-height:16px}
+#pnrOverlay .bk-footer{padding:6px 12px 8px!important}
+html.matrix-capturing-success,
+html.matrix-capturing-success body {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  background: transparent !important;
+}
+html.matrix-capturing-success #pnrOverlay:not(.hidden) {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+html.matrix-capturing-success #pnrOverlay .bk-container {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 100% !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  gap: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+html.matrix-capturing-success #pnrOverlay .bk-card,
+html.matrix-capturing-success #pnrOverlay #pnrCard {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 100% !important;
+  max-height: none !important;
+  margin: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+html.matrix-capturing-success #successDownloadStatus,
+html.matrix-capturing-success #pnrClose,
+html.matrix-capturing-success .bk-close,
+html.matrix-capturing-success #pnrPrint,
+html.matrix-capturing-success .bk-dl {
+  display: none !important;
+  visibility: hidden !important;
+}
+@media print{
+ @page{size:480px 420px;margin:0}
+ html,body{margin:0!important;padding:0!important;width:480px!important;height:420px!important;overflow:hidden!important;background:transparent!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+ body *{visibility:hidden!important}
+ #pnrOverlay,#pnrOverlay *{visibility:visible!important}
+ #pnrOverlay:not(.hidden){position:fixed!important;inset:0!important;width:480px!important;height:420px!important;padding:0!important;margin:0!important;border:none!important;box-shadow:none!important;overflow:hidden!important}
+ #pnrOverlay .bk-container{width:100%!important;max-width:100%!important;height:100%!important;max-height:none!important;margin:0!important;padding:0!important;gap:0!important;border:none!important;box-shadow:none!important}
+ #pnrOverlay .bk-card,
+ #pnrOverlay #pnrCard{box-sizing:border-box!important;width:100%!important;height:100%!important;max-height:none!important;margin:0!important;border:none!important;border-radius:0!important;box-shadow:none!important}
+ #successDownloadStatus,#pnrClose,.bk-close,#pnrPrint,.bk-dl{display:none!important;visibility:hidden!important}
+}
+
+/* Booking, payment and confirmation share one native window. */
+html.matrix-success-pending #failView{display:none!important}
+#qrOverlay:not(.hidden){position:fixed!important;inset:40px 0 26px!important;z-index:100!important;box-sizing:border-box!important;display:grid!important;grid-template-rows:24px minmax(0,1fr) 30px!important;gap:6px!important;padding:8px 12px!important;overflow:hidden!important;border:1px solid #28eac7!important;border-radius:12px!important;background:radial-gradient(ellipse at top,#07383a,#03131f 75%)!important}
+#qrOverlay .payment-matrix-brand,#qrOverlay .qr-cyber-top,#qrOverlay .qr-cyber-chips,#qrOverlay .qr-status-pill,#qrOverlay .qr-apps,#qrOverlay .qr-laser-line{display:none!important}
+#qrOverlay .qr-amount-wrap{grid-row:1;display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:10px!important;padding:0!important;height:24px!important;background:transparent!important}
+#qrOverlay .qr-amount-wrap:after{display:none!important}
+#qrOverlay .qr-amount-lbl{position:static!important;font-size:11px!important}
+#qrOverlay .qr-amount-val{font-size:19px!important;line-height:24px!important;text-shadow:none!important}
+#qrOverlay .qr-box-wrap{grid-row:2;align-self:center!important;box-sizing:border-box!important;width:min(100%,calc(100vh - 142px),400px)!important;height:auto!important;aspect-ratio:1!important;margin:0 auto!important;padding:7px!important;border:2px solid #42f5ec!important;border-radius:12px!important;background:white!important;overflow:hidden!important;box-shadow:0 0 12px #0de3d44a!important}
+#qrOverlay .qr-img{display:block!important;width:100%!important;height:100%!important;max-height:none!important;object-fit:contain!important;border-radius:0!important;background:white!important}
+#qrOverlay .qr-waiting-btn{grid-row:3;box-sizing:border-box!important;margin:0!important;height:30px!important;padding:4px 90px 4px 8px!important;gap:8px!important;border:1px solid #265c64!important;border-radius:7px!important;font-size:10px!important;overflow:hidden!important}
+#qrOverlay .qr-spinner{width:15px!important;height:15px!important;border-width:2px!important}
+#qrOverlay .qr-poll-copy small{display:none!important}
+#qrOverlay .qr-elapsed{position:absolute!important;right:20px!important;bottom:11px!important;width:auto!important;min-width:65px!important;padding:0!important;margin:0!important;background:transparent!important;border:0!important;box-shadow:none!important}
+#qrOverlay .qr-elapsed strong{font-size:14px!important;line-height:20px!important}
+#qrOverlay .qr-elapsed small{display:none!important}
+#browserModal{box-sizing:border-box!important;padding:10px!important;overflow:hidden!important}
+#browserModal .modal-card{display:flex!important;flex-direction:column!important;width:100%!important;max-width:560px!important;max-height:calc(100vh - 20px)!important;box-sizing:border-box!important;padding:14px!important;overflow:hidden!important}
+#browserModal #browserList{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;grid-template-rows:repeat(2,minmax(120px,1fr))!important;gap:8px!important;min-height:0!important;max-height:none!important;overflow-y:auto!important;overflow-x:hidden!important;padding:0!important;overscroll-behavior:contain}
+#browserModal .browser-tile{width:100%!important;min-width:0!important;min-height:120px!important;padding:8px 6px!important;gap:6px!important;flex-direction:column!important;text-align:center!important;justify-content:center!important;flex-shrink:0!important}
+#browserModal .bt-main{width:100%!important;min-width:0!important;align-items:center!important}
+#browserModal .bt-name{font-size:11px!important;white-space:normal!important;overflow-wrap:anywhere!important}
+#browserModal .bt-sub{font-size:9px!important;white-space:normal!important}
+#browserModal .bt-ic{width:27px!important;height:27px!important}
+#browserModal .bt-ic img{width:20px!important;height:20px!important}
+.matrix-booking-box .bb-winctl-group{flex:0 0 auto!important;margin-left:auto!important}
+.matrix-booking-box #winClose.win-close.bb-close{display:flex!important;align-items:center!important;justify-content:center!important;visibility:visible!important;opacity:1!important;flex:0 0 auto!important;width:22px!important;height:22px!important;min-width:22px!important;z-index:4!important}
+#pairModal{box-sizing:border-box!important;padding:6px!important;overflow:hidden!important;align-items:stretch!important;justify-content:stretch!important}
+#pairModal .pair-card,#pairModal .modal-card{width:100%!important;max-width:100%!important;height:100%!important;max-height:100%!important;overflow:hidden!important}
+#pairModal .modal-x,#pairModal #pairClose{display:flex!important;position:absolute!important;right:6px!important;top:6px!important;z-index:8!important}
+/* Compact 348 x 241 booking, QR and receipt surface. */
+@media screen and (max-height:260px){
+ #qrOverlay:not(.hidden){inset:0!important;padding:5px 8px!important;grid-template-rows:18px minmax(0,1fr) 22px!important;gap:4px!important}
+ #qrOverlay .qr-amount-wrap{height:18px!important}#qrOverlay .qr-amount-val{font-size:15px!important;line-height:18px!important}
+ #qrOverlay .qr-box-wrap{width:min(100%,calc(100vh - 58px))!important;padding:4px!important;border-radius:6px!important}
+ #qrOverlay .qr-waiting-btn{height:22px!important;padding:2px 80px 2px 6px!important;font-size:8px!important}
+ #qrOverlay .qr-elapsed{bottom:8px!important;right:15px!important}#qrOverlay .qr-elapsed strong{font-size:11px!important}
+ #pnrOverlay:not(.hidden){padding:3px!important;overflow:hidden!important}
+ #pnrOverlay .receipt-matrix-brand{min-height:22px!important;height:22px!important;padding:2px 8px!important;font-size:11px!important;letter-spacing:2px!important}
+ #pnrOverlay .receipt-matrix-brand img{height:18px!important;width:22px!important}
+ #pnrOverlay .bk-header{padding:3px 8px 0 32px!important}
+ #pnrOverlay .ticket-train-icon{left:8px!important;top:5px!important;width:18px!important;height:24px!important}
+ #pnrOverlay .bk-pnrlabel{font-size:8px!important;line-height:9px!important}
+ #pnrOverlay .bk-pnrbig{font-size:19px!important;line-height:21px!important;margin:0 0 2px!important}
+ #pnrOverlay .bk-pnrbig .pnr-cipher{font-size:15px!important;letter-spacing:1px!important}
+ #pnrOverlay .bk-hrow{top:6px!important;right:7px!important}#pnrOverlay .bk-badge{font-size:8px!important;padding:2px 5px!important}
+ #pnrOverlay .bk-route{margin-left:-24px!important;min-height:33px!important;padding:3px 0!important;gap:6px!important}
+ #pnrOverlay .bk-rstn>span{font-size:17px!important}#pnrOverlay .bk-rstn small{font-size:7px!important;margin-top:1px!important}
+ #pnrOverlay .bk-rline{flex-basis:20px!important;width:20px!important}#pnrOverlay .bk-rline:after{font-size:20px!important}
+ #pnrOverlay .bk-rmeta{max-width:120px!important;padding-left:6px!important;gap:1px!important}#pnrOverlay .bk-rmeta>span{font-size:8px!important}
+ #pnrOverlay #receiptTrain{font-size:8px!important;padding:1px 3px!important}
+ #pnrOverlay .bk-content{padding:0 8px!important}
+ #pnrOverlay .receipt-passenger{padding:2px 0!important;min-height:19px!important;font-size:9px!important}#pnrOverlay .receipt-passenger svg{width:12px;height:12px}
+ #pnrOverlay .receipt-seat{min-height:29px!important;padding:2px 0!important;gap:6px!important}#pnrOverlay .receipt-symbol svg{width:16px;height:20px}
+ #pnrOverlay .receipt-seat small{font-size:8px!important;margin-bottom:1px!important}#pnrOverlay .receipt-seat strong{font-size:11px!important;line-height:13px!important;max-height:26px!important}
+ #pnrOverlay .receipt-facts{min-height:26px!important;padding:2px 0!important}#pnrOverlay .receipt-facts>div{grid-template-columns:16px 1fr!important;gap:0 4px!important;padding:0 4px!important}
+ #pnrOverlay .receipt-facts i{font-size:16px!important}#pnrOverlay .receipt-facts small{font-size:8px!important}#pnrOverlay .receipt-facts b{font-size:10px!important}
+ #pnrOverlay .receipt-speed{min-height:30px!important;max-height:32px!important;flex:1 0 30px!important;padding:2px 6px!important;grid-template-columns:18px minmax(60px,max-content) minmax(0,1fr)!important;column-gap:6px!important;border-radius:7px!important}
+ #pnrOverlay .receipt-speed>span,#pnrOverlay .receipt-speed>strong{min-height:23px!important;height:23px!important}#pnrOverlay .receipt-speed>span svg{height:22px;width:17px}
+ #pnrOverlay .receipt-speed>strong{font-size:20px!important}#pnrOverlay .receipt-speed>div{font-size:9px!important;padding-left:6px!important}#pnrOverlay .receipt-speed small{font-size:7px!important;margin-top:1px!important}
+ #pnrOverlay .bk-footer{padding:2px 8px 3px!important}#successDownloadStatus{font-size:8px!important;line-height:10px!important;padding:1px 0!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ #pnrOverlay .bk-close{width:17px!important;height:17px!important;top:3px!important;right:4px!important;font-size:13px!important}
+ #browserModal{padding:5px!important}#browserModal .modal-card{padding:7px!important;max-height:calc(100vh - 10px)!important}
+ #browserModal .modal-head{margin-bottom:4px!important;padding-bottom:4px!important}#browserModal .modal-title{font-size:11px!important}
+ #browserModal #pickSub{font-size:8px!important;margin:2px 0 4px!important}
+ #browserModal #browserList{grid-template-rows:repeat(2,minmax(72px,1fr))!important;gap:5px!important}
+ #browserModal .browser-tile{min-height:72px!important;padding:3px!important;gap:2px!important;border-radius:7px!important}
+ #browserModal .bt-ic{width:18px!important;height:18px!important}#browserModal .bt-ic img{width:16px!important;height:16px!important}
+ #browserModal .bt-name{font-size:9px!important;line-height:10px!important}#browserModal .bt-state{font-size:8px!important;line-height:9px!important}
+ #browserModal .bt-download{font-size:8px!important;padding:2px 5px!important;line-height:10px!important}
+}
+@media screen and (max-height:260px){
+ #pnrOverlay .bk-header{height:78px!important;min-height:78px!important;max-height:78px!important;overflow:hidden!important}
+ #pnrOverlay .bk-route{height:36px!important;min-height:36px!important;max-height:36px!important;margin-top:0!important;margin-bottom:0!important}
+ #pnrOverlay .receipt-details{display:grid!important;grid-template-rows:18px 28px 26px minmax(28px,1fr)!important;gap:0!important}
+ #pnrOverlay .receipt-passenger{min-height:18px!important}#pnrOverlay .receipt-seat{min-height:28px!important}
+ #pnrOverlay .receipt-speed{min-height:28px!important;max-height:none!important;margin:0!important}
+}
+@media screen and (max-height:260px){
+ #pnrOverlay .bk-rmeta{min-width:0!important;overflow:hidden!important}
+ #pnrOverlay #receiptTrain{display:block!important;max-width:100%!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;line-height:10px!important}
+}

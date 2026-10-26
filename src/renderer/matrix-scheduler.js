@@ -29,8 +29,9 @@
       'brave': 'Brave Browser',
       'brave-beta': 'Brave Beta',
       'edge': 'Microsoft Edge',
-      'chrome-advance': 'Chrome Advance',
-      'gologin': 'GoLogin'
+      'chrome-advance': 'Chromium',
+      'fingerprint': 'Chromium',
+      'brahmos': 'Matrix Browser'
     };
     return map[id] || id;
   }
@@ -88,11 +89,13 @@
         if (res && res.ok && Array.isArray(res.data) && res.data.length > 0) {
           sel.innerHTML = '';
           for (const b of res.data) {
-            if (b && b.id) {
+            const id=b&&(b.type||b.id);
+            if (id && id!=='gologin' && !b.hidden) {
               const opt = document.createElement('option');
-              opt.value = b.id;
-              opt.textContent = `${b.label || getBrowserDisplayName(b.id)} ${b.installed === false ? '(not detected)' : '✓'}`;
-              if (b.id === targetBrowserId) opt.selected = true;
+              opt.value = id;
+              opt.textContent = `${getBrowserDisplayName(id)} ${b.installed === false ? '(not detected)' : '✓'}`;
+              opt.disabled=b.installed===false;
+              if (id === targetBrowserId) opt.selected = true;
               sel.appendChild(opt);
             }
           }
@@ -273,17 +276,19 @@
         clearInterval(interval);
         window.__scheduledBrowserToPick = null;
 
+        const selectedId=browserId==='chrome-advance'?'fingerprint':browserId;
         let matched = tiles.find(t => {
-          const tid = (t.dataset.id || '').toLowerCase();
+          const tid = (t.dataset.type || t.dataset.id || '').toLowerCase();
           const txt = (t.textContent || '').toLowerCase();
-          return tid === browserId.toLowerCase() || txt.includes(browserId.toLowerCase());
+          return tid === selectedId.toLowerCase() || (!tid && txt.includes(selectedId.toLowerCase()));
         });
 
         if (!matched) {
-          matched = tiles.find(t => !t.disabled && !t.classList.contains('disabled')) || tiles[0];
+          const status=document.getElementById('statusText');
+          if(status)status.textContent='Selected browser is unavailable: '+getBrowserDisplayName(browserId);
         }
 
-        if (matched) {
+        if (matched && !matched.disabled && !matched.classList.contains('disabled')) {
           matched.click();
         }
 

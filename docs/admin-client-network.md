@@ -1,0 +1,15 @@
+# Admin seller/client network and ticket attribution
+
+The owner confirmed that client balance means remaining validity days and remaining trial PNRs. Paid/free subscription keys have no per-ticket wallet or PNR limit. Seller wallet balances remain separate.
+
+Admin → Seller / client tree (`/admin?page=network`) groups direct admin clients, each seller's clients, and unassigned trial devices. Search supports seller/client names, client IDs, key endings, reported PNRs and IRCTC usernames. Access filters, zoom, fit, scrolling and background dragging support larger trees. Selecting a client shows its expiry, remaining days, status, device count, latest activation IP and reported ticket history. Seller cards aggregate free/paid/unpaid/unknown clients and reported PNRs.
+
+Admin key creation accepts paid or free access. Existing keys can be classified with Free / paid; the confirmation explains that this authorizes an unpaid key and records the administrator's classification, without collecting money or debiting the seller wallet. Historical keys without an explicit classification or paidAt are shown as Not recorded. Never infer a verified purchase from the old paid=true authorization flag.
+
+The release desktop captures the allowlisted booking metadata from its booking/payment actor and reports successful ten-digit PNRs using an own-server signed reporting token bound to the license and activated device. The server determines seller/client ownership from that license, ignoring any client-supplied owner. A seven-day token permits delayed reporting after expiry; refreshed sessions replace pending tokens only for the same client. Duplicate license/PNR reports count once. Trial completions retain their original quota deduplication while storing a separate admin-visible ticket record.
+
+Reports include only PNR, IRCTC username, train number, route, journey date, class, quota and form ID when available. Passwords, passenger details, payment credentials and full provider responses are excluded. The local pending queue uses Electron safeStorage. Network failures leave it queued and do not prevent ticket display. Reporting retries every minute and after successful key verification. Activation discloses this reporting to clients.
+
+Only authenticated administrators can fetch the full network/booking history. Seller/client license endpoints do not expose another owner's reports, the signing key, key plaintext or IRCTC credentials. The admin view returns the latest 500 reports and full aggregate counts; trial details are also restricted to admin.
+
+Limitations: earlier unreported tickets cannot be reconstructed centrally. Trial devices have no recorded seller attribution and remain under Unassigned trials. PNR and IRCTC username are desktop-reported, not independently verified provider receipts; a modified client can falsify its own report. Billing labels record the admin's choice, not independent payment settlement. All live customer records and trial quotas must be preserved across deployment.

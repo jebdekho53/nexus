@@ -9,6 +9,7 @@
     />
     <title>Matrix · New Form</title>
     <script defer src="./matrix-availability.js"></script>
+    <script defer src="./matrix-special-train.js"></script>
 
     <script type="module" crossorigin src="./assets/form-CEfCrSsa.js"></script>
     <link rel="modulepreload" crossorigin href="./assets/tamperLock-C-XpNF9g.js">
@@ -23,12 +24,14 @@
     <script defer src="./matrix-build.js"></script>
     <script defer src="./matrix-payments.js"></script>
     <script defer src="./matrix-brand.js"></script>
-  </head>
-  <body>
+      <link rel="stylesheet" href="./matrix-panels.css">
+  <script defer src="./matrix-workspace.js"></script>  <link rel="stylesheet" href="./matrix-visual.css">
+</head>
+  <body class="matrix-form">
     <header class="topbar">
       <div class="brand">
         <span class="dot"></span>
-        <span id="formTitle">New Booking Form</span>
+        <span id="formTitle">Create Booking</span>
         <span class="sub">· collected once, used by every mode</span>
       </div>
       <span class="spacer"></span>
@@ -39,27 +42,27 @@
       <button type="button" class="win-close" id="winClose" title="Close">✕</button>
     </header>
 
-    <main class="wrap">
+    <main class="wrap editor-workspace"><div class="editor-canvas">
       <form id="form" autocomplete="off" novalidate>
         <!-- Account -->
-        <section class="card">
+        <section class="card editor-section" id="editor-section-0" data-editor-index="0">
           <div class="card-head">
             <span class="ic">👤</span>
             <div>
-              <div class="t">Account</div>
+              <div class="t">ID</div>
               <div class="s">Pick a saved login (Login Data) or enter one</div>
             </div>
           </div>
           <div class="grid">
             <div class="field span">
-              <label class="lbl" for="savedUser">Saved login</label>
+              <label class="lbl" for="savedUser">IRCTC Account</label>
               <select id="savedUser" data-search="always">
-                <option value="">— Manual entry —</option>
+                <option value="">Choose an IRCTC ID</option>
               </select>
             </div>
             <div class="field">
-              <label class="lbl" for="username">Username</label>
-              <input type="text" id="username" placeholder="Account username" />
+              <label class="lbl" for="username">IRCTC User ID</label>
+              <input type="text" id="username" placeholder="IRCTC User ID" />
             </div>
             <div class="field">
               <label class="lbl" for="password">Password</label>
@@ -77,13 +80,11 @@
             </div>
           </div>
         </section>
-
-        <!-- Journey Planning -->
-        <section class="card">
+<section class="card editor-section" id="editor-section-1" data-editor-index="1">
           <div class="card-head">
             <span class="ic">🚆</span>
             <div>
-              <div class="t">Journey Planning</div>
+              <div class="t">Journey Details</div>
               <div class="s">Configure your travel details</div>
             </div>
           </div>
@@ -114,10 +115,7 @@
                 <button type="button" id="searchTrainsBtn" class="btn ghost-blue sm">🔍 Trains</button>
               </div>
             </div>
-            <div class="field">
-              <label class="lbl" for="boardingStation">Boarding Station (optional)</label>
-              <input type="text" id="boardingStation" placeholder="Defaults to From station" />
-            </div>
+
             <div class="field">
               <label class="lbl" for="quota">Booking Quota</label>
               <select id="quota">
@@ -128,7 +126,7 @@
                 <option value="LD">LD — Ladies Quota</option>
                 <option value="SS">SS — Senior Citizen</option>
               </select>
-              <small>General starts when you run it. Auto Book now logs in automatically and uses the current session; required submit waits still apply. Opening General and Tatkal use scheduled timers.</small>
+
             </div>
             <div class="field">
               <label class="lbl" for="classCode">Travel Class</label>
@@ -164,33 +162,16 @@
             <div class="avail-status" id="availStatus">Checking availability…</div>
             <div class="avail-foot" id="availFoot"></div>
           </div>
-        </section>
-
-        <!-- Options -->
-        <section class="card">
-          <div class="card-head">
-            <span class="ic">⚑</span>
-            <div>
-              <div class="t">Booking Options</div>
-              <div class="s">Fine-tune the booking behaviour</div>
+          <div class="field">
+              <label class="lbl" for="boardingStation">Boarding Station (optional)</label>
+              <input type="text" id="boardingStation" placeholder="Defaults to From station" />
             </div>
-          </div>
-          <div class="checks">
-            <label class="chk"><input type="checkbox" id="bookOnlyIfConfirmed" checked /> Book only if confirmed berths</label>
-            <label class="chk"><input type="checkbox" id="travelInsurance" checked /> Travel insurance</label>
-            <label class="chk"><input type="checkbox" id="autoOtpSync" /> Aadhaar OTP Bypass</label>
-            <!-- WebLogin login mode (operator 2026-06-14): default OFF = AUTO (the app logs in); ON = MANUAL (you log
-                 in by hand in the visible window). Only WebLogin honours it; the mini box mirrors this as a pill. -->
-            <label class="chk" id="manualLoginRow"><input type="checkbox" id="manualLogin" /> Manual login (WebLogin) — I log in myself</label>
-          </div>
         </section>
-
-        <!-- Payment -->
-        <section class="card">
+<section class="card editor-section" id="editor-section-3" data-editor-index="2">
           <div class="card-head">
             <span class="ic">💳</span>
             <div>
-              <div class="t">Payment Information</div>
+              <div class="t">Payment Details</div>
               <div class="s">Select your preferred payment method</div>
             </div>
           </div>
@@ -203,15 +184,12 @@
                 <option value="phonepay">PhonePe QR</option>
                 <option value="razorpayqr">Razorpay QR</option>
                 <option value="irctcqr">IRCTC QR</option>
-                <option value="wallet">RailOne Wallet</option>
                 <option value="webwallet">WebLogin Wallet</option>
-                <option value="railoneqr">RailOne QR</option>
-                <option value="railoneupi">RailOne UPI</option>
                 <option value="paytmupi">Razorpay UPI</option>
               </select>
             </div>
             <!-- Saved UPI (Controller → Payment) + manual entry, side by side in the SAME row so a saved id is one
-                 tap and a new one is still typeable. Mirrors the Account card's "Saved login" → fields pattern. -->
+                 tap and a new one is still typeable. Mirrors the Account card's "IRCTC Account" → fields pattern. -->
             <div class="field hidden" id="upiSavedField">
               <label class="lbl" for="savedUpi">Saved UPI</label>
               <select id="savedUpi">
@@ -229,36 +207,32 @@
             <label class="chk"><input type="checkbox" id="freechargeBypass" /> Freecharge bypass</label>
           </div>
         </section>
-
-        <!-- Passengers -->
-        <section class="card">
+<section class="card editor-section" id="editor-section-4" data-editor-index="3">
           <div class="card-head">
             <span class="ic">👥</span>
             <div>
-              <div class="t">Passenger Information</div>
+              <div class="t">Passenger Details</div>
               <div class="s">Add details for all passengers</div>
             </div>
             <span class="spacer" style="flex: 1"></span>
             <button type="button" id="addPassenger" class="btn ghost-blue sm">+ Add Passenger</button>
           </div>
-          <table class="ptable">
+          <div class="passenger-table-scroll"><table class="ptable">
             <thead>
               <tr>
-                <th style="width: 28%">Full Name</th>
-                <th style="width: 9%">Age</th>
-                <th style="width: 14%">Gender</th>
+                <th style="width: 36%">Full Name</th>
+                <th style="width: 8%">Age</th>
+                <th style="width: 13%">Gender</th>
                 <th style="width: 18%">Berth</th>
-                <th style="width: 25%">Food</th>
-                <th style="width: 6%"></th>
+                <th style="width: 20%">Food</th>
+                <th style="width: 5%"></th>
               </tr>
             </thead>
             <tbody id="paxBody"></tbody>
-          </table>
+          </table></div>
           <div class="empty-pax" id="paxEmpty">No passengers yet — click “Add Passenger”.</div>
         </section>
-
-        <!-- Proxy -->
-        <section class="card">
+<section class="card editor-section" id="editor-section-5" data-editor-index="4">
           <div class="card-head">
             <span class="ic">🌐</span>
             <div>
@@ -308,9 +282,24 @@
             <span class="proxy-test-result" id="proxyTestResult" aria-live="polite"></span>
           </div>
         </section>
-
-        <!-- Advanced Configuration (per-form timing, #5) -->
-        <section class="card">
+<section class="card editor-section" id="editor-section-2" data-editor-index="5">
+          <div class="card-head">
+            <span class="ic">⚑</span>
+            <div>
+              <div class="t">Booking Preferences</div>
+              <div class="s">Fine-tune the booking behaviour</div>
+            </div>
+          </div>
+          <div class="checks">
+            <label class="chk"><input type="checkbox" id="bookOnlyIfConfirmed" checked /> Book only if confirmed berths</label>
+            <label class="chk"><input type="checkbox" id="travelInsurance" checked /> Travel insurance</label>
+            <label class="chk"><input type="checkbox" id="autoOtpSync" /> Aadhaar OTP Bypass</label>
+            <!-- WebLogin login mode (operator 2026-06-14): default OFF = AUTO (the app logs in); ON = MANUAL (you log
+                 in by hand in the visible window). Only WebLogin honours it; the mini box mirrors this as a pill. -->
+            <label class="chk" id="manualLoginRow"><input type="checkbox" id="manualLogin" /> Manual login (WebLogin) — I log in myself</label>
+          </div>
+        </section>
+<section class="matrix-form-timing-legacy" hidden aria-hidden="true" id="editor-section-6" data-editor-index="6">
           <details class="adv">
             <summary class="adv-summary">
               <span class="adv-ic">🕑</span>
@@ -329,7 +318,7 @@
             </div>
           </details>
         </section>
-      </form>
+      </form></div>
     </main>
 
     <footer class="savebar">

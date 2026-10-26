@@ -6,7 +6,7 @@
       http-equiv="Content-Security-Policy"
       content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"
     />
-    <title>Matrix · Login Data</title>
+    <title>Matrix · IRCTC Accounts</title>
 
 
     <script type="module" crossorigin src="./assets/login-data-cJH5cCIl.js"></script>
@@ -21,38 +21,32 @@
     <script defer src="./matrix-build.js"></script>
     <script defer src="./matrix-payments.js"></script>
     <script defer src="./matrix-brand.js"></script>
-  </head>
+  <script defer src="./matrix-login-mobile.js"></script><link rel="stylesheet" href="./matrix-library.css">
+  <link rel="stylesheet" href="./matrix-visual.css">
+</head>
   <body>
     <header class="topbar">
       <div class="brand">
-        <span class="dot"></span>
-        <span>Login Data</span>
+        <span>IRCTC Accounts (ID / Pass)</span>
       </div>
       <span class="spacer"></span>
-      <!-- ORDER (operator 2026-10-11): the things you DO first, then the destructive ones last — so the red
-           Delete All is nowhere near + Add New, and a mis-click costs nothing. -->
-      <button type="button" id="addBtn" class="btn primary sm" title="Add a new login">+ Add New</button>
+      <button type="button" id="addBtn" class="btn primary sm" title="Add a new login">+ Add Account</button>
       <button type="button" id="importBtn" class="btn sm">Import</button>
       <button type="button" id="exportBtn" class="btn sm">Export</button>
-      <button type="button" id="checkIdsBtn" class="btn safe sm" title="Check which saved ids can actually book">Check IDs</button>
+      <button type="button" id="checkIdsBtn" class="btn safe sm" title="Check which saved ids can actually book">Check Accounts</button>
       <button type="button" id="deleteAllBtn" class="btn sm danger" title="Delete every saved login">Delete All</button>
-      <button type="button" id="closeBtn" class="btn sm danger-solid" title="Close this window">Close</button>
+      <button type="button" id="closeBtn" class="modal-x win-close" title="Close" onclick="window.close()">✕</button>
     </header>
 
     <main class="ld-wrap">
-      <!-- Search the saved logins (operator 2026-10-11: "the login id pane should have search options, like we do for
-           forms"). Same compact centred pill as Open Form, so the two lists search alike. -->
-      <div class="searchbar">
-        <div class="search-field">
-          <span class="search-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg></span>
-          <input id="search" type="search" placeholder="Search login id or mobile…" autocomplete="off" spellcheck="false" />
-          <span id="searchCount" class="search-count"></span>
-        </div>
+      <div class="searchbar" style="display:none!important;" aria-hidden="true">
+        <input id="search" type="search" />
+        <span id="searchCount"></span>
       </div>
-      <div id="noMatch" class="empty hidden">No logins match your search.</div>
+      <div id="noMatch" class="empty hidden">No accounts found. Try another IRCTC ID.</div>
       <div id="list"></div>
       <div id="empty" class="empty hidden">
-        No saved logins yet. Click <b>+ Add New User ID</b>.
+        Add your first IRCTC account to get started.
       </div>
     </main>
 
@@ -61,7 +55,7 @@
       <div class="modal-card idsum-card">
         <div class="modal-head">
           <div>
-            <div class="modal-title">ID check</div>
+            <div class="modal-title">Account readiness</div>
             <div class="idsum-count" id="idSumCount"></div>
           </div>
           <button type="button" class="modal-x" id="idSumClose">✕</button>
@@ -75,16 +69,16 @@
     <div id="userModal" class="modal-overlay hidden">
       <div class="modal-card">
         <div class="modal-head">
-          <div class="modal-title" id="modalTitle">Add User ID</div>
+          <div class="modal-title" id="modalTitle">Add IRCTC Account</div>
           <button type="button" class="modal-x" id="modalClose">✕</button>
         </div>
         <div class="modal-fields">
           <div class="field">
-            <label class="lbl" for="mUsername">Username <span class="req">*</span></label>
+            <label class="lbl" for="mUsername">IRCTC User ID <span class="req">*</span></label>
             <!-- Check while ADDING (operator 2026-10-11) — the check needs only the id, never the password. -->
             <div class="with-btn">
-              <input type="text" id="mUsername" placeholder="Username" autocomplete="off" />
-              <button type="button" id="mCheckId" class="btn ghost-blue sm" title="Check this ID with IRCTC">Check ID</button>
+              <input type="text" id="mUsername" placeholder="IRCTC User ID" autocomplete="off" />
+              <button type="button" id="mCheckId" class="btn ghost-blue sm" title="Check this ID with IRCTC">Verify ID</button>
             </div>
             <div id="mIdStat" class="id-stat hidden"></div>
           </div>
@@ -95,22 +89,8 @@
               <button type="button" class="eye" id="mTogglePw" title="Show / hide">👁️</button>
             </div>
           </div>
-          <div class="field">
-            <label class="lbl" for="mMobile">Mobile Number <span class="req">*</span></label>
-            <!-- Same Random generator as the form's Phone Number row (operator 2026-10-11): a valid 10-digit Indian
-                 mobile, one tap. Identical markup/classes so it looks and behaves exactly like the one in the form. -->
-            <div class="with-btn">
-              <input
-                type="text"
-                id="mMobile"
-                inputmode="numeric"
-                maxlength="10"
-                placeholder="10-digit mobile (starts 6–9)"
-                autocomplete="off"
-              />
-              <button type="button" id="mRandomMobile" class="btn ghost-blue sm">🎲 Random</button>
-            </div>
-          </div>
+          <input type="hidden" id="mMobile" />
+          <button type="button" id="mRandomMobile" hidden style="display:none!important" aria-hidden="true">Random</button>
         </div>
         <div class="modal-actions">
           <button type="button" class="btn" id="modalCancel">Cancel</button>

@@ -1,6 +1,6 @@
 'use strict';
 ((root)=>{
-  const labels=Object.freeze({paytm:'Paytm QR',phonepay:'PhonePe QR',phonepe:'PhonePe QR',razorpayqr:'Razorpay QR',irctcqr:'IRCTC QR',wallet:'RailOne Wallet',webwallet:'WebLogin Wallet',railoneqr:'RailOne QR',railoneupi:'RailOne UPI',paytmupi:'Razorpay UPI'});
+  const labels=Object.freeze({paytm:'Paytm QR',phonepay:'PhonePe QR',phonepe:'PhonePe QR',razorpayqr:'Razorpay QR',irctcqr:'IRCTC QR',webwallet:'WebLogin Wallet',paytmupi:'Razorpay UPI'});
   const label=method=>labels[method]||String(method||'Not selected');
   const normalize=text=>{
     const clean=String(text).trim().replace(/^[📲🚆🌐↗️\s]+/u,'').replace(/\s*—\s*(?:Ultra Fast|Super Fast|Fast|RailOne only|WebLogin only)$/i,'');

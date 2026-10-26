@@ -33,7 +33,7 @@ function createHierarchy({registry,persist,issue,publicKey,authenticated,session
      case 'session':json(200,{authenticated:true,seller:publicSeller(seller(actor.id))});break;
      case 'signup-requests':json(200,{requests:registry.signupRequests});break;
      case 'sellers':json(200,{sellers:registry.sellers.map(publicSeller)});break;
-     case 'keys':case 'export':json(200,{keys:visible.map(publicKey)});break;
+     case 'keys':case 'export':json(200,{keys:visible.map(item=>publicKey(item,{revealKey:true,includeDeviceAccess:actor.role==='admin'}))});break;
      case 'ledger':json(200,{entries:registry.ledger.filter(e=>actor.role==='admin'||e.sellerId===actor.id)});break;
      case 'audit':json(200,{entries:registry.audit.filter(e=>actor.role==='admin'||e.actor===actor.id||ids.has(e.licenseId))});break;
      case 'ips':json(200,{entries:visible.map(k=>({licenseId:k.id,customer:k.customer,connection:connection(k)})).filter(e=>e.connection)});break;
@@ -85,6 +85,20 @@ function createHierarchy({registry,persist,issue,publicKey,authenticated,session
      const k=own(actor,b.id),action=b.action;
      if(action==='paid'){if(k.paid!==false)throw Error('Key already paid');debit(actor,k,'key-paid');k.paid=true;k.paidAt=new Date().toISOString();k.expiresAt=new Date(Date.now()+(k.plan==='yearly'?365:30)*86400000).toISOString();}
      else if(action==='renew'){if(k.paid===false)throw Error('Mark this key paid first');debit(actor,k,'key-renewed');k.expiresAt=new Date(Math.max(Date.now(),Date.parse(k.expiresAt))+(k.plan==='yearly'?365:30)*86400000).toISOString();}
+     else if(action==='add-validity'){
+      if(actor.role!=='admin')throw Error('Only admin can add custom validity');
+      if(k.paid===false)throw Error('Mark this key paid first');
+      const days=integer(b.days,1,3650),previousExpiresAt=k.expiresAt;
+      const next=Math.max(Date.now(),Date.parse(previousExpiresAt))+days*86400000;
+      if(!Number.isFinite(next)||next>Date.now()+3650*86400000)throw Error('Total validity cannot exceed 3650 days');
+      k.expiresAt=new Date(next).toISOString();
+      registry.ledger.unshift({id:crypto.randomUUID(),at:new Date().toISOString(),sellerId:k.sellerId||null,licenseId:k.id,action:'key-validity-added',amount:0,days,previousExpiresAt,expiresAt:k.expiresAt,note:days+' validity days added by admin'});
+     }
+     else if(action==='access-type'){
+      if(actor.role!=='admin')throw Error('Only admin can classify free or paid access');
+      if(!['free','paid'].includes(b.accessType))throw Error('Choose free or paid access');
+      k.accessType=b.accessType;k.paid=true;if(b.accessType==='paid')k.paidAt=new Date().toISOString();
+     }
      else if(action==='reset'){k.devices=[];k.keyVersion=(k.keyVersion||0)+1;}
      else if(action==='deactivate'){k.revoked=true;k.keyVersion=(k.keyVersion||0)+1;}
      else if(action==='activate'){k.revoked=false;}

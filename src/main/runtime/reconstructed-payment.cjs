@@ -63,6 +63,12 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     if(!actual||actual.nativeId!==expected.nativeId||definitionFingerprint(actual)!==expected.sha256)
       throw new Error('Reconstructed payment contract changed for '+id+'. Review the recovered definition and comparison tests before enabling this candidate.');
   }
+  return paymentFactories(dependencies);
+}
+
+// Factory construction is independent of the experimental all-module migration.
+// Production opts into only the reviewed web-booking adapters below.
+function paymentFactories(dependencies={}) {
   return {
     f1717:({readBinding})=>function(input){return paytmBankResponse(this,input,{parseDelay:html=>readBinding(785,undefined,1)(html)});},
     f1689:({readBinding})=>function(mid,orderId,stopped,onWait,maxAttempts){return pollPaytmStatus(this,mid,orderId,stopped,onWait,maxAttempts,{getField:(html,name)=>readBinding(783,undefined,1)(html,name)});},
@@ -111,8 +117,16 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
         hlCoverRateLimit:call(877),
         fastRetryDelay:val(922),
         hlCoverWindow:val(923),
-        classifyResponse:call(930),
+        classifyResponse:(status,body,headers,options)=>{
+          if(options?.bookingNotAllowedTerminal!==false){
+            const text=call(928)(body);
+            if(/booking not allowed/i.test(text))return 'terminal';
+          }
+          return call(930)(status,body,headers);
+        },
         describeFailure:call(931),
+        extractErrorText:call(928),
+        onResponse:dependencies.onResponse,
         previewBody:call(939),
         random:dependencies.random,
         sleep:dependencies.timers?.sleep,
@@ -192,11 +206,11 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
       const call=slot=>(...args)=>readBinding(slot,undefined,1)(...args);
       const val=slot=>readBinding(slot,undefined,1);
       return pollAvailability(this,journey,trainNumber,quota,options,{
-        buildBody:call(351),
-        newSiteBody:val(353),
+        buildBody:call(369),
+        newSiteBody:call(371),
         maxOptStep:val(363),
-        buildUrl:call(369),
-        newSiteUrl:call(371),
+        buildUrl:call(351),
+        newSiteUrl:val(353),
         isHighLoadBody:call(403),
         isAkamaiBlockedBody:call(404),
         parseResponse:call(405),
@@ -206,6 +220,7 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
         slowRetryDelayMs:call(915),
         pollStatusVerdict:call(916),
         highloadStatuses:val(921),
+        extractErrorText:call(928),
         random:dependencies.random,
         env:dependencies.environment,
       });
@@ -367,4 +382,9 @@ function reconstructedPayment({development=false,managedRelease=false,enabled=fa
     },
   };
 }
-module.exports={reconstructedPayment};
+const WEB_UPGRADE_IDS=Object.freeze(['f2064','f2161','f2269','f2052','f2172','f1652']);
+function webBookingUpgrades({dependencies={}}={}) {
+  const factories=paymentFactories(dependencies);
+  return Object.fromEntries(WEB_UPGRADE_IDS.map(id=>[id,factories[id]]));
+}
+module.exports={reconstructedPayment,webBookingUpgrades,WEB_UPGRADE_IDS};

@@ -8,6 +8,7 @@
   filter.onchange=()=>{for(const item of list.children)item.hidden=filter.value!=='all'&&item.dataset.run!==filter.value;};
   const clock=new Intl.DateTimeFormat('en-IN',{timeZone:'Asia/Kolkata',hour:'2-digit',minute:'2-digit',second:'2-digit',fractionalSecondDigits:3,hour12:false});
   function append(row){
+    if(!window.MatrixLogPolicy?.isBookingRow(row))return;
     if(ids.has(row.id))return;ids.add(row.id);rows.push(row);
     const item=document.createElement('div');item.className='nx-log '+row.kind+' '+(['info','warn','error','success'].includes(row.level)?row.level:'info');
     item.dataset.run=row.runId;item.hidden=filter.value!=='all'&&filter.value!==row.runId;
