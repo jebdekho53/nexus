@@ -119,12 +119,14 @@ async function runBrowserBooking(actor,job,suppliedOptions,deps) {
     if(actor.stopped)return deps.stopped();
   }
 
-  const probe=await actor.preTargetProbe(job,20000);
-  if(actor.stopped)return deps.stopped();
+  // The probe may itself wait for the opening. Arm before that wait so its
+  // countdown can refresh in the guarded pre-slot window.
   if(typeof actor.refreshCsrfFromSpa === 'function') {
     actor.csrfPreSlotArmed = true;
     if(actor.csrfPreSlot == null) actor.csrfPreSlot = 'pending';
   }
+  const probe=await actor.preTargetProbe(job,20000);
+  if(actor.stopped)return deps.stopped();
   actor.setTokenOwnership(true);
   if(probe!=='early') {
     const slot=actor.resolveTarget(job);

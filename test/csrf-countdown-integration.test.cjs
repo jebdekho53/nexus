@@ -66,3 +66,29 @@ test('cancelled countdown clears its scheduler and does not call activity callba
   await assert.rejects(h.hooks.f2282(async(target,cover)=>{h.actor.stopped=true;await cover();throw Error('cancelled');},[{ms:100000},()=>callbacks++],h.actor),/cancelled/);
   assert.equal(callbacks,0);assert.equal(h.hasTimer(),false);assert.equal(h.calls(),0);
 });
+
+test('browser booking arms CSRF before its probe for 8AM, 10AM and 11AM, and disarms on cancellation',async()=>{
+  const {runBrowserBooking}=require('../src/main/booking/browser-booking.cjs');
+  for(const hour of [8,10,11])for(const cancelled of [false,true]){
+    const slot={ms:Date.parse(`2026-10-27T${String(hour).padStart(2,'0')}:00:00+05:30`)};
+    const h=setup(slot.ms-35000),actor=h.actor;let availability=0;
+    Object.assign(actor,{
+      opts:{hideBrowser:false},captureLocationEarly(){},now:()=>slot.ms-35000,
+      resolveTarget:()=>slot,relaunchIfLoggedOut:async()=>false,ensureAuthToken:async()=>true,
+      ensureCsrfEstablished:async()=>{},ensureServerTimeSynced:async()=>{},setTokenOwnership(){},onProgress(){},
+      preTargetProbe:async()=>{
+        assert.equal(actor.csrfPreSlotArmed,true);
+        if(cancelled){actor.stopped=true;return 'early';}
+        await h.hooks.f2282(async()=>{h.setNow(slot.ms);},[slot],actor);
+        assert.equal(h.calls(),1);
+        return 'early';
+      },
+      isChancesFlow:()=>false,pollAvailability:async()=>{availability++;assert.equal(h.calls(),1);actor.stopped=true;},
+    });
+    actor.session.page={waitForLoadState:async()=>{}};
+    const deps={humanFor:()=>({dwell:async()=>{}}),clientTxnId:()=> 'fixture',slotImminent:()=>true,windowLimit:()=>60000,shouldSearch:()=>false,clearOverlays:async()=>{},spaDecision:()=> 'skip',stopped:()=>({stopped:true})};
+    await h.hooks.f2161(job=>runBrowserBooking(actor,job,{},deps),[{trainNumber:'12345',origin:'AAA',passengers:[]}],actor);
+    assert.equal(availability,cancelled?0:1);assert.equal(h.calls(),cancelled?0:1);
+    assert.equal(actor.csrfPreSlotArmed,false);assert.equal(h.hasTimer(),false);
+  }
+});

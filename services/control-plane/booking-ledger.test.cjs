@@ -41,3 +41,8 @@ test('legacy keys are not invented as purchased; expired reporting token denied;
  assert.equal(result.clients[0].accessType,'not-recorded');assert.equal(result.summary.trialPnrUsed,2);assert.equal(result.trials[0].pnrRemaining,1);
  assert.equal(result.owners[0].notRecorded,1);
 });
+
+test('timing whitelist preserves valid stage times and drops secrets and malformed timestamps',()=>{
+ const {bookingDetails}=require('./booking-ledger.cjs');const t=bookingDetails({pnr:'1234567890',timing:{startedAt:1793000000000,confirmedAt:1793000060000,qrAt:'bad',clockOffsetMs:150,highLoadRetries:2,browser:'edge',password:'secret',cookies:'secret'}}).timing;
+ assert.equal(t.startedAt,1793000000000);assert.equal(t.confirmedAt,1793000060000);assert.equal(t.qrAt,undefined);assert.equal(t.password,undefined);assert.equal(t.cookies,undefined);assert.equal(t.highLoadRetries,2);
+});

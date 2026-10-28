@@ -42,6 +42,25 @@ test('activity stream redacts credentials, timestamps stages, emits one-second w
     assert.equal(handlers.get('matrix:logs:clear')(event).ok,true);
   }finally{service.dispose();fs.rmSync(root,{recursive:true,force:true});}
 });
+
+test('exported activity preserves API and payment timings without bodies, URLs or row-ID collisions',()=>{
+ const root=fs.mkdtempSync(path.join(os.tmpdir(),'matrix-log-timing-'));fs.mkdirSync(path.join(root,'diagnostics'));
+ const handlers=new Map(),service=install({BrowserWindow:{getAllWindows:()=>[]},ipcMain:{handle:(name,fn)=>handlers.set(name,fn)}},root);
+ const event={sender:{getURL:()=>require('node:url').pathToFileURL(path.join(root,'src/renderer/logs.html')).href}};
+ try{
+  service.record('matrix-booking-api-response',{formId:'pair-a',endpoint:'allLapAvlFareEnq/Y?token=PRIVATE',method:'POST',status:510,category:'highload',durationMs:620,attempt:3,reason:'provider-highload',body:{password:'PRIVATE'},headers:{cookie:'PRIVATE'},url:'https://PRIVATE'});
+  service.record('matrix-payment-response',{id:99,endpoint:'bookingInitPayment',status:200,responseMs:8031});
+  service.record('matrix-payment-step-end',{requestId:100,step:'gateway-dispatch',durationMs:30952,failed:false});
+  service.record('matrix-payment-response',{endpoint:'PRIVATE',status:'PRIVATE',responseMs:-1,reason:'PRIVATE',step:'PRIVATE',requestId:'PRIVATE'});
+  const rows=handlers.get('matrix:logs:snapshot')(event);
+  assert.equal(rows[0].runId,'pair-a');assert.equal(rows[0].endpoint,'allLapAvlFareEnq/Y');assert.equal(rows[0].durationMs,620);assert.equal(rows[0].attempt,3);assert.equal(rows[0].reason,'provider-highload');
+  assert.match(rows[0].message,/HTTP 510.*attempt 3.*620 ms/);
+  assert.equal(rows[1].id,2);assert.equal(rows[1].requestId,99);assert.equal(rows[1].responseMs,8031);
+  assert.equal(rows[2].step,'gateway-dispatch');assert.equal(rows[2].durationMs,30952);assert.equal(rows[2].failed,false);
+  assert.equal(rows[3].endpoint,'other');assert.equal(Object.hasOwn(rows[3],'responseMs'),false);
+  assert.equal(JSON.stringify(rows).includes('PRIVATE'),false);
+ }finally{service.dispose();fs.rmSync(root,{recursive:true,force:true});}
+});
 test('recovered stage signature separates pair ID from level and stops waiting after browser failure',async()=>{
   const root=fs.mkdtempSync(path.join(os.tmpdir(),'matrix-log-test-'));fs.mkdirSync(path.join(root,'diagnostics'));
   const handlers=new Map(),electron={BrowserWindow:{getAllWindows:()=>[]},ipcMain:{handle:(key,fn)=>handlers.set(key,fn)}};

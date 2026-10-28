@@ -7,6 +7,14 @@ function bookingDetails(input={}){
  for(const [key,max]of Object.entries({irctcUsername:64,trainNumber:12,origin:30,destination:30,journeyDate:30,travelClass:12,quota:16,formId:80})){
   const value=clean(input[key],max);if(value)result[key]=value;
  }
+ if(input.timing&&typeof input.timing==='object'){
+  const timing={};
+  for(const key of ['startedAt','submittedAt','paymentReadyAt','qrAt','confirmedAt','targetAt']){const v=input.timing[key];if(Number.isSafeInteger(v)&&v>=1577836800000&&v<=4102444800000)timing[key]=v;}
+  const offset=input.timing.clockOffsetMs;if(Number.isFinite(offset)&&Math.abs(offset)<3600000)timing.clockOffsetMs=offset;
+  const retries=input.timing.highLoadRetries;if(Number.isSafeInteger(retries)&&retries>=0&&retries<=100000)timing.highLoadRetries=retries;
+  for(const key of ['browser','loginMode']){const v=clean(input.timing[key],40);if(v)timing[key]=v;}
+  if(Object.keys(timing).length)result.timing=timing;
+ }
  return result;
 }
 function accessType(k){return k.paid===false?'unpaid':['paid','free'].includes(k.accessType)?k.accessType:k.paidAt?'paid':'not-recorded';}

@@ -90,6 +90,9 @@ const developmentPolicy = isDevelopment ? require('./runtime/development-policy.
 const matrixUpdates=require('./runtime/updates.cjs').install(appElectron,projectRoot,{managedRelease,finish:code=>developmentPolicy?developmentPolicy.finishSmoke(code):electron.app.exit(code)});
 const appRequire = new Proxy(vendorRequire,{apply(target,that,args){return args[0]==='electron'?appElectron:Reflect.apply(target,that,args);}});
 
+// Install booking IPC handlers (Live Form Update, Manual Handover)
+require('./runtime/booking-ipc.cjs').install(appElectron, projectRoot, { functionFactories: {} });
+
 function bootRecovered(){try {
   // The compiled bundle (src/main/compiled) is the default runtime and never loads the archived instruction definitions.
   // --interpreter-runtime selects the archived instruction interpreter (src/main/generated + runtime/engine.cjs) as a
@@ -103,7 +106,11 @@ function bootRecovered(){try {
   const legacyServices=require('./runtime/legacy-services.cjs').hooks(log);
   const functionOverrides = {...(isDevelopment ? require('./runtime/development.cjs').developmentOverrides(log) : {}),...legacyServices.overrides};
   const functionFactories=require('./runtime/reconstructed-payment.cjs').reconstructedPayment({development:isDevelopment,managedRelease,enabled:process.argv.includes('--reconstructed-payment')});
-  Object.assign(functionFactories,require('./runtime/web-booking-upgrades.cjs').webBookingUpgrades({dependencies:{onResponse:require('./runtime/api-diagnostics.cjs').create(projectRoot)}}));
+  const recordApi=require('./runtime/api-diagnostics.cjs').create(projectRoot,{onRecord:(summary,actor)=>{
+    const formId=require('./runtime/booking-report.cjs').bookingFor(actor).formId;
+    log('matrix-booking-api-response',{...summary,...(formId?{formId}:{})});
+  }});
+  Object.assign(functionFactories,require('./runtime/web-booking-upgrades.cjs').webBookingUpgrades({dependencies:{onResponse:recordApi}}));
   if(Object.keys(functionFactories).length)log('matrix-reconstructed-payment',{functions:Object.keys(functionFactories)});
   log('development-mode', {enabled:isDevelopment, overrides:Object.keys(functionOverrides)});
   const privateOptions=process.argv.includes('--private-access-probe')||process.argv.includes('--private-flow-probe')?{onCreated:session=>require(path.join(projectRoot,'test/private-access-probe.cjs')).run(session,projectRoot,code=>developmentPolicy.finishSmoke(code))}:{};
@@ -113,6 +120,8 @@ function bootRecovered(){try {
   Object.assign(functionInterceptors,require('./runtime/csrf-timing.cjs').csrfTiming(log));
   Object.assign(functionInterceptors,specialTrainSelection.interceptors);
   Object.assign(functionInterceptors,require('./runtime/trial-access.cjs').hooks());
+  // Add booking-actors interceptors for actor registry
+  Object.assign(functionInterceptors,require('./runtime/booking-actors.cjs').createInterceptors());
   for(const [id,hook]of Object.entries(require('./runtime/booking-report.cjs').hooks())){
     const previous=functionInterceptors[id];
     functionInterceptors[id]=(original,args,actor)=>hook((...next)=>previous?previous(original,next,actor):original(...next),args,actor);

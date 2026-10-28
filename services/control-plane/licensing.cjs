@@ -65,7 +65,8 @@ function createLicensing({ directory = path.join(__dirname, 'license-data'), adm
     item.keyHash=hash(newKey);item.keyCiphertext=sealKey(newKey);item.hint=newKey.slice(-3);item.keyVersion=(item.keyVersion||0)+1;item.personalizedAt=new Date().toISOString();persist();
     return {...activate(newKey,session.device),key:newKey};
   }
-  function check(value, device, bind = false) {
+  function check(value, device, bind = false, identity) {
+    if(registry.blockedDevices?.some(d=>d.device===device))throw Error('This device has been blocked by the administrator');
     const keyHash = hash(String(value || '').trim()); const item = registry.keys.find(x => safeEqual(x.keyHash, keyHash));
     if (!item) throw Error('Activation key not found');
     if (!hierarchy.activeOwner(item)) throw Error('Your seller account is disabled');
@@ -74,6 +75,8 @@ function createLicensing({ directory = path.join(__dirname, 'license-data'), adm
     if (item.pending) throw Error('Your key is waiting for administrator approval');
     if (Date.parse(item.expiresAt) <= Date.now()) throw Error('This key has expired');
     if (!device || String(device).length > 128) throw Error('Device identifier is required');
+    if(!/^[a-zA-Z0-9_-]{1,128}$/.test(device))throw Error('Invalid device identifier');
+    try{require('./device-security.cjs').guard(registry,device,identity);}catch(error){persist();throw error;}
     if (!item.devices.includes(device)) {
       if (!bind) throw Error('Device is not activated');
       if (item.devices.length >= item.maxDevices) throw Error('Device limit reached');
@@ -82,8 +85,8 @@ function createLicensing({ directory = path.join(__dirname, 'license-data'), adm
     if(!item.keyCiphertext){item.keyCiphertext=sealKey(String(value||'').trim());persist();}
     return item;
   }
-  function activate(value, device) {
-    const item = check(value, device, true);
+  function activate(value, device, identity) {
+    const item = check(value, device, true,identity);
     const payload = Buffer.from(JSON.stringify({ id: item.id, device, expiresAt: item.expiresAt,version:item.keyVersion||0 })).toString('base64url');
     const signature = crypto.createHmac('sha256', registry.signingKey).update(payload).digest('base64url');
     return { token: payload + '.' + signature, license: publicKey(item) };
@@ -93,6 +96,7 @@ function createLicensing({ directory = path.join(__dirname, 'license-data'), adm
       const [payload, signature, extra] = String(token || '').split('.'); if (!payload || !signature || extra) return null;
       if (!safeEqual(signature, crypto.createHmac('sha256', registry.signingKey).update(payload).digest('base64url'))) return null;
       const data = JSON.parse(Buffer.from(payload, 'base64url').toString()); const item = registry.keys.find(x => x.id === data.id);
+      if(registry.blockedDevices?.some(d=>d.device===data.device))return null;
       if (!item || item.paid===false || !hierarchy.activeOwner(item) || item.revoked || item.pending || Date.parse(item.expiresAt) <= Date.now() || !item.devices.includes(data.device)) return null;
       if((item.keyVersion||0)!==(data.version||0))return null;
       return publicKey(item);
@@ -109,6 +113,7 @@ function createLicensing({ directory = path.join(__dirname, 'license-data'), adm
       if (url.pathname.startsWith('/api/admin/') && url.pathname !== '/api/admin/login' && !authenticated(auth)) { json(401, { error: 'Administrator login required' }); return true; }
       if (req.method === 'GET' && url.pathname === '/api/admin/keys') { json(200, { keys: registry.keys.map(item=>publicKey(item,{revealKey:true})) }); return true; }
       if (req.method === 'GET' && url.pathname === '/api/admin/session') { json(200, { authenticated: true }); return true; }
+      if(req.method==='GET'&&url.pathname==='/api/admin/devices'){json(200,{devices:[...new Set(registry.keys.flatMap(k=>k.devices))].map(device=>({device,identity:registry.deviceIdentities?.[device]||null,securityEvents:(registry.deviceSecurityEvents||[]).filter(e=>e.device===device).slice(-10),blocked:registry.blockedDevices?.some(d=>d.device===device)||false,clients:registry.keys.filter(k=>k.devices.includes(device)).map(k=>k.customer)}))});return true;}
       if (req.method === 'GET' && url.pathname === '/api/admin/network') { json(200,require('./booking-ledger.cjs').snapshot(registry,trialSummary()));return true; }
       if (req.method === 'GET' && ['/api/admin/notice','/api/license/notice'].includes(url.pathname)) { json(200, {notice:registry.desktopNotice||require('./app/notice-payload').defaults}); return true; }
       if (req.method === 'GET' && url.pathname === '/api/license/state') { const license = sessionLicense(cookies(req).matrix_license); json(200, { activated: !!license, license, details:license?hierarchy.clientSummary(license.id):null }); return true; }
@@ -122,21 +127,27 @@ function createLicensing({ directory = path.join(__dirname, 'license-data'), adm
         case '/api/admin/issue': json(200, issue({customer:body.customer,days:body.days,maxDevices:body.maxDevices,preferredKey:body.preferredKey,accessType:body.accessType||'paid'})); break;
         case '/api/license/booking-success':json(200,bookingLedger.record(body.bookingToken,body.booking));break;
         case '/api/admin/revoke': json(200, revoke(body.id)); break;
+        case '/api/admin/device-block': {
+          if(typeof body.device!=='string'||!registry.keys.some(k=>k.devices.includes(body.device))||typeof body.blocked!=='boolean')throw Error('Select a registered device and Block or Unblock');
+          registry.blockedDevices??=[];registry.blockedDevices=registry.blockedDevices.filter(d=>d.device!==body.device);
+          if(body.blocked)registry.blockedDevices.push({device:body.device,identity:registry.deviceIdentities?.[body.device]||null,at:new Date().toISOString()});
+          persist();json(200,{ok:true,blocked:body.blocked});break;
+        }
         case '/api/license/renew-request': json(200,hierarchy.requestRenewal(cookies(req).matrix_license));break;
         case '/api/license/request': json(403,{error:'An administrator must issue your first key. Activate it, then personalize your key.'}); break;
         case '/api/license/change': {const result=limitedLicenseCheck(req.socket.remoteAddress,()=>changeKey(body,cookies(req).matrix_license));res.setHeader('Set-Cookie',`matrix_license=${result.token}; HttpOnly; SameSite=Strict; Path=/; Max-Age=31536000`);json(200,{ok:true,key:result.key,license:result.license});break;}
         case '/api/license/activate': {
           const required=require('./desktop-version-policy.cjs').desktopUpdateRequirement(req,body,typeof desktopPolicy==='function'?desktopPolicy():desktopPolicy);if(required){json(426,required);break;}
-          const result=limitedLicenseCheck(req.socket.remoteAddress,()=>activate(body.key,String(body.device||'')));
+          const result=limitedLicenseCheck(req.socket.remoteAddress,()=>activate(body.key,String(body.device||''),body.identity));
           const item=registry.keys.find(k=>k.id===result.license.id);recordAccess(item,String(body.device||''),clientAddress(req));persist();
           res.setHeader('Set-Cookie', `matrix_license=${result.token}; HttpOnly; SameSite=Strict; Path=/; Max-Age=31536000`); json(200, { ok: true, license: result.license,bookingToken:bookingLedger.token(result.license.id,String(body.device||'')) }); break;
         }
-        case '/api/license/verify': { const required=require('./desktop-version-policy.cjs').desktopUpdateRequirement(req,body,typeof desktopPolicy==='function'?desktopPolicy():desktopPolicy);if(required){json(426,required);break;}const item = limitedLicenseCheck(req.socket.remoteAddress,()=>check(body.key, String(body.device || ''), false)); recordAccess(item,String(body.device||''),clientAddress(req));persist(); json(200, { ok: true, license: publicKey(item),bookingToken:bookingLedger.token(item.id,String(body.device||'')) }); break; }
+        case '/api/license/verify': { const required=require('./desktop-version-policy.cjs').desktopUpdateRequirement(req,body,typeof desktopPolicy==='function'?desktopPolicy():desktopPolicy);if(required){json(426,required);break;}const item = limitedLicenseCheck(req.socket.remoteAddress,()=>check(body.key, String(body.device || ''), false,body.identity)); recordAccess(item,String(body.device||''),clientAddress(req));persist(); json(200, { ok: true, license: publicKey(item),bookingToken:bookingLedger.token(item.id,String(body.device||'')) }); break; }
         default: json(404, { error: 'Unknown endpoint' });
       }
     } catch (error) { json(400, { error: error.message }); }
     return true;
   }
-  return { handle, login, authenticated, issue, changeKey, revoke, activate, sessionLicense, pollPayments:hierarchy.pollPayments, list: () => registry.keys.map(publicKey), requestLicense:req=>sessionLicense(cookies(req).matrix_license), licensedRequest: req => !!sessionLicense(cookies(req).matrix_license) };
+  return { blockedIdentity:identity=>registry.blockedDevices?.some(d=>require('./device-security.cjs').matches(d.identity,identity))||false, handle, login, authenticated, issue, changeKey, revoke, activate, sessionLicense, pollPayments:hierarchy.pollPayments, list: () => registry.keys.map(publicKey), requestLicense:req=>sessionLicense(cookies(req).matrix_license), licensedRequest: req => !!sessionLicense(cookies(req).matrix_license) };
 }
 module.exports = { createLicensing };

@@ -2,13 +2,14 @@
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const {clientAddress,recordAccess}=require('./client-address.cjs');
 const DAYS_MS=2*86400000,PNR_LIMIT=3;
-function createTrials({directory,now=Date.now,adminAuthenticated=()=>false}={}){
+function createTrials({directory,now=Date.now,adminAuthenticated=()=>false,blockedIdentity=()=>false}={}){
  const file=path.join(directory,'trials.json');fs.mkdirSync(directory,{recursive:true});
  let db=fs.existsSync(file)?JSON.parse(fs.readFileSync(file,'utf8')):{secret:crypto.randomBytes(32).toString('hex'),trials:[]};
  const persist=()=>{fs.writeFileSync(file+'.tmp',JSON.stringify(db),{mode:0o600});fs.renameSync(file+'.tmp',file);};
  const hash=value=>crypto.createHmac('sha256',db.secret).update(value).digest('hex');
  const equal=(a,b)=>{const x=Buffer.from(String(a)),y=Buffer.from(String(b));return x.length===y.length&&crypto.timingSafeEqual(x,y);};
  function identity(input){
+  if(blockedIdentity(input))throw Error('This device has been blocked by the administrator');
   if(!input||input.schema!==1||input.virtual===true)throw Error('Automatic trial is unavailable on virtual machines; contact your seller for a key.');
   const parts={};for(const name of ['hardware','board','os'])if(/^[a-f0-9]{64}$/.test(input[name]||''))parts[name]=input[name];
   if(!parts.hardware)throw Error('Stable hardware identity unavailable; contact your seller for a key.');

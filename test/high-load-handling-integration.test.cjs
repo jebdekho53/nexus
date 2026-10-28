@@ -279,8 +279,10 @@ test('pollAvailability: shifted probe 200 high load retries within fallback dead
 
 test('runtime adapters: compiled and instruction web booking upgrades execute safeCall with upgraded high-load handling', async () => {
   for (const compiled of [false, true]) {
+    const observed=[];
     const upgrades = webBookingUpgrades({
       dependencies: {
+        onResponse:(row,actor)=>observed.push({row,actor}),
         timers: { sleep: async () => {} },
         random: () => 0
       }
@@ -339,5 +341,8 @@ test('runtime adapters: compiled and instruction web booking upgrades execute sa
     const result = await fn.call(actor, 'api', 'POST', '/test-enq', null, { optVar: true, max510: 10 });
     assert.equal(result?.status, 200);
     assert.equal(calls, 2);
+    assert.equal(observed.length,2);assert.equal(observed[0].actor,actor);
+    assert.equal(observed[0].row.reason,'provider-highload');assert.equal(observed[1].row.attempt,2);
+    assert.ok(Number.isFinite(observed[0].row.durationMs));
   }
 });

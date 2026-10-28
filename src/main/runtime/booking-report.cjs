@@ -1,15 +1,25 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path');
-const jobs=new WeakMap();let current;
+const jobs=new WeakMap(),timings=new WeakMap();let current;
 const text=(v,max=80)=>typeof v==='string'?v.trim().slice(0,max):'';
 function bookingFor(actor,booking={}){
  const job=actor&&jobs.get(actor)||{},result={pnr:String(booking.pnr||'').trim()};
  for(const [key,max]of Object.entries({irctcUsername:64,trainNumber:12,origin:30,destination:30,journeyDate:30,travelClass:12,quota:16,formId:80})){
   const value=text(booking[key],max)||text(job[key],max);if(value)result[key]=value;
  }
+ const timing=actor&&timings.get(actor);if(timing)result.timing={...timing,confirmedAt:Date.now()};
  return result;
 }
-function remember(actor,job){if(actor&&typeof actor==='object'&&job&&typeof job==='object')jobs.set(actor,{irctcUsername:text(job.username||job.irctcUsername,64),trainNumber:text(job.trainNumber||job.trainNo,12),origin:text(job.origin,30),destination:text(job.destination,30),journeyDate:text(job.journeyDate||job.date,30),travelClass:text(job.travelClass||job.class,12),quota:text(job.quota,16),formId:text(job.formId||job.id,80)});}
+function remember(actor,job){if(actor&&typeof actor==='object'&&job&&typeof job==='object'){
+ jobs.set(actor,{irctcUsername:text(job.username||job.irctcUsername,64),trainNumber:text(job.trainNumber||job.trainNo,12),origin:text(job.origin,30),destination:text(job.destination,30),journeyDate:text(job.journeyDate||job.date,30),travelClass:text(job.travelClass||job.classCode||job.class,12),quota:text(job.quota,16),formId:text(job.formId||job.id,80)});
+ if(!timings.has(actor)){
+  const timing={startedAt:Date.now(),highLoadRetries:0,browser:text(actor.session?.provider,40),loginMode:actor.opts?.directLogin?'direct':actor.opts?.manualLogin?'manual':'auto'};timings.set(actor,timing);
+  try{const target=actor.resolveTarget?.(job);if(Number.isFinite(target?.ms))timing.targetAt=target.ms;}catch{}
+  const offset=actor.session?.tokens?.serverTimeOffsetMs;if(Number.isFinite(offset))timing.clockOffsetMs=offset;
+  const progress=actor.onProgress;
+  if(typeof progress==='function')actor.onProgress=function(stage,...args){const key={'booking:submit':'submittedAt','booking:pay-ready':'paymentReadyAt','booking:qr':'qrAt'}[stage];if(key&&!timing[key])timing[key]=Date.now();if(stage==='booking:highload')timing.highLoadRetries++;return progress.call(this,stage,...args);};
+ }
+}}
 function licenseId(token){try{return JSON.parse(Buffer.from(token.split('.')[0],'base64url').toString()).licenseId;}catch{return null;}}
 function create(electron,{fetcher=globalThis.fetch,log=()=>{}}={}){
  const file=path.join(electron.app.getPath('userData'),'booking-report-queue.bin');let pending=[],session=null,flushing;

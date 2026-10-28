@@ -36,3 +36,10 @@ test('admin-issued first key can be personalized without extending validity or d
  assert.throws(()=>service.activate('member1','device-C'),/limit/);assert(service.activate('member1','device-B').token);
  assert.equal(service.list().length,1);
 });
+
+test('blocked device is denied across keys and signed sessions, unblock restores access',()=>{
+ const dir=directory(),service=createLicensing({directory:dir,adminPassword:'test-only-password'}),first=service.issue({customer:'A',days:2,maxDevices:2}),second=service.issue({customer:'B',days:2,maxDevices:2}),active=service.activate(first.key,'device-A');
+ const file=require('node:path').join(dir,'registry.json'),db=JSON.parse(fs.readFileSync(file));db.blockedDevices=[{device:'device-A',at:new Date().toISOString()}];fs.writeFileSync(file,JSON.stringify(db));
+ const blocked=createLicensing({directory:dir,adminPassword:'test-only-password'});assert.throws(()=>blocked.activate(first.key,'device-A'),/blocked/);assert.throws(()=>blocked.activate(second.key,'device-A'),/blocked/);assert.equal(blocked.sessionLicense(active.token),null);assert.ok(blocked.activate(first.key,'device-B'));
+ const updated=JSON.parse(fs.readFileSync(file));updated.blockedDevices=[];fs.writeFileSync(file,JSON.stringify(updated));assert.ok(createLicensing({directory:dir,adminPassword:'test-only-password'}).activate(first.key,'device-A'));
+});

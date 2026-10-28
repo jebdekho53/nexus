@@ -19,6 +19,12 @@ function nearOpening(actor,job) {
 function warmupTiming(log=()=>{}) {
   return {
     async f2136(original,args,actor) {
+      if(args[0]?.quota==='GN'){
+        // Ordinary General books the requested date now. The dummy warm-up
+        // searches another date and parks the run for a future login slot.
+        try{log('matrix-general-warmup-skip',{page:'General Book now: retain requested journey date; skip dummy booking and login-resume wait'});}catch{}
+        return undefined;
+      }
       const delta=nearOpening(actor,args[0]);
       if(delta===null)return original(...args);
       const message='warm-up SKIPPED — slot is '+Math.abs(Math.round(delta/1000))+'s '+(delta<0?'past':'away')+' → direct booking';

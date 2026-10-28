@@ -79,8 +79,10 @@ async function requireActivation(electron,root,options={}){
   }catch{}
  };
 
+ let hardwareIdentity;
  async function verify(value,activate){
-  const response=await fetch(base+'/api/license/'+(activate?'activate':'verify'),{method:'POST',headers:{'Content-Type':'application/json','x-matrix-client':'desktop'},body:JSON.stringify({key:value,device,clientVersion:require('../../../package.json').version}),signal:AbortSignal.timeout(10000)});
+  hardwareIdentity??=require('./trial-device.cjs').collect();
+  const response=await fetch(base+'/api/license/'+(activate?'activate':'verify'),{method:'POST',headers:{'Content-Type':'application/json','x-matrix-client':'desktop'},body:JSON.stringify({key:value,device,clientVersion:require('../../../package.json').version,identity:hardwareIdentity}),signal:AbortSignal.timeout(10000)});
   const data=await response.json();if(!response.ok)throw Error(data.error||'Activation rejected');bookingReporter.setSession(data.bookingToken);return data.license;
  }
  if(key){

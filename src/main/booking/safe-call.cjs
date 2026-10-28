@@ -4,6 +4,19 @@
 // Core HTTP transport for browser booking with path variants, server timing / Akamai score parsing,
 // bounded network retries, 403 edge/IP-block backoff, 510/511 highload retry loops,
 // CSRF re-seeding, and duplicate-login / terminal error dispatch.
+const {errorText}=require('./time-helpers.cjs');
+
+function responseReason(status,body,category) {
+  const message=errorText(body);
+  if(status===401||/invalid_token|invalid access token/i.test(message))return 'session-expired';
+  if(status===403)return 'access-denied';
+  if(category==='csrf')return /multiple\s*device|duplicate\s*(?:login|session)/i.test(message)?'session-conflict':'csrf-mismatch';
+  if(status===429)return 'rate-limit';
+  if(status===510||status===511)return 'provider-highload';
+  if(category==='highload'||category==='retry')return 'provider-busy';
+  if(category==='terminal')return 'provider-rejected';
+  return category==='ok'?'ok':'other';
+}
 
 function cleanPath(url) {
   if (typeof url !== 'string') return url;
@@ -29,6 +42,7 @@ async function safeCall(actor, target, method, url, body, callOptions, deps = {}
   const options = callOptions || {};
   const random = deps.random || Math.random;
   const sleep = deps.sleep || (ms => new Promise(resolve => setTimeout(resolve, ms)));
+  const clock = deps.clock || (() => performance.now());
 
   const cleanUrl = cleanPath(url);
   const retries = options.retries ?? 0;
@@ -44,6 +58,7 @@ async function safeCall(actor, target, method, url, body, callOptions, deps = {}
   let networkRetries = 0;  // r12: network failure counter
   let count403 = 0;        // r13: 403 counter
   let csrfRetries = 0;     // r14: csrf mismatch retry counter (TS 1.0.78 part-05.js:10169)
+  let attempt = 0;
 
   while (true) {
     if (actor.stopped) return null;
@@ -54,10 +69,12 @@ async function safeCall(actor, target, method, url, body, callOptions, deps = {}
       : pathForCall.replace(/^https?:\/\/[^/]+/i, '');
 
     let res;
+    const started=clock();
+    attempt++;
     try {
       res = await actor.api.call(method, pathForCall, body, undefined, options.referrer);
     } catch (err) {
-      try{deps.onResponse?.({method,path:url,category:'network'});}catch{}
+      try{deps.onResponse?.({method,path:url,category:'network',reason:'network',attempt,durationMs:Math.round(Math.max(0,clock()-started))},actor);}catch{}
       if (actor.stopped) return null;
       if (actor.session?.page?.isClosed?.()) {
         actor.terminal = deps.terminalClosed;
@@ -71,7 +88,7 @@ async function safeCall(actor, target, method, url, body, callOptions, deps = {}
       }
       const delay = 2000 + Math.floor(random() * 2000);
       actor.log(target, `${method} ${pathSuffix} network error — retry ${networkRetries}/${maxRetry} after ${Math.round(delay)}ms: ${err.message}`, 'warn');
-      actor.onProgress?.('booking:highload', deps.highloadText);
+      actor.onProgress?.('booking:retry', `Network request failed — retry ${networkRetries}/${maxRetry} in ${(delay/1000).toFixed(1)}s`);
       await sleep(delay);
       if (networkRetries === 1 && typeof actor.refreshCsrfFromSpa === 'function') {
         await actor.refreshCsrfFromSpa('after a lost response').catch(() => {});
@@ -89,7 +106,8 @@ async function safeCall(actor, target, method, url, body, callOptions, deps = {}
           bookingNotAllowedTerminal: Boolean(actor.bookingNotAllowedTerminal?.()),
         })
       : (res.ok ? 'ok' : 'other');
-    try{deps.onResponse?.({method,path:url,status:res.status,category:statusCat});}catch{}
+    const reason=responseReason(res.status,res.body,statusCat);
+    try{deps.onResponse?.({method,path:url,status:res.status,category:statusCat,reason,attempt,durationMs:Math.round(Math.max(0,clock()-started))},actor);}catch{}
 
     if (res.status === 510 || (actor.opts?.masterCache && (statusCat === 'highload' || statusCat === 'retry'))) {
       const shape = options.optShape ?? 'trail';
@@ -130,6 +148,7 @@ async function safeCall(actor, target, method, url, body, callOptions, deps = {}
         }
       }
       if (res.status !== 403) {
+        if(reason==='session-expired')actor.onProgress?.('booking:error','Session expired or access token invalid — log in again before retrying');
         actor.terminal = deps.describeFailure ? deps.describeFailure(res.status, res.body) : String(res.status);
         return null;
       }
@@ -137,7 +156,7 @@ async function safeCall(actor, target, method, url, body, callOptions, deps = {}
       if (count403 <= 3) {
         const delay = 2000 + Math.floor(random() * 2000);
         actor.log(target, `${method} ${pathSuffix} 403 (edge/IP block) — retry ${count403}/3 after ${Math.round(delay)}ms`, 'warn');
-        actor.onProgress?.('booking:highload', deps.highloadText);
+        actor.onProgress?.('booking:retry', `Provider denied access (HTTP 403) — retry ${count403}/3`);
         await sleep(delay);
         continue;
       } else {
@@ -153,7 +172,9 @@ async function safeCall(actor, target, method, url, body, callOptions, deps = {}
         if (!actor.stopped) {
           csrfRetries++;
           actor.log(target, `${method} ${pathSuffix} csrf MISMATCH — refreshing the token and retrying (${csrfRetries}/${maxCsrfRetries})`, 'warn');
-          actor.onProgress?.('booking:highload', deps.highloadText);
+          actor.onProgress?.('booking:retry', reason==='session-conflict'
+            ? `Provider reported a session conflict — revalidating (${csrfRetries}/${maxCsrfRetries})`
+            : `CSRF mismatch — refreshing the session token (${csrfRetries}/${maxCsrfRetries})`);
           if (typeof actor.refreshCsrfFromSpa === 'function') {
             await actor.refreshCsrfFromSpa(`csrf mismatch ${csrfRetries}/${maxCsrfRetries}`).catch(() => {});
           }
@@ -161,9 +182,11 @@ async function safeCall(actor, target, method, url, body, callOptions, deps = {}
         }
       }
       if (csrfRetries > 0) {
-        actor.log(target, `${method} ${pathSuffix} csrf MISMATCH persisted after ${csrfRetries} refresh(es) — a second live session`, 'error');
+        actor.log(target, `${method} ${pathSuffix} csrf MISMATCH persisted after ${csrfRetries} refresh(es) — session token recovery failed`, 'error');
       }
-      actor.terminal = deps.duplicateLoginMessage;
+      actor.terminal = csrfRetries>0&&reason!=='session-conflict'
+        ? 'CSRF mismatch persisted after token refresh — log in again before retrying'
+        : deps.duplicateLoginMessage;
       return null;
     }
 

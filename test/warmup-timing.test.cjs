@@ -46,3 +46,12 @@ for(const runtime of ['instruction','compiled'])test(runtime+' runtime passes re
   assert.equal(await warm.call(early,job),'warmed');assert.equal(originalCalls.length,1);
   assert.equal(originalCalls[0][0],early);assert.equal(originalCalls[0][1][0],job);
 });
+
+test('General Book now skips alternate-date dummy flow even far from a slot',async()=>{
+ const job=Object.freeze({quota:'GN',journeyDate:'2026-10-30'}),value=actor(40*60000);let dummyCalls=0;
+ await warmupTiming().f2136(async()=>{dummyCalls++;},[job],value);
+ assert.equal(dummyCalls,0);assert.equal(job.journeyDate,'2026-10-30');
+ const scheduled={...job,quota:'8AM'};
+ await warmupTiming().f2136(async()=>{dummyCalls++;},[scheduled],value);
+ assert.equal(dummyCalls,1);
+});

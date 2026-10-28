@@ -133,7 +133,12 @@ async function runOracle(overridesFactory, target = 'api', method = 'POST', url 
   const resNat = await safeCall(actorNat, target, method, url, body, opts, deps);
 
   assert.deepEqual(plain(resNat), plain(resRec), 'results must match');
-  assert.deepEqual(traceNat, traceRec, 'traces must match');
+  // Intentional display correction: HTTP 403 is access denied, not High Load.
+  let forbiddenRetries=0;
+  const expected=traceRec.map(row=>getOverridesRec.status===403&&row[0]==='onProgress'
+    ? ['onProgress','booking:retry',`Provider denied access (HTTP 403) — retry ${++forbiddenRetries}/3`]
+    : row);
+  assert.deepEqual(traceNat, expected, 'request/retry traces must match, with accurate 403 progress');
   assert.equal(actorNat.terminal, actorRec.terminal, 'terminal error state must match');
   assert.equal(actorNat.proxyClientIpFired, actorRec.proxyClientIpFired, 'proxyClientIpFired must match');
 }

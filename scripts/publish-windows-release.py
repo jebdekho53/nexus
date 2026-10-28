@@ -5,7 +5,7 @@ root=Path(__file__).resolve().parent.parent
 version=json.loads((root/'package.json').read_text())['version'];build=root.parent/'matrix-build'
 manifest={'version':version,'name':'Matrix','setup':None,'distribution':'windows','notes':'Windows installer and updater with server-managed trials, admin booking attribution, and desktop startup fixes.'}
 kinds=[('offlineSetup','Setup')] if '--setup-only' in sys.argv else [('offlineSetup','Setup'),('updaterExe','Updater')]
-manifest['notes']='Windows production release with safe cleanup of hash-matched obsolete installation files.'
+manifest['notes']='General GN Book now skips alternate-date dummy warm-up and its login-resume delay. Scheduled 8AM and Tatkal retain their existing timing.'
 for kind,label in kinds:
  p=build/f'Matrix-{label}-{version}.exe'
  with zipfile.ZipFile(p) as z:

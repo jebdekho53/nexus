@@ -8,3 +8,8 @@ test('trial identity is stable across users/RDP profiles; sends hashes only',()=
  assert.equal(fromHardware({...h,manufacturer:'VMware',model:'Virtual Machine'}).virtual,true);
  assert.throws(()=>fromHardware({...h,uuid:'unknown'}));
 });
+
+test('disk and CPU signals are hashes and missing optional identifiers remain compatible',()=>{
+ const input={uuid:'50123456-1234-5678-abcd-0123456789ab',disk:'DISK-PRIVATE-12345',cpu:'CPU-PRIVATE-12345'};
+ const result=fromHardware(input);assert.match(result.disk,/^[a-f0-9]{64}$/);assert.match(result.cpu,/^[a-f0-9]{64}$/);assert(!JSON.stringify(result).includes(input.disk));assert(!JSON.stringify(result).includes(input.cpu));assert.equal(fromHardware({...input,disk:'unknown'}).disk,undefined);
+});

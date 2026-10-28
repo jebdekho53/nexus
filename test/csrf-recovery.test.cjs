@@ -170,7 +170,8 @@ test('safeCall CSRF recovery: terminates after max CSRF retries exceeded', async
   const res = await safeCall(actor, 'api', 'POST', 'https://irctc.co.in/test', {}, {}, deps);
   assert.equal(res, null);
   assert.equal(callCount, 4); // 1 initial + 3 retries
-  assert.equal(actor.terminal, 'duplicate session terminal');
+  assert.match(actor.terminal, /CSRF mismatch persisted.*log in again/);
+  assert.equal(trace.some(t=>t[0]==='progress'&&t[1]==='booking:highload'),false);
   assert.ok(trace.some(t => t[0] === 'log' && t[2].includes('csrf MISMATCH persisted after 3 refresh(es)')));
 });
 
@@ -226,7 +227,7 @@ test('runBrowserBooking: respects pre-slot refreshed status and skips redundant 
     relaunchIfLoggedOut: async () => false,
     ensureAuthToken: async () => true,
     refreshCsrfFromSpa: async (reason) => { trace.push(['refreshCsrf', reason]); },
-    preTargetProbe: async () => 'early',
+    preTargetProbe: async () => { assert.equal(actor.csrfPreSlotArmed,true,'refresh must be armed before the probe starts waiting');return 'early'; },
     setTokenOwnership: () => {},
     ensureServerTimeSynced: async () => {},
     ensureCsrfEstablished: async () => {},

@@ -3,6 +3,33 @@ const fs=require('node:fs'),path=require('node:path');
 const {pathToFileURL}=require('node:url');
 const payments=require('../../renderer/matrix-payments.js');
 const {isBookingRecord:bookingRecord,isBookingStage}=require('../../renderer/matrix-log-policy.js');
+const {endpointName,reasons}=require('./api-diagnostics.cjs');
+function timingDetails(details){
+  const safe={};
+  if(details.endpoint!=null)safe.endpoint=endpointName(details.endpoint);
+  if(['GET','POST','PUT','DELETE','other'].includes(details.method))safe.method=details.method;
+  if(Number.isInteger(details.status)&&details.status>=100&&details.status<=599)safe.status=details.status;
+  for(const key of ['durationMs','responseMs'])if(Number.isFinite(details[key])&&details[key]>=0)safe[key]=Math.round(details[key]);
+  if(Number.isSafeInteger(details.attempt)&&details.attempt>0)safe.attempt=details.attempt;
+  const requestId=details.requestId??details.id;
+  if(Number.isSafeInteger(requestId)&&requestId>0)safe.requestId=requestId;
+  if(['payment-init','gateway-dispatch','provider-qr'].includes(details.step))safe.step=details.step;
+  if(['ok','other','retry','highload','terminal','csrf','network'].includes(details.category))safe.category=details.category;
+  if(reasons.has(details.reason))safe.reason=details.reason;
+  if(typeof details.failed==='boolean')safe.failed=details.failed;
+  return safe;
+}
+function timingMessage(event,details){
+  const parts=[details.endpoint||details.step||event];
+  if(details.method)parts.push(details.method);
+  if(details.status!=null)parts.push('HTTP '+details.status);
+  if(details.reason||details.category)parts.push(details.reason||details.category);
+  if(details.attempt)parts.push('attempt '+details.attempt);
+  if(details.responseMs!=null)parts.push('response '+details.responseMs+' ms');
+  if(details.durationMs!=null)parts.push('duration '+details.durationMs+' ms');
+  if(details.failed)parts.push('request failed');
+  return parts.join(' · ');
+}
 function install(electron,root) {
   const rows=[],runs=new Map(),secrets=new Set(),choices=new Map();let id=0;
   const file=path.join(root,'diagnostics/activity.jsonl');
@@ -17,9 +44,9 @@ function install(electron,root) {
     writing=true;const chunk=writeQueue;writeQueue='';
     fs.appendFile(file,chunk,'utf8',()=>{writing=false;if(writeQueue)flushLog();});
   }
-  function emit(kind,stage,message,runId='app',level='info'){
+  function emit(kind,stage,message,runId='app',level='info',details={}){
     const now=Date.now(),run=runs.get(runId);
-    const row={id:++id,at:now,kind,stage:clean(stage),message:clean(message),runId,level,elapsedSeconds:run?Number(((now-run.started)/1000).toFixed(1)):null,stepSeconds:run?Number(((now-run.changed)/1000).toFixed(1)):null};
+    const row={id:++id,at:now,kind,stage:clean(stage),message:clean(message),runId,level,elapsedSeconds:run?Number(((now-run.started)/1000).toFixed(1)):null,stepSeconds:run?Number(((now-run.changed)/1000).toFixed(1)):null,...details};
     rows.push(row);if(rows.length>5000)rows.shift();
     writeQueue+=JSON.stringify(row)+'\n';flushLog();
     for(const win of electron.BrowserWindow.getAllWindows())try{if(!win.isDestroyed()&&!win.webContents.isDestroyed()&&trusted(win.webContents))win.webContents.send('matrix:logs:event',row);}catch{}
@@ -49,6 +76,11 @@ function install(electron,root) {
     if(channel==='app:save-form'&&result?.ok){const form=args[0],before=choices.get(form?.id),after=form?.payment?.method;if(before&&after&&before!==after)emit('event','payment:changed',payments.label(before)+' → '+payments.label(after),form.id,'warn');if(form?.id)choices.set(form.id,after);}
     if(channel==='app:start-booking'){const form=args[0]?.form||{},id=args[0]?.formId||'app',selected=form.paymentMethodDisplay||form.payment?.method||form.paymentMethod;emit('event','payment:request','Selected '+payments.label(selected)+'; request code '+(form.paymentMethod||selected||'missing'),id);}
   }
-  return {learn,stage,recovered(args){const runId=typeof args[2]==='string'&&/^[0-9a-f-]{36}$/i.test(args[2])?args[2]:'app';stage(String(args[0]||''),String(args[1]||''),runId,String(args[3]||'info'));},observePayment,redact:clean,record(event,details={}){if(!bookingRecord(event,details))return;emit('event',event,details.error||details.page||details.check||event,details.formId||'app');},stop(runId){if(runs.has(runId))runs.get(runId).active=false;},dispose(){clearInterval(timer);}};
+  return {learn,stage,recovered(args){const runId=typeof args[2]==='string'&&/^[0-9a-f-]{36}$/i.test(args[2])?args[2]:'app';stage(String(args[0]||''),String(args[1]||''),runId,String(args[3]||'info'));},observePayment,redact:clean,record(event,details={}){
+    if(!bookingRecord(event,details))return;
+    const timing=/^matrix-(?:payment-|booking-api-)/.test(event)?timingDetails(details):{};
+    const message=Object.keys(timing).length?timingMessage(event,timing):details.error||details.page||details.check||event;
+    emit('event',event,message,details.formId||'app','info',timing);
+  },stop(runId){if(runs.has(runId))runs.get(runId).active=false;},dispose(){clearInterval(timer);}};
 }
 module.exports={install};
